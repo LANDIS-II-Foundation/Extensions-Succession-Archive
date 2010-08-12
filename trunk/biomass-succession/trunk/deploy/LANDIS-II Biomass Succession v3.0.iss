@@ -1,0 +1,68 @@
+#define PackageName      "Biomass Succession v3"
+#define PackageNameLong  "Biomass Succession Extension v3"
+#define Version          "1.0"
+#define ReleaseType      "official"
+#define ReleaseNumber    "1"
+#define LandisDeployDir  "c:\users\rob\landis-ii\deploy"
+
+#define CoreVersion      "5.1"
+#define CoreReleaseAbbr  ""
+
+; #include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section).iss"
+#include "c:\users\rob\landis-ii\deploy\package (Setup section).iss"
+
+[Files]
+
+Source: {#LandisBuildDir}\successionextensions\biomass-succession-v3\build\release\Landis.Extension.Succession.Biomass_v3.dll; DestDir: {app}\bin; Flags: replacesameversion
+Source: docs\*; DestDir: {app}\docs
+Source: examples\*; DestDir: {app}\examples\biomass-succession-v3
+
+#define BioSucc3 "Biomass Succession v3 1.0.txt"
+Source: {#BioSucc3}; DestDir: {#LandisPlugInDir}
+
+; Until the the latest version of that library is released for the LANDIS-II main
+; package, the library is included in this installer.  It's marked as
+; uninstallable because if the package is uninstalled and this version
+; of the Succession library is removed, then age-only succession will
+; break
+Source: {#LandisBuildDir}\libraries\succession\build\release\Landis.Succession.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
+
+; Cohort Libraries
+Source: {#LandisBuildDir}\libraries\biomass-cohort\build\release\Landis.Library.Cohorts.Biomass.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
+
+
+[Run]
+;; Run plug-in admin tool to add an entry for the plug-in
+#define PlugInAdminTool  CoreBinDir + "\Landis.PlugIns.Admin.exe"
+Filename: {#PlugInAdminTool}; Parameters: "remove ""Biomass Succession v3"" "; WorkingDir: {#LandisPlugInDir}
+Filename: {#PlugInAdminTool}; Parameters: "add ""{#BioSucc3}"" "; WorkingDir: {#LandisPlugInDir}
+
+[UninstallRun]
+;; Run plug-in admin tool to remove the entry for the plug-in
+; Filename: {#PlugInAdminTool}; Parameters: "remove ""Biomass Succession v3"" "; WorkingDir: {#LandisPlugInDir}
+[Code]
+
+#include AddBackslash(LandisDeployDir) + "package (Code section) v3.iss"
+//-----------------------------------------------------------------------------
+
+function CurrentVersion_PostUninstall(currentVersion: TInstalledVersion): Integer;
+begin
+  // Alpha and beta releases of version 1.0 don't remove the plug-in name from
+  // database
+  //if StartsWith(currentVersion.Version, '3') then
+  //  begin
+  //    Exec('{#PlugInAdminTool}', 'remove "Biomass Succession v3"',
+  //         ExtractFilePath('{#PlugInAdminTool}'),
+//		   SW_HIDE, ewWaitUntilTerminated, Result);
+//	end
+//  else
+    Result := 0;
+end;
+
+//-----------------------------------------------------------------------------
+
+function InitializeSetup_FirstPhase(): Boolean;
+begin
+  CurrVers_PostUninstall := @CurrentVersion_PostUninstall
+  Result := True
+end;
