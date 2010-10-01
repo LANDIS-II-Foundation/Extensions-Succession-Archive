@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{651E102F-6FC1-4DB8-B384-3178E409AF2D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>nuc_succession</RootNamespace>
+    <AssemblyName>Landis.Extension.Succession.NuCycling</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(Landis-II)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Edu.Wisc.Forest.Flel.Grids">
+      <HintPath>$(Landis-II)\Edu.Wisc.Forest.Flel.Grids.dll</HintPath>
+    </Reference>
+    <Reference Include="Edu.Wisc.Forest.Flel.Util">
+      <HintPath>$(Landis-II)\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.AgeCohort">
+      <HintPath>$(Landis-II)\Landis.AgeCohort.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Core">
+      <HintPath>$(Landis-II)\Landis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Climate">
+      <HintPath>$(Landis-II)\Landis.Library.Climate.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Cohorts.LeafBiomass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Landis.Library.Cohorts.LeafBiomass.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Succession">
+      <HintPath>$(Landis-II)\Landis.Succession.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Troschuetz.Random, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Troschuetz.Random.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="age-only-disturbances\DatasetParser.cs" />
+    <Compile Include="age-only-disturbances\Events.cs" />
+    <Compile Include="age-only-disturbances\IParameterDataset.cs" />
+    <Compile Include="age-only-disturbances\Module.cs" />
+    <Compile Include="age-only-disturbances\NoParameters.cs" />
+    <Compile Include="age-only-disturbances\ParameterDataset.cs" />
+    <Compile Include="age-only-disturbances\PercentageTable.cs" />
+    <Compile Include="age-only-disturbances\PoolPercentages.cs" />
+    <Compile Include="AvailableNuts.cs" />
+    <Compile Include="Charcoal.cs" />
+    <Compile Include="CohortBiomass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="dynamic-change\BiomassParametersParser.cs" />
+    <Compile Include="dynamic-change\InputValidation.cs" />
+    <Compile Include="dynamic-change\IChangeParameters.cs" />
+    <Compile Include="dynamic-change\Module.cs" />
+    <Compile Include="dynamic-change\ChangeParameters.cs" />
+    <Compile Include="dynamic-change\ChangeParametersParser.cs" />
+    <Compile Include="dynamic-change\ParametersUpdate.cs" />
+    <Compile Include="EcoregionData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="NutrientSuccession.cs" />
+    <Compile Include="utility\Ecoregions_AuxParm.cs" />
+    <Compile Include="FireEffects.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ForestFloor.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InitialBiomass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utility\InputParametersParser.cs" />
+    <Compile Include="utility\IInputParameters.cs" />
+    <Compile Include="MineralSoil.cs" />
+    <Compile Include="utility\Model.cs" />
+    <Compile Include="utility\InputParameters.cs" />
+    <Compile Include="PlugIn.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utility\Pool.cs" />
+    <Compile Include="utility\PoolD.cs" />
+    <Compile Include="utility\RandomNumberGenerator.cs" />
+    <Compile Include="Rock.cs" />
+    <Compile Include="Roots.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SiteVars.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SoilOrganicMatter.cs" />
+    <Compile Include="SpeciesData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="utility\Severity.cs" />
+    <Compile Include="utility\Species_AuxParm.cs" />
+    <Compile Include="Unavailable.cs" />
+    <Compile Include="utility\SufficientLight.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
