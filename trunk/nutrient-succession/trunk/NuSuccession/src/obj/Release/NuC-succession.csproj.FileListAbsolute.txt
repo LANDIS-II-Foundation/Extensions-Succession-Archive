@@ -1,5 +1,0 @@
-J:\Scheller\LANDIS-II\SuccessionExtensions\NuSuccession\src\obj\Release\ResolveAssemblyReference.cache
-c:\program files\landis-ii\5.1\bin\Landis.Extension.Succession.NuCycling.dll
-c:\program files\landis-ii\5.1\bin\Landis.Extension.Succession.NuCycling.pdb
-J:\Scheller\LANDIS-II\SuccessionExtensions\NuSuccession\src\obj\Release\Landis.Extension.Succession.NuCycling.dll
-J:\Scheller\LANDIS-II\SuccessionExtensions\NuSuccession\src\obj\Release\Landis.Extension.Succession.NuCycling.pdb
