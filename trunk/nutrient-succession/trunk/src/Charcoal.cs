@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 University of Nevada, Portland State University
-//  Authors:  Sarah Ganschow, Robert M. Scheller
+//  Authors:  Sarah Ganschow, Robert M. Scheller.
 //  License:  Available at
 //  http://www.landis-ii.org/developers/LANDIS-IISourceCodeLicenseAgreement.pdf
 
