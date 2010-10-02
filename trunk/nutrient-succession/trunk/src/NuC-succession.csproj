@@ -90,6 +90,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="NutrientSuccession.cs" />
+    <Compile Include="Outputs.cs" />
     <Compile Include="utility\Ecoregions_AuxParm.cs" />
     <Compile Include="FireEffects.cs">
       <SubType>Code</SubType>
@@ -103,6 +104,7 @@
     <Compile Include="utility\InputParametersParser.cs" />
     <Compile Include="utility\IInputParameters.cs" />
     <Compile Include="MineralSoil.cs" />
+    <Compile Include="utility\MapNames.cs" />
     <Compile Include="utility\Model.cs" />
     <Compile Include="utility\InputParameters.cs" />
     <Compile Include="PlugIn.cs">
@@ -126,6 +128,7 @@
     <Compile Include="utility\Species_AuxParm.cs" />
     <Compile Include="Unavailable.cs" />
     <Compile Include="utility\SufficientLight.cs" />
+    <Compile Include="utility\UShortPixel.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

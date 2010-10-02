@@ -28,11 +28,19 @@ namespace Landis.Biomass.NuCycling.Succession
 
         //Rock weathering rate for release of mineral phosphorus
         public static Ecoregions.AuxParm<double> WeatheringP;
+        public static Ecoregions.AuxParm<int> ActiveSiteCount;
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
         {
             UpdateParameters(parameters);
+            ActiveSiteCount = new Ecoregions.AuxParm<int>(Model.Core.Ecoregions);
+            foreach (ActiveSite site in Model.Core.Landscape)
+            {
+                IEcoregion ecoregion = Model.Core.Ecoregion[site];
+                ActiveSiteCount[ecoregion]++;
+            }
+
         }
 
         //---------------------------------------------------------------------

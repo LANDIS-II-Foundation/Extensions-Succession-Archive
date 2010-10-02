@@ -123,6 +123,38 @@ namespace Landis.Biomass.NuCycling.Succession
         }
         //---------------------------------------------------------------------
 
+        public static double ComputeTotalBiomass(ActiveSite site)
+        {
+            double totalBiomass = 0;
+            if (SiteVars.Cohorts[site] != null)
+                foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+                    foreach (ICohort cohort in speciesCohorts)
+                        totalBiomass += cohort.WoodBiomass + cohort.LeafBiomass;
+            return totalBiomass;
+        }
+        //---------------------------------------------------------------------
+
+        public static double ComputeTotalC(ActiveSite site, int totalBiomass)
+        {
+            double totalC = (double) totalBiomass * 0.47;
+            totalC += SiteVars.FineRoots[site].ContentC;
+            totalC += SiteVars.CoarseRoots[site].ContentC;
+            totalC += SiteVars.WoodyDebris[site].ContentC;
+            
+            foreach (PoolD litter in SiteVars.Litter[site])
+                totalC += litter.ContentC;
+            
+            foreach (PoolD dfr in SiteVars.DeadFineRoots[site])
+                totalC += dfr.ContentC;
+
+            totalC += SiteVars.SoilOrganicMatter[site].ContentC;
+            totalC += SiteVars.Charcoal[site].ContentC;
+
+
+            return totalC;
+        }
+        //---------------------------------------------------------------------
+
         /// <summary>
         /// Biomass cohorts for the landscape's sites.
         /// </summary>

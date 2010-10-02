@@ -10,6 +10,8 @@ using Landis.Species;
 using Landis.InitialCommunities;
 using Landis.Succession;
 using Landis.PlugIns;
+using Landis.RasterIO;
+
 using System.Collections.Generic;
 
 
@@ -19,6 +21,7 @@ namespace Landis.Biomass.NuCycling.Succession
         : Landis.Succession.PlugIn
     {
         private List<ISufficientLight> sufficientLight;
+        public static string TotalCarbonMapNames = "output/total-carbon-{timestep}.gis";
 
         public PlugIn()
             : base("Nutrient Cycling Succession")
@@ -50,6 +53,7 @@ namespace Landis.Biomass.NuCycling.Succession
 
             MineralSoil.Initialize(parameters);
             Rock.Initialize(parameters);
+            Outputs.Initialize(parameters);
 
             //  Cohorts must be created before the base class is initialized
             //  because the base class' reproduction module uses the core's
@@ -73,6 +77,40 @@ namespace Landis.Biomass.NuCycling.Succession
             DynamicChange.Module.Initialize(parameters.DynamicChangeUpdates);
         }
 
+        //---------------------------------------------------------------------
+
+        public override void Run()
+        {
+            DynamicChange.Module.CheckForUpdate();
+
+            base.Run();
+
+            Outputs.WriteLogFile(Model.Core.CurrentTime);
+
+            if (TotalCarbonMapNames != null && (Model.Core.CurrentTime % Timestep) == 0)
+            {
+                string path = MapNames.ReplaceTemplateVars(TotalCarbonMapNames, Model.Core.CurrentTime);
+                IOutputRaster<UShortPixel> map = Model.Core.CreateRaster<UShortPixel>(path, Model.Core.Landscape.Dimensions, Model.Core.LandscapeMapMetadata);
+                using (map)
+                {
+                    UShortPixel pixel = new UShortPixel();
+                    foreach (Site site in Model.Core.Landscape.AllSites)
+                    {
+                        if (site.IsActive)
+                        {
+                            pixel.Band0 = (ushort) (SiteVars.ComputeTotalC((ActiveSite) site, (int) SiteVars.ComputeTotalBiomass((ActiveSite) site)) / 100.0);
+                        }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.Band0 = 0;
+                        }
+                        map.WritePixel(pixel);
+                    }
+                }
+            }
+        
+        }
         //---------------------------------------------------------------------
 
         public void CohortDied(object sender,
@@ -208,14 +246,6 @@ namespace Landis.Biomass.NuCycling.Succession
             SiteVars.Charcoal[site].ContentP = initialBiomass.CharcoalPool.ContentP;
         }
 
-        //---------------------------------------------------------------------
-
-        public override void Run()
-        {
-            DynamicChange.Module.CheckForUpdate();
-
-            base.Run();
-        }
 
         //---------------------------------------------------------------------
 
