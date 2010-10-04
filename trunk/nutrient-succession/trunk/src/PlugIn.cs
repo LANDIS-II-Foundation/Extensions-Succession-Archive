@@ -87,7 +87,7 @@ namespace Landis.Biomass.NuCycling.Succession
 
             Outputs.WriteLogFile(Model.Core.CurrentTime);
 
-            if (TotalCarbonMapNames != null && (Model.Core.CurrentTime % Timestep) == 0)
+            if ((Model.Core.CurrentTime % Timestep) == 0)
             {
                 string path = MapNames.ReplaceTemplateVars(TotalCarbonMapNames, Model.Core.CurrentTime);
                 IOutputRaster<UShortPixel> map = Model.Core.CreateRaster<UShortPixel>(path, Model.Core.Landscape.Dimensions, Model.Core.LandscapeMapMetadata);
@@ -98,7 +98,7 @@ namespace Landis.Biomass.NuCycling.Succession
                     {
                         if (site.IsActive)
                         {
-                            pixel.Band0 = (ushort) (SiteVars.ComputeTotalC((ActiveSite) site, (int) SiteVars.ComputeTotalBiomass((ActiveSite) site)) / 100.0);
+                            pixel.Band0 = (ushort) (SiteVars.ComputeTotalC((ActiveSite) site, (int) SiteVars.ComputeTotalBiomass((ActiveSite) site)) / 1000.0);
                         }
                         else
                         {
