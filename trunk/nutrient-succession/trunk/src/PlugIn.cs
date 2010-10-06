@@ -109,7 +109,7 @@ namespace Landis.Biomass.NuCycling.Succession
                     }
                 }
             }
-        
+
         }
         //---------------------------------------------------------------------
 
@@ -117,9 +117,29 @@ namespace Landis.Biomass.NuCycling.Succession
                                DeathEventArgs eventArgs)
         {
             PlugInType disturbanceType = eventArgs.DisturbanceType;
+            ActiveSite site = eventArgs.Site;
+
+            ICohort cohort = eventArgs.Cohort;
+            double foliar = (double) cohort.LeafBiomass;
+
+            double wood = (double) cohort.WoodBiomass;
+
+            if (disturbanceType == null) {
+                //UI.WriteLine("NO EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
+
+                ForestFloor.AddWoodyDebris(wood, cohort.Species, SiteVars.WoodyDebris[site]);
+                ForestFloor.AddDisturbanceLitter(foliar, cohort.Species, site, SiteVars.Litter[site]);
+
+                double killedFineRoots = Roots.CalculateFineRoot(foliar, SpeciesData.LeafLongevity[cohort.Species]);
+                Roots.KillFineRoots(killedFineRoots, cohort.Species, SiteVars.DeadFineRootsAdd[site]);
+                Roots.ReduceFineRoots(killedFineRoots, cohort.Species, SiteVars.FineRoots[site]);
+                double killedCoarseRoots = Roots.CalculateCoarseRoot(wood, SpeciesData.LeafLongevity[cohort.Species]);
+                ForestFloor.AddWoodyDebris(killedCoarseRoots, cohort.Species, SiteVars.WoodyDebris[site]);
+                Roots.ReduceCoarseRoots(killedCoarseRoots, cohort.Species, SiteVars.CoarseRoots[site]);
+            }
             if (disturbanceType != null)
             {
-                ActiveSite site = eventArgs.Site;
+                //ActiveSite site = eventArgs.Site;
                 Disturbed[site] = true;
                 if (disturbanceType.IsMemberOf("disturbance:fire"))
                     Landis.Succession.Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
