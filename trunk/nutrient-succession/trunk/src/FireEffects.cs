@@ -70,7 +70,6 @@ namespace Landis.Biomass.NuCycling.Succession
 
             if(severity < 1) return;
 
-            UI.WriteLine("Burning stuff with severity = {0}.", severity);
 
             Charcoal charcoal = SiteVars.Charcoal[site];
             List<PoolD> siteLitter = SiteVars.Litter[site];
@@ -80,6 +79,9 @@ namespace Landis.Biomass.NuCycling.Succession
 
             double litterReduc = FireSeverities[severity - 1].LitterReduction;
             double woodyDebrisReduc = FireSeverities[severity - 1].WoodyDebrisReduction;
+
+            UI.WriteLine("Burning at severity={0}.  LitterReduction={1:0.0}, WoodReduction={2:0.0}.", severity, litterReduc, woodyDebrisReduc);
+            
             //Portion of charcoal is consumed by fire (Czimczik et al. 2005).
             //  Assuming 80% consumption (boreal forest, Czimczik et al. 2005).
             double consumption = 0.8;
