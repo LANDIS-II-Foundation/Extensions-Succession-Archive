@@ -70,6 +70,8 @@ namespace Landis.Biomass.NuCycling.Succession
 
             if(severity < 1) return;
 
+            UI.WriteLine("Burning stuff with severity = {0}.", severity);
+
             Charcoal charcoal = SiteVars.Charcoal[site];
             List<PoolD> siteLitter = SiteVars.Litter[site];
             PoolD woodyDebris = SiteVars.WoodyDebris[site];
