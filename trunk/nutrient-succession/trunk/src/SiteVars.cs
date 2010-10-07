@@ -74,7 +74,7 @@ namespace Landis.Biomass.NuCycling.Succession
             TotalWoodBiomass    = Model.Core.Landscape.NewSiteVar<double>();
             CurrentYearMortality = Model.Core.Landscape.NewSiteVar<double>();
             PrevYearMortality = Model.Core.Landscape.NewSiteVar<double>();
-            fireSeverity = Model.Core.GetSiteVar<byte>("Fire.Severity");
+            //fireSeverity = Model.Core.GetSiteVar<byte>("Fire.Severity");
 
 
 
@@ -110,6 +110,18 @@ namespace Landis.Biomass.NuCycling.Succession
             }
         }
 
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Initializes for disturbances.
+        /// </summary>
+        public static void InitializeDisturbances()
+        {
+            fireSeverity = Model.Core.GetSiteVar<byte>("Fire.Severity");
+
+            //if(FireSeverity == null)
+            //    throw new System.ApplicationException("TEST Error: Fire Severity NOT Initialized.");
+        }
         //---------------------------------------------------------------------
 
         public static double ComputeWoodBiomass(ActiveSite site)
@@ -372,10 +384,10 @@ namespace Landis.Biomass.NuCycling.Succession
                 return fireSeverity;
             }
 
-            set
+            /*set
             {
                 fireSeverity = value;
-            }
+            }*/
         }
     }
 }

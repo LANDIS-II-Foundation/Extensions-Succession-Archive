@@ -83,6 +83,9 @@ namespace Landis.Biomass.NuCycling.Succession
         {
             DynamicChange.Module.CheckForUpdate();
 
+            if (Model.Core.CurrentTime > 0)
+                SiteVars.InitializeDisturbances();
+
             base.Run();
 
             Outputs.WriteLogFile(Model.Core.CurrentTime);
