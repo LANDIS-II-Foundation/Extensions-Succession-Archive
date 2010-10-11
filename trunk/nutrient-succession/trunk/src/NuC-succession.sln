@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuC-succession", "NuC-succession.csproj", "{651E102F-6FC1-4DB8-B384-3178E409AF2D}"
 EndProject
 Global
