@@ -167,6 +167,26 @@ namespace Landis.Biomass.NuCycling.Succession
         }
         //---------------------------------------------------------------------
 
+        public static double ComputeTotalLiveC(ActiveSite site, int totalBiomass)
+        {
+            double totalLiveC = (double)totalBiomass * 0.47;
+            totalLiveC += SiteVars.FineRoots[site].ContentC;
+            totalLiveC += SiteVars.CoarseRoots[site].ContentC;
+
+            return totalLiveC;
+        }
+        //---------------------------------------------------------------------
+
+        public static double ComputeTotalSOC(ActiveSite site)
+
+        {
+            double totalSOC = 0; // correct?
+            totalSOC += SiteVars.SoilOrganicMatter[site].ContentC;
+
+            return totalSOC;
+        }
+        //---------------------------------------------------------------------
+
         /// <summary>
         /// Biomass cohorts for the landscape's sites.
         /// </summary>

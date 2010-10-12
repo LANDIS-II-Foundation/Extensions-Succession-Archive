@@ -35,7 +35,8 @@ namespace Landis.Biomass.NuCycling.Succession
             
             log.AutoFlush = true;
             log.Write("Time, Ecoregion, NumSites,");
-            log.Write("AGB, TotalC");
+            log.Write("AGB, TotalC, TotalLiveC,");
+            log.Write("TotalSOC,");
             log.WriteLine("");
         }
 
@@ -46,11 +47,15 @@ namespace Landis.Biomass.NuCycling.Succession
             
             double[] avgAGB        = new double[Model.Core.Ecoregions.Count];
             double[] avgtotalC      = new double[Model.Core.Ecoregions.Count];
+            double[] avgtotalLiveC = new double[Model.Core.Ecoregions.Count];
+            double[] avgtotalSOC = new double[Model.Core.Ecoregions.Count];
 
             foreach (IEcoregion ecoregion in Model.Core.Ecoregions)
             {
                 avgAGB[ecoregion.Index] = 0.0;
                 avgtotalC[ecoregion.Index] = 0.0;
+                avgtotalLiveC[ecoregion.Index] = 0.0;
+                avgtotalSOC[ecoregion.Index] = 0.0;
 
             }
             foreach (ActiveSite site in Model.Core.Landscape)
@@ -60,7 +65,8 @@ namespace Landis.Biomass.NuCycling.Succession
                 
                 avgAGB[ecoregion.Index] += totalBiomass;
                 avgtotalC[ecoregion.Index]    += SiteVars.ComputeTotalC(site, totalBiomass);
-                
+                avgtotalLiveC[ecoregion.Index] += SiteVars.ComputeTotalLiveC(site, totalBiomass);
+                avgtotalSOC[ecoregion.Index] += SiteVars.ComputeTotalSOC(site);
             }
             
             foreach (IEcoregion ecoregion in Model.Core.Ecoregions)
@@ -72,9 +78,13 @@ namespace Landis.Biomass.NuCycling.Succession
                         ecoregion.Name,                  
                         EcoregionData.ActiveSiteCount[ecoregion]       
                         );
-                    log.Write("{0:0.00}, {1:0.0}", 
-                        (avgAGB[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),  
-                        (avgtotalC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                    log.Write("{0:0.00}, {1:0.0}, {2:0.0},",
+                        (avgAGB[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgtotalC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgtotalLiveC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        );
+                    log.Write("{0:0.00}",
+                        (avgtotalSOC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.WriteLine("");
                 }

@@ -101,7 +101,7 @@ namespace Landis.Biomass.NuCycling.Succession
                     {
                         if (site.IsActive)
                         {
-                            pixel.Band0 = (ushort) (SiteVars.ComputeTotalC((ActiveSite) site, (int) SiteVars.ComputeTotalBiomass((ActiveSite) site)) / 100.0);
+                            pixel.Band0 = (ushort) (SiteVars.ComputeTotalC((ActiveSite) site, (int) SiteVars.ComputeTotalBiomass((ActiveSite) site)) / 1000.0);
                         }
                         else
                         {
