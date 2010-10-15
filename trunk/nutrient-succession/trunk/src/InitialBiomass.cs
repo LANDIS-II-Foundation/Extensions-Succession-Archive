@@ -268,6 +268,10 @@ namespace Landis.Biomass.NuCycling.Succession
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
+            // Fix to keep initial mineral N and P as paramterized for year 1.
+            double minN = SiteVars.MineralSoil[site].ContentN;
+            double minP = SiteVars.MineralSoil[site].ContentP;
+
             SiteCohorts biomassCohorts = new SiteCohorts();
             if (ageCohorts.Count == 0)
                 return biomassCohorts;
@@ -304,6 +308,10 @@ namespace Landis.Biomass.NuCycling.Succession
                     indexNextAgeCohort++;
                 }
             }
+
+            // Reset mineral nutrients
+            SiteVars.MineralSoil[site].ContentN = minN;
+            SiteVars.MineralSoil[site].ContentP = minP;
 
             return biomassCohorts;
         }
