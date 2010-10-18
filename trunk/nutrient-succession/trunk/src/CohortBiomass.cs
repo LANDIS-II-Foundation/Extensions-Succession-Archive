@@ -62,14 +62,19 @@ namespace Landis.Biomass.NuCycling.Succession
         ///   related mortality (M_BIO).
         /// </summary>
         public float[] ComputeChange(ICohort cohort,
-                                 ActiveSite site)
+                                 ActiveSite site,
+                                 int siteBiomass,
+                                 int prevYearSiteMortality
+            )
         {
             ecoregion = Model.Core.Ecoregion[site];
-            double siteBiomass = SiteVars.TotalWoodBiomass[site];
-            double prevYearSiteMortality = SiteVars.PrevYearMortality[site];
+            siteBiomass = (int)(SiteVars.TotalWoodBiomass[site]);
+            prevYearSiteMortality = (int)(SiteVars.PrevYearMortality[site]);
+
+            double leafLong = SpeciesData.LeafLongevity[cohort.Species];
 
             // Calculate annual leaf turnover
-            double annualLeafTurnover = (double)cohort.LeafBiomass / LeafLongevity[cohort.Species];
+            double annualLeafTurnover = (double)cohort.LeafBiomass / leafLong;
 
             // Calculate age-related mortality.
             // Age-related mortality will include woody and standing leaf biomass (=0 for deciduous trees).
@@ -79,7 +84,7 @@ namespace Landis.Biomass.NuCycling.Succession
 
             //Nitrogen needs for ANPP cannot exceed available nitrogen.
             double Nreduction = AvailableNuts.CohortUptakeAvailableN((actualANPP[1] + annualLeafTurnover), 
-                actualANPP[0], LeafLongevity[cohort.Species], site, cohort.Species);
+                actualANPP[0], site, cohort.Species);
 
             //  Growth-related mortality
             double[] mortalityGrowth = ComputeGrowthMortality(cohort, site, actualANPP, mortalityAge);
@@ -121,7 +126,7 @@ namespace Landis.Biomass.NuCycling.Succession
             }
 
             // Make sure uptake doesn't exceed available N
-            else if (Ngrowth > (SiteVars.MineralSoil[site].ContentN + transN))
+            else if (Nreduction > (SiteVars.MineralSoil[site].ContentN + transN))
             {
                 annualLeafTurnover *= ((SiteVars.MineralSoil[site].ContentN + transN) / Nreduction);
                 actualANPP[0] *= ((SiteVars.MineralSoil[site].ContentN + transN) / Nreduction);
@@ -148,7 +153,7 @@ namespace Landis.Biomass.NuCycling.Succession
             //    can equal actual turnover or is reduced given N limitation as above.
             float deltaWood = (float)(actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float)(actualANPP[1] - totalMortality[1] - 
-                cohort.LeafBiomass / LeafLongevity[cohort.Species] + annualLeafTurnover);
+                cohort.LeafBiomass / leafLong + annualLeafTurnover);
 
             float[] deltas = new float[2] { deltaWood, deltaLeaf };
 
