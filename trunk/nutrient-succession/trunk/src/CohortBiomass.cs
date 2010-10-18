@@ -62,14 +62,14 @@ namespace Landis.Biomass.NuCycling.Succession
         ///   related mortality (M_BIO).
         /// </summary>
         public float[] ComputeChange(ICohort cohort,
-                                 ActiveSite site,
-                                 int siteBiomass,
-                                 int prevYearSiteMortality
+                                 ActiveSite site
+                                 //int siteBiomass,
+                                 //int prevYearSiteMortality
             )
         {
             ecoregion = Model.Core.Ecoregion[site];
-            siteBiomass = (int)(SiteVars.TotalWoodBiomass[site]);
-            prevYearSiteMortality = (int)(SiteVars.PrevYearMortality[site]);
+            int siteBiomass = (int)(SiteVars.TotalWoodBiomass[site]);
+            int prevYearSiteMortality = (int)(SiteVars.PrevYearMortality[site]);
 
             double leafLong = SpeciesData.LeafLongevity[cohort.Species];
 

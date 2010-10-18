@@ -12,7 +12,7 @@ using Landis.Succession;
 using Landis.PlugIns;
 using Landis.RasterIO;
 
-using Landis.Biomass.Succession;
+//using Landis.Biomass.Succession;
 
 using System.Collections.Generic;
 
