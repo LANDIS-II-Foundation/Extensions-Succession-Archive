@@ -123,6 +123,7 @@ namespace Landis.Biomass.NuCycling.Succession
                 actualANPP[0] *= (transN / Nreduction);
                 actualANPP[1] *= (transN / Nreduction);
                 annualLeafTurnover *= (transN / Nreduction);
+                Nreduction = 0;
             }
 
             // Make sure uptake doesn't exceed available N
@@ -135,7 +136,26 @@ namespace Landis.Biomass.NuCycling.Succession
             }
 
             //Reduce available nitrogen due to cohort uptake.
-            Nreduction = Math.Max(Nreduction - transN, 0.0);
+            // N-fixers do not take N from the soil (assume 100% of needs are fixed).
+            //  N-fixers with N tolerance = (5 or 6) fix N, giving negative Nreduction.
+            //   The amount of fixation is scaled by cohort biomass.
+            int nTol = SpeciesData.NTolerance[cohort.Species];
+            if (nTol == 4)
+                Nreduction = 0.0;
+            else if (nTol == 5)
+            {
+                // Range of N fixation is 0.5 - 10 kg/ha/yr)
+                Nreduction = 0 - ((cohort.LeafBiomass + cohort.WoodBiomass) /
+                    (float)(SpeciesData.B_MAX_Spp[cohort.Species][ecoregion]) * (10 - 0.5) + 0.5);
+            }
+            else if (nTol == 6)
+            {
+                // Range of N fixation is 10 - 50 kg/ha/yr)
+                Nreduction = 0 - ((cohort.LeafBiomass + cohort.WoodBiomass) /
+                    (float)(SpeciesData.B_MAX_Spp[cohort.Species][ecoregion]) * (50 - 10) + 10);
+            }
+            else
+                Nreduction = Math.Max(Nreduction - transN, 0.0);
             SiteVars.MineralSoil[site].ContentN -= Nreduction;
 
             //Reduce available phosphorus due to cohort uptake.

@@ -78,10 +78,12 @@ namespace Landis.Biomass.NuCycling.Succession.AgeOnlyDisturbances
         public static void SiteDisturbed(object               sender,
                                          DisturbanceEventArgs eventArgs)
         {
-            PlugInType disturbanceType = eventArgs.DisturbanceType;
+            //NOTE: This is now handled in FireEffects.ComputeFireEffects
+            /*PlugInType disturbanceType = eventArgs.DisturbanceType;
             PoolPercentages poolReductions = Module.Parameters.PoolReductions[disturbanceType];
-
+            
             ActiveSite site = eventArgs.Site;
+
             SiteVars.WoodyDebris[site].ReducePercentage(poolReductions.Woody);
             foreach (PoolD litter in SiteVars.Litter[site])
             {
@@ -89,7 +91,7 @@ namespace Landis.Biomass.NuCycling.Succession.AgeOnlyDisturbances
                 litter.ContentC -= (litter.ContentC * poolReductions.NonWoody);
                 litter.ContentN -= (litter.ContentN * poolReductions.NonWoody);
                 litter.ContentP -= (litter.ContentP * poolReductions.NonWoody);
-            }
+            }*/
         }
     }
 }

@@ -28,6 +28,7 @@ namespace Landis.Biomass.NuCycling.Succession
 
         public static void UpdateParameters(DynamicChange.IInputParameters parameters)
         {
+
             fireSeverities = parameters.FireSeverities;
         }
 
@@ -76,12 +77,11 @@ namespace Landis.Biomass.NuCycling.Succession
             PoolD woodyDebris = SiteVars.WoodyDebris[site];
             MineralSoil mineralSoil = SiteVars.MineralSoil[site];
 
-
             double litterReduc = FireSeverities[severity - 1].LitterReduction;
             double woodyDebrisReduc = FireSeverities[severity - 1].WoodyDebrisReduction;
 
-            //UI.WriteLine("Burning at severity={0}.  LitterReduction={1:0.0}, WoodReduction={2:0.0}.", severity, litterReduc, woodyDebrisReduc);
-            
+            //UI.WriteLine("Burning at severity={0}.  LitterReduction={1}, WoodReduction={2}.", severity, litterReduc, woodyDebrisReduc);
+
             //Portion of charcoal is consumed by fire (Czimczik et al. 2005).
             //  Assuming 80% consumption (boreal forest, Czimczik et al. 2005).
             double consumption = 0.8;
