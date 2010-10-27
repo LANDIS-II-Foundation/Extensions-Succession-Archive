@@ -180,13 +180,43 @@ namespace Landis.Biomass.NuCycling.Succession
         public static double ComputeTotalSOC(ActiveSite site)
 
         {
-            double totalSOC = 0; // correct?
-            totalSOC += SiteVars.SoilOrganicMatter[site].ContentC;
+            double totalSOC = SiteVars.SoilOrganicMatter[site].ContentC;
 
             return totalSOC;
         }
+
         //---------------------------------------------------------------------
 
+        public static double ComputeCharcoalC(ActiveSite site)
+        {
+            double totalCharcoalC = SiteVars.Charcoal[site].ContentC;
+
+            return totalCharcoalC;
+        }
+
+        //---------------------------------------------------------------------
+
+        public static double ComputeDetritalC(ActiveSite site)
+        {
+            double totalDetritalC = SiteVars.WoodyDebris[site].ContentC;
+            foreach (PoolD litter in SiteVars.Litter[site])
+                totalDetritalC += litter.ContentC;
+
+            foreach (PoolD dfr in SiteVars.DeadFineRoots[site])
+                totalDetritalC += dfr.ContentC;
+
+            return totalDetritalC;
+        }
+        //---------------------------------------------------------------------
+
+        public static double ComputeCNratio(ActiveSite site)
+        {
+            double CNratio = SiteVars.SoilOrganicMatter[site].ContentC / SiteVars.SoilOrganicMatter[site].ContentN;
+
+            return CNratio;
+        }
+
+        //---------------------------------------------------------------------
         /// <summary>
         /// Biomass cohorts for the landscape's sites.
         /// </summary>

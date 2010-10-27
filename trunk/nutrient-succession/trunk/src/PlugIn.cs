@@ -24,6 +24,7 @@ namespace Landis.Biomass.NuCycling.Succession
     {
         private List<ISufficientLight> sufficientLight;
         public static string TotalCarbonMapNames = "output/total-carbon-{timestep}.gis";
+        public static string TotalLiveCarbonMapNames = "output/total-live-carbon-{timestep}.gis";
 
         public PlugIn()
             : base("Nutrient Cycling Succession")
@@ -111,6 +112,26 @@ namespace Landis.Biomass.NuCycling.Succession
                             pixel.Band0 = 0;
                         }
                         map.WritePixel(pixel);
+                    }
+                }
+
+                string path2 = MapNames.ReplaceTemplateVars(TotalLiveCarbonMapNames, Model.Core.CurrentTime);
+                IOutputRaster<UShortPixel> map2 = Model.Core.CreateRaster<UShortPixel>(path2, Model.Core.Landscape.Dimensions, Model.Core.LandscapeMapMetadata);
+                using (map2)
+                {
+                    UShortPixel pixel = new UShortPixel();
+                    foreach (Site site in Model.Core.Landscape.AllSites)
+                    {
+                        if (site.IsActive)
+                        {
+                            pixel.Band0 = (ushort)(SiteVars.ComputeTotalLiveC((ActiveSite)site, (int)SiteVars.ComputeTotalBiomass((ActiveSite)site)) / 1000.0);
+                        }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.Band0 = 0;
+                        }
+                        map2.WritePixel(pixel);
                     }
                 }
             }

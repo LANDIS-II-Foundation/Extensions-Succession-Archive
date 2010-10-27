@@ -36,7 +36,8 @@ namespace Landis.Biomass.NuCycling.Succession
             log.AutoFlush = true;
             log.Write("Time, Ecoregion, NumSites,");
             log.Write("AGB, TotalC, TotalLiveC,");
-            log.Write("TotalSOC,");
+            log.Write("TotalSOC, CharcoalC, TotalDetritalC,");
+            log.Write("CNratio");
             log.WriteLine("");
         }
 
@@ -49,6 +50,9 @@ namespace Landis.Biomass.NuCycling.Succession
             double[] avgtotalC      = new double[Model.Core.Ecoregions.Count];
             double[] avgtotalLiveC = new double[Model.Core.Ecoregions.Count];
             double[] avgtotalSOC = new double[Model.Core.Ecoregions.Count];
+            double[] avgCharcoalC = new double[Model.Core.Ecoregions.Count];
+            double[] avgtotalDetritalC = new double[Model.Core.Ecoregions.Count];
+            double[] avgCNratio = new double[Model.Core.Ecoregions.Count];
 
             foreach (IEcoregion ecoregion in Model.Core.Ecoregions)
             {
@@ -56,6 +60,9 @@ namespace Landis.Biomass.NuCycling.Succession
                 avgtotalC[ecoregion.Index] = 0.0;
                 avgtotalLiveC[ecoregion.Index] = 0.0;
                 avgtotalSOC[ecoregion.Index] = 0.0;
+                avgCharcoalC[ecoregion.Index] = 0.0;
+                avgtotalDetritalC[ecoregion.Index] = 0.0;
+                avgCNratio[ecoregion.Index] = 0.0;
 
             }
             foreach (ActiveSite site in Model.Core.Landscape)
@@ -67,9 +74,13 @@ namespace Landis.Biomass.NuCycling.Succession
                 avgtotalC[ecoregion.Index]    += SiteVars.ComputeTotalC(site, totalBiomass);
                 avgtotalLiveC[ecoregion.Index] += SiteVars.ComputeTotalLiveC(site, totalBiomass);
                 avgtotalSOC[ecoregion.Index] += SiteVars.ComputeTotalSOC(site);
+                avgCharcoalC[ecoregion.Index] += SiteVars.ComputeCharcoalC(site);
+                avgtotalDetritalC[ecoregion.Index] += SiteVars.ComputeDetritalC(site);
+                avgCNratio[ecoregion.Index] += SiteVars.ComputeCNratio(site);
             }
             
-            foreach (IEcoregion ecoregion in Model.Core.Ecoregions)
+            foreach (IEcoregion ecoregion in Model.Core.Ecoregions) // output tons/ha
+
             {
                 if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 {
@@ -78,13 +89,18 @@ namespace Landis.Biomass.NuCycling.Succession
                         ecoregion.Name,                  
                         EcoregionData.ActiveSiteCount[ecoregion]       
                         );
-                    log.Write("{0:0.00}, {1:0.0}, {2:0.0},",
-                        (avgAGB[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgtotalC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgtotalLiveC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                    log.Write("{0:0.00}, {1:0.00}, {2:0.00},",
+                        (avgAGB[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]/1000.0),
+                        (avgtotalC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]/1000.0),
+                        (avgtotalLiveC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]/1000.0)
+                        );
+                    log.Write("{0:0.00}, {1:0.000}, {2:0.00},",
+                        (avgtotalSOC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]/1000.0),
+                        (avgCharcoalC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]/1000.0),
+                        (avgtotalDetritalC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]/1000.0)
                         );
                     log.Write("{0:0.00}",
-                        (avgtotalSOC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgCNratio[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.WriteLine("");
                 }
