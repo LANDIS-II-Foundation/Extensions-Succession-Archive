@@ -1,0 +1,10 @@
+LandisData   Extension
+
+Name         "Biomass Reclass"
+Version      1.0
+Type         output
+Assembly     Landis.Output.BiomassReclass
+Class        Landis.Output.BiomassReclass.PlugIn
+Description  "Output forest reclassification maps using biomass"
+UserGuide    "LANDIS-II Biomass Reclass Output v1.0 User Guide.pdf"
+CoreVersion  5.1

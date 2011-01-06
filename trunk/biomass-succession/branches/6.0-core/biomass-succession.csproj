@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{17896667-BAB5-4F18-9DDF-8761E06C55E0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>biomass_succession</RootNamespace>
+    <AssemblyName>Landis.Extension.Succession.Biomass</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>c:\program files\landis-ii\6.0\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Edu.Wisc.Forest.Flel.Util">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Core">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Core.Implementation, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Core.Implementation.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.AgeOnlyCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.BiomassCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.BiomassCohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Cohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Succession">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Wisc.Flel.GeospatialModeling, Version=1.0.11.405, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Wisc.Flel.GeospatialModeling.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="age-only-disturbances\DatasetParser.cs" />
+    <Compile Include="age-only-disturbances\Events.cs" />
+    <Compile Include="age-only-disturbances\IParameterDataset.cs" />
+    <Compile Include="age-only-disturbances\Module.cs" />
+    <Compile Include="age-only-disturbances\NoParameters.cs" />
+    <Compile Include="age-only-disturbances\ParameterDataset.cs" />
+    <Compile Include="age-only-disturbances\PercentageTable.cs" />
+    <Compile Include="age-only-disturbances\PoolPercentages.cs" />
+    <Compile Include="BaseCohortsSiteVar.cs" />
+    <Compile Include="CohortBiomass.cs" />
+    <Compile Include="EcoregionData.cs" />
+    <Compile Include="ForestFloor.cs" />
+    <Compile Include="InitialBiomass.cs" />
+    <Compile Include="Outputs.cs" />
+    <Compile Include="PlugIn.cs" />
+    <Compile Include="Pool.cs" />
+    <Compile Include="SiteVars.cs" />
+    <Compile Include="SpeciesData.cs" />
+    <Compile Include="SufficientLight.cs" />
+    <Compile Include="utility\DynamicInputParser.cs" />
+    <Compile Include="utility\DynamicInputRecord.cs" />
+    <Compile Include="utility\DynamicInputs.cs" />
+    <Compile Include="utility\InputParameterParser.cs" />
+    <Compile Include="utility\InputParameters.cs" />
+    <Compile Include="utility\MapNames.cs" />
+    <Compile Include="utility\UShortPixel.cs" />
+    <Compile Include="utility\Util.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
