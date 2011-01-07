@@ -14,7 +14,7 @@
 
 using AgeOnlyCohorts = Landis.Library.AgeOnlyCohorts;
 using BiomassCohorts = Landis.Library.BiomassCohorts;
-using Wisc.Flel.GeospatialModeling.Landscapes;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.Biomass
 {

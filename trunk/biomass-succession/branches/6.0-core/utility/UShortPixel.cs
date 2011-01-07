@@ -1,23 +1,17 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
-//  Authors:  Robert M. Scheller, James B. Domingo
+//  Authors:  Srinivas S., Robert M. Scheller, James B. Domingo
 
-using Wisc.Flel.GeospatialModeling.RasterIO;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.Biomass
 {
-    public class UShortPixel
-        : SingleBandPixel<ushort>
+    public class UShortPixel : Pixel
     {
-        public UShortPixel()
-            : base()
-        {
-        }
+        public Band<ushort> MapCode  = "The numeric code for each ecoregion";
 
-        //---------------------------------------------------------------------
-
-        public UShortPixel(ushort band0)
-            : base(band0)
+        public UShortPixel() 
         {
+            SetBands(MapCode);
         }
     }
 }

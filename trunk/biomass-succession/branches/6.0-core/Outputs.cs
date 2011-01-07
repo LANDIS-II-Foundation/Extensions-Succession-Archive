@@ -1,8 +1,7 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller
 
-using Wisc.Flel.GeospatialModeling.RasterIO;
-using Wisc.Flel.GeospatialModeling.Landscapes;
+using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
 using Landis.Core;
 using System.Collections.Generic;

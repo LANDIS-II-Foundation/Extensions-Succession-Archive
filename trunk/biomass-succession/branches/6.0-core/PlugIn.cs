@@ -1,14 +1,12 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller
 
-using Wisc.Flel.GeospatialModeling.RasterIO;
-using Wisc.Flel.GeospatialModeling.Landscapes;
 using Landis.Core;
+using Landis.SpatialModeling;
 using Landis.Library.Succession;
 using Landis.Library.InitialCommunities;
 using Landis.Library.AgeOnlyCohorts;
 using System.Collections.Generic;
-
 using Edu.Wisc.Forest.Flel.Util;
 
 namespace Landis.Extension.Succession.Biomass
@@ -94,8 +92,6 @@ namespace Landis.Extension.Succession.Biomass
             Reproduction.SufficientResources = SufficientLight;
             InitialBiomass.Initialize(Timestep);
 
-            // AgeOnlyDisturbances.Module.Initialize(parameters.AgeOnlyDisturbanceParms);
-            
             base.Initialize(modelCore, parameters.SeedAlgorithm, AddNewCohort);
 
             Cohort.DeathEvent += CohortDied;
@@ -111,11 +107,6 @@ namespace Landis.Extension.Succession.Biomass
                                                ICommunity initialCommunity)
         {
             InitialBiomass initialBiomass = InitialBiomass.Compute(site, initialCommunity);
-
-            //Library.BiomassCohorts.SiteCohorts temp = initialBiomass.Cohorts;
-            //SiteVars.Cohorts[site] = temp.Clone();
-
-            
             SiteVars.Cohorts[site] = initialBiomass.Cohorts.Clone();
             SiteVars.WoodyDebris[site] = initialBiomass.DeadWoodyPool.Clone();
             SiteVars.Litter[site] = initialBiomass.DeadNonWoodyPool.Clone();
@@ -136,23 +127,22 @@ namespace Landis.Extension.Succession.Biomass
             Outputs.WriteLogFile(PlugIn.ModelCore.CurrentTime);
 
             //  Write Percent Shade map
-            string path2 = MapNames.ReplaceTemplateVars("./biomass-succession/Percent-Shade-{timestep}.gis", PlugIn.ModelCore.CurrentTime);
-            IOutputRaster<UShortPixel> map2 = Util.CreateMap(path2);
-            using (map2)
+            string path = MapNames.ReplaceTemplateVars("./biomass-succession/Percent-Shade-{timestep}.img", PlugIn.ModelCore.CurrentTime);
+            using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path, modelCore.Landscape.Dimensions))
             {
-                UShortPixel pixel = new UShortPixel();
+                UShortPixel pixel = outputRaster.BufferPixel;
                 foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                 {
                     if (site.IsActive)
                     {
-                        pixel.Band0 = (ushort) System.Math.Max(SiteVars.PercentShade[site] * 100.0, 0.0);
+                        pixel.MapCode.Value = (ushort) System.Math.Max(SiteVars.PercentShade[site] * 100.0, 0.0);
                     }
                     else
                     {
                         //  Inactive site
-                        pixel.Band0 = 0;
+                        pixel.MapCode.Value = 0;
                     }
-                    map2.WritePixel(pixel);
+                    outputRaster.WriteBufferPixel();
                 }
             }
         }
@@ -299,8 +289,8 @@ namespace Landis.Extension.Succession.Biomass
         /// </summary>
         public bool Establish(ISpecies species, ActiveSite site)
         {
-            double establishProbability = SpeciesData.EstablishProbability[species][Model.Core.Ecoregion[site]];
-
+            IEcoregion ecoregion = modelCore.Ecoregion[site];
+            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
             return modelCore.GenerateUniform() < establishProbability;
         }
 

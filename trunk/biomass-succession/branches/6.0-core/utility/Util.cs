@@ -1,8 +1,7 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller
 
-using Wisc.Flel.GeospatialModeling.RasterIO;
-using Wisc.Flel.GeospatialModeling.Landscapes;
+using Landis.SpatialModeling;
 using Landis.Core;
 using Edu.Wisc.Forest.Flel.Util;
 
@@ -25,14 +24,14 @@ namespace Landis.Extension.Succession.Biomass
             }
             return newParm;
         }
-        //---------------------------------------------------------------------
+/*        //---------------------------------------------------------------------
 
         public static IOutputRaster<UShortPixel> CreateMap(string path)
         {
             return PlugIn.ModelCore.CreateRaster<UShortPixel>(path,
                                                           PlugIn.ModelCore.Landscape.Dimensions,
                                                           PlugIn.ModelCore.LandscapeMapMetadata);
-        }
+        }*/
         //---------------------------------------------------------------------
 
         public static double CheckBiomassParm(InputValue<double> newValue,

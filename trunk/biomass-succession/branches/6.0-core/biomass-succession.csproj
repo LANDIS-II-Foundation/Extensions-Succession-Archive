@@ -44,18 +44,24 @@
     </Reference>
     <Reference Include="Landis.Library.AgeOnlyCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.BaseCohorts">
+      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Landis.Library.BaseCohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.BiomassCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.BiomassCohorts.dll</HintPath>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.BiomassCohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Cohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll</HintPath>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Succession">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.SpatialModeling">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.SpatialModeling.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -63,10 +69,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Wisc.Flel.GeospatialModeling, Version=1.0.11.405, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Wisc.Flel.GeospatialModeling.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="age-only-disturbances\DatasetParser.cs" />
