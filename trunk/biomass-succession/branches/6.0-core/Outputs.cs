@@ -22,7 +22,7 @@ namespace Landis.Extension.Succession.Biomass
         public static void Initialize(IInputParameters parameters)
         {
 
-            string logFileName   = "Biomass-succession-v3-log.csv";
+            string logFileName   = "Biomass-succession-v2-log.csv";
             PlugIn.ModelCore.Log.WriteLine("   Opening Biomass-succession log file \"{0}\" ...", logFileName);
             try {
                 log = PlugIn.ModelCore.CreateTextFile(logFileName);

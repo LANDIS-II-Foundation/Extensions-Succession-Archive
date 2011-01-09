@@ -270,12 +270,10 @@ namespace Landis.Extension.Succession.Biomass
                 CohortBiomass.SubYear = y - 1;
                 CohortBiomass.CanopyLightExtinction = 0.0;
 
-                // SiteVars.LAI[site] = 0.0;
                 SiteVars.PercentShade[site] = 0.0;
                 SiteVars.LightTrans[site] = 1.0;
 
                 SiteVars.Cohorts[site].Grow(site, (y == years && isSuccessionTimestep));
-                // SiteVars.Cohorts[site].
                 SiteVars.WoodyDebris[site].Decompose();
                 SiteVars.Litter[site].Decompose();
             }

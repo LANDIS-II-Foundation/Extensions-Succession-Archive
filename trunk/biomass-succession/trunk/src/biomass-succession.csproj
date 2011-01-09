@@ -32,23 +32,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Edu.Wisc.Forest.Flel.Grids">
-      <HintPath>$(Landis-II)\Edu.Wisc.Forest.Flel.Grids.dll</HintPath>
-    </Reference>
     <Reference Include="Edu.Wisc.Forest.Flel.Util">
       <HintPath>$(Landis-II)\Edu.Wisc.Forest.Flel.Util.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Core">
       <HintPath>$(Landis-II)\Landis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.BaseCohorts">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.BaseCohorts.dll</HintPath>
-    </Reference>
     <Reference Include="Landis.Library.Cohorts.Biomass">
       <HintPath>$(Landis-II)\Landis.Library.Cohorts.Biomass.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Succession">
-      <HintPath>..\..\..\..\..\..\..\..\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll</HintPath>
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.SpatialModeling">
+      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.SpatialModeling.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
