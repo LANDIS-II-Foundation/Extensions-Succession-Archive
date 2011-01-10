@@ -18,9 +18,9 @@
 [Files]
 
 ; Base Harvest (v1.0)
-Source: {#LandisBuildDir}\Landis.Extension.Succession.AgeOnly.dll; DestDir: {app}\bin
+Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Extension.Succession.AgeOnly.dll; DestDir: {app}\bin; Flags: replacesameversion
 Source: docs\LANDIS-II Age-Only Succession v3.0 User Guide.pdf; DestDir: {app}\docs
-Source: ..\tests\v6.0-3.0\*; DestDir: {app}\examples\age-only-succession
+Source: examples\*; DestDir: {app}\examples\age-only-succession
 
 #define AgeOnlySucc "Age-only Succession 3.0.txt"
 Source: {#AgeOnlySucc}; DestDir: {#LandisPlugInDir}
@@ -30,7 +30,7 @@ Source: {#AgeOnlySucc}; DestDir: {#LandisPlugInDir}
 ; uninstallable because if the package is uninstalled and this version
 ; of the Succession library is removed, then age-only succession will
 ; break
-Source: {#LandisBuildDir}\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
 
 
 [Run]
