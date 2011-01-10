@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<!--
+  Copyright 2006, University of Wisconsin-Madison
+  Author: Jimm Domingo, FLEL
+-->
+
+<project name="Age-Only Succession">
+    <property name="Landis-core"
+              value="5.1-a3" />
+    <include buildfile="${edu.wisc.forest.flel.build}/project.build" />
+</project>
