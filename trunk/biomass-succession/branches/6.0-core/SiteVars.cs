@@ -41,9 +41,6 @@ namespace Landis.Extension.Succession.Biomass
         public static void Initialize()
         {
 
-            // cohorts = PlugIn.ModelCore.Landscape.NewSiteVar<ISiteCohorts>();
-            // cohorts = PlugIn.ModelCore.Landscape.NewSiteVar<SiteCohorts>();
-
             biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.SiteCohorts>();
             baseCohortsSiteVar = new BaseCohortsSiteVar(biomassCohorts);
 
@@ -66,12 +63,7 @@ namespace Landis.Extension.Succession.Biomass
             currentYearMortality.ActiveSiteValues = 0;
             previousYearMortality.ActiveSiteValues = 0;
 
-            // PlugIn.ModelCore.RegisterSiteVar(SiteVars.Cohorts, "Succession.Cohorts");
-            // cohorts = PlugIn.ModelCore.GetSiteVar<ISiteCohorts>("Succession.Cohorts");
-
-
             PlugIn.ModelCore.RegisterSiteVar(biomassCohorts, "Succession.BiomassCohorts");
-
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.BaseCohorts");
 
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.WoodyDebris, "Succession.WoodyDebris");
