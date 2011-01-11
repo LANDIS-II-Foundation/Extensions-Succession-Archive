@@ -5,7 +5,7 @@
 #define ReleaseNumber    "3"
 ; #define LandisDeployDir  "c:\users\rob\landis-ii\deploy"
 
-#define CoreVersion      "5.1"
+#define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
 
 #include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section).iss"

@@ -9,15 +9,18 @@ InitialCommunitiesMap   "./initial-communities.gis"
 
 >> CalibrateMode yes
 
-ShadeClassTable
->> Min Percent Sun by Shade Class
->> PctSun  ShadeClass
->> ------  ----------
-Class1   60      << 1
-Class2   45      << 2
-Class3   30      << 3
-Class4   15      << 4
-Class5   5       << 5
+MinRelativeBiomass
+
+>> Site Shade	Percent Max Biomass
+>> Class	by Ecoregions
+>> ----------	--------------------	
+	        eco1   eco2  
+
+	1	15%    15%
+	2	25%    25%
+	3	50%    50%
+	4	80%    80%
+	5	95%    95%
 
 SufficientLightTable
 >> Spp Shade	Probability
@@ -32,25 +35,25 @@ SufficientLightTable
 
 SpeciesParameters
 
->> Species   Leaf	WoodyBiomass	Mortality	Growth	Leaf	Max	Light  PctBio
->>	     Longevity	DecayRate	ShapeParam	Shape	Lignin%	LAI	ExtCo  MaxLAI
->> --------  ---------	---------	----------	------	----    ------------
-   abiebals   3.0	0.1		10		0.25	0.2	7.0       0.54   50
-   acerrubr   1.0	0.1		10		0.25	0.1	10.0      0.54   50
-   acersacc   1.0	0.1		10		0.25	0.1	10.0      0.54   50
-   betualle   1.0	0.1		10		0.25	0.1	10.0      0.54   50
-   betupapy   1.0	0.1		10		0.25	0.1	10.0      0.54   50
-   fraxamer   1.0	0.1		10		0.25	0.1	10.0      0.54   50
-   piceglau   3.0	0.1		10		0.25	0.2	7.0       0.54   50
-   pinubank   3.0	0.1		10		0.25	0.3	5.0       0.54   50
-   pinuresi   3.0	0.1		10		0.25	0.3	6.0       0.54   50
-   pinustro   3.0	0.1		10		0.25	0.3	7.0       0.54   50
-   poputrem   1.0	0.1		10		0.25	0.1	10.0      0.54   50
-   querelli   1.0	0.1		10		0.25	0.15	10.0	  0.54   50
-   querrubr   1.0	0.1		10		0.25	0.15	10.0	  0.54   50
-   thujocci   4.0	0.1		10		0.25	0.2	8.0	  0.54   50
-   tiliamer   1.0	0.1		10		0.25	0.1	10.0	  0.54   50
-   tsugcana   3.0	0.1		10		0.25	0.2	8.0	  0.54   50
+>> Species   Leaf	WoodyBiomass	Mortality	Growth	Leaf	
+>>	     Longevity	DecayRate	ShapeParam	Shape	Lignin%	
+>> --------  ---------	---------	----------	------	----    
+   abiebals   3.0	0.1		10		0.25	0.2	
+   acerrubr   1.0	0.1		10		0.25	0.1	
+   acersacc   1.0	0.1		10		0.25	0.1	
+   betualle   1.0	0.1		10		0.25	0.1	
+   betupapy   1.0	0.1		10		0.25	0.1	
+   fraxamer   1.0	0.1		10		0.25	0.1	
+   piceglau   3.0	0.1		10		0.25	0.2	
+   pinubank   3.0	0.1		10		0.25	0.3	
+   pinuresi   3.0	0.1		10		0.25	0.3	
+   pinustro   3.0	0.1		10		0.25	0.3	
+   poputrem   1.0	0.1		10		0.25	0.1	
+   querelli   1.0	0.1		10		0.25	0.15	
+   querrubr   1.0	0.1		10		0.25	0.15	
+   thujocci   4.0	0.1		10		0.25	0.2	
+   tiliamer   1.0	0.1		10		0.25	0.1	
+   tsugcana   3.0	0.1		10		0.25	0.2	
 
 EcoregionParameters
 >>	AET
@@ -58,16 +61,10 @@ EcoregionParameters
 eco1	600
 eco2	600
 
-DynamicInputFile	BioSuccDynamicInputs.txt
+DynamicInputFile	biomass-succession-dynamic-inputs.txt
  	 
 AgeOnlyDisturbances:BiomassParameters  age-only-disturbances.txt
  	 
->>   ClimateChange  << Optional Parameter
-
->> Year   Parameter File
->> ----   --------------
->>   100    biomass/bio-climate-change_100.txt
->>   200    biomass/bio-climate-change_200.txt
 		 	 
 		 	 
 			
