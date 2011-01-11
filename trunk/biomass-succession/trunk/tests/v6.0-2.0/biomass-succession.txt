@@ -61,16 +61,10 @@ EcoregionParameters
 eco1	600
 eco2	600
 
-DynamicInputFile	BioSuccDynamicInputs.txt
+DynamicInputFile	biomass-succession-dynamic-inputs.txt
  	 
 AgeOnlyDisturbances:BiomassParameters  age-only-disturbances.txt
  	 
->>   ClimateChange  << Optional Parameter
-
->> Year   Parameter File
->> ----   --------------
->>   100    biomass/bio-climate-change_100.txt
->>   200    biomass/bio-climate-change_200.txt
 		 	 
 		 	 
 			
