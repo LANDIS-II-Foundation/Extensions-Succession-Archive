@@ -36,7 +36,7 @@ namespace Landis.Extension.Succession.Biomass
         bool CalibrateMode { get; set; }
         double SpinupMortalityFraction {get; set;}
         List<ISufficientLight> LightClassProbabilities {get; set;}
-        Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass{get;set;}
+        Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass{get;}
         Species.AuxParm<double> LeafLongevity {get; }
         Species.AuxParm<double> WoodyDecayRate {get; }
         Species.AuxParm<double> MortCurveShapeParm {get; }

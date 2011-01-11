@@ -33,6 +33,7 @@ namespace Landis.Extension.Succession.Biomass
 
         static InputParametersParser()
         {
+            Percentage dummy = new Percentage();
             SeedingAlgorithmsUtil.RegisterForInputValues();
         }
 
@@ -426,6 +427,9 @@ namespace Landis.Extension.Succession.Biomass
                 TextReader.SkipWhitespace(currentLine);
             }
             GetNextLine();
+
+            if(ecoregions.Count == 0)
+                throw new InputValueException("", "No ecoregions read in correctly.","");
 
             return ecoregions;
         }

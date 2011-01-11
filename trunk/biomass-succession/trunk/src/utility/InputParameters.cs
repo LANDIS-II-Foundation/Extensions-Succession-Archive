@@ -22,7 +22,6 @@ namespace Landis.Extension.Succession.Biomass
         private SeedingAlgorithms seedAlg;
         private bool calibrateMode;
         private double spinupMortalityFraction;
-        private Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
         //private double pctSun1;
         //private double pctSun2;
         //private double pctSun3;
@@ -40,7 +39,7 @@ namespace Landis.Extension.Succession.Biomass
         //private Species.AuxParm<double> lightExtinctionCoeff;
         //private Species.AuxParm<double> pctBioMaxLAI;
         private Ecoregions.AuxParm<int> aet;
-
+        private Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
 
         private string dynamicInputFile;
         private string ageOnlyDisturbanceParms;
@@ -85,10 +84,6 @@ namespace Landis.Extension.Succession.Biomass
             get
             {
                 return minRelativeBiomass;
-            }
-            set
-            {
-                minRelativeBiomass = value;
             }
         }
         //---------------------------------------------------------------------
@@ -176,6 +171,7 @@ namespace Landis.Extension.Succession.Biomass
                     throw new InputValueException(newValue.String,
                                                   "{0} is not between 0% and 100%", newValue.String);
             }
+            
             minRelativeBiomass[shadeClass][ecoregion] = newValue;
         }
         //---------------------------------------------------------------------
@@ -494,7 +490,12 @@ namespace Landis.Extension.Succession.Biomass
             //lightExtinctionCoeff = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             //pctBioMaxLAI = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             aet = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
-            //this.dynamicChangeUpdates = new List<DynamicChange.ParametersUpdate>();
+            
+            minRelativeBiomass = new Ecoregions.AuxParm<Percentage>[6];
+            for (byte shadeClass = 1; shadeClass <= 5; shadeClass++)
+            {
+                minRelativeBiomass[shadeClass] = new Ecoregions.AuxParm<Percentage>(PlugIn.ModelCore.Ecoregions);
+            }
         }
         //---------------------------------------------------------------------
 
