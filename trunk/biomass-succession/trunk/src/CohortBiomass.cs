@@ -118,7 +118,7 @@ namespace Landis.Extension.Succession.Biomass
 
             double totalLitter = UpdateDeadBiomass(cohort, actualANPP, totalMortality, site, newBiomass);
 
-            CalculateCohortLight(cohort, actualANPP, newBiomass, site);
+            //CalculateCohortLight(cohort, actualANPP, newBiomass, site);
 
             if (PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
@@ -225,8 +225,8 @@ namespace Landis.Extension.Succession.Biomass
             if (growthReduction > 0)
                 actualANPP *= (1.0 - growthReduction);
 
-            double LAIactual = SpeciesData.MAXLAI[cohort.Species] * actualANPP / maxANPP;
-            CanopyLightExtinction += (-1.0 * SpeciesData.LightExtinctionCoeff[cohort.Species] * LAIactual) * indexC;
+            //double LAIactual = SpeciesData.MAXLAI[cohort.Species] * actualANPP / maxANPP;
+            //CanopyLightExtinction += (-1.0 * SpeciesData.LightExtinctionCoeff[cohort.Species] * LAIactual) * indexC;
 
 
             if(PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
@@ -235,7 +235,7 @@ namespace Landis.Extension.Succession.Biomass
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}.     Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}.     MaxANPP={1}, MaxB={2:0}, Bsite={3}, Bcohort={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), maxANPP, maxBiomass, (int) siteBiomass, cohort.Biomass);
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}.     B_PM={1:0.0}, B_AP={2:0.0}, actualANPP={3:0.0}, capacityReduction={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), B_PM, B_AP, actualANPP, capacityReduction);
-                PlugIn.ModelCore.Log.WriteLine("Yr={0}.     CanopyLightExtinction = {1:0.00}, LightTransmittance = {2:0.00}, LAIactual={3:0.0}.", (PlugIn.ModelCore.CurrentTime + SubYear), CanopyLightExtinction, B_PM, LAIactual);
+                //PlugIn.ModelCore.Log.WriteLine("Yr={0}.     CanopyLightExtinction = {1:0.00}, LightTransmittance = {2:0.00}, LAIactual={3:0.0}.", (PlugIn.ModelCore.CurrentTime + SubYear), CanopyLightExtinction, B_PM, LAIactual);
             }
 
             return actualANPP;
@@ -500,7 +500,7 @@ namespace Landis.Extension.Succession.Biomass
         //---------------------------------------------------------------------
         // Added 10/5/09 - BRM
         // Replaces CalculateCohortLAI
-
+        /*
         private static void CalculateCohortLight(ICohort cohort, double actualANPP, double newBiomass, ActiveSite site)
         {
             ISpecies species = cohort.Species;
@@ -529,7 +529,7 @@ namespace Landis.Extension.Succession.Biomass
 
             SiteVars.LightTrans[site] *= cohortLightTrans; //Combine cohortLightTrans for all cohorts on the site
 
-        }
+        }*/
 
     }
 }

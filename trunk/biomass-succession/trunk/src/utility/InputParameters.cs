@@ -36,9 +36,9 @@ namespace Landis.Extension.Succession.Biomass
         private Species.AuxParm<double> mortCurveShapeParm;
         private Species.AuxParm<double> growthCurveShapeParm;
         private Species.AuxParm<double> leafLignin;
-        private Species.AuxParm<double> maxLAI;
-        private Species.AuxParm<double> lightExtinctionCoeff;
-        private Species.AuxParm<double> pctBioMaxLAI;
+        //private Species.AuxParm<double> maxLAI;
+        //private Species.AuxParm<double> lightExtinctionCoeff;
+        //private Species.AuxParm<double> pctBioMaxLAI;
         private Ecoregions.AuxParm<int> aet;
 
 
@@ -336,7 +336,7 @@ namespace Landis.Extension.Succession.Biomass
         }
         */
         //---------------------------------------------------------------------
-
+        /*
         public Species.AuxParm<double> MAXLAI
         {
             get {
@@ -359,7 +359,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 return pctBioMaxLAI;
             }
-        }
+        }*/
         //---------------------------------------------------------------------
 
         public Ecoregions.AuxParm<int> AET
@@ -428,7 +428,7 @@ namespace Landis.Extension.Succession.Biomass
             leafLignin[species] = Util.CheckBiomassParm(newValue, 0.0, 0.4);
         }
         //---------------------------------------------------------------------
-
+        /*
         public void SetMAXLAI(ISpecies species, InputValue<double> newValue)
         {
             Debug.Assert(species != null);
@@ -448,7 +448,7 @@ namespace Landis.Extension.Succession.Biomass
         {
             Debug.Assert(species != null);
             pctBioMaxLAI[species] = Util.CheckBiomassParm(newValue, 0.0, 100.0);
-        }
+        } */
         //---------------------------------------------------------------------
         /// <summary>
         /// Path to the optional file with the biomass parameters for age-only
@@ -490,9 +490,9 @@ namespace Landis.Extension.Succession.Biomass
             mortCurveShapeParm = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             growthCurveShapeParm = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             leafLignin = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            maxLAI = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            lightExtinctionCoeff = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            pctBioMaxLAI = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            //maxLAI = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            //lightExtinctionCoeff = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            //pctBioMaxLAI = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             aet = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
             //this.dynamicChangeUpdates = new List<DynamicChange.ParametersUpdate>();
         }

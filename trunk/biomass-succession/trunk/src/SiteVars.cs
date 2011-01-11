@@ -14,8 +14,6 @@ namespace Landis.Extension.Succession.Biomass
     /// </summary>
     public static class SiteVars
     {
-        // private static ISiteVar<SiteCohorts> cohorts;
-        // private static ISiteVar<ISiteCohorts> cohorts;
 
         private static ISiteVar<Library.BiomassCohorts.SiteCohorts> biomassCohorts;
         private static BaseCohortsSiteVar baseCohortsSiteVar;
@@ -23,8 +21,8 @@ namespace Landis.Extension.Succession.Biomass
         private static ISiteVar<Pool> woodyDebris;
         private static ISiteVar<Pool> litter;
         
-        private static ISiteVar<double> percentShade;
-        private static ISiteVar<double> lightTrans;
+        //private static ISiteVar<double> percentShade;
+        //private static ISiteVar<double> lightTrans;
         private static ISiteVar<double> capacityReduction;
         private static ISiteVar<int> previousYearMortality;
         private static ISiteVar<int> currentYearMortality;
@@ -46,8 +44,8 @@ namespace Landis.Extension.Succession.Biomass
 
             woodyDebris     = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
             litter          = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
-            percentShade    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            lightTrans      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            //percentShade    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            //lightTrans      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             ag_npp          = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             previousYearMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             currentYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
@@ -172,7 +170,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <summary>
         /// Percent Shade (the inverse of percent transmittance)
         /// </summary>
-        public static ISiteVar<double> PercentShade
+        /*public static ISiteVar<double> PercentShade
         {
             get
             {
@@ -190,7 +188,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 return lightTrans;
             }
-        }
+        }*/
         //---------------------------------------------------------------------
 
         /// <summary>

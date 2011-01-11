@@ -249,7 +249,7 @@ namespace Landis.Extension.Succession.Biomass
 
                 ReadValue(leafLignin, currentLine);
                 parameters.SetLeafLignin(species, leafLignin.Value);
-
+                /*
                 ReadValue(maxlai, currentLine);
                 parameters.SetMAXLAI(species, maxlai.Value);
 
@@ -258,8 +258,8 @@ namespace Landis.Extension.Succession.Biomass
 
                 ReadValue(pctBio, currentLine);
                 parameters.SetPctBioMaxLAI(species, pctBio.Value);
-
-                CheckNoDataAfter(lec.Name, currentLine);
+                */
+                CheckNoDataAfter(leafLignin.Name, currentLine);
                 GetNextLine();
             }
 

@@ -127,6 +127,7 @@ namespace Landis.Extension.Succession.Biomass
             Outputs.WriteLogFile(PlugIn.ModelCore.CurrentTime);
 
             //  Write Percent Shade map
+            /*
             string path = MapNames.ReplaceTemplateVars("./biomass-succession/Percent-Shade-{timestep}.img", PlugIn.ModelCore.CurrentTime);
             using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path, modelCore.Landscape.Dimensions))
             {
@@ -144,7 +145,7 @@ namespace Landis.Extension.Succession.Biomass
                     }
                     outputRaster.WriteBufferPixel();
                 }
-            }
+            }*/
         }
 
 
@@ -308,8 +309,8 @@ namespace Landis.Extension.Succession.Biomass
                 CohortBiomass.SubYear = y - 1;
                 CohortBiomass.CanopyLightExtinction = 0.0;
 
-                SiteVars.PercentShade[site] = 0.0;
-                SiteVars.LightTrans[site] = 1.0;
+                //SiteVars.PercentShade[site] = 0.0;
+                //SiteVars.LightTrans[site] = 1.0;
 
                 SiteVars.Cohorts[site].Grow(site, (y == years && isSuccessionTimestep));
                 SiteVars.WoodyDebris[site].Decompose();

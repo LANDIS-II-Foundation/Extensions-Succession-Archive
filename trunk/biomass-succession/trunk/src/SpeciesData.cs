@@ -40,13 +40,13 @@ namespace Landis.Extension.Succession.Biomass
         //public static Species.AuxParm<double> BTOLAI;
 
         // Maximum Leaf Area Index
-        public static Species.AuxParm<double> MAXLAI;
+        //public static Species.AuxParm<double> MAXLAI;
 
         // Determines forest floor light as a function of total LAI
-        public static Species.AuxParm<double> LightExtinctionCoeff;
+        //public static Species.AuxParm<double> LightExtinctionCoeff;
 
         // Determines the percent of Max Biomass that corresponds to 100% Max LAI
-        public static Species.AuxParm<double> PctBioMaxLAI;
+        //public static Species.AuxParm<double> PctBioMaxLAI;
 
         //  Establishment probability for each species in each ecoregion
         public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbability;
@@ -70,9 +70,9 @@ namespace Landis.Extension.Succession.Biomass
 
             //KLAI                    = parameters.KLAI;
             //BTOLAI                  = parameters.BTOLAI;
-            MAXLAI                  = parameters.MAXLAI;
-            LightExtinctionCoeff    = parameters.LightExtinctionCoeff;
-            PctBioMaxLAI            = parameters.PctBioMaxLAI;
+            //MAXLAI                  = parameters.MAXLAI;
+            //LightExtinctionCoeff    = parameters.LightExtinctionCoeff;
+            //PctBioMaxLAI            = parameters.PctBioMaxLAI;
 
         }
         //public static void ChangeParameters(DynamicChange.IParameters parameters)
