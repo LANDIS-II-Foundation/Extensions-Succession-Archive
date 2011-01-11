@@ -11,69 +11,23 @@ using System.Diagnostics;
 
 namespace Landis.Extension.Succession.Biomass
 {
-    /// <summary>
-    /// The parameters for biomass succession.
-    /// </summary>
-    public interface IInputParameters
-    {
-        int Timestep {get; set;}
-        SeedingAlgorithms SeedAlgorithm {get; set;}
-        //---------------------------------------------------------------------
-
-        InputValue<string> InitialCommunities
-        {
-            get;
-            set;
-        }
-
-        //---------------------------------------------------------------------
-
-        InputValue<string> InitialCommunitiesMap
-        {
-            get;
-            set;
-        }
-        bool CalibrateMode { get; set; }
-        double SpinupMortalityFraction {get; set;}
-        List<ISufficientLight> LightClassProbabilities {get; set;}
-
-        Species.AuxParm<double> LeafLongevity {get; }
-        Species.AuxParm<double> WoodyDecayRate {get; }
-        Species.AuxParm<double> MortCurveShapeParm {get; }
-        Species.AuxParm<double> GrowthCurveShapeParm { get; }
-        Species.AuxParm<double> LeafLignin { get; }
-        Species.AuxParm<double> MAXLAI {get;}
-        Species.AuxParm<double> LightExtinctionCoeff {get;}
-        Species.AuxParm<double> PctBioMaxLAI { get;}
-
-        Ecoregions.AuxParm<int> AET {get;}
-
-        double PctSun1 { get; set;}
-        double PctSun2 { get; set;}
-        double PctSun3 { get; set;}
-        double PctSun4 { get; set;}
-        double PctSun5 { get; set;}
-
-        string DynamicInputFile {get;set;}
-
-        string AgeOnlyDisturbanceParms{get; set;}
-    }
 
     /// <summary>
     /// The parameters for biomass succession.
     /// </summary>
     public class InputParameters
-        : IInputParameters //DynamicChange.Parameters, IParameters
+        : IInputParameters 
     {
         private int timestep;
         private SeedingAlgorithms seedAlg;
         private bool calibrateMode;
         private double spinupMortalityFraction;
-        private double pctSun1;
-        private double pctSun2;
-        private double pctSun3;
-        private double pctSun4;
-        private double pctSun5;
+        private Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
+        //private double pctSun1;
+        //private double pctSun2;
+        //private double pctSun3;
+        //private double pctSun4;
+        //private double pctSun5;
 
         private List<ISufficientLight> sufficientLight;
 
@@ -122,6 +76,19 @@ namespace Landis.Extension.Succession.Biomass
             }
             set {
                 seedAlg = value;
+            }
+        }
+        //---------------------------------------------------------------------
+
+        public Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass
+        {
+            get
+            {
+                return minRelativeBiomass;
+            }
+            set
+            {
+                minRelativeBiomass = value;
             }
         }
         //---------------------------------------------------------------------
@@ -196,10 +163,26 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
         //---------------------------------------------------------------------
+
+        public void SetMinRelativeBiomass(byte shadeClass,
+                                          IEcoregion ecoregion,
+                                          InputValue<Percentage> newValue)
+        {
+            Debug.Assert(1 <= shadeClass && shadeClass <= 5);
+            Debug.Assert(ecoregion != null);
+            if (newValue != null)
+            {
+                if (newValue.Actual < 0.0 || newValue.Actual > 1.0)
+                    throw new InputValueException(newValue.String,
+                                                  "{0} is not between 0% and 100%", newValue.String);
+            }
+            minRelativeBiomass[shadeClass][ecoregion] = newValue;
+        }
+        //---------------------------------------------------------------------
         /// <summary>
         /// Min Pct Sun Shade Class 1
         /// </summary>
-        public double PctSun1
+        /*public double PctSun1
         {
             get
             {
@@ -273,7 +256,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 pctSun5 = value;
             }
-        }
+        }*/
 
         //---------------------------------------------------------------------
         /// <summary>
@@ -497,11 +480,11 @@ namespace Landis.Extension.Succession.Biomass
         public InputParameters()
         {
             sufficientLight = new List<ISufficientLight>();
-            pctSun1 = new double();
+            /*pctSun1 = new double();
             pctSun2 = new double();
             pctSun3 = new double();
             pctSun4 = new double();
-            pctSun5 = new double();
+            pctSun5 = new double();*/
             leafLongevity       = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             woodyDecayRate = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             mortCurveShapeParm = new Species.AuxParm<double>(PlugIn.ModelCore.Species);

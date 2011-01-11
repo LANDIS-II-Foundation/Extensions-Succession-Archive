@@ -14,7 +14,7 @@ namespace Landis.Extension.Succession.Biomass
         public static Ecoregions.AuxParm<int> AET;
 
         //  Minimum relative biomass for each shade class in each ecoregion
-        //public static Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass;
+        public static Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass;
 
         //  Maximum biomass at any site in each ecoregion
         public static Ecoregions.AuxParm<int> B_MAX;
@@ -25,6 +25,7 @@ namespace Landis.Extension.Succession.Biomass
         public static void Initialize(IInputParameters parameters)
         {
              AET = parameters.AET;  //FINISH LATER
+             MinRelativeBiomass = parameters.MinRelativeBiomass; 
 
             B_MAX               = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
             ActiveSiteCount     = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
@@ -35,7 +36,7 @@ namespace Landis.Extension.Succession.Biomass
                 ActiveSiteCount[ecoregion]++;
             }
         }
-        public static void UpdateB_MAX()//DynamicChange.IParameters parameters)
+        public static void UpdateB_MAX()
         {
             //AET = parameters.AET;
 

@@ -25,19 +25,9 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        //private Ecoregions.IDataset ecoregionDataset;
-        //private Species.IDataset speciesDataset;
         private Dictionary<string, int> speciesLineNums;
         private InputVar<string> speciesName;
 
-        //---------------------------------------------------------------------
-
-        public override string LandisDataValue
-        {
-            get {
-                return "Biomass Succession v3";
-            }
-        }
 
         //---------------------------------------------------------------------
 
@@ -50,12 +40,9 @@ namespace Landis.Extension.Succession.Biomass
 
         public InputParametersParser()
         {
-            //this.ecoregionDataset = PlugIn.ModelCore.Ecoregions;
-            //this.speciesDataset = PlugIn.ModelCore.Species;
             this.speciesLineNums = new Dictionary<string, int>();
             this.speciesName = new InputVar<string>("Species");
 
-            //DynamicChange.InputValidation.Initialize(startYear, endYear);
         }
 
         //---------------------------------------------------------------------
@@ -100,12 +87,45 @@ namespace Landis.Extension.Succession.Biomass
             else
                 parameters.SpinupMortalityFraction = 0.0;
 
+            //--------------------------
+            //  MinRelativeBiomass table
+
+            ReadName("MinRelativeBiomass");
+
+            const string SufficientLight = "SufficientLightTable";
+
+            List<IEcoregion> ecoregions = ReadEcoregions();
+            string lastEcoregion = ecoregions[ecoregions.Count - 1].Name;
+
+            InputVar<byte> shadeClassVar = new InputVar<byte>("Shade Class");
+            for (byte shadeClass = 1; shadeClass <= 5; shadeClass++)
+            {
+                if (AtEndOfInput)
+                    throw NewParseException("Expected a line with shade class {0}", shadeClass);
+
+                StringReader currentLine = new StringReader(CurrentLine);
+                ReadValue(shadeClassVar, currentLine);
+                if (shadeClassVar.Value.Actual != shadeClass)
+                    throw new InputValueException(shadeClassVar.Value.String,
+                                                  "Expected the shade class {0}", shadeClass);
+
+                foreach (IEcoregion ecoregion in ecoregions)
+                {
+                    InputVar<Percentage> MinRelativeBiomass = new InputVar<Percentage>("Ecoregion " + ecoregion.Name);
+                    ReadValue(MinRelativeBiomass, currentLine);
+                    parameters.SetMinRelativeBiomass(shadeClass, ecoregion, MinRelativeBiomass.Value);
+                }
+
+                CheckNoDataAfter("the Ecoregion " + lastEcoregion + " column",
+                                 currentLine);
+                GetNextLine();
+            }
             //----------------------------------------------------------
             // ShadeClassTable
             // Read table of min percent sun by shade class
             // Shade classes are in increasing order
 
-            const string PercentSun = "ShadeClassTable";
+            /*const string PercentSun = "ShadeClassTable";
 
             ReadName(PercentSun);
 
@@ -124,13 +144,13 @@ namespace Landis.Extension.Succession.Biomass
             ReadVar(pctSun4);
             parameters.PctSun4 = pctSun4.Value;
             ReadVar(pctSun5);
-            parameters.PctSun5 = pctSun5.Value;
+            parameters.PctSun5 = pctSun5.Value;*/
 
             //----------------------------------------------------------
             //  Read table of sufficient light probabilities.
             //  Shade classes are in increasing order.
 
-            const string SufficientLight = "SufficientLightTable";
+            //const string SufficientLight = "SufficientLightTable";
             ReadName(SufficientLight);
             const string SpeciesParameters = "SpeciesParameters";
 
@@ -371,6 +391,43 @@ namespace Landis.Extension.Succession.Biomass
                 lineNumbers[ecoregion.Name] = LineNumber;
 
             return ecoregion;
+        }
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Reads ecoregion names as column headings
+        /// </summary>
+        private List<IEcoregion> ReadEcoregions()
+        {
+            if (AtEndOfInput)
+                throw NewParseException("Expected a line with the names of 1 or more active ecoregions.");
+
+            InputVar<string> ecoregionName = new InputVar<string>("Ecoregion");
+            List<IEcoregion> ecoregions = new List<IEcoregion>();
+            StringReader currentLine = new StringReader(CurrentLine);
+            TextReader.SkipWhitespace(currentLine);
+            while (currentLine.Peek() != -1)
+            {
+                ReadValue(ecoregionName, currentLine);
+                IEcoregion ecoregion = PlugIn.ModelCore.Ecoregions[ecoregionName.Value.Actual];
+                if (ecoregion == null)
+                    throw new InputValueException(ecoregionName.Value.String,
+                                                  "{0} is not an ecoregion name.",
+                                                  ecoregionName.Value.String);
+                if (!ecoregion.Active)
+                    throw new InputValueException(ecoregionName.Value.String,
+                                                  "{0} is not an active ecoregion",
+                                                  ecoregionName.Value.String);
+                if (ecoregions.Contains(ecoregion))
+                    throw new InputValueException(ecoregionName.Value.String,
+                                                  "The ecoregion {0} appears more than once.",
+                                                  ecoregionName.Value.String);
+                ecoregions.Add(ecoregion);
+                TextReader.SkipWhitespace(currentLine);
+            }
+            GetNextLine();
+
+            return ecoregions;
         }
     }
 }

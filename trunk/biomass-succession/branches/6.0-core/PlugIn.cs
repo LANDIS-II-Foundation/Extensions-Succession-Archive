@@ -5,7 +5,7 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.Succession;
 using Landis.Library.InitialCommunities;
-using Landis.Library.AgeOnlyCohorts;
+using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
 using Edu.Wisc.Forest.Flel.Util;
 
@@ -21,11 +21,11 @@ namespace Landis.Extension.Succession.Biomass
         private List<ISufficientLight> sufficientLight;
         public static bool CalibrateMode;
         public static double CurrentYearSiteMortality;
-        private double pctSun1;
-        private double pctSun2;
-        private double pctSun3;
-        private double pctSun4;
-        private double pctSun5;
+        //private double pctSun1;
+        //private double pctSun2;
+        //private double pctSun3;
+        //private double pctSun4;
+        //private double pctSun5;
 
 
 
@@ -69,11 +69,11 @@ namespace Landis.Extension.Succession.Biomass
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
 
             sufficientLight = parameters.LightClassProbabilities;
-            pctSun1 = parameters.PctSun1;
-            pctSun2 = parameters.PctSun2;
-            pctSun3 = parameters.PctSun3;
-            pctSun4 = parameters.PctSun4;
-            pctSun5 = parameters.PctSun5;
+            //pctSun1 = parameters.PctSun1;
+            //pctSun2 = parameters.PctSun2;
+            //pctSun3 = parameters.PctSun3;
+            //pctSun4 = parameters.PctSun4;
+            //pctSun5 = parameters.PctSun5;
 
             SpeciesData.Initialize(parameters);
             EcoregionData.Initialize(parameters);
@@ -186,7 +186,7 @@ namespace Landis.Extension.Succession.Biomass
         //---------------------------------------------------------------------
         // Revised 10/5/09 - BRM
 
-        public override byte ComputeShade(ActiveSite site)
+        /*public override byte ComputeShade(ActiveSite site)
         {
             // Use correlation from Scheller and Mladenoff (Figure 4b)
             // to assign a shade class depending on percent transmittance.
@@ -208,6 +208,44 @@ namespace Landis.Extension.Succession.Biomass
             if (percentSun < pctSun5) shadeClass = 5;
 
             return shadeClass;
+
+        }*/
+        public override byte ComputeShade(ActiveSite site)
+        {
+            //return LivingBiomass.ComputeShade(site);
+            IEcoregion ecoregion = ModelCore.Ecoregion[site];
+            double B_ACT = 0.0;
+
+            if (SiteVars.Cohorts[site] != null)
+            {
+                foreach (ISpeciesCohorts sppCohorts in SiteVars.Cohorts[site])
+                    foreach (ICohort cohort in sppCohorts)
+                        if (cohort.Age > 5)
+                            B_ACT += cohort.Biomass;
+            }
+                //B_ACT = (double) Biomass.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
+            //(double) SiteVars.ComputeNonYoungBiomass(site);
+
+            int lastMortality = SiteVars.PreviousYearMortality[site];
+            B_ACT = System.Math.Min(EcoregionData.B_MAX[ecoregion] - lastMortality, B_ACT);
+
+            //ActualSiteBiomass(cohorts[site], site, out ecoregion);
+
+            //  Relative living biomass (ratio of actual to maximum site
+            //  biomass).
+            double B_AM = B_ACT / EcoregionData.B_MAX[ecoregion];
+
+            for (byte shade = 5; shade >= 1; shade--)
+            {
+                if (EcoregionData.MinRelativeBiomass[shade][ecoregion] == null)
+                {
+                    string mesg = string.Format("Minimum relative biomass has not been defined for ecoregion {0}", ecoregion.Name);
+                    throw new System.ApplicationException(mesg);
+                }
+                if (B_AM >= EcoregionData.MinRelativeBiomass[shade][ecoregion])
+                    return shade;
+            }
+            return 0;
 
         }
         //---------------------------------------------------------------------

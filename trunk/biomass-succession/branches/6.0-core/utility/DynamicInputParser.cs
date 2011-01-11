@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using Edu.Wisc.Forest.Flel.Util;
 using System.Text;
 
-
-
 namespace Landis.Extension.Succession.Biomass
 {
     /// <summary>
@@ -17,22 +15,11 @@ namespace Landis.Extension.Succession.Biomass
         : TextParser<Dictionary<int, IDynamicInputRecord[,]>>
     {
 
-        //private Ecoregions.IDataset ecoregionDataset;
-        //private Species.IDataset speciesDataset;
-
-        //---------------------------------------------------------------------
-        public override string LandisDataValue
-        {
-            get {
-                return "Dynamic Input Data";
-            }
-        }
+        private string FileName = "Dynamic Input Data";
 
         //---------------------------------------------------------------------
         public DynamicInputsParser()
         {
-            //this.ecoregionDataset = PlugIn.ModelCore.Ecoregions;
-            //this.speciesDataset = PlugIn.ModelCore.Species;
         }
 
         //---------------------------------------------------------------------
@@ -40,18 +27,15 @@ namespace Landis.Extension.Succession.Biomass
         protected override Dictionary<int, IDynamicInputRecord[,]> Parse()
         {
 
-            ReadLandisDataVar();
-
+            InputVar<string> landisData = new InputVar<string>("LandisData");
+            ReadVar(landisData);
+            if (landisData.Value.Actual != FileName)
+                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
+            
             Dictionary<int, IDynamicInputRecord[,]> allData = new Dictionary<int, IDynamicInputRecord[,]>();
-
-            //const string nextTableName = "DynamicInputTable";
-
 
             //---------------------------------------------------------------------
             //Read in climate data:
-
-            //ReadName(nextTableName);
-
             InputVar<int>    year       = new InputVar<int>("Time step for updating values");
             InputVar<string> ecoregionName = new InputVar<string>("Ecoregion Name");
             InputVar<string> speciesName = new InputVar<string>("Species Name");

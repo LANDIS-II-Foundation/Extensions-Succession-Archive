@@ -38,16 +38,9 @@
     <Reference Include="Landis.Core">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Core.Implementation, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Core.Implementation.dll</HintPath>
-    </Reference>
     <Reference Include="Landis.Library.AgeOnlyCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
-    </Reference>
-    <Reference Include="Landis.Library.BaseCohorts">
-      <HintPath>C:\Program Files\LANDIS-II\5.1\bin\Landis.Library.BaseCohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.BiomassCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -93,9 +86,14 @@
     <Compile Include="utility\DynamicInputParser.cs" />
     <Compile Include="utility\DynamicInputRecord.cs" />
     <Compile Include="utility\DynamicInputs.cs" />
+    <Compile Include="utility\EcoregionAuxParm.cs" />
+    <Compile Include="utility\IInputParameters.cs" />
     <Compile Include="utility\InputParameterParser.cs" />
-    <Compile Include="utility\InputParameters.cs" />
+    <Compile Include="utility\InputParameters.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="utility\MapNames.cs" />
+    <Compile Include="utility\SpeciesAuxParm.cs" />
     <Compile Include="utility\UShortPixel.cs" />
     <Compile Include="utility\Util.cs" />
   </ItemGroup>
