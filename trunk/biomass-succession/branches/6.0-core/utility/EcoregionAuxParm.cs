@@ -3,7 +3,7 @@
 
 using Landis.Core;
 
-namespace Landis.Extension.Succession.AgeOnly.Ecoregions
+namespace Landis.Extension.Succession.Biomass.Ecoregions
 {
     /// <summary>
     /// An auxiliary parameter for ecoregions.

@@ -3,10 +3,10 @@
 
 using Landis.Core;
 
-namespace Landis.Extension.Succession.AgeOnly.Ecoregions
+namespace Landis.Extension.Succession.Biomass.Species
 {
     /// <summary>
-    /// An auxiliary parameter for ecoregions.
+    /// An auxiliary parameter for species.
     /// </summary>
     public class AuxParm<T>
     {
@@ -14,24 +14,24 @@ namespace Landis.Extension.Succession.AgeOnly.Ecoregions
 
         //---------------------------------------------------------------------
 
-        public T this[IEcoregion ecoregion]
+        public T this[ISpecies species]
         {
             get
             {
-                return values[ecoregion.Index];
+                return values[species.Index];
             }
 
             set
             {
-                values[ecoregion.Index] = value;
+                values[species.Index] = value;
             }
         }
 
         //---------------------------------------------------------------------
 
-        public AuxParm(IEcoregionDataset ecoregions)
+        public AuxParm(ISpeciesDataset species)
         {
-            values = new T[ecoregions.Count];
+            values = new T[species.Count];
         }
     }
 }

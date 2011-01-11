@@ -14,16 +14,8 @@ namespace Landis.Extension.Succession.AgeOnly
 	/// A parser that reads age-only succession parameters from text input.
 	/// </summary>
 	public class InputParametersParser
-		// : Landis.TextParser<IInputParameters>
         : TextParser<IInputParameters>
 	{
-        /*
-		public override string LandisDataValue
-		{
-			get {
-				return "Age-only Succession";
-			}
-		}*/
 
 		//---------------------------------------------------------------------
 
