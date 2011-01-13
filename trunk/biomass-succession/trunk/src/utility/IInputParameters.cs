@@ -18,21 +18,8 @@ namespace Landis.Extension.Succession.Biomass
     {
         int Timestep {get; set;}
         SeedingAlgorithms SeedAlgorithm {get; set;}
-        //---------------------------------------------------------------------
-
-        InputValue<string> InitialCommunities
-        {
-            get;
-            set;
-        }
-
-        //---------------------------------------------------------------------
-
-        InputValue<string> InitialCommunitiesMap
-        {
-            get;
-            set;
-        }
+        string InitialCommunities{get; set;}
+        string InitialCommunitiesMap{get; set;}
         bool CalibrateMode { get; set; }
         double SpinupMortalityFraction {get; set;}
         List<ISufficientLight> LightClassProbabilities {get; set;}

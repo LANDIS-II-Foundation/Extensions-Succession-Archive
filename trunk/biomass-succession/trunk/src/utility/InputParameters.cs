@@ -43,8 +43,8 @@ namespace Landis.Extension.Succession.Biomass
 
         private string dynamicInputFile;
         private string ageOnlyDisturbanceParms;
-        private InputValue<string> initCommunities;
-        private InputValue<string> communitiesMap;
+        private string initCommunities;
+        private string communitiesMap;
 
         //---------------------------------------------------------------------
         /// <summary>
@@ -91,7 +91,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <summary>
         /// Path to the file with the initial communities' definitions.
         /// </summary>
-        public InputValue<string> InitialCommunities
+        public string InitialCommunities
         {
             get
             {
@@ -102,7 +102,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 if (value != null)
                 {
-                    ValidatePath(value.Actual);
+                    ValidatePath(value);
                 }
                 initCommunities = value;
             }
@@ -113,7 +113,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <summary>
         /// Path to the raster file showing where the initial communities are.
         /// </summary>
-        public InputValue<string> InitialCommunitiesMap
+        public string InitialCommunitiesMap
         {
             get
             {
@@ -124,7 +124,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 if (value != null)
                 {
-                    ValidatePath(value.Actual);
+                    ValidatePath(value);
                 }
                 communitiesMap = value;
             }
