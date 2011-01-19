@@ -9,6 +9,8 @@ EcoregionsMap   ./ecoregions.gis
 
 CellLength  100 << meters, 100 x 100 m = 1 ha
 
+InitialCommunities      "./initial-communities.txt"
+InitialCommunitiesMap   "./initial-communities.gis"
 
 >> NOTE:  This example assumes that you have downloaded and installed 
 >> the correpsonding extensions.  These extensions are currently packaged
@@ -16,15 +18,15 @@ CellLength  100 << meters, 100 x 100 m = 1 ha
 
 >> Succession Extension     Initialization File
 >> --------------------     -------------------
-   "Biomass Succession"    biomass-succession.txt
+   "Century Succession"     century-succession.txt
 
 
 >> Disturbance Extensions   Initialization File
 >> ----------------------   -------------------
->>   "Base Wind"		    base-wind.txt
-   "Base Fire"		    base-fire-6.0.txt
+>> "Base Wind"		    base-wind.txt
+   "Base Fire"		    base-fire_v2.txt
 
->>   DisturbancesRandomOrder  yes  << optional parameter; default = no
+   DisturbancesRandomOrder  yes  << optional parameter; default = no
 
 
 >> Other Extensions         Initialization File

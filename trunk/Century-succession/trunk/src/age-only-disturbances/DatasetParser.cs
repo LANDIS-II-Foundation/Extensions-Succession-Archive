@@ -1,33 +1,25 @@
-//  Copyright 2005-2010 Portland State University, University of Wisconsin
-//  Authors:  Robert M. Scheller, James B. Domingo
+//  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
+//  Author: Robert Scheller, Ben Sulman
 
 using Landis.Core;
-using System.Collections.Generic;
+using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
+using System.Collections.Generic;
 
-namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
+namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
 {
     /// <summary>
     /// A parser that reads a dataset of biomass parameters for age-only
     /// disturbances from text input.
     /// </summary>
     public class DatasetParser
-        //: Edu.Wisc.Forest.Flel.Util.TextParser<IParameterDataset>
         : TextParser<IParameterDataset>
     {
         private Dictionary<string, int> lineNums;
+        private string LandisDataValue = "Age-only Disturbances - Biomass Parameters";
 
         //---------------------------------------------------------------------
-      
-        static DatasetParser()
-        {
-            //    FIXME: Need to add RegisterForInputValues method to
-            //  Percentage class, but for now, we'll trigger it by creating
-            //  a local variable of that type.
-            //Percentage dummy = new Percentage();
-            Edu.Wisc.Forest.Flel.Util.Percentage p = new Edu.Wisc.Forest.Flel.Util.Percentage();
-        }
-        //---------------------------------------------------------------------
+
 
         public DatasetParser()
         {
@@ -40,23 +32,22 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
         {
             InputVar<string> landisData = new InputVar<string>("LandisData");
             ReadVar(landisData);
-            if (landisData.Value.Actual != "Age-only Disturbances - Biomass Parameters")
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", "Age-only Disturbances - Biomass Parameters");
+            if (landisData.Value.Actual != LandisDataValue)
+                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
 
-            PlugIn.ModelCore.Log.WriteLine("   Now parsing age-only-disturbance data");
-
+            //EditableParameterDataset dataset = new EditableParameterDataset();
             ParameterDataset dataset = new ParameterDataset();
             const string DeadBiomassReductions = "DeadBiomassReductions";
-
+            
             ParseTable(dataset.CohortReductions,
                        "CohortBiomassReductions",
                        DeadBiomassReductions);
-
+            
             ParseTable(dataset.PoolReductions,
                        DeadBiomassReductions,
                        null);
 
-            return dataset; 
+            return dataset; //.GetComplete();
         }
 
         //---------------------------------------------------------------------
@@ -66,7 +57,7 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
                                 string                  nextTableName)
         {
             ReadName(tableName);
-
+            
             PlugIn.ModelCore.Log.WriteLine("      Reading {0}.", tableName);
 
             InputVar<string> disturbance = new InputVar<string>("Disturbance");
@@ -96,14 +87,17 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
                 }
                 else {
                     ExtensionType disturbanceType = new ExtensionType("disturbance:" + disturbance.Value.Actual);
-
-                    if(disturbance.Value.Actual == "Fire")
-                        throw new InputValueException(disturbance.Value.Actual,
-                                                  "\"{0}\" is not an allowable disturbance type, line {1}",
-                                                  disturbance.Value.Actual,
-                                                  lineNum);
-
+                    
+                    //if(disturbance.Value.Actual == "Fire" || disturbance.Value.Actual == "fire")
+                    //    throw new InputValueException(disturbance.Value.Actual,
+                    //                              "\"{0}\" is not an allowable disturbance type, line {1}",
+                    //                              disturbance.Value.Actual,
+                    //                              lineNum);
+                    
+                    //percentages = table[disturbanceType];
+                    table[disturbanceType] = new PoolPercentages();
                     percentages = table[disturbanceType];
+                    PlugIn.ModelCore.Log.WriteLine("         Adding {0}...", disturbanceType);
                 }
 
                 ReadValue(woodPercentage, currentLine);
