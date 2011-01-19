@@ -4,6 +4,9 @@ Timestep  5
 
 SeedingAlgorithm  WardSeedDispersal
 
+InitialCommunities      "./initial-communities.txt"
+InitialCommunitiesMap   "./initial-communities.gis"
+
 ClimateFile	ClimateInputs.txt
 
 CalibrateMode 	no

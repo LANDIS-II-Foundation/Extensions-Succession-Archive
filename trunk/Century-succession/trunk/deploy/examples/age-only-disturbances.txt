@@ -11,7 +11,7 @@ CohortBiomassReductions
     (default)     15%         0%
 
 
-DeadPoolReductions
+DeadBiomassReductions
 
 >> Disturbance   Woody   Non-Woody
 >> -----------   -----   ---------
