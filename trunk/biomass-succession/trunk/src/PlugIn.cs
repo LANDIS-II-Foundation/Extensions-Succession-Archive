@@ -110,7 +110,6 @@ namespace Landis.Extension.Succession.Biomass
             SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts); //.Clone();
             SiteVars.WoodyDebris[site] = initialBiomass.DeadWoodyPool.Clone();
             SiteVars.Litter[site] = initialBiomass.DeadNonWoodyPool.Clone();
-            //PlugIn.ModelCore.Log.WriteLine("Initialized with {0}.", SiteVars.Cohorts[site].Write());
         }
 
         //---------------------------------------------------------------------
@@ -127,26 +126,6 @@ namespace Landis.Extension.Succession.Biomass
 
             Outputs.WriteLogFile(PlugIn.ModelCore.CurrentTime);
 
-            //  Write Percent Shade map
-            /*
-            string path = MapNames.ReplaceTemplateVars("./biomass-succession/Percent-Shade-{timestep}.img", PlugIn.ModelCore.CurrentTime);
-            using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path, modelCore.Landscape.Dimensions))
-            {
-                UShortPixel pixel = outputRaster.BufferPixel;
-                foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
-                {
-                    if (site.IsActive)
-                    {
-                        pixel.MapCode.Value = (ushort) System.Math.Max(SiteVars.PercentShade[site] * 100.0, 0.0);
-                    }
-                    else
-                    {
-                        //  Inactive site
-                        pixel.MapCode.Value = 0;
-                    }
-                    outputRaster.WriteBufferPixel();
-                }
-            }*/
         }
 
 
@@ -158,7 +137,6 @@ namespace Landis.Extension.Succession.Biomass
         public bool SufficientLight(ISpecies species, ActiveSite site)
         {
 
-            //PlugIn.ModelCore.Log.WriteLine("  Calculating Sufficient Light from Succession.");
             byte siteShade = PlugIn.ModelCore.GetSiteVar<byte>("Shade")[site];
 
             double lightProbability = 0.0;
