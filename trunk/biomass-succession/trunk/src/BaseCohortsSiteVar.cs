@@ -74,7 +74,6 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
 
-
         AgeOnlyCohorts.SiteCohorts ISiteVar<AgeOnlyCohorts.SiteCohorts>.ActiveSiteValues
         {
             set

@@ -61,7 +61,7 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        public override void Initialize(string dataFile)
+        public override void Initialize()
         {
 
             Timestep = parameters.Timestep;
@@ -290,7 +290,7 @@ namespace Landis.Extension.Succession.Biomass
         /// Grows all cohorts at a site for a specified number of years.  The
         /// dead pools at the site also decompose for the given time period.
         /// </summary>
-        public static void GrowCohorts(SiteCohorts cohorts,
+        public static void GrowCohorts(Landis.Library.BiomassCohorts.SiteCohorts cohorts,
                                        ActiveSite site,
                                        int years,
                                        bool isSuccessionTimestep)

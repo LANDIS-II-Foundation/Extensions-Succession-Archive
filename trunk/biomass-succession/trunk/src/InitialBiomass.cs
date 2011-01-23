@@ -3,7 +3,6 @@
 
 using Landis.SpatialModeling;
 using Landis.Library.BiomassCohorts;
-using Landis.Cohorts;
 using Landis.Core;
 using System.Collections.Generic;
 using Landis.Library.InitialCommunities;
@@ -155,10 +154,10 @@ namespace Landis.Extension.Succession.Biomass
         /// Makes a list of age cohorts in an initial community sorted from
         /// oldest to youngest.
         /// </summary>
-        public static List<Landis.Library.AgeOnlyCohorts.ICohort> SortCohorts(Landis.Library.AgeOnlyCohorts.ISiteCohorts siteCohorts)
+        public static List<Landis.Library.AgeOnlyCohorts.ICohort> SortCohorts(List<Landis.Library.AgeOnlyCohorts.ISpeciesCohorts> sppCohorts)
         {
             List<Landis.Library.AgeOnlyCohorts.ICohort> cohorts = new List<Landis.Library.AgeOnlyCohorts.ICohort>();
-            foreach (Landis.Library.AgeOnlyCohorts.ISpeciesCohorts speciesCohorts in siteCohorts)
+            foreach (Landis.Library.AgeOnlyCohorts.ISpeciesCohorts speciesCohorts in sppCohorts)
             {
                 foreach (Landis.Library.AgeOnlyCohorts.ICohort cohort in speciesCohorts)
                     cohorts.Add(cohort);
@@ -197,10 +196,8 @@ namespace Landis.Extension.Succession.Biomass
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
-            // ISiteCohorts biomassCohorts = new SiteCohorts();
-            //SiteCohorts biomassCohorts = new SiteCohorts();
 
-            SiteVars.Cohorts[site] = new SiteCohorts(); //biomassCohorts;
+            SiteVars.Cohorts[site] = new Library.BiomassCohorts.SiteCohorts(); //biomassCohorts;
 
             // if (ageCohorts.Count == 0)
             //    return SiteVars.Cohorts[site]; //biomassCohorts;

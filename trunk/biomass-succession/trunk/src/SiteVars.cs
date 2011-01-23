@@ -21,8 +21,6 @@ namespace Landis.Extension.Succession.Biomass
         private static ISiteVar<Pool> woodyDebris;
         private static ISiteVar<Pool> litter;
         
-        //private static ISiteVar<double> percentShade;
-        //private static ISiteVar<double> lightTrans;
         private static ISiteVar<double> capacityReduction;
         private static ISiteVar<int> previousYearMortality;
         private static ISiteVar<int> currentYearMortality;
@@ -44,8 +42,6 @@ namespace Landis.Extension.Succession.Biomass
 
             woodyDebris     = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
             litter          = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
-            //percentShade    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            //lightTrans      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             ag_npp          = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             previousYearMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             currentYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
@@ -62,7 +58,7 @@ namespace Landis.Extension.Succession.Biomass
             previousYearMortality.ActiveSiteValues = 0;
 
             PlugIn.ModelCore.RegisterSiteVar(biomassCohorts, "Succession.BiomassCohorts");
-            PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.BaseCohorts");
+            PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.Cohorts");
 
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.WoodyDebris, "Succession.WoodyDebris");
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.Litter, "Succession.Litter");
@@ -76,9 +72,10 @@ namespace Landis.Extension.Succession.Biomass
             // Reset these accumulators to zero:
             SiteVars.AGNPP[site] = 0.0;
             SiteVars.TotalBiomass[site] = 0;
-            foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
-               foreach (ICohort cohort in spp)
+            foreach (Landis.Library.BiomassCohorts.ISpeciesCohorts spp in SiteVars.Cohorts[site] as Library.BiomassCohorts.SiteCohorts)
+               foreach (Landis.Library.BiomassCohorts.ICohort cohort in spp)
                    SiteVars.TotalBiomass[site] += cohort.Biomass;
+            //SiteVars.TotalBiomass[site] = Library.BiomassCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
 
             SiteVars.PreviousYearMortality[site] = SiteVars.CurrentYearMortality[site];
             SiteVars.CurrentYearMortality[site] = 0;

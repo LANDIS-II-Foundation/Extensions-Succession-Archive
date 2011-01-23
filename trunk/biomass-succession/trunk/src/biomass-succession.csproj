@@ -72,7 +72,9 @@
     <Compile Include="age-only-disturbances\ParameterDataset.cs" />
     <Compile Include="age-only-disturbances\PercentageTable.cs" />
     <Compile Include="age-only-disturbances\PoolPercentages.cs" />
-    <Compile Include="BaseCohortsSiteVar.cs" />
+    <Compile Include="BaseCohortsSiteVar.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CohortBiomass.cs" />
     <Compile Include="EcoregionData.cs" />
     <Compile Include="ForestFloor.cs" />
