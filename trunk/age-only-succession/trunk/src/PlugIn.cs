@@ -112,10 +112,7 @@ namespace Landis.Extension.Succession.AgeOnly
                                            ushort     years,
                                            int?       successionTimestep)
         {
-            //modelCore.Log.WriteLine("SITE:  {0}/{1}.", site.Location.Row, site.Location.Column);
-            //modelCore.Log.WriteLine("   BEFORE growing cohorts:  {0}.", SiteVars.Cohorts[site].Write());
             SiteVars.Cohorts[site].Grow(years, site, successionTimestep, modelCore);
-            //modelCore.Log.WriteLine("   AFTER growing cohorts:  {0}.", SiteVars.Cohorts[site].Write());
         }
 
         //---------------------------------------------------------------------
