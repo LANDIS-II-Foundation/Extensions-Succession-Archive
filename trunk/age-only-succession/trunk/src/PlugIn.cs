@@ -5,9 +5,7 @@ using Landis.Library.AgeOnlyCohorts;
 using Landis.Core;
 using Landis.Library.InitialCommunities;
 using System.Collections.Generic;
-// using Wisc.Flel.GeospatialModeling.Landscapes;
 using Landis.SpatialModeling;
-using Landis.SpatialModeling.CoreServices;
 
 namespace Landis.Extension.Succession.AgeOnly
 {
@@ -53,7 +51,7 @@ namespace Landis.Extension.Succession.AgeOnly
 
         //---------------------------------------------------------------------
 
-        public override void Initialize(string dataFile)
+        public override void Initialize()
         {
 
             Timestep = parameters.Timestep;
@@ -81,10 +79,12 @@ namespace Landis.Extension.Succession.AgeOnly
                 ActiveSite site = eventArgs.Site;
                 Disturbed[site] = true;
                 if (disturbanceType.IsMemberOf("disturbance:fire"))
-                    Landis.Library.Succession.Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);//EST
+                    Landis.Library.Succession.Reproduction.CheckForPostFireRegen(eventArgs.Cohort, site);
                 else
-                    Landis.Library.Succession.Reproduction.CheckForResprouting(eventArgs.Cohort, site);//EST
+                    Landis.Library.Succession.Reproduction.CheckForResprouting(eventArgs.Cohort, site);
             }
+
+            //modelCore.Log.WriteLine("   Cohort DIED:  {0}:{1}.", eventArgs.Cohort.Species.Name, eventArgs.Cohort.Age);
         }
 
         //---------------------------------------------------------------------
@@ -92,6 +92,7 @@ namespace Landis.Extension.Succession.AgeOnly
         public void AddNewCohort(ISpecies   species,
                                  ActiveSite site)
         {
+            //modelCore.Log.WriteLine("   Cohort BORN:  {0}.", species.Name);
             SiteVars.Cohorts[site].AddNewCohort(species);
         }
 
@@ -100,7 +101,9 @@ namespace Landis.Extension.Succession.AgeOnly
         protected override void InitializeSite(ActiveSite site,
                                                ICommunity initialCommunity)
         {
+            //SiteVars.Cohorts[site] = initialCommunity.Cohorts as SiteCohorts;
             SiteVars.Cohorts[site] = new SiteCohorts(initialCommunity.Cohorts);
+
         }
 
         //---------------------------------------------------------------------
@@ -109,12 +112,10 @@ namespace Landis.Extension.Succession.AgeOnly
                                            ushort     years,
                                            int?       successionTimestep)
         {
+            //modelCore.Log.WriteLine("SITE:  {0}/{1}.", site.Location.Row, site.Location.Column);
+            //modelCore.Log.WriteLine("   BEFORE growing cohorts:  {0}.", SiteVars.Cohorts[site].Write());
             SiteVars.Cohorts[site].Grow(years, site, successionTimestep, modelCore);
-            //string msg = "";
-            //foreach (ISpeciesCohorts sppcohort in SiteVars.Cohorts[site])
-            //    msg += sppcohort.Species.Name + " ";
-
-            //modelCore.Log.WriteLine("   Ageing cohorts:  {0}.", msg);
+            //modelCore.Log.WriteLine("   AFTER growing cohorts:  {0}.", SiteVars.Cohorts[site].Write());
         }
 
         //---------------------------------------------------------------------

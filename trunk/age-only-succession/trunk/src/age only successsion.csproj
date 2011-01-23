@@ -41,7 +41,8 @@
     <Reference Include="Landis.Library.AgeOnlyCohorts">
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Cohorts">
+    <Reference Include="Landis.Library.Cohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Succession">
@@ -61,7 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCohortsSiteVar.cs" />
     <Compile Include="EcoregionAuxParm.cs" />
     <Compile Include="IInputParameters.cs" />
     <Compile Include="InputParameters.cs" />

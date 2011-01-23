@@ -13,9 +13,7 @@
 // limitations under the License.
 
 using AgeOnlyCohorts = Landis.Library.AgeOnlyCohorts;
-// using Wisc.Flel.GeospatialModeling.Landscapes;
 using Landis.SpatialModeling;
-using Landis.SpatialModeling.CoreServices;
 
 namespace Landis.Extension.Succession.AgeOnly
 {
