@@ -107,9 +107,10 @@ namespace Landis.Extension.Succession.Biomass
                                                ICommunity initialCommunity)
         {
             InitialBiomass initialBiomass = InitialBiomass.Compute(site, initialCommunity);
-            SiteVars.Cohorts[site] = initialBiomass.Cohorts.Clone();
+            SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts); //.Clone();
             SiteVars.WoodyDebris[site] = initialBiomass.DeadWoodyPool.Clone();
             SiteVars.Litter[site] = initialBiomass.DeadNonWoodyPool.Clone();
+            //PlugIn.ModelCore.Log.WriteLine("Initialized with {0}.", SiteVars.Cohorts[site].Write());
         }
 
         //---------------------------------------------------------------------
@@ -271,8 +272,8 @@ namespace Landis.Extension.Succession.Biomass
         public void AddNewCohort(ISpecies species,
                                  ActiveSite site)
         {
-            //SiteCohorts.InitialBiomass = CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site);
-            SiteVars.Cohorts[site].AddNewCohort(species, CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site)); 
+            //ISiteCohorts.InitialBiomass = CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site);
+            SiteVars.Cohorts[site].AddNewCohort(species, 1, CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site)); 
                                                         //            site));
         }
 
@@ -282,23 +283,24 @@ namespace Landis.Extension.Succession.Biomass
                                            ushort years,
                                            int? successionTimestep)
         {
-            SiteCohorts cohorts = SiteVars.Cohorts[site];
-            GrowCohorts(cohorts, site, years, successionTimestep.HasValue);
+            //ISiteCohorts cohorts = SiteVars.Cohorts[site];
+            GrowCohorts(site, years, successionTimestep.HasValue);
         }
         //---------------------------------------------------------------------
         /// <summary>
         /// Grows all cohorts at a site for a specified number of years.  The
         /// dead pools at the site also decompose for the given time period.
         /// </summary>
-        public static void GrowCohorts(Landis.Library.BiomassCohorts.SiteCohorts cohorts,
+        public static void GrowCohorts(//Landis.Library.BiomassCohorts.ISiteCohorts cohorts,
                                        ActiveSite site,
                                        int years,
                                        bool isSuccessionTimestep)
         {
-            if (cohorts == null)
-                 return;
+            //if (cohorts == null)
+            //     return;
 
             //CurrentYearSiteMortality = 0.0;
+            //PlugIn.ModelCore.Log.WriteLine("years = {0}, successionTS = {1}.", years, successionTimestep.Value);
 
             for (int y = 1; y <= years; ++y)
             {
@@ -307,7 +309,7 @@ namespace Landis.Extension.Succession.Biomass
 
                 SiteVars.ResetAnnualValues(site);
                 CohortBiomass.SubYear = y - 1;
-                CohortBiomass.CanopyLightExtinction = 0.0;
+                //CohortBiomass.CanopyLightExtinction = 0.0;
 
                 //SiteVars.PercentShade[site] = 0.0;
                 //SiteVars.LightTrans[site] = 1.0;

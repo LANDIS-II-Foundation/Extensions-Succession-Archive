@@ -398,20 +398,20 @@ namespace Landis.Extension.Succession.Biomass
                                                     ActiveSite site)
         {
 
-            // ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
-            SiteCohorts siteCohorts = SiteVars.Cohorts[site];
+            // IISiteCohorts ISiteCohorts = SiteVars.Cohorts[site];
+            ISiteCohorts ISiteCohorts = SiteVars.Cohorts[site];
 
             double mortalityAge = ComputeAgeMortality(cohort);
 
-            //if(siteCohorts == null) return new Percentage(0.0);
+            //if(ISiteCohorts == null) return new Percentage(0.0);
 
-            // double actualANPP = ComputeActualANPP(cohort, site, siteCohorts.TotalBiomass,
-            //                     siteCohorts.PrevYearMortality);
+            // double actualANPP = ComputeActualANPP(cohort, site, ISiteCohorts.TotalBiomass,
+            //                     ISiteCohorts.PrevYearMortality);
 
-            double actualANPP = ComputeActualANPP(cohort, site); //, siteCohorts.TotalBiomass,
-                                //siteCohorts.PrevYearMortality);  
-                                //ComputeActualANPP(cohort, site, SiteCohorts.TotalBiomass(SiteVars.Cohorts[site]));
-                                //SiteCohorts.StaticPrevYearMortality);
+            double actualANPP = ComputeActualANPP(cohort, site); //, ISiteCohorts.TotalBiomass,
+                                //ISiteCohorts.PrevYearMortality);  
+                                //ComputeActualANPP(cohort, site, ISiteCohorts.TotalBiomass(SiteVars.Cohorts[site]));
+                                //ISiteCohorts.StaticPrevYearMortality);
 
             //  Age mortality is discounted from ANPP to prevent the over-
             //  estimation of mortality.  ANPP cannot be negative.
@@ -425,14 +425,13 @@ namespace Landis.Extension.Succession.Biomass
         /// Computes the initial biomass for a cohort at a site.
         /// </summary>
         public static int InitialBiomass(ISpecies species,
-                                         //ISiteCohorts siteCohorts,
-                                         SiteCohorts siteCohorts,
+                                         ISiteCohorts cohorts,
                                          ActiveSite site)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            //double B_ACT = ActualSiteBiomass(siteCohorts, site, out ecoregion);
+            //double B_ACT = ActualSiteBiomass(ISiteCohorts, site, out ecoregion);
 
-            double B_ACT = (double)Library.BiomassCohorts.Cohorts.ComputeNonYoungBiomass(siteCohorts);
+            double B_ACT = (double) Cohorts.ComputeNonYoungBiomass(cohorts);
 
             double maxBiomass = SpeciesData.B_MAX_Spp[species][ecoregion];
 

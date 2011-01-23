@@ -14,7 +14,7 @@ namespace Landis.Extension.Succession.Biomass
     /// </summary>
     public class InitialBiomass
     {
-        private SiteCohorts cohorts;
+        private ISiteCohorts cohorts;
         private Pool deadWoodyPool;
         private Pool deadNonWoodyPool;
 
@@ -23,7 +23,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <summary>
         /// The site's initial cohorts.
         /// </summary>
-        public SiteCohorts Cohorts
+        public ISiteCohorts Cohorts
         {
             get
             {
@@ -59,7 +59,7 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        private InitialBiomass(SiteCohorts cohorts,
+        private InitialBiomass(ISiteCohorts cohorts,
                                Pool deadWoodyPool,
                                Pool deadNonWoodyPool)
         {
@@ -67,7 +67,16 @@ namespace Landis.Extension.Succession.Biomass
             this.deadWoodyPool = deadWoodyPool;
             this.deadNonWoodyPool = deadNonWoodyPool;
         }
-
+        
+        public static ISiteCohorts Clone(ISiteCohorts site_cohorts)
+         {
+             ISiteCohorts clone = new SiteCohorts();
+             foreach (ISpeciesCohorts speciesCohorts in site_cohorts)
+                 foreach (ICohort cohort in speciesCohorts)
+                     clone.AddNewCohort(cohort.Species, cohort.Age, cohort.Biomass);  //species.cohorts.Add(speciesCohorts.Clone());
+             //clone.totalBiomass = this.totalBiomass;
+             return clone;
+         }
         //---------------------------------------------------------------------
 
         private static IDictionary<uint, InitialBiomass> initialSites;
@@ -140,7 +149,7 @@ namespace Landis.Extension.Succession.Biomass
                 sortedCohorts[initialCommunity.MapCode] = sortedAgeCohorts;
             }
 
-            SiteCohorts cohorts = MakeBiomassCohorts(sortedAgeCohorts, site);
+            ISiteCohorts cohorts = MakeBiomassCohorts(sortedAgeCohorts, site);
             initialBiomass = new InitialBiomass(cohorts,
                                                 SiteVars.WoodyDebris[site],
                                                 SiteVars.Litter[site]);
@@ -173,7 +182,7 @@ namespace Landis.Extension.Succession.Biomass
         /// site based on the existing cohorts.
         /// </summary>
         public delegate int ComputeMethod(ISpecies species,
-                                             SiteCohorts siteCohorts,
+                                             ISiteCohorts ISiteCohorts,
                                              ActiveSite site);
 
         //---------------------------------------------------------------------
@@ -192,7 +201,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <param name="initialBiomassMethod">
         /// The method for computing the initial biomass for a new cohort.
         /// </param>
-        public static SiteCohorts MakeBiomassCohorts(List<Landis.Library.AgeOnlyCohorts.ICohort> ageCohorts,
+        public static ISiteCohorts MakeBiomassCohorts(List<Landis.Library.AgeOnlyCohorts.ICohort> ageCohorts,
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
@@ -202,8 +211,6 @@ namespace Landis.Extension.Succession.Biomass
             // if (ageCohorts.Count == 0)
             //    return SiteVars.Cohorts[site]; //biomassCohorts;
 
-            if (SiteVars.Cohorts == null)
-                PlugIn.ModelCore.Log.WriteLine("Damn BioSuccession !!");
             
             //if (ageCohorts.Count == 0)
             //    return biomassCohorts;
@@ -224,7 +231,8 @@ namespace Landis.Extension.Succession.Biomass
             for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
             {
                 //  Grow current biomass cohorts.
-                PlugIn.GrowCohorts(SiteVars.Cohorts[site], site, successionTimestep, true);
+                //PlugIn.GrowCohorts(SiteVars.Cohorts[site], site, successionTimestep, successionTimestep);
+                PlugIn.GrowCohorts(site, successionTimestep, true);
                 //PlugIn.GrowCohorts(site, successionTimestep, true);
 
                 //  Add those cohorts that were born at the current year
@@ -236,7 +244,7 @@ namespace Landis.Extension.Succession.Biomass
 
                     int initialBiomass = initialBiomassMethod(species, SiteVars.Cohorts[site], site);
 
-                    SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species,
+                    SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
                                                 initialBiomass);
 
                     //PlugIn.ModelCore.Log.WriteLine("I'm born!");
@@ -249,6 +257,7 @@ namespace Landis.Extension.Succession.Biomass
             }
 
             // return biomassCohorts;
+            //PlugIn.ModelCore.Log.WriteLine("Initial Community = {0}.", SiteVars.Cohorts[site].Write());
             return SiteVars.Cohorts[site];
         }
 
@@ -265,7 +274,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <param name="site">
         /// Site where cohorts are located.
         /// </param>
-        public static SiteCohorts MakeBiomassCohorts(
+        public static ISiteCohorts MakeBiomassCohorts(
                                                      List<Landis.Library.AgeOnlyCohorts.ICohort> ageCohorts,
                                                      ActiveSite site)
         {

@@ -15,7 +15,7 @@ namespace Landis.Extension.Succession.Biomass
     public static class SiteVars
     {
 
-        private static ISiteVar<Library.BiomassCohorts.SiteCohorts> biomassCohorts;
+        private static ISiteVar<Library.BiomassCohorts.ISiteCohorts> biomassCohorts;
         private static BaseCohortsSiteVar baseCohortsSiteVar;
 
         private static ISiteVar<Pool> woodyDebris;
@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.Biomass
         public static void Initialize()
         {
 
-            biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.SiteCohorts>();
+            biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.ISiteCohorts>();
             baseCohortsSiteVar = new BaseCohortsSiteVar(biomassCohorts);
 
             woodyDebris     = PlugIn.ModelCore.Landscape.NewSiteVar<Pool>();
@@ -72,7 +72,7 @@ namespace Landis.Extension.Succession.Biomass
             // Reset these accumulators to zero:
             SiteVars.AGNPP[site] = 0.0;
             SiteVars.TotalBiomass[site] = 0;
-            //foreach (Landis.Library.BiomassCohorts.ISpeciesCohorts spp in SiteVars.Cohorts[site] as Library.BiomassCohorts.SiteCohorts)
+            //foreach (Landis.Library.BiomassCohorts.ISpeciesCohorts spp in SiteVars.Cohorts[site] as Library.BiomassCohorts.ISiteCohorts)
             //   foreach (Landis.Library.BiomassCohorts.ICohort cohort in spp)
             //       SiteVars.TotalBiomass[site] += cohort.Biomass;
             SiteVars.TotalBiomass[site] = Library.BiomassCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
@@ -87,7 +87,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <summary>
         /// Biomass cohorts at each site.
         /// </summary>
-        public static ISiteVar<SiteCohorts> Cohorts
+        public static ISiteVar<ISiteCohorts> Cohorts
         {
             get
             {

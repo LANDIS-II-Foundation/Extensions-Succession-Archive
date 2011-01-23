@@ -23,11 +23,11 @@ namespace Landis.Extension.Succession.Biomass
     /// site variable of base cohorts.
     /// </summary>
     public class BaseCohortsSiteVar
-        : ISiteVar<AgeOnlyCohorts.SiteCohorts>
+        : ISiteVar<AgeOnlyCohorts.ISiteCohorts>
     {
-        private ISiteVar<BiomassCohorts.SiteCohorts> biomassCohortSiteVar;
+        private ISiteVar<BiomassCohorts.ISiteCohorts> biomassCohortSiteVar;
 
-        public BaseCohortsSiteVar(ISiteVar<BiomassCohorts.SiteCohorts> siteVar)
+        public BaseCohortsSiteVar(ISiteVar<BiomassCohorts.ISiteCohorts> siteVar)
         {
             biomassCohortSiteVar = siteVar;
         }
@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.Biomass
         {
             get
             {
-                return typeof(AgeOnlyCohorts.SiteCohorts);
+                return typeof(AgeOnlyCohorts.ISiteCohorts);
             }
         }
 
@@ -58,15 +58,16 @@ namespace Landis.Extension.Succession.Biomass
         }
         #endregion
 
-        #region ISiteVar<BaseCohorts.SiteCohorts> members
+        #region ISiteVar<BaseCohorts.ISiteCohorts> members
         // Extensions other than succession have no need to assign the whole
         // site-cohorts object at any site.
 
-        AgeOnlyCohorts.SiteCohorts ISiteVar<AgeOnlyCohorts.SiteCohorts>.this[Site site]
+        AgeOnlyCohorts.ISiteCohorts ISiteVar<AgeOnlyCohorts.ISiteCohorts>.this[Site site]
         {
             get
             {
-                return (AgeOnlyCohorts.SiteCohorts) biomassCohortSiteVar[site]; 
+                return (AgeOnlyCohorts.ISiteCohorts) biomassCohortSiteVar[site];
+                //return biomassCohortSiteVar[site]; 
             }
             set
             {
@@ -74,7 +75,7 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
 
-        AgeOnlyCohorts.SiteCohorts ISiteVar<AgeOnlyCohorts.SiteCohorts>.ActiveSiteValues
+        AgeOnlyCohorts.ISiteCohorts ISiteVar<AgeOnlyCohorts.ISiteCohorts>.ActiveSiteValues
         {
             set
             {
@@ -82,7 +83,7 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
 
-        AgeOnlyCohorts.SiteCohorts ISiteVar<AgeOnlyCohorts.SiteCohorts>.InactiveSiteValues
+        AgeOnlyCohorts.ISiteCohorts ISiteVar<AgeOnlyCohorts.ISiteCohorts>.InactiveSiteValues
         {
             set
             {
@@ -90,7 +91,7 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
 
-        AgeOnlyCohorts.SiteCohorts ISiteVar<AgeOnlyCohorts.SiteCohorts>.SiteValues
+        AgeOnlyCohorts.ISiteCohorts ISiteVar<AgeOnlyCohorts.ISiteCohorts>.SiteValues
         {
             set
             {

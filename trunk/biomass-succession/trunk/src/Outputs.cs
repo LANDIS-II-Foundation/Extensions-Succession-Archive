@@ -63,7 +63,7 @@ namespace Landis.Extension.Succession.Biomass
                 IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
                 int youngBiomass;  //ignored
 
-                avgLiveB[ecoregion.Index] += Library.BiomassCohorts.Cohorts.ComputeBiomass(SiteVars.Cohorts[site], out youngBiomass);
+                avgLiveB[ecoregion.Index] += Cohorts.ComputeBiomass(SiteVars.Cohorts[site], out youngBiomass);
                 avgAG_NPP[ecoregion.Index]   += SiteVars.AGNPP[site];
                 avgLitterB[ecoregion.Index]  += SiteVars.Litter[site].Mass;
             }
