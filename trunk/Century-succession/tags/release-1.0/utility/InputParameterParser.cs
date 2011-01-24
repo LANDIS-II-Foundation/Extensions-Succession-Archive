@@ -115,6 +115,12 @@ namespace Landis.Extension.Succession.Century
             InputVar<string> wt = new InputVar<string>("WaterDecayFunction");
             ReadVar(wt);
             parameters.WType = WParse(wt.Value);
+
+            InputVar<double> lde = new InputVar<double>("LigninDecayEffect");
+            if (ReadOptionalVar(lde))
+                parameters.LigninDecayEffect = lde.Value;
+            else
+                parameters.LigninDecayEffect = 3.0;  //default value
             
 
             InputVar<string> soilCarbonMaps = new InputVar<string>("SoilCarbonMapNames");

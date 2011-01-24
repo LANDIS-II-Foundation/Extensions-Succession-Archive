@@ -80,7 +80,7 @@ namespace Landis.Extension.Succession.Century
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     SoilWater.Run(y, month, liveBiomass, site);
-                    SpeciesData.CalculateNGrowthLimits(site);
+                    //SpeciesData.CalculateNGrowthLimits(site);
 
                     // Calculate N limitations for each cohort
                     AvailableN.CohortNlimits = new Dictionary<int, Dictionary<int,double>>();

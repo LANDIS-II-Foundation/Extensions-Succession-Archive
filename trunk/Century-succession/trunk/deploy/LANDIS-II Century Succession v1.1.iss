@@ -41,7 +41,7 @@ Filename: {#PlugInAdminTool}; Parameters: "add ""{#CenturySucc}"" "; WorkingDir:
 ; Filename: {#PlugInAdminTool}; Parameters: "remove ""Century Succession"" "; WorkingDir: {#LandisPlugInDir}
 
 [Code]
-#include AddBackslash(LandisDeployDir) + "package (Code section) v2.iss"
+#include AddBackslash(LandisDeployDir) + "package (Code section) v3.iss"
 
 //-----------------------------------------------------------------------------
 

@@ -71,6 +71,7 @@ namespace Landis.Extension.Succession.Century
         
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<byte> FireSeverity;
+        public static ISiteVar<double> AgeMortality;
         
         //---------------------------------------------------------------------
 
@@ -129,6 +130,7 @@ namespace Landis.Extension.Succession.Century
             cohortWoodC         = Model.Core.Landscape.NewSiteVar<double>();
             
             TotalWoodBiomass = Model.Core.Landscape.NewSiteVar<double>();
+            AgeMortality = Model.Core.Landscape.NewSiteVar<double>();
             
             foreach (ActiveSite site in Model.Core.Landscape)
             {
@@ -231,6 +233,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SOM2[site].NetMineralization = 0.0;
             SiteVars.SOM3[site].NetMineralization = 0.0;
             SiteVars.AnnualNEE[site] = 0.0;
+            SiteVars.AgeMortality[site] = 0.0;
             //SiteVars.FireEfflux[site] = 0.0;
                         
 

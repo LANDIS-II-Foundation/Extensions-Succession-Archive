@@ -260,16 +260,6 @@ namespace Landis.Extension.Succession.Century
             
             if(!found)
                 UI.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
-                
-            // This is neccesary to account for Nitrogen limitation:
-            // Update species establishment probabilities
-            double NlimitedEstablishment = SpeciesData.NLimits[species];
-            
-            //if(NlimitedEstablishment < lightProbability)
-            //    UI.WriteLine("Establishment limited by NITROGEN.  Spp={0}, Nlimit={1:0.00}, Llimit={2:0.00}.", species.Name, NlimitedEstablishment, lightProbability);
-            
-            lightProbability = Math.Min(lightProbability, NlimitedEstablishment);
-
             
             return Landis.Util.Random.GenerateUniform() < lightProbability;
             
@@ -315,7 +305,7 @@ namespace Landis.Extension.Succession.Century
         protected override void InitializeSite(ActiveSite site,
                                                ICommunity initialCommunity)
         {
-            SpeciesData.CalculateNGrowthLimits(site);
+            //SpeciesData.CalculateNGrowthLimits(site);
 
             InitialBiomass initialBiomass = InitialBiomass.Compute(site, initialCommunity);
             SiteVars.SiteCohorts[site] = initialBiomass.Cohorts.Clone();

@@ -87,7 +87,8 @@ namespace Landis.Extension.Succession.Century
         //Start with a simple multiplier, so a tree with Ntolerance 3 takes up 3/2 more N than a tree with Ntolerance 2
         private static double CalculateNMultiplier(double biomass, int Ntolerance)
         {
-            return Math.Max(Math.Sqrt(biomass) * Ntolerance,1.0);
+            //return Math.Max(Math.Sqrt(biomass) * Ntolerance,1.0);
+            return Math.Max(Math.Pow(biomass, 0.2) * Ntolerance, 1.0);
         }
 
 
@@ -171,7 +172,7 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Reduces growth (ANPP) depending upon how much N is available.
         /// </summary>
-        public static double GrowthReductionAvailableN(ActiveSite site, ISpecies species)
+        /*public static double GrowthReductionAvailableN(ActiveSite site, ISpecies species)
         {
             double availableN = SiteVars.MineralN[site] * 10.0 * 0.75;  // units to kg/ha to match the original equations
             //double availableN = SiteVars.PlantAvailableN[site] * 10.0;  // units to kg/ha to match the original equations
@@ -260,7 +261,7 @@ namespace Landis.Extension.Succession.Century
             soilNitrogenMultiplier = Math.Max(0.05, soilNitrogenMultiplier);
 
             return soilNitrogenMultiplier;
-        }
+        }*/
 
     }
 }

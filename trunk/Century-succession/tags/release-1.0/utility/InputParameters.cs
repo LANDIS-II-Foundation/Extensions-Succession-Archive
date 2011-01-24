@@ -23,7 +23,8 @@ namespace Landis.Extension.Succession.Century
         private string climateFile;
         private bool calibrateMode;
         private double spinupMortalityFraction;
-        public WaterType wtype;
+        private WaterType wtype;
+        private double ligninDecayEffect;
         
         private FunctionalTypeTable functionalTypes;
         private FireReductions[] fireReductionsTable;
@@ -131,13 +132,11 @@ namespace Landis.Extension.Succession.Century
                 return climateFile;
             }
             set {
-                //if (value != null) {
                     string path = value;
                     if (path.Trim(null).Length == 0)
                         throw new InputValueException(path,
                                                       "\"{0}\" is not a valid path.",
                                                       path);
-                //}
                 climateFile = value;
             }
         }
@@ -168,6 +167,21 @@ namespace Landis.Extension.Succession.Century
             }
             set {
                 wtype = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Determines whether moisture effects on decomposition follow a linear or ratio calculation.
+        /// </summary>
+        public double LigninDecayEffect
+        {
+            get
+            {
+                return ligninDecayEffect;
+            }
+            set
+            {
+                ligninDecayEffect = value;
             }
         }
         //---------------------------------------------------------------------

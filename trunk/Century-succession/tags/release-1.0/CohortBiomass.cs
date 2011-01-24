@@ -73,7 +73,7 @@ namespace Landis.Extension.Succession.Century
 
             // ****** Mortality *******
             // Age-related mortality includes woody and standing leaf biomass.
-            double[] mortalityAge = ComputeAgeMortality(cohort);
+            double[] mortalityAge = ComputeAgeMortality(cohort, site);
 
             //  Growth-related mortality
             double[] mortalityGrowth = ComputeGrowthMortality(cohort); //, site, mortalityAge);
@@ -220,7 +220,7 @@ namespace Landis.Extension.Succession.Century
         /// Computes M_AGE_ij: the mortality caused by the aging of the cohort.
         /// See equation 6 in Scheller and Mladenoff, 2004.
         /// </summary>
-        private double[] ComputeAgeMortality(ICohort cohort)
+        private double[] ComputeAgeMortality(ICohort cohort, ActiveSite site)
         {
             double totalBiomass = (double) (cohort.WoodBiomass + cohort.LeafBiomass);
             double fractionLeaf = (double) cohort.LeafBiomass / totalBiomass;
@@ -245,6 +245,8 @@ namespace Landis.Extension.Succession.Century
             M_AGE_leaf = Math.Min(M_AGE_leaf, cohort.LeafBiomass);
 
             double[] M_AGE = new double[2]{M_AGE_wood, M_AGE_leaf};
+
+            SiteVars.AgeMortality[site] += (M_AGE_leaf + M_AGE_wood);
 
             if(M_AGE_wood < 0.0 || M_AGE_leaf < 0.0)
             {
@@ -332,11 +334,6 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Computes the initial biomass for a cohort at a site.
         /// </summary>
-        /// <remarks>
-        /// Scheller, R. M. and Domingo, J. B. Biomass Succession (v1.0) for
-        /// LANDIS-II: User Guide.  Available online at
-        /// http://www.landis-ii.org/documentation.
-        /// </remarks>
         public static float[] InitialBiomass(SiteCohorts siteCohorts,
                                             ActiveSite  site, ISpecies species)
         {

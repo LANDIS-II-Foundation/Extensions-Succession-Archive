@@ -19,6 +19,7 @@ namespace Landis.Extension.Succession.Century
         public static LitterType[] LitterParameters;
         public static bool CalibrateMode;
         public static WaterType WType;
+        public static double LigninDecayEffect;
         
         // NOTE: *****************************************************************
         // ALL input data comments derived from the Century Model Interface Help - 
@@ -57,7 +58,7 @@ namespace Landis.Extension.Succession.Century
         // Lignin Decay Effect (PLIGST)
         // Values from the ffix.100 file.
         public const double LigninRespirationRate  = 0.3;
-        public const double LigninDecayEffect   = 3.0;
+        //public const double LigninDecayEffect   = 3.0;
 
 
         // 'PPRPTS(1)': The minimum ratio of available water to PET which would completely 
@@ -234,6 +235,7 @@ namespace Landis.Extension.Succession.Century
             //FractionSOM3toCO2   = parameters.FractionSOM3toCO2;
             //DecayRateSOM2       = parameters.DecayRateSOM2;
             //DecayRateSOM3       = parameters.DecayRateSOM3;
+            LigninDecayEffect = parameters.LigninDecayEffect;
             
         }
         
