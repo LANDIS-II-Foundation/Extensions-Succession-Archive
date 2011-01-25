@@ -20,7 +20,7 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<int> timeOfLast;
         
         // Live biomass:  The BaseCohortsSiteVar class allows translation from LeafBioamss to AgeOnly cohorts.
-        private static ISiteVar<Library.LeafBiomassCohorts.SiteCohorts> leafBiomassCohorts;
+        private static ISiteVar<Library.LeafBiomassCohorts.ISiteCohorts> leafBiomassCohorts;
         private static BaseCohortsSiteVar baseCohortsSiteVar;
         
         // Dead biomass:
@@ -79,7 +79,7 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         public static void Initialize()
         {
-            leafBiomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.LeafBiomassCohorts.SiteCohorts>();
+            leafBiomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.LeafBiomassCohorts.ISiteCohorts>();
             baseCohortsSiteVar = new BaseCohortsSiteVar(leafBiomassCohorts);
         
             timeOfLast = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
@@ -134,7 +134,7 @@ namespace Landis.Extension.Succession.Century
             PrevYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
-            PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.BaseCohorts");
+            PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
             
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
@@ -185,7 +185,7 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Biomass cohorts at each site.
         /// </summary>
-        public static ISiteVar<SiteCohorts> Cohorts
+        public static ISiteVar<ISiteCohorts> Cohorts
         {
             get
             {
@@ -207,7 +207,7 @@ namespace Landis.Extension.Succession.Century
         public static double ActualSiteBiomass(ActiveSite     site)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            SiteCohorts siteCohorts = SiteVars.Cohorts[site];
+            ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
 
             if(siteCohorts == null)
                 return 0.0;

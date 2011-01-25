@@ -323,7 +323,8 @@ namespace Landis.Extension.Succession.Century
             //SpeciesData.CalculateNGrowthLimits(site);
 
             InitialBiomass initialBiomass = InitialBiomass.Compute(site, initialCommunity);
-            SiteVars.Cohorts[site] = initialBiomass.Cohorts.Clone();
+            SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts); //.Clone();
+            //SiteVars.Cohorts[site] = initialBiomass.Cohorts.Clone();
             
             SiteVars.SurfaceDeadWood[site]       = initialBiomass.SurfaceDeadWood.Clone();
             SiteVars.SurfaceStructural[site]     = initialBiomass.SurfaceStructural.Clone();
@@ -391,7 +392,7 @@ namespace Landis.Extension.Succession.Century
                                  ActiveSite site)
         {
             float[] initialBiomass = CohortBiomass.InitialBiomass(SiteVars.Cohorts[site], site, species);
-            SiteVars.Cohorts[site].AddNewCohort(species, initialBiomass[0], initialBiomass[1]);
+            SiteVars.Cohorts[site].AddNewCohort(species, 1, initialBiomass[0], initialBiomass[1]);
         }
         //---------------------------------------------------------------------
 

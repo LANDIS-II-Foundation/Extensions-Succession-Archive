@@ -19,8 +19,8 @@ namespace Landis.Extension.Succession.Century
         /// Grows all cohorts at a site for a specified number of years.
         /// Litter is decomposed following the Century model.
         /// </summary>
-        public static SiteCohorts Run(
-                                       SiteCohorts siteCohorts,
+        public static ISiteCohorts Run(
+                                       ISiteCohorts siteCohorts,
                                        Location location,
                                        int         years,
                                        bool        isSuccessionTimeStep)

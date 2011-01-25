@@ -334,7 +334,7 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Computes the initial biomass for a cohort at a site.
         /// </summary>
-        public static float[] InitialBiomass(SiteCohorts siteCohorts,
+        public static float[] InitialBiomass(ISiteCohorts siteCohorts,
                                             ActiveSite  site, ISpecies species)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];

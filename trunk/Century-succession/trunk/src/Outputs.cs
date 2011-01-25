@@ -1,7 +1,7 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
 //  Author: Robert Scheller, Ben Sulman
 
-using Landis.Cohorts;
+//using Landis.Cohorts;
 using Landis.Core;
 using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
