@@ -66,7 +66,7 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        public override void Initialize(string dataFile)
+        public override void Initialize()
         {
             PlugIn.ModelCore.Log.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
