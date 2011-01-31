@@ -240,7 +240,7 @@ namespace Landis.Extension.Succession.Century
                 //if (OtherData.CalibrateMode)
                 //    UI.WriteLine("Yr={0}. SpinupMortalityFraction={1:0.0000}, AdditionalMortality={2:0.0}, Spp={3}, Age={4}.", (Model.Core.CurrentTime + SubYear), SpinupMortalityFraction, (cohort.Biomass * SpinupMortalityFraction), cohort.Species.Name, cohort.Age);
             }
-            
+
             M_AGE_wood = Math.Min(M_AGE_wood, cohort.WoodBiomass);
             M_AGE_leaf = Math.Min(M_AGE_leaf, cohort.LeafBiomass);
 
@@ -310,18 +310,18 @@ namespace Landis.Extension.Succession.Century
 
 
             //  Add mortality to dead biomass pools.
-            //  Coarse root mortality is assumed equal to aboveground woody mortality
+            //  Coarse root mortality is assumed proportional to aboveground woody mortality
             //    mass is assumed 25% of aboveground wood (White et al. 2000, Niklas & Enquist 2002)
             if(mortality_wood > 0.0)
             {
                 ForestFloor.AddWoodLitter(mortality_wood, species, site);
-                Roots.AddCoarseRootLitter(mortality_wood, species, site);
+                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(mortality_wood), species, site);
             }
 
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddFoliageLitter(mortality_nonwood, species, site);
-                Roots.AddFineRootLitter(mortality_nonwood, species, site);
+                Roots.AddFineRootLitter(Roots.CalculateFineRoot(mortality_nonwood), species, site);
             }
 
             return;

@@ -62,7 +62,7 @@ namespace Landis.Extension.Succession.Century
 
             if(PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, Age={3}.", PlugIn.ModelCore.CurrentTime, month+1, cohort.Species.Name, cohort.Age);
-            
+
             double siteBiomass = SiteVars.TotalWoodBiomass[site];
 
             if(siteBiomass < 0)
@@ -237,12 +237,12 @@ namespace Landis.Extension.Succession.Century
                 //if (OtherData.CalibrateMode)
                 //    PlugIn.ModelCore.Log.WriteLine("Yr={0}. SpinupMortalityFraction={1:0.0000}, AdditionalMortality={2:0.0}, Spp={3}, Age={4}.", (PlugIn.ModelCore.CurrentTime + SubYear), SpinupMortalityFraction, (cohort.Biomass * SpinupMortalityFraction), cohort.Species.Name, cohort.Age);
             }
-            
+
             M_AGE_wood = Math.Min(M_AGE_wood, cohort.WoodBiomass);
             M_AGE_leaf = Math.Min(M_AGE_leaf, cohort.LeafBiomass);
 
             double[] M_AGE = new double[2]{M_AGE_wood, M_AGE_leaf};
-            
+
             SiteVars.AgeMortality[site] += (M_AGE_leaf + M_AGE_wood);
 
             //if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
@@ -310,18 +310,18 @@ namespace Landis.Extension.Succession.Century
 
 
             //  Add mortality to dead biomass pools.
-            //  Coarse root mortality is assumed equal to aboveground woody mortality
+            //  Coarse root mortality is assumed proportional to aboveground woody mortality
             //    mass is assumed 25% of aboveground wood (White et al. 2000, Niklas & Enquist 2002)
             if(mortality_wood > 0.0)
             {
                 ForestFloor.AddWoodLitter(mortality_wood, species, site);
-                Roots.AddCoarseRootLitter(mortality_wood, species, site);
+                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(mortality_wood), species, site);
             }
 
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddFoliageLitter(mortality_nonwood, species, site);
-                Roots.AddFineRootLitter(mortality_nonwood, species, site);
+                Roots.AddFineRootLitter(Roots.CalculateFineRoot(mortality_nonwood), species, site);
             }
 
             return;
@@ -452,7 +452,7 @@ namespace Landis.Extension.Succession.Century
                 return 0.0;
 
             double leafLAI = (leafC * 2.5) * btolai;
-             
+
             //if (leafC <= 0.0)
             //    return 0.0;
 
