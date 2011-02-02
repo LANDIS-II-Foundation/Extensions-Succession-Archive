@@ -126,10 +126,6 @@ namespace Landis.Extension.Succession.Century
             
             // Update Pest only once.  
             SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);  
-            //Reproduction.ChangeEstablishProbabilities(Util.ToArray<double>(SpeciesData.EstablishProbability));
-
-            //base.Run();
-
 
             base.RunReproductionFirst();
             

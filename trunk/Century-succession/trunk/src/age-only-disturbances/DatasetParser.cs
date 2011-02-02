@@ -35,7 +35,6 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
             if (landisData.Value.Actual != LandisDataValue)
                 throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
 
-            //EditableParameterDataset dataset = new EditableParameterDataset();
             ParameterDataset dataset = new ParameterDataset();
             const string DeadBiomassReductions = "DeadBiomassReductions";
             

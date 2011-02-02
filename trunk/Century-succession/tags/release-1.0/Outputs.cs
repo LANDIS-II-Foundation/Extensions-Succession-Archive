@@ -346,7 +346,7 @@ namespace Landis.Extension.Succession.Century
                         (avgSOM2NetMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgSOM3NetMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}",
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.00}",
                         (avgStreamC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgStreamN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgFireEfflux[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),

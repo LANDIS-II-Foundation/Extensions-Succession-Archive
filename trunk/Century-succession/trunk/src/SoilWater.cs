@@ -100,10 +100,7 @@ namespace Landis.Extension.Succession.Century
             double baseFlowFraction = EcoregionData.BaseFlowFraction[ecoregion];
             double drain            = EcoregionData.Drain[ecoregion];
 
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, *************************************", year, month);
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, H20input={2:0.0}, tave={3:0.0}, SWC={4:0.0}, litter={5:0.0}, live={6:0.0}", year, month, H2Oinputs, tave, soilWaterContent, litterBiomass, liveBiomass);
-
-            //liveBiomass /= 100.0;
+            deadBiomass = 0.0;
 
             //...Throughout, uses remainingPET as remaining energy for pet after
             //     each melting and evaporation step.  Initially calculated

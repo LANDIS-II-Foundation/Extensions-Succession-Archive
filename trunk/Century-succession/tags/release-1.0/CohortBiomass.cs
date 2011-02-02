@@ -18,20 +18,6 @@ namespace Landis.Extension.Succession.Century
     /// <summary>
     /// Calculations for an individual cohort's biomass.
     /// </summary>
-    /// <remarks>
-    /// References:
-    /// <list type="">
-    ///     <item>
-    ///     Crow, T. R., 1978.  Biomass and production in three contiguous
-    ///     forests in northern Wisconsin. Ecology 59(2):265-273.
-    ///     </item>
-    ///     <item>
-    ///     Niklas, K. J., Enquist, B. J., 2002.  Canonical rules for plant
-    ///     organ biomass partitioning and annual allocation.  Amer. J. Botany
-    ///     89(5): 812-819.
-    ///     </item>
-    /// </list>
-    /// </remarks>
     public class CohortBiomass
         : Biomass.ICalculator
     {
@@ -122,8 +108,6 @@ namespace Landis.Extension.Succession.Century
             float[] deltas  = new float[2]{deltaWood, deltaLeaf};
 
             CalculateNPPcarbon(site, actualANPP);
-
-
             UpdateDeadBiomass(cohort.Species, site, totalMortality);
 
             if(OtherData.CalibrateMode && Model.Core.CurrentTime > 0)
@@ -154,8 +138,6 @@ namespace Landis.Extension.Succession.Century
 
             double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
-            //double limitN   = AvailableN.GrowthReductionAvailableN(site, cohort.Species);
-            //New strategy:
             //Get limitN from CohortNlimits.  This value is the maximum N that the cohort could take up, based on other cohorts and available N.
             //The actual N limit is this max uptake divided by the N it would take up if it grew at maxNPP.
             double limitN = 0.0;
@@ -173,7 +155,6 @@ namespace Landis.Extension.Succession.Century
             double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
 
             if(Model.Core.CurrentTime > 0 && OtherData.CalibrateMode)
-            //if(OtherData.CalibrateMode)
             {
                 UI.WriteLine("Yr={0},Mo={1}. Spp={2}, Age={3}.", Model.Core.CurrentTime, month+1, cohort.Species.Name, cohort.Age);
                 UI.WriteLine("Yr={0},Mo={1}.     LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.000}, Capacity={5:0.0}", Model.Core.CurrentTime, month+1, limitLAI, limitH20, limitN, limitCapacity);
@@ -303,8 +284,6 @@ namespace Landis.Extension.Succession.Century
         {
 
 
-            //ISpecies species     = cohort.Species;
-
             double mortality_wood    = (double) totalMortality[0];
             double mortality_nonwood = (double) totalMortality[1];
 
@@ -343,7 +322,7 @@ namespace Landis.Extension.Succession.Century
             double Nreduction = 0.0;
 
             double B_ACT = SiteVars.ActualSiteBiomass(siteCohorts, site);
-            double B_MAX = SpeciesData.B_MAX_Spp[species][ecoregion];//B_MAX[ecoregion]
+            double B_MAX = SpeciesData.B_MAX_Spp[species][ecoregion];
 
             //  Initial biomass exponentially declines in response to
             //  competition.
@@ -377,7 +356,6 @@ namespace Landis.Extension.Succession.Century
             SiteVars.MineralN[site] -= Nreduction;
 
             float[] initialWoodLeafBiomass = new float[2]{(float) initialB[0], (float) initialB[1]};
-            //float[] initialWoodLeafBiomass = new float[2]{(float) initialBiomass, 0.0F};
 
             return initialWoodLeafBiomass;
         }

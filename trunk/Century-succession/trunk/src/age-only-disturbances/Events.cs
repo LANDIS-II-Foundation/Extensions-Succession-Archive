@@ -53,7 +53,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
             float reduction = (poolInput * (float) reductionPercentage);
             
             SiteVars.SourceSink[site].Carbon        += (double) reduction * 0.47;
-            SiteVars.FireEfflux[site]               += (double) reduction * 0.47;
+            //SiteVars.FireEfflux[site]               += (double) reduction * 0.47;
             
             return (poolInput - reduction);
         }
