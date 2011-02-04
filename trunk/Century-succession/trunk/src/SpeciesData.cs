@@ -33,7 +33,7 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<double> CoarseRootCN;
         public static Species.AuxParm<double> LeafLitterCN;
         public static Species.AuxParm<double> FineRootLitterCN;
-        public static Species.AuxParm<double> NLimits;
+        //public static Species.AuxParm<double> NLimits;
 
         public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbability;
         public static Species.AuxParm<Ecoregions.AuxParm<int>> ANPP_MAX_Spp;
@@ -61,14 +61,12 @@ namespace Landis.Extension.Succession.Century
             CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;
             FineRootLitterCN    = parameters.FineRootLitterCN;
-            NLimits = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            //NLimits = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             
             Establishment.Initialize();
             
             // The initial set of establishment probabilities:
             EstablishProbability = Establishment.GenerateNewEstablishProbabilities(parameters.Timestep);  
-            //Reproduction.ChangeEstablishProbabilities(Util.ToArray<double>(SpeciesData.EstablishProbability));
-
             
             ChangeParameters(parameters);
             

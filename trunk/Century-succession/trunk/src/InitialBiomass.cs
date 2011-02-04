@@ -16,7 +16,6 @@ namespace Landis.Extension.Succession.Century
     /// The initial live and dead biomass at a site.
     /// </summary>
     public class InitialBiomass
-    ///: IDisturbance
     {
         private ISiteCohorts cohorts;
         
@@ -39,8 +38,6 @@ namespace Landis.Extension.Succession.Century
         private double cohortWoodC;
         private double cohortWoodN;
         
-        //private static ActiveSite CurrentSite;
-
         //---------------------------------------------------------------------
 
         /// <summary>
@@ -219,7 +216,6 @@ namespace Landis.Extension.Succession.Century
             ISiteCohorts cohorts = MakeBiomassCohorts(sortedAgeCohorts, site);
             initialBiomass = new InitialBiomass(
                         cohorts,
-                        //SiteVars.Cohorts[site],
                         
                         SiteVars.SurfaceDeadWood[site],
                         SiteVars.SurfaceStructural[site],
@@ -257,7 +253,10 @@ namespace Landis.Extension.Succession.Century
             foreach (Landis.Library.AgeOnlyCohorts.ISpeciesCohorts speciesCohorts in sppCohorts)
             {
                 foreach (Landis.Library.AgeOnlyCohorts.ICohort cohort in speciesCohorts)
+                {
                     cohorts.Add(cohort);
+                    //PlugIn.ModelCore.Log.WriteLine("ADDED:  {0} {1}.", cohort.Species.Name, cohort.Age);
+                }
             }
             cohorts.Sort(Landis.Library.AgeOnlyCohorts.Util.WhichIsOlderCohort);
             return cohorts;
@@ -269,8 +268,9 @@ namespace Landis.Extension.Succession.Century
         /// A method that computes the initial biomass for a new cohort at a
         /// site based on the existing cohorts.
         /// </summary>
-        public delegate float[] ComputeMethod(ISiteCohorts siteCohorts,
-                                             ActiveSite site, ISpecies species);
+        public delegate float[] ComputeMethod(ISpecies species,
+                                             ISiteCohorts siteCohorts,
+                                             ActiveSite site);
 
         //---------------------------------------------------------------------
 
@@ -292,11 +292,10 @@ namespace Landis.Extension.Succession.Century
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
-            SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); //biomassCohorts;
-            //SiteCohorts biomassCohorts = new SiteCohorts();
-            if (ageCohorts.Count == 0)
+            SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); 
+            //if (ageCohorts.Count == 0)
                 //return biomassCohorts;
-                return SiteVars.Cohorts[site];
+              //  return SiteVars.Cohorts[site];
 
             int indexNextAgeCohort = 0;
             //  The index in the list of sorted age cohorts of the next
@@ -319,18 +318,16 @@ namespace Landis.Extension.Succession.Century
                 while (indexNextAgeCohort < ageCohorts.Count &&
                        ageCohorts[indexNextAgeCohort].Age == -time)
                 {
-                    float[] initialBiomass = initialBiomassMethod(SiteVars.Cohorts[site],
-                                                                 site, ageCohorts[indexNextAgeCohort].Species);
+                    ISpecies species = ageCohorts[indexNextAgeCohort].Species;
+
+                    float[] initialBiomass = initialBiomassMethod(species, SiteVars.Cohorts[site], site);
+
                     SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
                                                 initialBiomass[0], initialBiomass[1]);
                     indexNextAgeCohort++;
                 }
                 
-                Century.Run(SiteVars.Cohorts[site], site.Location, successionTimestep, true);
-                
-                //if(time % fire.frequency == 0)
-                // reduce cohorts by X%
-                // FireEffects.ReduceLayers(site);
+                Century.Run(site, successionTimestep, true);
                 
             }
 

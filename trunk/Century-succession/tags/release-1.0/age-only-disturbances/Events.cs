@@ -39,8 +39,8 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
             ForestFloor.AddWoodLitter(woodInput, cohort.Species, site);
             ForestFloor.AddFoliageLitter(foliarInput, cohort.Species, site);
             
-            Roots.AddCoarseRootLitter(wood, cohort.Species, site);  // All of cohorts roots are killed.
-            Roots.AddFineRootLitter(foliar, cohort.Species, site);
+            Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(wood), cohort.Species, site);  // All of cohorts roots are killed.
+            Roots.AddFineRootLitter(Roots.CalculateFineRoot(foliar), cohort.Species, site);
             
         }
 

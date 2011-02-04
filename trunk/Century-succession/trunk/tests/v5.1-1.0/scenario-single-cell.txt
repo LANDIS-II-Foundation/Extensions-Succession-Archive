@@ -1,13 +1,16 @@
 LandisData  Scenario
 
-Duration  50
+Duration  5
 
 Species   species.txt
 
 Ecoregions      ./ecoregions.txt
-EcoregionsMap   ./ecoregions.gis
+EcoregionsMap   ./singlecell1001.gis
 
 CellLength  100 << meters, 100 x 100 m = 1 ha
+
+InitialCommunities      "./initial-communities.txt"
+InitialCommunitiesMap   "./singlecell1001.gis"
 
 
 >> NOTE:  This example assumes that you have downloaded and installed 
@@ -16,12 +19,12 @@ CellLength  100 << meters, 100 x 100 m = 1 ha
 
 >> Succession Extension     Initialization File
 >> --------------------     -------------------
-   "Century Succession"     century-succession.txt
+   "Century Succession"     century-succession-single-cell.txt
 
 
 >> Disturbance Extensions   Initialization File
 >> ----------------------   -------------------
-   "Base Fire"		    base-fire_v2.txt
+>>   "Base Fire"		    base-fire_v2.txt
 
 >>   DisturbancesRandomOrder  yes  << optional parameter; default = no
 

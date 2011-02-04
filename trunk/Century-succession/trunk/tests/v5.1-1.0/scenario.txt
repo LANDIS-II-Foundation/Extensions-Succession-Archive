@@ -1,6 +1,6 @@
 LandisData  Scenario
 
-Duration  10
+Duration  50
 
 Species   species.txt
 
@@ -23,7 +23,6 @@ InitialCommunitiesMap   "./initial-communities.gis"
 
 >> Disturbance Extensions   Initialization File
 >> ----------------------   -------------------
->> "Base Wind"		    base-wind.txt
    "Base Fire"		    base-fire_v2.txt
 
    DisturbancesRandomOrder  yes  << optional parameter; default = no

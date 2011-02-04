@@ -1,5 +1,16 @@
 LandisData   "Initial Communities"
 
+MapCode 1001  << Test community for single cell landscape
+   acerrubr 10 30
+   betualle 10 40
+   betupapy 80 90
+   fraxamer 10 50
+   poputrem 90 100
+   pinustro 240
+   querrubr 20 50
+   thujocci 60
+   tiliamer 10
+
 >>Old jackpine oak 
 MapCode  0
    acerrubr 30

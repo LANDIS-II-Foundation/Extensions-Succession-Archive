@@ -174,7 +174,7 @@ namespace Landis.Extension.Succession.Century
                             //PlugIn.ModelCore.Log.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
                         }
                     
-                        tempClimate[y] = new AnnualClimate(ecoregion.Index, actualYear, Latitude[ecoregion]); 
+                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]); 
                     
                     }
                 

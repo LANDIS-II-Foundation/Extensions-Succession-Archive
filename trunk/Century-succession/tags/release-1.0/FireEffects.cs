@@ -21,13 +21,13 @@ namespace Landis.Extension.Succession.Century
     /// A helper class.
     /// </summary>
     public class FireReductions
-    : IDisturbance
+    //: IDisturbance
     {
         private double woodReduction;
         private double litterReduction;
-        private static ActiveSite currentSite;
-        private static FireReductions singleton;
-        
+        //private static ActiveSite currentSite;
+        //private static FireReductions singleton;
+        /*
         //---------------------------------------------------------------------
 
         ActiveSite IDisturbance.CurrentSite
@@ -71,7 +71,7 @@ namespace Landis.Extension.Succession.Century
             float[] fireReductionLiveBiomass = new float[2]{5.0f,5.0f};
         
             return fireReductionLiveBiomass;  // percent reduction
-        }
+        }*/
 
         
         public double WoodReduction

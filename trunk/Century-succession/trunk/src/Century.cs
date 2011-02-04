@@ -19,14 +19,15 @@ namespace Landis.Extension.Succession.Century
         /// Grows all cohorts at a site for a specified number of years.
         /// Litter is decomposed following the Century model.
         /// </summary>
-        public static ISiteCohorts Run(
-                                       ISiteCohorts siteCohorts,
-                                       Location location,
+        public static ISiteCohorts Run(ActiveSite site,
+                                       //ISiteCohorts siteCohorts,
+                                       //Location location,
                                        int         years,
                                        bool        isSuccessionTimeStep)
         {
 
-            ActiveSite site = (ActiveSite) PlugIn.ModelCore.Landscape.GetSite(location);
+            //ActiveSite site = (ActiveSite) PlugIn.ModelCore.Landscape.GetSite(location);
+            ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             for (int y = 0; y < years; ++y) {
@@ -61,8 +62,6 @@ namespace Landis.Extension.Succession.Century
 
                     int month = months[i];
 
-
-
                     SiteVars.MonthlyAGNPPcarbon[site][month] = 0.0;
                     SiteVars.MonthlyBGNPPcarbon[site][month] = 0.0;
                     SiteVars.MonthlyNEE[site][month] = 0.0;
@@ -76,7 +75,6 @@ namespace Landis.Extension.Succession.Century
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     SoilWater.Run(y, month, liveBiomass, site);
-                    //SpeciesData.CalculateNGrowthLimits(site);
 
                     // Calculate N limitations for each cohort
                     AvailableN.CohortNlimits = new Dictionary<int, Dictionary<int,double>>();

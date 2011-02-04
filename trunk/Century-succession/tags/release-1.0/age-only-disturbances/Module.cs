@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         public static void Initialize(string filename)
         {
             if (filename != null) {
-                UI.WriteLine("Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
+                UI.WriteLine("   Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
                 DatasetParser parser = new DatasetParser();
                 parameters = Data.Load<IParameterDataset>(filename, parser);
 

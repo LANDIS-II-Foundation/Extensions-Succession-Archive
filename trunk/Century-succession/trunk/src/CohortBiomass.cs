@@ -25,8 +25,6 @@ namespace Landis.Extension.Succession.Century
 
         //  Ecoregion where the cohort's site is located
         private IEcoregion ecoregion;
-        //private double mortalityFraction;
-
         public static int month;
         public static double SpinupMortalityFraction;
 
@@ -310,8 +308,8 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Computes the initial biomass for a cohort at a site.
         /// </summary>
-        public static float[] InitialBiomass(ISiteCohorts siteCohorts,
-                                            ActiveSite  site, ISpecies species)
+        public static float[] InitialBiomass(ISpecies species, ISiteCohorts siteCohorts,
+                                            ActiveSite  site)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
