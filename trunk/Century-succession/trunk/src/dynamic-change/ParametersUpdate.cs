@@ -1,4 +1,5 @@
 using Edu.Wisc.Forest.Flel.Util;
+using System.IO;
 
 namespace Landis.Extension.Succession.Century.Dynamic
 {
@@ -73,7 +74,15 @@ namespace Landis.Extension.Succession.Century.Dynamic
         /// </param>
         public void LoadParameters(ITextParser<IParameters> parameterParser)
         {
-            parameters = PlugIn.ModelCore.Load<IParameters>(file, parameterParser);
+            try
+            {
+                parameters = PlugIn.ModelCore.Load<IParameters>(file, parameterParser);
+            }
+            catch (FileNotFoundException)
+            {
+                string mesg = string.Format("Error: The file {0} does not exist", file);
+                throw new System.ApplicationException(mesg);
+            }
         }
     }
 }
