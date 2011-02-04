@@ -67,14 +67,13 @@ namespace Landis.Extension.Succession.Biomass
             this.deadWoodyPool = deadWoodyPool;
             this.deadNonWoodyPool = deadNonWoodyPool;
         }
-        
+        //---------------------------------------------------------------------
         public static ISiteCohorts Clone(ISiteCohorts site_cohorts)
          {
              ISiteCohorts clone = new SiteCohorts();
              foreach (ISpeciesCohorts speciesCohorts in site_cohorts)
                  foreach (ICohort cohort in speciesCohorts)
                      clone.AddNewCohort(cohort.Species, cohort.Age, cohort.Biomass);  //species.cohorts.Add(speciesCohorts.Clone());
-             //clone.totalBiomass = this.totalBiomass;
              return clone;
          }
         //---------------------------------------------------------------------
@@ -208,13 +207,6 @@ namespace Landis.Extension.Succession.Biomass
 
             SiteVars.Cohorts[site] = new Library.BiomassCohorts.SiteCohorts(); //biomassCohorts;
 
-            // if (ageCohorts.Count == 0)
-            //    return SiteVars.Cohorts[site]; //biomassCohorts;
-
-            
-            //if (ageCohorts.Count == 0)
-            //    return biomassCohorts;
-
             int indexNextAgeCohort = 0;
             //  The index in the list of sorted age cohorts of the next
             //  cohort to be considered
@@ -231,9 +223,7 @@ namespace Landis.Extension.Succession.Biomass
             for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
             {
                 //  Grow current biomass cohorts.
-                //PlugIn.GrowCohorts(SiteVars.Cohorts[site], site, successionTimestep, successionTimestep);
                 PlugIn.GrowCohorts(site, successionTimestep, true);
-                //PlugIn.GrowCohorts(site, successionTimestep, true);
 
                 //  Add those cohorts that were born at the current year
                 while (indexNextAgeCohort < ageCohorts.Count &&
@@ -247,7 +237,6 @@ namespace Landis.Extension.Succession.Biomass
                     SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
                                                 initialBiomass);
 
-                    //PlugIn.ModelCore.Log.WriteLine("I'm born!");
 
                     //foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
                     //    foreach (ICohort co in spp)
@@ -256,7 +245,6 @@ namespace Landis.Extension.Succession.Biomass
                 }
             }
 
-            // return biomassCohorts;
             //PlugIn.ModelCore.Log.WriteLine("Initial Community = {0}.", SiteVars.Cohorts[site].Write());
             return SiteVars.Cohorts[site];
         }

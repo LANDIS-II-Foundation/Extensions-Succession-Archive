@@ -81,18 +81,19 @@ namespace Landis.Extension.Succession.Biomass
             SpeciesData.ChangeDynamicParameters(0);  // Year 0
             Outputs.Initialize(parameters);
             
-            // InitialBiomass.Initialize(Timestep);
-
             //  Cohorts must be created before the base class is initialized
             //  because the base class' reproduction module uses the core's
             //  SuccessionCohorts property in its Initialization method.
             Landis.Library.BiomassCohorts.Cohorts.Initialize(Timestep, new CohortBiomass());
 
-
+            // Initialize Reproduction routines:
             Reproduction.SufficientResources = SufficientLight;
-            InitialBiomass.Initialize(Timestep);
+            Reproduction.Establish = Establish;
+            Reproduction.AddNewCohort = AddNewCohort;
+            Reproduction.MaturePresent = MaturePresent;
+            base.Initialize(modelCore, parameters.SeedAlgorithm); 
 
-            base.Initialize(modelCore, parameters.SeedAlgorithm, AddNewCohort);
+            InitialBiomass.Initialize(Timestep);
 
             Cohort.DeathEvent += CohortDied;
             AgeOnlyDisturbances.Module.Initialize(parameters.AgeOnlyDisturbanceParms);
@@ -129,40 +130,6 @@ namespace Landis.Extension.Succession.Biomass
         }
 
 
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Determines if there is sufficient light at a site for a species to
-        /// germinate/resprout.
-        /// </summary>
-        public bool SufficientLight(ISpecies species, ActiveSite site)
-        {
-
-            byte siteShade = PlugIn.ModelCore.GetSiteVar<byte>("Shade")[site];
-
-            double lightProbability = 0.0;
-
-            bool found = false;
-
-            foreach (ISufficientLight lights in sufficientLight)
-            {
-
-                //PlugIn.ModelCore.Log.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
-                if (lights.ShadeClass == species.ShadeTolerance)
-                {
-                    if (siteShade == 0) lightProbability = lights.ProbabilityLight0;
-                    if (siteShade == 1) lightProbability = lights.ProbabilityLight1;
-                    if (siteShade == 2) lightProbability = lights.ProbabilityLight2;
-                    if (siteShade == 3) lightProbability = lights.ProbabilityLight3;
-                    if (siteShade == 4) lightProbability = lights.ProbabilityLight4;
-                    if (siteShade == 5) lightProbability = lights.ProbabilityLight5;
-                    found = true;
-                }
-            }
-
-            if (!found) PlugIn.ModelCore.Log.WriteLine("Could not find sufficient light data for {0}.", species.Name);
-
-            return PlugIn.ModelCore.GenerateUniform() < lightProbability;
-        }
         //---------------------------------------------------------------------
         // Revised 10/5/09 - BRM
 
@@ -203,13 +170,10 @@ namespace Landis.Extension.Succession.Biomass
                         if (cohort.Age > 5)
                             B_ACT += cohort.Biomass;
             }
-                //B_ACT = (double) Biomass.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
-            //(double) SiteVars.ComputeNonYoungBiomass(site);
 
             int lastMortality = SiteVars.PreviousYearMortality[site];
             B_ACT = System.Math.Min(EcoregionData.B_MAX[ecoregion] - lastMortality, B_ACT);
 
-            //ActualSiteBiomass(cohorts[site], site, out ecoregion);
 
             //  Relative living biomass (ratio of actual to maximum site
             //  biomass).
@@ -245,15 +209,6 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
 
-        //---------------------------------------------------------------------
-
-        public void AddNewCohort(ISpecies species,
-                                 ActiveSite site)
-        {
-            //ISiteCohorts.InitialBiomass = CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site);
-            SiteVars.Cohorts[site].AddNewCohort(species, 1, CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site)); 
-                                                        //            site));
-        }
 
         //---------------------------------------------------------------------
 
@@ -261,7 +216,6 @@ namespace Landis.Extension.Succession.Biomass
                                            ushort years,
                                            int? successionTimestep)
         {
-            //ISiteCohorts cohorts = SiteVars.Cohorts[site];
             GrowCohorts(site, years, successionTimestep.HasValue);
         }
         //---------------------------------------------------------------------
@@ -269,15 +223,11 @@ namespace Landis.Extension.Succession.Biomass
         /// Grows all cohorts at a site for a specified number of years.  The
         /// dead pools at the site also decompose for the given time period.
         /// </summary>
-        public static void GrowCohorts(//Landis.Library.BiomassCohorts.ISiteCohorts cohorts,
+        public static void GrowCohorts(
                                        ActiveSite site,
                                        int years,
                                        bool isSuccessionTimestep)
         {
-            //if (cohorts == null)
-            //     return;
-
-            //CurrentYearSiteMortality = 0.0;
             //PlugIn.ModelCore.Log.WriteLine("years = {0}, successionTS = {1}.", years, successionTimestep.Value);
 
             for (int y = 1; y <= years; ++y)
@@ -287,30 +237,81 @@ namespace Landis.Extension.Succession.Biomass
 
                 SiteVars.ResetAnnualValues(site);
                 CohortBiomass.SubYear = y - 1;
-                //CohortBiomass.CanopyLightExtinction = 0.0;
-
-                //SiteVars.PercentShade[site] = 0.0;
-                //SiteVars.LightTrans[site] = 1.0;
 
                 SiteVars.Cohorts[site].Grow(site, (y == years && isSuccessionTimestep));
                 SiteVars.WoodyDebris[site].Decompose();
                 SiteVars.Litter[site].Decompose();
             }
 
-            //SiteVars.PreviousYearMortality[site] = CurrentYearSiteMortality;
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Determines if there is sufficient light at a site for a species to
+        /// germinate/resprout.
+        /// This is a Delegate method to base succession.
+        /// </summary>
+        public bool SufficientLight(ISpecies species, ActiveSite site)
+        {
+
+            byte siteShade = PlugIn.ModelCore.GetSiteVar<byte>("Shade")[site];
+
+            double lightProbability = 0.0;
+
+            bool found = false;
+
+            foreach (ISufficientLight lights in sufficientLight)
+            {
+
+                //PlugIn.ModelCore.Log.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
+                if (lights.ShadeClass == species.ShadeTolerance)
+                {
+                    if (siteShade == 0) lightProbability = lights.ProbabilityLight0;
+                    if (siteShade == 1) lightProbability = lights.ProbabilityLight1;
+                    if (siteShade == 2) lightProbability = lights.ProbabilityLight2;
+                    if (siteShade == 3) lightProbability = lights.ProbabilityLight3;
+                    if (siteShade == 4) lightProbability = lights.ProbabilityLight4;
+                    if (siteShade == 5) lightProbability = lights.ProbabilityLight5;
+                    found = true;
+                }
+            }
+
+            if (!found) PlugIn.ModelCore.Log.WriteLine("Could not find sufficient light data for {0}.", species.Name);
+
+            return PlugIn.ModelCore.GenerateUniform() < lightProbability;
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Add a new cohort to a site.
+        /// This is a Delegate method to base succession.
+        /// </summary>
+
+        public void AddNewCohort(ISpecies species, ActiveSite site)
+        {
+            SiteVars.Cohorts[site].AddNewCohort(species, 1, CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site));
         }
         //---------------------------------------------------------------------
 
         /// <summary>
         /// Determines if a species can establish on a site.
+        /// This is a Delegate method to base succession.
         /// </summary>
         public bool Establish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
             double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+
             return modelCore.GenerateUniform() < establishProbability;
         }
 
         //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Determines if there is a mature cohort at a site.  
+        /// This is a Delegate method to base succession.
+        /// </summary>
+        public bool MaturePresent(ISpecies species, ActiveSite site)
+        {
+            return SiteVars.Cohorts[site].IsMaturePresent(species);
+        }
     }
 }
