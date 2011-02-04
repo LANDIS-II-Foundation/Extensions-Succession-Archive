@@ -4,6 +4,7 @@
 using Landis.Library.AgeOnlyCohorts;
 using Landis.Core;
 using Landis.Library.InitialCommunities;
+using Landis.Library.Succession;
 using System.Collections.Generic;
 using Landis.SpatialModeling;
 
@@ -62,9 +63,11 @@ namespace Landis.Extension.Succession.AgeOnly
 
             establishProbabilities = parameters.EstablishProbabilities;
 
-            base.Initialize(modelCore,
-                            parameters.SeedAlgorithm,
-                            AddNewCohort);
+            //Reproduction.SufficientResources = SufficientLight;
+            Reproduction.Establish = Establish;
+            Reproduction.AddNewCohort = AddNewCohort;
+            Reproduction.MaturePresent = MaturePresent;
+            base.Initialize(modelCore, parameters.SeedAlgorithm);
             
             InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
         }
@@ -87,21 +90,12 @@ namespace Landis.Extension.Succession.AgeOnly
             //modelCore.Log.WriteLine("   Cohort DIED:  {0}:{1}.", eventArgs.Cohort.Species.Name, eventArgs.Cohort.Age);
         }
 
-        //---------------------------------------------------------------------
-
-        public void AddNewCohort(ISpecies   species,
-                                 ActiveSite site)
-        {
-            //modelCore.Log.WriteLine("   Cohort BORN:  {0}.", species.Name);
-            SiteVars.Cohorts[site].AddNewCohort(species);
-        }
 
         //---------------------------------------------------------------------
 
         protected override void InitializeSite(ActiveSite site,
                                                ICommunity initialCommunity)
         {
-            //SiteVars.Cohorts[site] = initialCommunity.Cohorts as SiteCohorts;
             SiteVars.Cohorts[site] = new SiteCohorts(initialCommunity.Cohorts);
 
         }
@@ -129,9 +123,20 @@ namespace Landis.Extension.Succession.AgeOnly
         }
 
         //---------------------------------------------------------------------
+        /// <summary>
+        /// Add a new cohort to a site.
+        /// This is a Delegate method to base succession.
+        /// </summary>
+
+        public void AddNewCohort(ISpecies species, ActiveSite site)
+        {
+            SiteVars.Cohorts[site].AddNewCohort(species);
+        }
+        //---------------------------------------------------------------------
 
         /// <summary>
         /// Determines if a species can establish on a site.
+        /// This is a Delegate method to base succession.
         /// </summary>
         public bool Establish(ISpecies species, ActiveSite site)
         {
@@ -141,5 +146,14 @@ namespace Landis.Extension.Succession.AgeOnly
         }
 
         //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Determines if there is a mature cohort at a site.  
+        /// This is a Delegate method to base succession.
+        /// </summary>
+        public bool MaturePresent(ISpecies species, ActiveSite site)
+        {
+            return SiteVars.Cohorts[site].IsMaturePresent(species);
+        }
     }
 }
