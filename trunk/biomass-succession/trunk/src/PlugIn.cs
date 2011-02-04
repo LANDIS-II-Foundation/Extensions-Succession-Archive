@@ -21,13 +21,6 @@ namespace Landis.Extension.Succession.Biomass
         private List<ISufficientLight> sufficientLight;
         public static bool CalibrateMode;
         public static double CurrentYearSiteMortality;
-        //private double pctSun1;
-        //private double pctSun2;
-        //private double pctSun3;
-        //private double pctSun4;
-        //private double pctSun5;
-
-
 
         //---------------------------------------------------------------------
 
@@ -69,11 +62,6 @@ namespace Landis.Extension.Succession.Biomass
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
 
             sufficientLight = parameters.LightClassProbabilities;
-            //pctSun1 = parameters.PctSun1;
-            //pctSun2 = parameters.PctSun2;
-            //pctSun3 = parameters.PctSun3;
-            //pctSun4 = parameters.PctSun4;
-            //pctSun5 = parameters.PctSun5;
 
             SpeciesData.Initialize(parameters);
             EcoregionData.Initialize(parameters);
