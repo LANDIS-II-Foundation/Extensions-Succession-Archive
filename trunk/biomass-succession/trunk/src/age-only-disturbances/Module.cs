@@ -2,6 +2,7 @@
 //  Authors:  Robert M. Scheller, James B. Domingo
 
 using Landis.Library.BiomassCohorts;
+using System.IO;
 
 namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
 {
@@ -36,9 +37,17 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
         public static void Initialize(string filename)
         {
             if (filename != null) {
-                PlugIn.ModelCore.Log.WriteLine("Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
+                PlugIn.ModelCore.Log.WriteLine("   Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
                 DatasetParser parser = new DatasetParser();
-                parameters = PlugIn.ModelCore.Load<IParameterDataset>(filename, parser);
+                try
+                {
+                    parameters = PlugIn.ModelCore.Load<IParameterDataset>(filename, parser);
+                }
+                catch (FileNotFoundException)
+                {
+                    string mesg = string.Format("Error: The file {0} does not exist", filename);
+                    throw new System.ApplicationException(mesg);
+                }
 
                 Cohort.AgeOnlyDeathEvent += Events.CohortDied;
                 SiteCohorts.AgeOnlyDisturbanceEvent += Events.SiteDisturbed;

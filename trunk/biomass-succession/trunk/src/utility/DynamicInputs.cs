@@ -50,12 +50,19 @@ namespace Landis.Extension.Succession.Biomass
 
         }
         //---------------------------------------------------------------------
-        public static void Initialize(string filename,
-            bool writeOutput)
+        public static void Initialize(string filename, bool writeOutput)
         {
-            PlugIn.ModelCore.Log.WriteLine("Loading dynamic input data from file \"{0}\" ...", filename);
+            PlugIn.ModelCore.Log.WriteLine("   Loading dynamic input data from file \"{0}\" ...", filename);
             DynamicInputsParser parser = new DynamicInputsParser();
-            allData = PlugIn.ModelCore.Load<Dictionary<int, IDynamicInputRecord[,]>>(filename, parser);
+            try
+            {
+                allData = PlugIn.ModelCore.Load<Dictionary<int, IDynamicInputRecord[,]>>(filename, parser);
+            }
+            catch (FileNotFoundException)
+            {
+                string mesg = string.Format("Error: The file {0} does not exist", filename);
+                throw new System.ApplicationException(mesg);
+            }
 
             timestepData = allData[0];
         }
