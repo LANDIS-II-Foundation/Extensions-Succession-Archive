@@ -41,8 +41,6 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
             if (landisData.Value.Actual != "Age-only Disturbances - Biomass Parameters")
                 throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", "Age-only Disturbances - Biomass Parameters");
 
-            PlugIn.ModelCore.Log.WriteLine("Now parsing...");
-
             ParameterDataset dataset = new ParameterDataset();
             const string DeadBiomassReductions = "DeadBiomassReductions";
 
@@ -65,7 +63,7 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
         {
             ReadName(tableName);
 
-            PlugIn.ModelCore.Log.WriteLine("      Reading {0}.", tableName);
+            PlugIn.ModelCore.Log.WriteLine("   Age-only-disturbances:  reading {0}.", tableName);
 
             InputVar<string> disturbance = new InputVar<string>("Disturbance");
             InputVar<Percentage> woodPercentage = new InputVar<Percentage>("Woody");
