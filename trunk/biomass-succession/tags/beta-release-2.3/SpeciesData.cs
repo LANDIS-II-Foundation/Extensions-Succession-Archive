@@ -39,7 +39,7 @@ namespace Landis.Biomass.Succession
             ChangeParameters(parameters);
 
             LeafLignin = parameters.LeafLignin;
-            MaxLAI = parameters.MaxLAI;
+            //MaxLAI = parameters.MaxLAI;
             LeafLongevity = parameters.LeafLongevity;
             MortCurveShapeParm = parameters.MortCurveShapeParm;
             GrowthCurveShapeParm = parameters.GrowthCurveShapeParm;

@@ -172,7 +172,6 @@ namespace Landis.Biomass.Succession.ClimateChange
             InputVar<double> mortCurveShapeParm = new InputVar<double>("Mortality Curve Shape Parameter");
             InputVar<double> growthCurveShapeParm = new InputVar<double>("Growth Curve Shape Parameter");
             InputVar<double> leafLignin = new InputVar<double>("Leaf Percent Lignin");
-            InputVar<double> maxLAI = new InputVar<double>("Maximum Leaf Area Index");
             string lastColumn = "the " + mortCurveShapeParm.Name + " column";
 
             while (! AtEndOfInput && CurrentName != EcoregionParameters) {
@@ -193,9 +192,6 @@ namespace Landis.Biomass.Succession.ClimateChange
 
                 ReadValue(leafLignin, currentLine);
                 parameters.SetLeafLignin(species, leafLignin.Value);
-
-                ReadValue(maxLAI, currentLine);
-                parameters.SetMaxLAI(species, maxLAI.Value);
 
                 CheckNoDataAfter(lastColumn, currentLine);
                 GetNextLine();

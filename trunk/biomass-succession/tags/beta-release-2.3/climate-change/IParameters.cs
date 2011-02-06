@@ -51,7 +51,7 @@ namespace Landis.Biomass.Succession.ClimateChange
             get;
         }
         Species.AuxParm<double> LeafLignin {get;}
-        Species.AuxParm<double> MaxLAI { get; }
+        //Species.AuxParm<double> MaxLAI { get; }
         Ecoregions.AuxParm<int> AET { get; }
 
         //---------------------------------------------------------------------

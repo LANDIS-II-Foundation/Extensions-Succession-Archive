@@ -26,7 +26,7 @@ namespace Landis.Biomass.Succession.ClimateChange
         private Species.AuxParm<double> mortCurveShapeParm;
         private Species.AuxParm<double> growthCurveShapeParm;
         private Species.AuxParm<double> leafLignin;
-        private Species.AuxParm<double> maxLAI;
+        //private Species.AuxParm<double> maxLAI;
         private Ecoregions.AuxParm<int> aet;
         private List<ISufficientLight> sufficientLight;
         private Species.AuxParm<Ecoregions.AuxParm<double>> establishProbability;
@@ -86,14 +86,14 @@ namespace Landis.Biomass.Succession.ClimateChange
             }
         }
         //---------------------------------------------------------------------
-
+        /*
         public Species.AuxParm<double> MaxLAI
         {
             get
             {
                 return maxLAI;
             }
-        }
+        }*/
         //---------------------------------------------------------------------
 
         public Ecoregions.AuxParm<int> AET
@@ -202,13 +202,13 @@ namespace Landis.Biomass.Succession.ClimateChange
             leafLignin[species] = CheckBiomassParm(newValue, 0.0, 0.4);
         }
         //---------------------------------------------------------------------
-
+        /*
         public void SetMaxLAI(ISpecies species,
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
             maxLAI[species] = CheckBiomassParm(newValue, 1.0, 20.0);
-        }
+        }*/
         //---------------------------------------------------------------------
 
         public void SetAET(IEcoregion           ecoregion,
@@ -309,7 +309,7 @@ namespace Landis.Biomass.Succession.ClimateChange
             mortCurveShapeParm  = new Species.AuxParm<double>(speciesDataset);
             growthCurveShapeParm  = new Species.AuxParm<double>(speciesDataset);
             leafLignin          = new Species.AuxParm<double>(speciesDataset);
-            maxLAI              = new Species.AuxParm<double>(speciesDataset);
+            //maxLAI              = new Species.AuxParm<double>(speciesDataset);
             aet = new Ecoregions.AuxParm<int>(ecoregionDataset);
             sufficientLight     = new List<ISufficientLight>();
             establishProbability = CreateSpeciesEcoregionParm<double>();

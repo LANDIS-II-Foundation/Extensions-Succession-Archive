@@ -1,4 +1,5 @@
-using Edu.Wisc.Forest.Flel.Util; 
+using Edu.Wisc.Forest.Flel.Util;
+using System.IO;
 
 namespace Landis.Biomass.Succession.ClimateChange
 {
@@ -73,7 +74,15 @@ namespace Landis.Biomass.Succession.ClimateChange
         /// </param>
         public void LoadParameters(ITextParser<IParameters> parameterParser)
         {
-            parameters = Landis.Data.Load<IParameters>(file, parameterParser);
+            try
+            {
+                parameters = Landis.Data.Load<IParameters>(file, parameterParser);
+            }
+            catch (FileNotFoundException)
+            {
+                string mesg = string.Format("Error: The file {0} does not exist", file);
+                throw new System.ApplicationException(mesg);
+            }
         }
     }
 }

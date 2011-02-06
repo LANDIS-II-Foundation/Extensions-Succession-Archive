@@ -226,8 +226,6 @@ namespace Landis.Biomass.Succession
             //double LAIactual = SpeciesData.MaxLAI[cohort.Species] * actualANPP / maxANPP;
             //CanopyLightExtinction += (-0.54 * LAIactual);
 
-            UI.WriteLine("CanopyLightExtinction = {0}, LightTransmittance = {1}.", CanopyLightExtinction, lightTransmittance);
-
             // Calculated actual ANPP can not exceed the limit set by the
             //  maximum ANPP times the ratio of potential to maximum biomass.
             //  This down regulates actual ANPP by the available growing space.
