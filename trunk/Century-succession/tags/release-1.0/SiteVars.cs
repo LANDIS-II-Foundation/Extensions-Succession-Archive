@@ -65,13 +65,16 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyAGNPPC;
         private static ISiteVar<double[]> monthlyBGNPPC;
         private static ISiteVar<double[]> monthlyNEE;
+        private static ISiteVar<double[]> monthlyResp;
+
+        public static ISiteVar<double[]> MonthlyDecayFactor;
         public static ISiteVar<double> AnnualNEE;
         public static ISiteVar<double> FireEfflux;
-        private static ISiteVar<double[]> monthlyResp;
         
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<byte> FireSeverity;
         public static ISiteVar<double> AgeMortality;
+        public static ISiteVar<double> FineRootFallC;
         
         //---------------------------------------------------------------------
 
@@ -120,6 +123,7 @@ namespace Landis.Extension.Succession.Century
             monthlyAGNPPC       = Model.Core.Landscape.NewSiteVar<double[]>();
             monthlyBGNPPC       = Model.Core.Landscape.NewSiteVar<double[]>();
             monthlyNEE          = Model.Core.Landscape.NewSiteVar<double[]>();
+            MonthlyDecayFactor  = Model.Core.Landscape.NewSiteVar<double[]>();
             AnnualNEE           = Model.Core.Landscape.NewSiteVar<double>();
             FireEfflux          = Model.Core.Landscape.NewSiteVar<double>();
             monthlyResp         = Model.Core.Landscape.NewSiteVar<double[]>();
@@ -131,6 +135,7 @@ namespace Landis.Extension.Succession.Century
             
             TotalWoodBiomass = Model.Core.Landscape.NewSiteVar<double>();
             AgeMortality = Model.Core.Landscape.NewSiteVar<double>();
+            FineRootFallC = Model.Core.Landscape.NewSiteVar<double>();
             
             foreach (ActiveSite site in Model.Core.Landscape)
             {
@@ -155,10 +160,11 @@ namespace Landis.Extension.Succession.Century
                 stream[site]                = new Layer(LayerName.Other, LayerType.Other);
                 sourceSink[site]            = new Layer(LayerName.Other, LayerType.Other);
                 
-                monthlyAGNPPC[site]           = new double[12];
-                monthlyBGNPPC[site]           = new double[12];
+                monthlyAGNPPC[site]         = new double[12];
+                monthlyBGNPPC[site]         = new double[12];
                 monthlyNEE[site]            = new double[12];
                 monthlyResp[site]           = new double[12];
+                MonthlyDecayFactor[site]    = new double[12];
 
             }
             
@@ -204,7 +210,7 @@ namespace Landis.Extension.Succession.Century
         }
         
         //---------------------------------------------------------------------
-        public static void ResetAnnualValues(Site site)
+        public static void ResetAnnualValues(ActiveSite site)
         {
             
             // Reset these accumulators to zero:
@@ -216,6 +222,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.AGNPPcarbon[site] = 0.0;
             SiteVars.BGNPPcarbon[site] = 0.0;
             SiteVars.LitterfallC[site] = 0.0;
+            SiteVars.FineRootFallC[site] = 0.0;
             
             SiteVars.Stream[site]          = new Layer(LayerName.Other, LayerType.Other);
             SiteVars.SourceSink[site]      = new Layer(LayerName.Other, LayerType.Other);

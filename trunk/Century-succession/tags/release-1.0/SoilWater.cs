@@ -371,7 +371,8 @@ namespace Landis.Extension.Succession.Century
             SiteVars.AvailableWater[site]   = availableWater;  //available to plants for growth
             SiteVars.SoilWaterContent[site] = soilWaterContent;
             SiteVars.SoilTemperature[site]  = CalculateSoilTemp(tmin, tmax, liveBiomass, litterBiomass, month);
-            SiteVars.DecayFactor[site]      = CalculateDecayFactor((int) OtherData.WType, SiteVars.SoilTemperature[site], relativeWaterContent, ratioPrecipPET, month); 
+            SiteVars.DecayFactor[site]      = CalculateDecayFactor((int) OtherData.WType, SiteVars.SoilTemperature[site], relativeWaterContent, ratioPrecipPET, month);
+            SiteVars.MonthlyDecayFactor[site][month] = SiteVars.DecayFactor[site];
             SiteVars.AnaerobicEffect[site]  = CalculateAnaerobicEffect(drain, ratioPrecipPET, pet, tave);
             
             //SiteVars.StormFlow[site] = stormFlow;

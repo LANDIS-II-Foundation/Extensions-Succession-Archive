@@ -23,12 +23,12 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Kills coarse roots and add the biomass to the Wood Debris pool.
         /// </summary>
-        public static void AddCoarseRootLitter(double abovegroundWoodBiomass,
+        public static void AddCoarseRootLitter(double coarseRootBiomass,
                                     ISpecies   species,
                                     ActiveSite site)
         {
 
-            double coarseRootBiomass = CalculateCoarseRoot(abovegroundWoodBiomass); // Ratio above to below
+            //double coarseRootBiomass = CalculateCoarseRoot(abovegroundWoodBiomass); // Ratio above to below
 
             if(coarseRootBiomass > 0)
             WoodLayer.PartitionResidue(coarseRootBiomass,  
@@ -45,14 +45,17 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Kills fine roots and add the biomass to the Dead Fine Roots pool.
         /// </summary>
-        public static void AddFineRootLitter(double abovegroundFoliarBiomass, 
+        public static void AddFineRootLitter(double fineRootBiomass, 
                                       ISpecies   species,
                                       ActiveSite site)
         {
-            double fineRootBiomass = CalculateFineRoot(abovegroundFoliarBiomass); 
+            //double fineRootBiomass = CalculateFineRoot(abovegroundFoliarBiomass); 
             
             double inputDecayValue = 1.0;   // Decay value is calculated for surface/soil (leaf/fine root), 
                                             // therefore, this is just a dummy value.
+
+            SiteVars.FineRootFallC[site] += fineRootBiomass * 0.47;
+            
             if(fineRootBiomass > 0)
             LitterLayer.PartitionResidue(
                             fineRootBiomass,

@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.Century
             log.AutoFlush = true;
             log.Write("Time, Ecoregion, NumSites,");
             log.Write("NEEC, SOMTC, AGB, ");
-            log.Write("AG_NPPC, BG_NPPC, LitterfallTC, AgeMortality, ");
+            log.Write("AG_NPPC, BG_NPPC, LitterfallC, FRootLitterC, ");
             log.Write("MineralN, TotalN, GrossMineralization, ");
             log.Write("C:LeafFRoot, C:WoodCRoot, C:DeadWood, C:DeadCRoot, ");
             log.Write("C:SurfStruc, C:SurfMeta, C:SoilStruc, C:SoilMeta, ");
@@ -90,7 +90,8 @@ namespace Landis.Extension.Succession.Century
             double[] avgNPPtc = new double[Model.Core.Ecoregions.Count];
             double[] avgBGNPPtc = new double[Model.Core.Ecoregions.Count];
             double[] avgLittertc = new double[Model.Core.Ecoregions.Count];
-            double[] avgAgeMc = new double[Model.Core.Ecoregions.Count];
+            double[] avgRootLittertc = new double[Model.Core.Ecoregions.Count];
+            //double[] avgAgeMc = new double[Model.Core.Ecoregions.Count];
 
             double[] avgMineralN = new double[Model.Core.Ecoregions.Count];
             double[] avgGrossMin = new double[Model.Core.Ecoregions.Count];
@@ -139,7 +140,6 @@ namespace Landis.Extension.Succession.Century
             double[] avgStreamC = new double[Model.Core.Ecoregions.Count];
             double[] avgStreamN = new double[Model.Core.Ecoregions.Count];
             double[] avgFireEfflux = new double[Model.Core.Ecoregions.Count];
-            double[] avgDecayFactor = new double[Model.Core.Ecoregions.Count];
 
 
             foreach (IEcoregion ecoregion in Model.Core.Ecoregions)
@@ -154,7 +154,8 @@ namespace Landis.Extension.Succession.Century
                 avgNPPtc[ecoregion.Index] = 0.0;
                 avgBGNPPtc[ecoregion.Index] = 0.0;
                 avgLittertc[ecoregion.Index] = 0.0;
-                avgAgeMc[ecoregion.Index] = 0.0;
+                avgRootLittertc[ecoregion.Index] = 0.0;
+                //avgAgeMc[ecoregion.Index] = 0.0;
 
                 avgMineralN[ecoregion.Index] = 0.0;
                 avgGrossMin[ecoregion.Index] = 0.0;
@@ -203,7 +204,7 @@ namespace Landis.Extension.Succession.Century
                 avgStreamC[ecoregion.Index] = 0.0;
                 avgStreamN[ecoregion.Index] = 0.0;
                 avgFireEfflux[ecoregion.Index] = 0.0;
-                avgDecayFactor[ecoregion.Index] = 0.0;
+                //avgDecayFactor[ecoregion.Index] = 0.0;
 
             }
 
@@ -220,7 +221,8 @@ namespace Landis.Extension.Succession.Century
                 avgNPPtc[ecoregion.Index] += SiteVars.AGNPPcarbon[site];
                 avgBGNPPtc[ecoregion.Index] += SiteVars.BGNPPcarbon[site];
                 avgLittertc[ecoregion.Index] += SiteVars.LitterfallC[site];
-                avgAgeMc[ecoregion.Index] += SiteVars.AgeMortality[site] * 0.47;
+                avgRootLittertc[ecoregion.Index] += SiteVars.FineRootFallC[site];
+                //avgAgeMc[ecoregion.Index] += SiteVars.AgeMortality[site] * 0.47;
 
                 avgMineralN[ecoregion.Index] += SiteVars.MineralN[site];
                 avgTotalN[ecoregion.Index] += GetTotalNitrogen(site);
@@ -269,7 +271,7 @@ namespace Landis.Extension.Succession.Century
                 avgStreamC[ecoregion.Index] += SiteVars.Stream[site].Carbon;
                 avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen;
                 avgFireEfflux[ecoregion.Index] += SiteVars.FireEfflux[site];
-                avgDecayFactor[ecoregion.Index] += SiteVars.DecayFactor[site];
+                //avgDecayFactor[ecoregion.Index] += SiteVars.DecayFactor[site];
 
             }
 
@@ -291,7 +293,7 @@ namespace Landis.Extension.Succession.Century
                         (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgBGNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgLittertc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgAgeMc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgRootLittertc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.Write("{0:0.0}, {1:0.0}, {2:0.0}, ",
                         (avgMineralN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
@@ -346,11 +348,11 @@ namespace Landis.Extension.Succession.Century
                         (avgSOM2NetMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgSOM3NetMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.00}",
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}",
                         (avgStreamC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgStreamN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgFireEfflux[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgDecayFactor[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgFireEfflux[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        //(avgDecayFactor[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.WriteLine("");
                 }
@@ -375,6 +377,7 @@ namespace Landis.Extension.Succession.Century
             
             double[] Ndep          = new double[Model.Core.Ecoregions.Count];
             double[] Nvol          = new double[Model.Core.Ecoregions.Count];
+            double[] avgDecayFactor = new double[Model.Core.Ecoregions.Count];
 
             foreach (IEcoregion ecoregion in Model.Core.Ecoregions)
             {
@@ -388,6 +391,7 @@ namespace Landis.Extension.Succession.Century
                 
                 Ndep[ecoregion.Index] = 0.0;
                 Nvol[ecoregion.Index] = 0.0;
+                avgDecayFactor[ecoregion.Index] = 0.0;
                 
             }
 
@@ -409,6 +413,7 @@ namespace Landis.Extension.Succession.Century
                 
                 Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
                 Nvol[ecoregion.Index] += SiteVars.MineralN[site] * 0.02 * OtherData.MonthAdjust; //same calc as in Century.cs
+                avgDecayFactor[ecoregion.Index] += SiteVars.MonthlyDecayFactor[site][month];  
                 
             }
             
@@ -431,9 +436,10 @@ namespace Landis.Extension.Succession.Century
                         (avgResp[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgNEE[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    logMonthly.Write("{0:0.00}, {1:0.00} ",
+                    logMonthly.Write("{0:0.00}, {1:0.00}, {2:0.00} ",
                         Ndep[ecoregion.Index],
-                        (Nvol[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+                        (Nvol[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgDecayFactor[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     logMonthly.WriteLine("");
                 }
