@@ -1,6 +1,6 @@
 LandisData   Extension
 
-Name         "Age-Only Succession"
+Name         "Age-only Succession"
 Version      3.0
 Type         succession
 Assembly     Landis.Extension.Succession.AgeOnly
