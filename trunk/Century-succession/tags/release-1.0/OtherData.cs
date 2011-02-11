@@ -202,7 +202,7 @@ namespace Landis.Extension.Succession.Century
         //public const double MinDeadWoodCN = 50.0;
         
         // dtm
-        public const double MonthAdjust = 1.0; // / 12.0;
+        public const double MonthAdjust = 1.0; 
 
         //---------------------------------------------------------------------
         public static void Initialize(IParameters parameters)
