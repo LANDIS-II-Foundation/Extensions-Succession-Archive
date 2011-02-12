@@ -198,15 +198,17 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         private double[] ComputeAgeMortality(ICohort cohort, ActiveSite site)
         {
+
+            double monthAdjust = 1.0 / 12.0;
             double totalBiomass = (double) (cohort.WoodBiomass + cohort.LeafBiomass);
             double fractionLeaf = (double) cohort.LeafBiomass / totalBiomass;
             double max_age      = (double) cohort.Species.Longevity;
             double d            = FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].MortCurveShape;
 
-            double M_AGE_wood =    cohort.WoodBiomass *  OtherData.MonthAdjust *
+            double M_AGE_wood =    cohort.WoodBiomass *  monthAdjust *
                                     Math.Exp((double) cohort.Age / max_age * d) / Math.Exp(d);
 
-            double M_AGE_leaf =    cohort.LeafBiomass *  OtherData.MonthAdjust *
+            double M_AGE_leaf =    cohort.LeafBiomass *  monthAdjust *
                                     Math.Exp((double) cohort.Age / max_age * d) / Math.Exp(d);
 
             if (PlugIn.ModelCore.CurrentTime <= 0 &&  SpinupMortalityFraction > 0.0)

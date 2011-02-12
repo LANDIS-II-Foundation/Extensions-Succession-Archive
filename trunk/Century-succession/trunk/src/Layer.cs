@@ -364,8 +364,9 @@ namespace Landis.Extension.Succession.Century
             if(netCFlow < 0)
                 PlugIn.ModelCore.Log.WriteLine("NEGATIVE C FLOW!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
 
-            if(netCFlow > this.Carbon)
-                PlugIn.ModelCore.Log.WriteLine("C FLOW EXCEEDS SOURCE!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
+            if (netCFlow > this.Carbon)
+                netCFlow = this.Carbon;
+                //PlugIn.ModelCore.Log.WriteLine("C FLOW EXCEEDS SOURCE!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
 
             this.Carbon -= netCFlow;
             destination.Carbon += netCFlow;
@@ -491,13 +492,13 @@ namespace Landis.Extension.Succession.Century
 
             if(mineralNFlow > this.Nitrogen)
             {
-                if((mineralNFlow - this.Nitrogen) > 0.01)
-                {
-                    PlugIn.ModelCore.Log.WriteLine("RESPIRATION for layer {0} {1}:  Mineral N flow exceeds layer Nitrogen.", this.Name, this.Type);
-                    PlugIn.ModelCore.Log.WriteLine("  MineralNFlow={0:0.000}, this.Nitrogen ={0:0.000}", mineralNFlow, this.Nitrogen);
-                    PlugIn.ModelCore.Log.WriteLine("  CO2 loss={0:0.000}, this.Carbon={0:0.000}", co2loss, this.Carbon);
-                    PlugIn.ModelCore.Log.WriteLine("  Site R/C: {0}/{1}.", site.Location.Row, site.Location.Column);
-                }
+                //if((mineralNFlow - this.Nitrogen) > 0.01)
+                //{
+                //    PlugIn.ModelCore.Log.WriteLine("RESPIRATION for layer {0} {1}:  Mineral N flow exceeds layer Nitrogen.", this.Name, this.Type);
+                //    PlugIn.ModelCore.Log.WriteLine("  MineralNFlow={0:0.000}, this.Nitrogen ={0:0.000}", mineralNFlow, this.Nitrogen);
+                //    PlugIn.ModelCore.Log.WriteLine("  CO2 loss={0:0.000}, this.Carbon={0:0.000}", co2loss, this.Carbon);
+                //    PlugIn.ModelCore.Log.WriteLine("  Site R/C: {0}/{1}.", site.Location.Row, site.Location.Column);
+                //}
                 mineralNFlow = this.Nitrogen;
                 co2loss = this.Carbon;
             }
