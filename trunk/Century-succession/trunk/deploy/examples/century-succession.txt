@@ -7,7 +7,7 @@ SeedingAlgorithm  WardSeedDispersal
 InitialCommunities      "./initial-communities.txt"
 InitialCommunitiesMap   "./initial-communities.gis"
 
-ClimateFile	ClimateInputs.txt
+ClimateFile	century-climate-inputs.txt
 
 CalibrateMode 	no
 
