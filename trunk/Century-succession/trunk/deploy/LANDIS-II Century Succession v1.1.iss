@@ -7,7 +7,7 @@
 #define CoreVersion      "5.1"
 #define CoreReleaseAbbr  ""
 
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section).iss"
+#include "package (Setup section).iss"
 
 #if ReleaseType != "official"
   #define Configuration  "debug"
@@ -41,20 +41,12 @@ Filename: {#PlugInAdminTool}; Parameters: "add ""{#CenturySucc}"" "; WorkingDir:
 ; Filename: {#PlugInAdminTool}; Parameters: "remove ""Century Succession"" "; WorkingDir: {#LandisPlugInDir}
 
 [Code]
-#include AddBackslash(LandisDeployDir) + "package (Code section) v3.iss"
+#include "package (Code section) v3.iss"
 
 //-----------------------------------------------------------------------------
 
 function CurrentVersion_PostUninstall(currentVersion: TInstalledVersion): Integer;
 begin
-  // Do not remove version 1.0 from the database.
-  //if StartsWith(currentVersion.Version, '1') then
-  //  begin
-  //    Exec('{#PlugInAdminTool}', 'remove "Century Succession"',
-  //         ExtractFilePath('{#PlugInAdminTool}'),
-  //		   SW_HIDE, ewWaitUntilTerminated, Result);
-	//end
-  //else
     Result := 0;
 end;
 

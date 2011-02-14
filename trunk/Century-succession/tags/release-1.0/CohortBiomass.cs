@@ -208,10 +208,10 @@ namespace Landis.Extension.Succession.Century
             double max_age      = (double) cohort.Species.Longevity;
             double d            = FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].MortCurveShape;
 
-            double M_AGE_wood =    cohort.WoodBiomass *  OtherData.MonthAdjust *
+            double M_AGE_wood =     cohort.WoodBiomass *  (1.0/12.0) *
                                     Math.Exp((double) cohort.Age / max_age * d) / Math.Exp(d);
 
-            double M_AGE_leaf =    cohort.LeafBiomass *  OtherData.MonthAdjust *
+            double M_AGE_leaf =     cohort.LeafBiomass * (1.0 / 12.0) *
                                     Math.Exp((double) cohort.Age / max_age * d) / Math.Exp(d);
 
             if (Model.Core.CurrentTime <= 0 && SpinupMortalityFraction > 0.0)
