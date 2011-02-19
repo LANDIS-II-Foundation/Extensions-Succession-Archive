@@ -57,7 +57,7 @@ namespace Landis.Extension.Succession.Century
             {
                 foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
                 {
-                    if(EcoregionData.ActiveSiteCount[ecoregion] == 0)
+                    if(!ecoregion.Active)
                         continue;
 
                     AnnualClimate ecoClimate = EcoregionData.AnnualClimateArray[ecoregion][y];

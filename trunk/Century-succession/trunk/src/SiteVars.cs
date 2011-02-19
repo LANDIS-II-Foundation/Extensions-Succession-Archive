@@ -204,7 +204,7 @@ namespace Landis.Extension.Succession.Century
         /// to being no more than the site's maximum biomass less the previous
         /// year's mortality at the site.
         /// </summary>
-        public static double ActualSiteBiomass(ActiveSite     site)
+        public static double ActualSiteBiomass(ActiveSite site)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];

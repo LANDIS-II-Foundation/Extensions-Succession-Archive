@@ -20,36 +20,32 @@ namespace Landis.Extension.Succession.Century
         //New method for calculating N limits, called from Century.cs Run method before calling Grow
         //Iterates through cohorts, assigning each a N gathering efficiency based on fine root biomass
         //and N tolerance.
-        public static double CalculateNLimits(ActiveSite site)
+        public static double CalculateNLimits(Site site)
         {
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
             double NMultTotal=0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                            int Ntolerance = SpeciesData.NTolerance[cohort.Species];
+                    int Ntolerance = SpeciesData.NTolerance[cohort.Species];
 
-                        	//NMultiplier is a measure of how much N a cohort can gather relative to other cohorts
-                        	double NMultiplier = CalculateNMultiplier(cohort.Biomass,Ntolerance);
-                        	NMultTotal += NMultiplier;
-                        	Dictionary<int,double> newEntry = new Dictionary<int,double>();
-                        	newEntry.Add(cohort.Age,NMultiplier);
+                    //NMultiplier is a measure of how much N a cohort can gather relative to other cohorts
+                    double NMultiplier = CalculateNMultiplier(cohort.Biomass, Ntolerance);
+                    NMultTotal += NMultiplier;
+                    Dictionary<int,double> newEntry = new Dictionary<int,double>();
+                    newEntry.Add(cohort.Age,NMultiplier);
 
-                        	if (CohortNlimits.ContainsKey(cohort.Species.Index))
-                            {
-                        	   CohortNlimits[cohort.Species.Index].Add(cohort.Age,NMultiplier);
-                        	}
-                            else
-                            {
-                        	   CohortNlimits.Add(cohort.Species.Index,newEntry);
-                            }
-
-
+                    if (CohortNlimits.ContainsKey(cohort.Species.Index))
+                    {
+                        CohortNlimits[cohort.Species.Index].Add(cohort.Age,NMultiplier);
+                    }
+                    else
+                    {
+                        CohortNlimits.Add(cohort.Species.Index,newEntry);
+                    }
                 }
 
             double availableN = SiteVars.MineralN[site];  // g/m2
-
-            //Console.WriteLine("NMultTotal="+NMultTotal);
 
             //Iterate through a second time now that we have total N multiplier
             //Divide through by total and multiply by total available N so each cohort has a max N value
@@ -57,21 +53,20 @@ namespace Landis.Extension.Succession.Century
             
             double totalNUptake = 0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
-                		foreach (ICohort cohort in speciesCohorts)
-                    	{
-                    	   double NMultiplier=CohortNlimits[cohort.Species.Index][cohort.Age];
-                    	   double Nfrac=NMultiplier/NMultTotal;
-                           CohortNlimits[cohort.Species.Index][cohort.Age] = Nfrac *availableN;
-
-                           totalNUptake += Nfrac * availableN;
-                           //Console.WriteLine("species={0} age={1} NMult={2:0.00} Nfrac={3:0.0000}",cohort.Species.Name,cohort.Age,NMultiplier,Nfrac);
-                    	}
-
-            //Console.WriteLine("Total max N uptake = {0:0.0000}, availableN = {1:0.0000}, availableN-uptake={2:0.0000}", totalNUptake,availableN,availableN-totalNUptake);
-            if ((availableN - totalNUptake) < -0.001 * availableN)
             {
-                    PlugIn.ModelCore.Log.WriteLine("   ERROR:  Total max N uptake = {0:0.000}, availableN = {1:0.000}.", totalNUptake, availableN);
-                    throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
+                foreach (ICohort cohort in speciesCohorts)
+                {
+                    double NMultiplier = CohortNlimits[cohort.Species.Index][cohort.Age];
+                    double Nfrac = NMultiplier / NMultTotal;
+                    CohortNlimits[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
+                    totalNUptake += Nfrac * availableN;
+                }
+            }
+            if (totalNUptake > availableN)
+            {
+                totalNUptake = availableN;
+                //PlugIn.ModelCore.Log.WriteLine("   ERROR:  Total max N uptake = {0:0.000}, availableN = {1:0.000}.", totalNUptake, availableN);
+                //throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
             }
 
             return 0.0;
@@ -82,7 +77,6 @@ namespace Landis.Extension.Succession.Century
         //Start with a simple multiplier, so a tree with Ntolerance 3 takes up 3/2 more N than a tree with Ntolerance 2
         private static double CalculateNMultiplier(double biomass, int Ntolerance)
         {
-            //return Math.Max(Math.Sqrt(biomass) * Ntolerance,1.0);
             return Math.Max(Math.Pow(biomass, 0.2) * Ntolerance, 1.0);
         }
 
@@ -135,14 +129,6 @@ namespace Landis.Extension.Succession.Century
             if(Nreduction > SiteVars.MineralN[site])
             {
                 Nreduction = SiteVars.MineralN[site];
-                //double somPotentialUptake = SiteVars.SOM2[site].Nitrogen * 0.1;
-                //double missingN = Nreduction - Math.Max(0.0, SiteVars.MineralN[site]);
-                //double uptakeN = Math.Min(somPotentialUptake, missingN);
-
-                //SiteVars.SOM2[site].Nitrogen -= uptakeN;
-                //Nreduction += uptakeN;
-                //PlugIn.ModelCore.Log.WriteLine("  Cohort directly accessing organic N.");
-
             }
 
             return Nreduction;

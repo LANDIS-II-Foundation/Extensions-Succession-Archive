@@ -17,7 +17,7 @@ namespace Landis.Extension.Succession.Century
     {
 
 
-        public static void Run(int year, int month, double liveBiomass, ActiveSite site)
+        public static void Run(int year, int month, double liveBiomass, Site site)
         {
 
             //PlugIn.ModelCore.Log.WriteLine("year = {0}, month = {1}", year, month);

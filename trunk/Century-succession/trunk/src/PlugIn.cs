@@ -74,7 +74,7 @@ namespace Landis.Extension.Succession.Century
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
 
             //  Initialize climate.
-            Climate.Initialize(parameters.ClimateFile, modelCore.Ecoregions, false, modelCore);
+            Climate.Initialize(parameters.ClimateFile, false, modelCore);
 
             EcoregionData.Initialize(parameters);
             SpeciesData.Initialize(parameters);
@@ -115,8 +115,8 @@ namespace Landis.Extension.Succession.Century
         public override void Run()
         {
 
-            if(PlugIn.ModelCore.CurrentTime == Timestep)
-                Outputs.WriteLogFile(0);
+            //if(PlugIn.ModelCore.CurrentTime == Timestep)
+            //    Outputs.WriteLogFile(0);
 
             if(PlugIn.ModelCore.CurrentTime > 0)
                 SiteVars.InitializeDisturbances();
@@ -230,7 +230,12 @@ namespace Landis.Extension.Succession.Century
 
         public override byte ComputeShade(ActiveSite site)
         {
+
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+
+            if (!ecoregion.Active)
+                return 0;
+
             double B_MAX = (double) EcoregionData.B_MAX[ecoregion];
 
             double oldBiomass = (double) Library.LeafBiomassCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);

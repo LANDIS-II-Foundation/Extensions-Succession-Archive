@@ -293,9 +293,8 @@ namespace Landis.Extension.Succession.Century
                                                      ComputeMethod initialBiomassMethod)
         {
             SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); 
-            //if (ageCohorts.Count == 0)
-                //return biomassCohorts;
-              //  return SiteVars.Cohorts[site];
+            if (ageCohorts.Count == 0)
+              return SiteVars.Cohorts[site];
 
             int indexNextAgeCohort = 0;
             //  The index in the list of sorted age cohorts of the next
@@ -309,6 +308,7 @@ namespace Landis.Extension.Succession.Century
             //  special treatment because if we start at time = -N with a
             //  cohort with age = 1, then at time = 0, its age will N+1 not N.
             //  Therefore, when timestep = 1, the ending time is -1.
+            //PlugIn.ModelCore.Log.WriteLine("  Adding new cohorts.  Oldest cohorts={0}, timestep={1}.", ageCohorts[0].Age, successionTimestep);
             int endTime = (successionTimestep == 1) ? -1 : 0;
             for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
             {
@@ -348,10 +348,9 @@ namespace Landis.Extension.Succession.Century
         /// Site where cohorts are located.
         /// </param>
         public static ISiteCohorts MakeBiomassCohorts(List<Landis.Library.AgeOnlyCohorts.ICohort> ageCohorts,
-                                                     ActiveSite              site)
+                                                     ActiveSite site)
         {
-            return MakeBiomassCohorts(ageCohorts, site,
-                                      CohortBiomass.InitialBiomass);
+            return MakeBiomassCohorts(ageCohorts, site, CohortBiomass.InitialBiomass);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Landis.Extension.Succession.Century
             
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
-                if(ActiveSiteCount[ecoregion] > 0)
+                if(ecoregion.Active)
                 {
                     SetAnnualClimate(ecoregion, 0);
                     ClimateUpdates[ecoregion] = new bool[PlugIn.ModelCore.EndTime + parameters.Timestep + 1];
@@ -102,7 +102,7 @@ namespace Landis.Extension.Succession.Century
             //  Fill in B_MAX array
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
             {
-                if(ActiveSiteCount[ecoregion] > 0)
+                if(ecoregion.Active)
                 {
                     int largest_B_MAX_Spp = 0;
                     foreach (ISpecies species in PlugIn.ModelCore.Species) 
@@ -157,7 +157,7 @@ namespace Landis.Extension.Succession.Century
             
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
             {
-                if(ActiveSiteCount[ecoregion] > 0)
+                if(ecoregion.Active)
                 {            
                     AnnualClimate[] tempClimate = new AnnualClimate[years];
             

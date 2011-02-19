@@ -129,7 +129,7 @@ namespace Landis.Extension.Succession.Century
         /// Computes fire effects on litter, coarse woody debris, mineral soil, and charcoal.
         ///   No effects on soil organic matter (negligible according to Johnson et al. 2001).
         /// </summary>
-        public static void ReduceLayers(byte severity, ActiveSite site)
+        public static void ReduceLayers(byte severity, Site site)
         {
             //PlugIn.ModelCore.Log.WriteLine("   Calculating fire induced layer reductions...");
         

@@ -20,15 +20,13 @@ namespace Landis.Extension.Succession.Century
         /// Litter is decomposed following the Century model.
         /// </summary>
         public static ISiteCohorts Run(ActiveSite site,
-                                       //ISiteCohorts siteCohorts,
-                                       //Location location,
                                        int         years,
                                        bool        isSuccessionTimeStep)
         {
 
-            //ActiveSite site = (ActiveSite) PlugIn.ModelCore.Landscape.GetSite(location);
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            //PlugIn.ModelCore.Log.WriteLine("  Running Century ecregion={0}.", ecoregion.Name);
 
             for (int y = 0; y < years; ++y) {
 
@@ -92,7 +90,7 @@ namespace Landis.Extension.Succession.Century
 
                     //...Volatilization loss as a function of the mineral n which
                     //     remains after uptake by plants
-                    double volatilize = SiteVars.MineralN[site] * 0.02 * OtherData.MonthAdjust; // value from ffix.100
+                    double volatilize = SiteVars.MineralN[site] * 0.02 / 12.0; // monthly value
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
                     //SoilWater.Leach(site);

@@ -97,7 +97,7 @@ namespace Landis.Extension.Succession.Century
 
             //Ensure all translocated N is used and reduce available N
             double Nreduction         = AvailableN.CohortUptakeAvailableN(cohort.Species, site, actualANPP);
-            SiteVars.MineralN[site] -= Nreduction;
+            SiteVars.MineralN[site] -= Math.Min(Nreduction, SiteVars.MineralN[site]);
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float) (actualANPP[1] - totalMortality[1]);
@@ -350,7 +350,7 @@ namespace Landis.Extension.Succession.Century
 
             Nreduction = AvailableN.CohortUptakeAvailableN(species, site, initialB);
 
-            SiteVars.MineralN[site] -= Nreduction;
+            SiteVars.MineralN[site] -= Math.Min(Nreduction, SiteVars.MineralN[site]);
 
             float[] initialWoodLeafBiomass = new float[2]{(float) initialB[0], (float) initialB[1]};
 

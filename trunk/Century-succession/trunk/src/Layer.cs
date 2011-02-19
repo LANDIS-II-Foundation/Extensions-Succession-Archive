@@ -256,7 +256,6 @@ namespace Landis.Extension.Succession.Century
             }
 
             return;
-        //}
         }
 
         public void DecomposeStructural(ActiveSite site)
@@ -387,14 +386,6 @@ namespace Landis.Extension.Succession.Century
             {
                 return;
             }
-
-            // A quick multithreading test:
-            /*float thisN = (float) this.Nitrogen;
-            if(Math.Abs(thisN - (float) this.Nitrogen) > 0.1)
-            {
-                PlugIn.ModelCore.Log.WriteLine("Multithreading ERROR in Layer.TransferNitrogen:  thisN={0:0.00}, this.Nitrogen={1:0.00}", thisN, this.Nitrogen);
-                PlugIn.ModelCore.Log.WriteLine("  Site R/C: {0}/{1}.", site.Location.Row, site.Location.Column);
-            }*/
 
             if((NFlow - this.Nitrogen) > 0.01)
             {
