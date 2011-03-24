@@ -248,15 +248,14 @@ namespace Landis.Extension.Succession.Century
             double M_wood = cohort.WoodBiomass * FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].MonthlyWoodMortality;
             double M_leaf = 0.0;
 
-            // Needles dropped.
-            // These dates should be functional group parameters.
+            // Leaves and Needles dropped.
             if(SpeciesData.LeafLongevity[cohort.Species] > 1.0) // && month == FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].LeafNeedleDrop-1)
             {
                 M_leaf = cohort.LeafBiomass / SpeciesData.LeafLongevity[cohort.Species] / 12.0;  //Needle deposit spread across the year.
             }
             else
             {
-                if(month > FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].LeafNeedleDrop-1)  
+                if(month > FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].LeafNeedleDrop-1)
                 {
                     M_leaf = cohort.LeafBiomass / 2.0;  //spread across 2 months
                 }
