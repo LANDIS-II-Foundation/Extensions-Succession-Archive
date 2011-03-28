@@ -40,6 +40,9 @@ namespace Landis.Extension.Succession.Biomass
             {
                 foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
                 {
+                    if (!ecoregion.Active)
+                        continue;
+
                     PlugIn.ModelCore.Log.WriteLine("Spp={0}, Eco={1}, Pest={2:0.0}, maxANPP={3}, maxB={4}.", species.Name, ecoregion.Name,
                         timestepData[species.Index, ecoregion.Index].ProbEst,
                         timestepData[species.Index, ecoregion.Index].ANPP_MAX_Spp,

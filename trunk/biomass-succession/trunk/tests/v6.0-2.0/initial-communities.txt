@@ -14,7 +14,7 @@ MapCode  1
 
 >> young aspen   
 MapCode 2
-   poputrem 10 20
+>>   poputrem 10 20
 
 >> old aspen-birch
 MapCode 3

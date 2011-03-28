@@ -43,6 +43,9 @@ namespace Landis.Extension.Succession.Biomass
             //  Fill in B_MAX array
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
+                if (!ecoregion.Active)
+                    continue;
+
                 int largest_B_MAX_Spp = 0;
                 foreach (ISpecies species in PlugIn.ModelCore.Species)
                 {

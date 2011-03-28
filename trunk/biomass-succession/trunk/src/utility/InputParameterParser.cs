@@ -93,7 +93,7 @@ namespace Landis.Extension.Succession.Biomass
 
             ReadName("MinRelativeBiomass");
 
-            const string SufficientLight = "SufficientLightTable";
+            const string SufficientLight = "SufficientLight";
 
             List<IEcoregion> ecoregions = ReadEcoregions();
             string lastEcoregion = ecoregions[ecoregions.Count - 1].Name;
@@ -151,7 +151,6 @@ namespace Landis.Extension.Succession.Biomass
             //  Read table of sufficient light probabilities.
             //  Shade classes are in increasing order.
 
-            //const string SufficientLight = "SufficientLightTable";
             ReadName(SufficientLight);
             const string SpeciesParameters = "SpeciesParameters";
 
@@ -250,16 +249,7 @@ namespace Landis.Extension.Succession.Biomass
 
                 ReadValue(leafLignin, currentLine);
                 parameters.SetLeafLignin(species, leafLignin.Value);
-                /*
-                ReadValue(maxlai, currentLine);
-                parameters.SetMAXLAI(species, maxlai.Value);
-
-                ReadValue(lec, currentLine);
-                parameters.SetLightExtinctionCoeff(species, lec.Value);
-
-                ReadValue(pctBio, currentLine);
-                parameters.SetPctBioMaxLAI(species, pctBio.Value);
-                */
+                
                 CheckNoDataAfter(leafLignin.Name, currentLine);
                 GetNextLine();
             }
@@ -293,10 +283,6 @@ namespace Landis.Extension.Succession.Biomass
             parameters.DynamicInputFile = dynInputFile.Value;
 
 
-            //ParseBiomassParameters(parameters, Names.AgeOnlyDisturbanceParms,
-            //                                   Names.DynamicChange);
-
-            //  AgeOnlyDisturbances:SpeciesParameters (optional)
             string lastParameter = null;
             if (! AtEndOfInput && CurrentName == Names.AgeOnlyDisturbanceParms) {
                 InputVar<string> ageOnlyDisturbanceParms = new InputVar<string>(Names.AgeOnlyDisturbanceParms);
@@ -306,51 +292,12 @@ namespace Landis.Extension.Succession.Biomass
                 lastParameter = "the " + Names.AgeOnlyDisturbanceParms + " parameter";
             }
 
-            //  Climate Change table (optional)
-            //if (ReadOptionalName(Names.DynamicChange)) {
-            //    ReadDynamicChangeTable(parameters.DynamicChangeUpdates);
-            //}
-            //else
             if (lastParameter != null)
                 CheckNoDataAfter(lastParameter);
 
             return parameters;
         }
 
-        //---------------------------------------------------------------------
-
-/*        protected void ReadDynamicChangeTable(List<DynamicChange.ParametersUpdate> parameterUpdates)
-        {
-            int? prevYear = null;
-            int prevYearLineNum = 0;
-            InputVar<int> year = new InputVar<int>("Year", DynamicChange.InputValidation.ReadYear);
-            InputVar<string> file = new InputVar<string>("Parameter File");
-            while (! AtEndOfInput) {
-                StringReader currentLine = new StringReader(CurrentLine);
-
-                ReadValue(year, currentLine);
-                if (prevYear.HasValue) {
-                    if (year.Value.Actual < prevYear.Value)
-                        throw new InputValueException(year.Value.String,
-                                                      "Year {0} is before year {1} which was on line {2}",
-                                                      year.Value.Actual, prevYear.Value, prevYearLineNum);
-                    if (year.Value.Actual == prevYear.Value)
-                        throw new InputValueException(year.Value.String,
-                                                      "Year {0} was already used on line {1}",
-                                                      year.Value.Actual, prevYearLineNum);
-                }
-                prevYear = year.Value.Actual;
-                prevYearLineNum = LineNumber;
-
-                ReadValue(file, currentLine);
-                DynamicChange.InputValidation.CheckPath(file.Value);
-
-                CheckNoDataAfter("the " + file + " column", currentLine);
-                parameterUpdates.Add(new DynamicChange.ParametersUpdate(year.Value.Actual,
-                                                                        file.Value.Actual));
-                GetNextLine();
-            }
-        } */
         //---------------------------------------------------------------------
 
         /// <summary>

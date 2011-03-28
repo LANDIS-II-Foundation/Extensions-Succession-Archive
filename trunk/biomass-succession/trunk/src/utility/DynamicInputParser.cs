@@ -97,6 +97,10 @@ namespace Landis.Extension.Succession.Biomass
                 throw new InputValueException(ecoregionName.String,
                                               "{0} is not an ecoregion name.",
                                               ecoregionName.String);
+            //if (!ecoregion.Active)
+            //    throw new InputValueException(ecoregionName.String,
+            //                                  "{0} is not an active ecoregion.",
+            //                                  ecoregionName.String);
 
             return ecoregion;
         }

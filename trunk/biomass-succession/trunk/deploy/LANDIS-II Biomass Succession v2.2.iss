@@ -19,13 +19,13 @@
 [Files]
 
 ; Cohort Libraries
-Source: {#LandisBuildDir}\libraries\biomass-cohort\build\release\Landis.Library.Cohorts.Biomass.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\5.1\bin\Landis.Library.Cohorts.Biomass.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
 
 ; Succession Library
-Source: {#LandisBuildDir}\libraries\succession\build\release\Landis.Succession.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\5.1\bin\Landis.Succession.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
 
 ; Biomass Succession v2
-Source: ..\build\release\Landis.Extension.Succession.Biomass_v2.dll; DestDir: {app}\bin; Flags: replacesameversion
+Source: C:\Program Files\LANDIS-II\5.1\bin\Landis.Extension.Succession.Biomass_v2.dll; DestDir: {app}\bin; Flags: replacesameversion
 Source: docs\LANDIS-II Biomass Succession v2.2 User Guide.pdf; DestDir: {app}\docs
 Source: examples\*; DestDir: {app}\examples\biomass-succession-v2
 

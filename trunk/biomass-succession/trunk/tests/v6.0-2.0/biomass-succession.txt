@@ -9,6 +9,8 @@ InitialCommunitiesMap   "./initial-communities.gis"
 
 >> CalibrateMode yes
 
+>> SpinUpMortalityFraction 0.0
+
 MinRelativeBiomass
 
 >> Site Shade	Percent Max Biomass
@@ -22,7 +24,7 @@ MinRelativeBiomass
 	4	80%    80%
 	5	95%    95%
 
-SufficientLightTable
+SufficientLight
 >> Spp Shade	Probability
 >> Class	by Actual Shade
 >> ----------	--------------------	

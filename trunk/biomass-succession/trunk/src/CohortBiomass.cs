@@ -61,7 +61,7 @@ namespace Landis.Extension.Succession.Biomass
         /// related mortality (M_BIO).
         /// </summary>
         public int ComputeChange(ICohort cohort,
-                                 ActiveSite site) 
+                                 ActiveSite site)
                                  //int siteBiomass,
                                  //int prevYearSiteMortality)
         {
@@ -72,7 +72,7 @@ namespace Landis.Extension.Succession.Biomass
             // Age-related mortality will include woody and standing leaf biomass (=0 for deciduous trees).
             double mortalityAge = ComputeAgeMortality(cohort);
 
-            double actualANPP = ComputeActualANPP(cohort, site); 
+            double actualANPP = ComputeActualANPP(cohort, site);
 
             //  Age mortality is discounted from ANPP to prevent the over-
             //  estimation of mortality.  ANPP cannot be negative.
@@ -98,10 +98,10 @@ namespace Landis.Extension.Succession.Biomass
                 throw new ApplicationException("Error: Mortality exceeds cohort biomass");
 
             PlugIn.CurrentYearSiteMortality += totalMortality;
-            
+
             // ---------------------------------------------------------
             // Defoliation ranges from 1.0 (total) to none (0.0).
-            // Defoliation is calculated by an external function, typically an extension 
+            // Defoliation is calculated by an external function, typically an extension
             // with a defoliation calculator.  The method CohortDefoliation.Compute is a delegate method
             // and lives within the defoliating extension.
             defoliation = CohortDefoliation.Compute(cohort, site, siteBiomass);
@@ -112,7 +112,7 @@ namespace Landis.Extension.Succession.Biomass
                 defoliationLoss = standing_nonwood * defoliation;
             }
             // ---------------------------------------------------------
-            
+
             int deltaBiomass = (int)(actualANPP - totalMortality - defoliationLoss);
             double newBiomass = cohort.Biomass + (double)deltaBiomass;
 
@@ -295,7 +295,6 @@ namespace Landis.Extension.Succession.Biomass
 
             // First, deposit the a portion of the leaf mass directly onto the forest floor.
             // In this way, the actual amount of leaf biomass is added for the year.
-            // In addition, add the equivalent portion of fine roots to the surface layer.
 
             double annualLeafANPP = actualANPP * leafFraction;
 
@@ -327,11 +326,9 @@ namespace Landis.Extension.Succession.Biomass
                 throw new ApplicationException("Error: Woody input is < 0");
 
             //  Add mortality to dead biomass pools.
-            //  Coarse root mortality is assumed equal to aboveground woody mortality
-            //    mass is assumed 25% of aboveground wood (White et al. 2000, Niklas & Enquist 2002)
+
             if (mortality_wood > 0)
             {
-                //  Add mortality to dead biomass pools.
                 ForestFloor.AddWoody((ushort)mortality_wood, species, site);
             }
 
@@ -409,7 +406,7 @@ namespace Landis.Extension.Succession.Biomass
             //                     ISiteCohorts.PrevYearMortality);
 
             double actualANPP = ComputeActualANPP(cohort, site); //, ISiteCohorts.TotalBiomass,
-                                //ISiteCohorts.PrevYearMortality);  
+                                //ISiteCohorts.PrevYearMortality);
                                 //ComputeActualANPP(cohort, site, ISiteCohorts.TotalBiomass(SiteVars.Cohorts[site]));
                                 //ISiteCohorts.StaticPrevYearMortality);
 

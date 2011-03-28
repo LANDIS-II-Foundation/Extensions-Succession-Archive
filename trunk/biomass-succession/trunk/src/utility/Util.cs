@@ -24,14 +24,6 @@ namespace Landis.Extension.Succession.Biomass
             }
             return newParm;
         }
-/*        //---------------------------------------------------------------------
-
-        public static IOutputRaster<UShortPixel> CreateMap(string path)
-        {
-            return PlugIn.ModelCore.CreateRaster<UShortPixel>(path,
-                                                          PlugIn.ModelCore.Landscape.Dimensions,
-                                                          PlugIn.ModelCore.LandscapeMapMetadata);
-        }*/
         //---------------------------------------------------------------------
 
         public static double CheckBiomassParm(InputValue<double> newValue,

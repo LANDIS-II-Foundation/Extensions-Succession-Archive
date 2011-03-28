@@ -205,7 +205,10 @@ namespace Landis.Extension.Succession.Biomass
                                                      ComputeMethod initialBiomassMethod)
         {
 
-            SiteVars.Cohorts[site] = new Library.BiomassCohorts.SiteCohorts(); //biomassCohorts;
+            SiteVars.Cohorts[site] = new Library.BiomassCohorts.SiteCohorts();
+
+            if (ageCohorts.Count == 0)
+               return SiteVars.Cohorts[site];
 
             int indexNextAgeCohort = 0;
             //  The index in the list of sorted age cohorts of the next

@@ -3,13 +3,11 @@
 #define Version          "3.0"
 #define ReleaseType      "official"
 #define ReleaseNumber    "3"
-; #define LandisDeployDir  "c:\users\rob\landis-ii\deploy"
 
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
 
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section).iss"
-; #include "c:\users\rob\landis-ii\deploy\package (Setup section).iss"
+#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section) v6.0.iss"
 
 [Files]
 
@@ -20,14 +18,8 @@ Source: examples\*; DestDir: {app}\examples\biomass-succession
 #define BioSucc3 "Biomass Succession 3.0.txt"
 Source: {#BioSucc3}; DestDir: {#LandisPlugInDir}
 
-; Until the the latest version of that library is released for the LANDIS-II main
-; package, the library is included in this installer.  It's marked as
-; uninstallable because if the package is uninstalled and this version
-; of the Succession library is removed, then age-only succession will
-; break
+; Libraries
 Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
-
-; Cohort Libraries
 Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.BiomassCohorts.dll; DestDir: {app}\bin; Flags: replacesameversion uninsneveruninstall
 
 
@@ -42,7 +34,7 @@ Filename: {#PlugInAdminTool}; Parameters: "add ""{#BioSucc3}"" "; WorkingDir: {#
 ; Filename: {#PlugInAdminTool}; Parameters: "remove ""Biomass Succession v3"" "; WorkingDir: {#LandisPlugInDir}
 [Code]
 
-#include AddBackslash(LandisDeployDir) + "package (Code section) v3.iss"
+#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Code section) v3.iss"
 //-----------------------------------------------------------------------------
 
 function CurrentVersion_PostUninstall(currentVersion: TInstalledVersion): Integer;
