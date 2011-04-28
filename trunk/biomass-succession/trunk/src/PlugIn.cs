@@ -115,6 +115,16 @@ namespace Landis.Extension.Succession.Biomass
 
             Outputs.WriteLogFile(PlugIn.ModelCore.CurrentTime);
 
+            // Reset establishment modifier to 1.0 after each time step
+            foreach (ISpecies species in PlugIn.ModelCore.Species)
+            {
+                foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+                {
+                    if (!ecoregion.Active)
+                            continue;
+                    SpeciesData.EstablishModifier[species][ecoregion] = 1.0;
+                }
+            }
         }
 
 
@@ -287,8 +297,9 @@ namespace Landis.Extension.Succession.Biomass
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
             double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+            double modEstabProb = establishProbability * SpeciesData.EstablishModifier[species][ecoregion];
 
-            return modelCore.GenerateUniform() < establishProbability;
+            return modelCore.GenerateUniform() < modEstabProb;
         }
 
         //---------------------------------------------------------------------
