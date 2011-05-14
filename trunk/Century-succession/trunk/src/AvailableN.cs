@@ -77,6 +77,8 @@ namespace Landis.Extension.Succession.Century
         //Start with a simple multiplier, so a tree with Ntolerance 3 takes up 3/2 more N than a tree with Ntolerance 2
         private static double CalculateNMultiplier(double biomass, int Ntolerance)
         {
+            if (Ntolerance == 4) Ntolerance = 0;  // N-fixing shrubs do not take up N
+
             return Math.Max(Math.Pow(biomass, 0.2) * Ntolerance, 1.0);
         }
 

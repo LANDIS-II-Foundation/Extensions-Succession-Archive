@@ -145,7 +145,10 @@ namespace Landis.Extension.Succession.Century
 
             double maxLeafNPP = Math.Max(maxNPP*leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double maxWoodNPP = maxNPP*(1.0-leafFractionNPP);
-            limitN = Math.Min(1.0, limitN / (AvailableN.CohortUptakeAvailableN(cohort.Species, site, new double[2]{maxWoodNPP,maxLeafNPP})));
+            if (SpeciesData.NTolerance[cohort.Species] == 4)
+                limitN = 1.0;  // No limit for N-fixing shrubs
+            else
+                limitN = Math.Min(1.0, limitN / (AvailableN.CohortUptakeAvailableN(cohort.Species, site, new double[2] { maxWoodNPP, maxLeafNPP })));
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
 

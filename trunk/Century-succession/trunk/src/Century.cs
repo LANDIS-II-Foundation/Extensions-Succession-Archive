@@ -26,7 +26,6 @@ namespace Landis.Extension.Succession.Century
 
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            //PlugIn.ModelCore.Log.WriteLine("  Running Century ecregion={0}.", ecoregion.Name);
 
             for (int y = 0; y < years; ++y) {
 
