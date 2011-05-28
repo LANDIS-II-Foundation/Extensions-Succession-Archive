@@ -89,6 +89,8 @@ namespace Landis.Extension.Succession.Century
         Ecoregions.AuxParm<double> AtmosNslope {get;}
         Ecoregions.AuxParm<double> AtmosNintercept {get;}
         Ecoregions.AuxParm<double> Latitude {get;}
+        Ecoregions.AuxParm<double> DecayRateSOM2 { get; }
+        Ecoregions.AuxParm<double> DecayRateSOM3 { get; }
 
         Ecoregions.AuxParm<double> InitialSOM1surfC {get;}
         Ecoregions.AuxParm<double> InitialSOM1surfN {get;}

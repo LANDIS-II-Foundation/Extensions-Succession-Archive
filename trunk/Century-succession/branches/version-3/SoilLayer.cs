@@ -35,7 +35,7 @@ namespace Landis.Extension.Succession.Century
                 double totalCFlow = som1c_surface 
                     * SiteVars.DecayFactor[site] 
                     * OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
-                    * (1.0 / 12.0); // OtherData.MonthAdjust;
+                    * OtherData.MonthAdjust;
                     
                 // If decomposition can occur, schedule flows associated with respiration
                 // and decomposition
@@ -85,7 +85,7 @@ namespace Landis.Extension.Succession.Century
                             * OtherData.LitterParameters[(int) LayerType.Soil].DecayRateMicrobes
                             * textureEffect  
                             * anerb
-                            * (1.0 / 12.0); // OtherData.MonthAdjust;
+                            * OtherData.MonthAdjust;
 
                 // If soil SOM1 can decompose to SOM2, it will also go to SOM3.
                 // If it can't go to SOM2, it can't decompose at all.
@@ -180,9 +180,9 @@ namespace Landis.Extension.Succession.Century
                 //Added impact of soil anaerobic conditions -rm 12/91
                 double totalCflow = som2c 
                                 * SiteVars.DecayFactor[site] 
-                                * OtherData.DecayRateSOM2 
+                                * EcoregionData.DecayRateSOM2[ecoregion] 
                                 * anerb
-                                * (1.0 / 12.0); // OtherData.MonthAdjust;
+                                * OtherData.MonthAdjust;
 
 
                 //If SOM2 can decompose to SOM1, it will also go to SOM3.
@@ -254,7 +254,7 @@ namespace Landis.Extension.Succession.Century
                 //Compute total C flow out of SOM3C
                 double totalCflow = som3c 
                                 * SiteVars.DecayFactor[site]
-                                * OtherData.DecayRateSOM3 
+                                * EcoregionData.DecayRateSOM3[ecoregion]
                                 * anerb
                                 * (1.0 / 12.0); // OtherData.MonthAdjust;
 
