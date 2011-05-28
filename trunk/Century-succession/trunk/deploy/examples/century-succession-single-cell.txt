@@ -4,7 +4,7 @@ Timestep  5
 
 SeedingAlgorithm  WardSeedDispersal
 
-InitialCommunities      "./initial-communities.txt"
+InitialCommunities      "./initial-communities-test.txt"
 InitialCommunitiesMap   "./single_cell_3.img"
 
 ClimateFile	ClimateInputs.txt

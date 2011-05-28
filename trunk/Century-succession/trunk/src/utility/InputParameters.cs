@@ -699,6 +699,7 @@ namespace Landis.Extension.Succession.Century
         {
             Debug.Assert(ecoregion != null);
             latitude[ecoregion] = CheckBiomassParm(newValue, 0.0, 50.0);
+            //PlugIn.ModelCore.Log.WriteLine("Latitude for {0} = {1}.", ecoregion.Name, newValue.Actual);
         }
         //---------------------------------------------------------------------
         public void SetInitSOM1surfC(IEcoregion ecoregion, InputValue<double> newValue)

@@ -55,7 +55,7 @@ namespace Landis.Extension.Succession.Century
             AtmosNslope         = parameters.AtmosNslope;
             AtmosNintercept     = parameters.AtmosNintercept;
             Latitude            = parameters.Latitude;
-            ShadeBiomass        = parameters.MinRelativeBiomass; 
+            ShadeBiomass        = parameters.MinRelativeBiomass;
     
             ActiveSiteCount = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
             ClimateUpdates  = new Ecoregions.AuxParm<bool[]>(PlugIn.ModelCore.Ecoregions);
@@ -63,6 +63,7 @@ namespace Landis.Extension.Succession.Century
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+                //PlugIn.ModelCore.Log.WriteLine("Latitude for {0} = {1}.", ecoregion.Name, parameters.Latitude[ecoregion]);
                 
                 SiteVars.SOM1surface[site].Carbon     = parameters.InitialSOM1surfC[ecoregion];
                 SiteVars.SOM1surface[site].Nitrogen   = parameters.InitialSOM1surfN[ecoregion];

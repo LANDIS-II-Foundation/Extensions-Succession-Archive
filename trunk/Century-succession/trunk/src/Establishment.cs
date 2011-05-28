@@ -57,14 +57,14 @@ namespace Landis.Extension.Succession.Century
             {
                 foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
                 {
-                    if(!ecoregion.Active)
+                    if(!ecoregion.Active || EcoregionData.ActiveSiteCount[ecoregion] < 1)
                         continue;
 
                     AnnualClimate ecoClimate = EcoregionData.AnnualClimateArray[ecoregion][y];
-                    //EcoregionData.AnnualWeather[ecoregion];
                 
                     if(ecoClimate == null)
                         throw new System.ApplicationException("Error: CLIMATE NULL.");
+                    
                 
                     double ecoDryDays = CalculateSoilMoisture(ecoClimate, ecoregion, y);
                 

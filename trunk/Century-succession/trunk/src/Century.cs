@@ -26,6 +26,8 @@ namespace Landis.Extension.Succession.Century
 
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            //PlugIn.ModelCore.Log.WriteLine("SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
+
 
             for (int y = 0; y < years; ++y) {
 
@@ -86,6 +88,7 @@ namespace Landis.Extension.Succession.Century
                     WoodLayer.Decompose(site);
                     LitterLayer.Decompose(site);
                     SoilLayer.Decompose(site);
+                    //PlugIn.ModelCore.Log.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
                     //...Volatilization loss as a function of the mineral n which
                     //     remains after uptake by plants

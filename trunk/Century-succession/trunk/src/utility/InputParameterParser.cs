@@ -499,7 +499,6 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> sff = new InputVar<double>("Storm Flow Fraction");
             InputVar<double> bff = new InputVar<double>("Base Flow Fraction");
             InputVar<double> drain = new InputVar<double>("Drain Fraction");
-            //InputVar<double> anp = new InputVar<double>("Monthly N Deposition");
             InputVar<double> ans = new InputVar<double>("Atmospheric N Slope");
             InputVar<double> ani = new InputVar<double>("Atmospheric N Intercept");
             InputVar<double> lat = new InputVar<double>("Latitude");

@@ -14,7 +14,6 @@ namespace Landis.Extension.Succession.Century
         
         public static void Decompose(ActiveSite site)
         {
-        //lock(site){
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             
             //---------------------------------------------------------------------
@@ -36,7 +35,7 @@ namespace Landis.Extension.Succession.Century
                 double totalCFlow = som1c_surface 
                     * SiteVars.DecayFactor[site] 
                     * OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
-                    * OtherData.MonthAdjust;
+                    * (1.0 / 12.0); // OtherData.MonthAdjust;
                     
                 // If decomposition can occur, schedule flows associated with respiration
                 // and decomposition
@@ -86,7 +85,7 @@ namespace Landis.Extension.Succession.Century
                             * OtherData.LitterParameters[(int) LayerType.Soil].DecayRateMicrobes
                             * textureEffect  
                             * anerb
-                            * OtherData.MonthAdjust;
+                            * (1.0 / 12.0); // OtherData.MonthAdjust;
 
                 // If soil SOM1 can decompose to SOM2, it will also go to SOM3.
                 // If it can't go to SOM2, it can't decompose at all.
@@ -165,7 +164,7 @@ namespace Landis.Extension.Succession.Century
             //**********SOM2 decomposes to soil SOM1 and SOM3 with CO2 loss**********
             // PlugIn.ModelCore.Log.WriteLine("    Decompose SOM2...");
 
-            double som2c = SiteVars.SOM2[site].Carbon; //UnlabeledC + SiteVars.SOM2[site].LabeledC; 
+            double som2c = SiteVars.SOM2[site].Carbon; 
             
             if (som2c > 0.0000001)
             {
@@ -183,7 +182,7 @@ namespace Landis.Extension.Succession.Century
                                 * SiteVars.DecayFactor[site] 
                                 * OtherData.DecayRateSOM2 
                                 * anerb
-                                * OtherData.MonthAdjust;
+                                * (1.0 / 12.0); // OtherData.MonthAdjust;
 
 
                 //If SOM2 can decompose to SOM1, it will also go to SOM3.
@@ -257,7 +256,7 @@ namespace Landis.Extension.Succession.Century
                                 * SiteVars.DecayFactor[site]
                                 * OtherData.DecayRateSOM3 
                                 * anerb
-                                * OtherData.MonthAdjust;
+                                * (1.0 / 12.0); // OtherData.MonthAdjust;
 
 
                 //If decomposition can occur,
