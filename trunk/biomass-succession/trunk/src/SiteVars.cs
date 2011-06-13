@@ -25,6 +25,8 @@ namespace Landis.Extension.Succession.Biomass
         private static ISiteVar<int> previousYearMortality;
         private static ISiteVar<int> currentYearMortality;
         private static ISiteVar<int> totalBiomass;
+        //private static ISiteVar<int> inputWoodyDebris; //used when a biomass extension adds woody debris.
+        //private static ISiteVar<int> inputLitterDebris; //used when a biomass extension adds woody debris.
 
         private static ISiteVar<double> ag_npp;
 
@@ -72,9 +74,6 @@ namespace Landis.Extension.Succession.Biomass
             // Reset these accumulators to zero:
             SiteVars.AGNPP[site] = 0.0;
             SiteVars.TotalBiomass[site] = 0;
-            //foreach (Landis.Library.BiomassCohorts.ISpeciesCohorts spp in SiteVars.Cohorts[site] as Library.BiomassCohorts.ISiteCohorts)
-            //   foreach (Landis.Library.BiomassCohorts.ICohort cohort in spp)
-            //       SiteVars.TotalBiomass[site] += cohort.Biomass;
             SiteVars.TotalBiomass[site] = Library.BiomassCohorts.Cohorts.ComputeNonYoungBiomass(SiteVars.Cohorts[site]);
 
             SiteVars.PreviousYearMortality[site] = SiteVars.CurrentYearMortality[site];

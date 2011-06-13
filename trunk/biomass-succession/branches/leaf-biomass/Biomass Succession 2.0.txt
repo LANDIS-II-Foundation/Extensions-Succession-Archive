@@ -1,9 +1,0 @@
-LandisData   Extension
-
-Name         "Biomass Succession Foliar"
-Version      1.0
-Type         succession
-Assembly     Landis.Biomass.Succession-Leafy
-Class        Landis.Biomass.Succession.PlugIn
-Description  "Test biomass succession using altered succession library with new light routine."
-CoreVersion  5.1
