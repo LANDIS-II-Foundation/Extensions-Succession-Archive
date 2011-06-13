@@ -25,12 +25,10 @@ Source: examples\*; DestDir: {app}\examples\age-only-succession
 #define AgeOnlySucc "Age-only Succession 3.0.txt"
 Source: {#AgeOnlySucc}; DestDir: {#LandisPlugInDir}
 
-; Until the the latest version of that library is released for the LANDIS-II main
-; package, the library is included in this installer.  It's marked as
-; uninstallable because if the package is uninstalled and this version
-; of the Succession library is removed, then age-only succession will
-; break
+; Necessary libraries
 Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
+Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
+Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
 
 
 [Run]
