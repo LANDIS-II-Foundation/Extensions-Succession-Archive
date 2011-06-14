@@ -96,7 +96,7 @@
     </Compile>
     <Compile Include="utility\MapNames.cs" />
     <Compile Include="utility\SpeciesAuxParm.cs" />
-    <Compile Include="utility\UShortPixel.cs" />
+    <Compile Include="utility\UIntPixel.cs" />
     <Compile Include="utility\Util.cs" />
   </ItemGroup>
   <ItemGroup />
