@@ -150,7 +150,7 @@ namespace Landis.Extension.Succession.Century
             //  high 16-bits is the map code of the initial community and the
             //  low 16-bits is the ecoregion's map code
 
-        private static IDictionary<ushort, List<Landis.Library.AgeOnlyCohorts.ICohort>> sortedCohorts;
+        private static IDictionary<uint, List<Landis.Library.AgeOnlyCohorts.ICohort>> sortedCohorts;
             //  Age cohorts for an initial community sorted from oldest to
             //  youngest.  Key = initial community's map code
 
@@ -158,8 +158,8 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        private static uint ComputeKey(ushort initCommunityMapCode,
-                                       ushort ecoregionMapCode)
+        private static uint ComputeKey(uint initCommunityMapCode,
+                                       uint ecoregionMapCode)
         {
             return (uint) ((initCommunityMapCode << 16) | ecoregionMapCode);
         }
@@ -169,7 +169,7 @@ namespace Landis.Extension.Succession.Century
         static InitialBiomass()
         {
             initialSites = new Dictionary<uint, InitialBiomass>();
-            sortedCohorts = new Dictionary<ushort, List<Landis.Library.AgeOnlyCohorts.ICohort>>();
+            sortedCohorts = new Dictionary<uint, List<Landis.Library.AgeOnlyCohorts.ICohort>>();
         }
 
         //---------------------------------------------------------------------
