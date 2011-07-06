@@ -34,7 +34,6 @@ namespace Landis.Extension.Succession.Biomass
         private double defoliation;
         public static double SpinupMortalityFraction;
         public static double CanopyLightExtinction;
-        // private int siteBiomass;
 
 
         //---------------------------------------------------------------------
@@ -62,10 +61,8 @@ namespace Landis.Extension.Succession.Biomass
         /// </summary>
         public int ComputeChange(ICohort cohort,
                                  ActiveSite site)
-                                 //int siteBiomass,
-                                 //int prevYearSiteMortality)
         {
-            int siteBiomass = SiteVars.TotalBiomass[site]; // (SiteVars.Cohorts[site]);
+            int siteBiomass = SiteVars.TotalBiomass[site]; 
             ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             // First, calculate age-related mortality.
@@ -118,8 +115,6 @@ namespace Landis.Extension.Succession.Biomass
 
             double totalLitter = UpdateDeadBiomass(cohort, actualANPP, totalMortality, site, newBiomass);
 
-            //CalculateCohortLight(cohort, actualANPP, newBiomass, site);
-
             if (PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}. Calculate Delta Biomass...", (PlugIn.ModelCore.CurrentTime+SubYear));
@@ -154,7 +149,7 @@ namespace Landis.Extension.Succession.Biomass
             }
 
 
-            return M_AGE;
+            return Math.Min(M_AGE, cohort.Biomass);
         }
 
         //---------------------------------------------------------------------
