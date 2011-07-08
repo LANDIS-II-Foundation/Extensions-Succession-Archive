@@ -23,6 +23,7 @@ namespace Landis.Extension.Succession.Century
         public static double CalculateNLimits(Site site)
         {
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
+            
             double NMultTotal=0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
                 foreach (ICohort cohort in speciesCohorts)
@@ -31,6 +32,8 @@ namespace Landis.Extension.Succession.Century
 
                     //NMultiplier is a measure of how much N a cohort can gather relative to other cohorts
                     double NMultiplier = CalculateNMultiplier(cohort.Biomass, Ntolerance);
+                    
+                
                     NMultTotal += NMultiplier;
                     Dictionary<int,double> newEntry = new Dictionary<int,double>();
                     newEntry.Add(cohort.Age,NMultiplier);
@@ -59,6 +62,7 @@ namespace Landis.Extension.Succession.Century
                     double NMultiplier = CohortNlimits[cohort.Species.Index][cohort.Age];
                     double Nfrac = NMultiplier / NMultTotal;
                     CohortNlimits[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
+                    PlugIn.ModelCore.Log.WriteLine(" CohortNlimits={0}", Nfrac * availableN);
                     totalNUptake += Nfrac * availableN;
                 }
             }
@@ -89,38 +93,54 @@ namespace Landis.Extension.Succession.Century
         public static double CohortUptakeAvailableN(ISpecies species, ActiveSite site, double[] actualANPP)
         {
 
-            if(actualANPP[0] <= 0.0 && actualANPP[1] <= 0.0)
+            if (actualANPP[0] <= 0.0 && actualANPP[1] <= 0.0 && actualANPP[2] <= 0.0) //wang?
                 return 0.0;
 
             double ANPPwood = 0.0;
+            //wang
+            double ANPPbranch = 0.0;
+
             double ANPPcoarseRoot = 0.0;
             double ANPPleaf = 0.0;
             double ANPPfineRoot = 0.0;
             double woodN = 0.0;
+            //wang
+            double branchN = 0.0;
+
             double coarseRootN = 0.0;
             double leafN = 0.0;
             double fineRootN = 0.0;
 
-            if(actualANPP[0] > 0.0)
+            //wang?
+            //if(actualANPP[0] > 0.0)
+            if (actualANPP[0] > 0.0 & actualANPP[1] > 0.0)
             {
                 ANPPwood = actualANPP[0];
-                ANPPcoarseRoot = Roots.CalculateCoarseRoot(ANPPwood);
-                woodN       = ANPPwood * 0.5  / SpeciesData.WoodCN[species];
-                coarseRootN = ANPPcoarseRoot * 0.5  / SpeciesData.CoarseRootCN[species];
-            }
+                ANPPbranch = actualANPP[1]; //wang?
 
-            if(actualANPP[1] > 0.0)
+
+
+                ANPPcoarseRoot = Roots.CalculateCoarseRoot((ANPPwood+ANPPbranch));//wang?
+                woodN       = ANPPwood * 0.47  / SpeciesData.WoodCN[species];
+
+                branchN = ANPPbranch * 0.47 / SpeciesData.BranchCN[species]; //wang
+                
+                coarseRootN = ANPPcoarseRoot * 0.47  / SpeciesData.CoarseRootCN[species];
+            }
+            //wang
+          // if(actualANPP[1] > 0.0)
+            if (actualANPP[2] > 0.0)
             {
-                ANPPleaf = actualANPP[1];
+                ANPPleaf = actualANPP[2];
                 ANPPfineRoot = Roots.CalculateFineRoot(ANPPleaf);
-                leafN       = ANPPleaf * 0.5 / SpeciesData.LeafLitterCN[species];
-                fineRootN   = ANPPfineRoot * 0.5  / SpeciesData.FineRootLitterCN[species];
+                leafN = ANPPleaf * 0.47 / SpeciesData.LeafLitterCN[species];
+                fineRootN = ANPPfineRoot * 0.47 / SpeciesData.FineRootLitterCN[species];
             }
 
-            double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.5;
-            double Nreduction = leafN + woodN + coarseRootN + fineRootN;
+            double totalANPP_C = (ANPPleaf + ANPPwood + ANPPbranch + ANPPcoarseRoot + ANPPfineRoot) * 0.47; //wang
+            double Nreduction = leafN + woodN + branchN + coarseRootN + fineRootN; //wang
 
-            //PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot);
+           // PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0}, Nreduction={4:0.0}, SiteVars.MineralN[site]={5:0.0}", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot, Nreduction, SiteVars.MineralN[site]);
 
             if(Nreduction < 0.0)
             {
@@ -132,7 +152,7 @@ namespace Landis.Extension.Succession.Century
             {
                 Nreduction = SiteVars.MineralN[site];
             }
-
+            
             return Nreduction;
         }
         //---------------------------------------------------------------------
