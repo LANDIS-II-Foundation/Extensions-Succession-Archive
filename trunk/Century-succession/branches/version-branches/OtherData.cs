@@ -27,7 +27,7 @@ namespace Landis.Extension.Succession.Century
         // P2CO2 & P3CO2 - Controls flow from soil organic matter with intermediate turnover
         // to CO2 (fraction of C lost as CO2 during decomposition).
         // Values from ffix.100 file.
-        public const double FractionSOM2toCO2 = 0.55;
+        public const double FractionSOM2toCO2 = 0.56;
         public const double FractionSOM3toCO2 = 0.55;
 
         //> Base DecayRate SOM2 (DEC5) and SOM3 (DEC4)
