@@ -68,6 +68,12 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.SourceSink[site].Carbon = 0.0;
                     SiteVars.TotalWoodBiomass[site] = Century.ComputeWoodBiomass((ActiveSite) site);
 
+                    //wang
+
+                    SiteVars.TotalBranchBiomass[site] = Century.ComputeBranchBiomass((ActiveSite)site);
+
+
+
                     double monthlyNdeposition = EcoregionData.AnnualWeather[PlugIn.ModelCore.Ecoregion[site]].MonthlyNdeposition[month];
                     SiteVars.MineralN[site] += monthlyNdeposition;
                     //PlugIn.ModelCore.Log.WriteLine("Month={0}, Ndeposition={1}.", i+1, monthlyNdeposition);
@@ -85,17 +91,18 @@ namespace Landis.Extension.Succession.Century
                     else
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), false);
 
-                    WoodLayer.Decompose(site);
+                    WoodLayer.Decompose(site);//wang?
                     LitterLayer.Decompose(site);
                     SoilLayer.Decompose(site);
                     //PlugIn.ModelCore.Log.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
                     //...Volatilization loss as a function of the mineral n which
                     //     remains after uptake by plants
-                    double volatilize = SiteVars.MineralN[site] * 0.02 / 12.0; // monthly value
+                    double volatilize = SiteVars.MineralN[site] * 0.02 * OtherData.MonthAdjust; // monthly value
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
-                    //SoilWater.Leach(site);
+                    
+                    SoilWater.Leach(site);
 
                     SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyAGNPPcarbon[site][month];
                     SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyBGNPPcarbon[site][month];
@@ -116,7 +123,7 @@ namespace Landis.Extension.Succession.Century
             if (cohorts != null)
                 foreach (ISpeciesCohorts speciesCohorts in cohorts)
                     foreach (ICohort cohort in speciesCohorts)
-                        total += (int) (cohort.WoodBiomass + cohort.LeafBiomass);
+                        total += (int)(cohort.WoodBiomass + cohort.BranchBiomass + cohort.LeafBiomass); //wang
                     //total += ComputeBiomass(speciesCohorts);
             return total;
         }
@@ -133,6 +140,24 @@ namespace Landis.Extension.Succession.Century
             return woodBiomass;
         }
 
+
+
+        //wang
+
+        public static double ComputeBranchBiomass(ActiveSite site)
+        {
+            double branchBiomass = 0;
+            if (SiteVars.Cohorts[site] != null)
+                foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+                    foreach (ICohort cohort in speciesCohorts)
+                        branchBiomass += cohort.BranchBiomass;
+            return branchBiomass;
+        }
+
+
+
+
+
         //---------------------------------------------------------------------
         private static void ComputeTotalCohortCN(ActiveSite site, ISiteCohorts cohorts)
         {
@@ -140,6 +165,11 @@ namespace Landis.Extension.Succession.Century
             SiteVars.CohortLeafN[site] = 0;
             SiteVars.CohortWoodC[site] = 0;
             SiteVars.CohortWoodN[site] = 0;
+
+            //wang
+
+            SiteVars.CohortBranchC[site] = 0;
+            SiteVars.CohortBranchN[site] = 0;
 
             if (cohorts != null)
                 foreach (ISpeciesCohorts speciesCohorts in cohorts)
@@ -158,26 +188,33 @@ namespace Landis.Extension.Succession.Century
 
             double leafC = cohort.LeafBiomass * 0.47;
             double woodC = cohort.WoodBiomass * 0.47;
-
-            //PlugIn.ModelCore.Log.WriteLine("month={0}, leafC={1:0.00}, woodC={2:0.000}", month, leafC, woodC);
+            //wang
+            double branchC = cohort.BranchBiomass * 0.47;
+           //PlugIn.ModelCore.Log.WriteLine("month={0}, leafC={1:0.00}, woodC={2:0.000}", month, leafC, woodC);
 
             double fRootC = Roots.CalculateFineRoot(leafC);
             double cRootC = Roots.CalculateCoarseRoot(woodC);
 
-            double totalC = leafC + woodC + fRootC + cRootC;
+            //double totalC = leafC + woodC + fRootC + cRootC;
+            double totalC = leafC + woodC + branchC + fRootC + cRootC; //wang
 
             double leafN  = leafC /       SpeciesData.LeafCN[species];
             double woodN  = woodC /       SpeciesData.WoodCN[species];
+            //wang
+            double branchN = branchC / SpeciesData.BranchCN[species];
             double cRootN = cRootC /      SpeciesData.CoarseRootCN[species];
             double fRootN = fRootC /      SpeciesData.FineRootLitterCN[species];
 
-            double totalN = woodN + cRootN + leafN + fRootN;
+            //double totalN = woodN + cRootN + leafN + fRootN;
+            double totalN = woodN + branchN + cRootN + leafN + fRootN;
 
             SiteVars.CohortLeafC[site] += leafC + fRootC;
             SiteVars.CohortLeafN[site] += leafN + fRootN;
             SiteVars.CohortWoodC[site] += woodC + cRootC;
             SiteVars.CohortWoodN[site] += woodN + cRootN;
-
+            //wang?
+            SiteVars.CohortBranchC[site] += branchC;
+            SiteVars.CohortBranchN[site] += branchN;
             return;
 
         }

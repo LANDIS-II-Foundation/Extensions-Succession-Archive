@@ -26,10 +26,16 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<bool> Epicormic;
         public static Species.AuxParm<double> LeafLignin;
         public static Species.AuxParm<double> WoodLignin;
+        //wang
+        public static Species.AuxParm<double> BranchLignin;
+
         public static Species.AuxParm<double> CoarseRootLignin;
         public static Species.AuxParm<double> FineRootLignin;
         public static Species.AuxParm<double> LeafCN;
         public static Species.AuxParm<double> WoodCN;
+        //wang 
+        public static Species.AuxParm<double> BranchCN;
+
         public static Species.AuxParm<double> CoarseRootCN;
         public static Species.AuxParm<double> LeafLitterCN;
         public static Species.AuxParm<double> FineRootLitterCN;
@@ -54,10 +60,16 @@ namespace Landis.Extension.Succession.Century
             Epicormic           = parameters.Epicormic;
             LeafLignin          = parameters.LeafLignin;
             WoodLignin          = parameters.WoodLignin ;
+            //wang
+            BranchLignin            = parameters.BranchLignin;
+
             CoarseRootLignin    = parameters.CoarseRootLignin ;
             FineRootLignin      = parameters.FineRootLignin ;
             LeafCN              = parameters.LeafCN;
             WoodCN              = parameters.WoodCN;
+            //wang
+            BranchCN            = parameters.BranchCN;
+
             CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;
             FineRootLitterCN    = parameters.FineRootLitterCN;

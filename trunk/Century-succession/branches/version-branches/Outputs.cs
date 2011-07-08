@@ -36,15 +36,22 @@ namespace Landis.Extension.Succession.Century
             log.Write("NEEC, SOMTC, AGB, ");
             log.Write("AG_NPPC, BG_NPPC, LitterfallTC, AgeMortality, ");
             log.Write("MineralN, TotalN, GrossMineralization, ");
-            log.Write("C:LeafFRoot, C:WoodCRoot, C:DeadWood, C:DeadCRoot, ");
+
+            log.Write("C:LeafFRoot, C:WoodCRoot, C:BranchC, C:DeadWood, C:DeadBranch, C:DeadCRoot, ");//wang
             log.Write("C:SurfStruc, C:SurfMeta, C:SoilStruc, C:SoilMeta, ");
             log.Write("C:SOM1surf, C:SOM1soil, C:SOM2, C:SOM3, ");
-            log.Write("N:CohortLeaf, N:CohortWood, N:DeadWood, N:DeadRoot, ");
+            log.Write("N:CohortLeaf, N:CohortWood, N:BranchN, N:DeadWood, N:DeadBranch, N:DeadRoot, "); //wang
             log.Write("N:SurfStruc, N:SurfMeta, N:SoilStruc, N:SoilMeta, ");
-            log.Write("N:SOM1surf, N:SOM1soil, N:SOM2, N:SOM3, ");
-            log.Write("SurfStrucNetMin, SurfMetaNetMin, SoilStrucNetMin, SoilMetaNetMin, ");
-            log.Write("SOM1surfNetMin, SOM1soilNetMin, SOM2NetMin, SOM3NetMin, ");
-            log.Write("StreamC, StreamN, FireEfflux");
+            log.Write("N:SOM1surf, N:SOM1soil, N:SOM2, N:SOM3,NetMin, ");
+
+            log.Write("NetMin:SurfDeadW, NetMin:SurfDeadB,NetMin:SurfStruc, NetMin:SurfMeta, NetMin:SoilDeadW, NetMin:SoilStruc, NetMin:SoilMeta, ");
+            log.Write("NetMin:SOM1surf, NetMin:SOM1soil, NetMin:SOM2, NetMin:SOM3, ");
+
+            log.Write("StreamC, StreamN, FireEfflux,Nuptake,NImmob, ");
+            
+            log.Write("Immob:SurfDeadW, Immob:SurfDeadB, Immob:SurfStru,Immob:SurfMeta,Immob:SoilDeadW,Immob:SoilStru,Immob:SoilMeta,");
+            log.Write("Immob:SOM1Surf,Immob:SOM1Soil,Immob:SOM2,Immob:SOM3,");
+            
             log.WriteLine("");
 
 
@@ -97,11 +104,21 @@ namespace Landis.Extension.Succession.Century
             double[] avgCohortLeafC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgCohortWoodC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgWoodC       = new double[PlugIn.ModelCore.Ecoregions.Count];
+            //wang
+
+            double[] avgCohortBranchC = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgBranchC = new double[PlugIn.ModelCore.Ecoregions.Count];
+
             double[] avgCRootC      = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             double[] avgCohortLeafN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgCohortWoodN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgWoodN       = new double[PlugIn.ModelCore.Ecoregions.Count];
+            //wang
+            double[] avgCohortBranchN = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgBranchN = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+            
             double[] avgCRootN      = new double[PlugIn.ModelCore.Ecoregions.Count];
 
             double[] avgSurfStrucC  = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -114,10 +131,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgSoilStrucN  = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSoilMetaN   = new double[PlugIn.ModelCore.Ecoregions.Count];
             
-            double[] avgSurfStrucNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgSurfMetaNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgSoilStrucNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgSoilMetaNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
+            
             
             double[] avgSOM1surfC   = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSOM1soilC   = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -128,7 +142,11 @@ namespace Landis.Extension.Succession.Century
             double[] avgSOM1soilN   = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSOM2N       = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSOM3N       = new double[PlugIn.ModelCore.Ecoregions.Count];
-            
+
+            double[] avgSurfStrucNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSurfMetaNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSoilStrucNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSoilMetaNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSOM1surfNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSOM1soilNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSOM2NetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -138,6 +156,33 @@ namespace Landis.Extension.Succession.Century
             double[] avgStreamN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgFireEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
 
+            //wang
+            
+            
+            double[] avgSurfDeadWNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSurfDeadBNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSoilDeadWNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+
+            double[] avgSurfDeadWImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSurfDeadBImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+            double[] avgSurfStruImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSurfMetaImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+            double[] avgSoilDeadWImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSoilStruImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSoilMetaImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+            double[] avgSOM1SurfImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSOM1SoilImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSOM2Immob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgSOM3Immob = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+
+            double[] avgNuptake = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgImmob = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgNetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
@@ -160,6 +205,9 @@ namespace Landis.Extension.Succession.Century
                 avgCohortLeafC[ecoregion.Index] = 0.0;
                 avgCohortWoodC[ecoregion.Index] = 0.0;
                 avgWoodC[ecoregion.Index] = 0.0;
+                //wang
+                avgCohortBranchC[ecoregion.Index] = 0.0;
+                avgBranchC[ecoregion.Index] = 0.0;
                 avgCRootC[ecoregion.Index] = 0.0;
                 
                 avgSurfStrucC[ecoregion.Index] = 0.0;
@@ -170,6 +218,9 @@ namespace Landis.Extension.Succession.Century
                 avgCohortLeafN[ecoregion.Index] = 0.0;
                 avgCohortWoodN[ecoregion.Index] = 0.0;
                 avgWoodN[ecoregion.Index] = 0.0;
+                //wang
+                avgCohortBranchN[ecoregion.Index] = 0.0;
+                avgBranchN[ecoregion.Index] = 0.0;
                 avgCRootN[ecoregion.Index] = 0.0;
 
                 avgSurfStrucN[ecoregion.Index] = 0.0;
@@ -200,7 +251,32 @@ namespace Landis.Extension.Succession.Century
                 avgStreamC[ecoregion.Index] = 0.0;
                 avgStreamN[ecoregion.Index] = 0.0;
                 avgFireEfflux[ecoregion.Index] = 0.0;
+                //wang
 
+                avgSurfDeadWNetMin[ecoregion.Index] = 0.0;
+                avgSurfDeadBNetMin[ecoregion.Index] = 0.0;
+                avgSoilDeadWNetMin[ecoregion.Index] = 0.0;
+
+                avgSurfDeadWImmob[ecoregion.Index] =0.0;
+                avgSurfDeadBImmob[ecoregion.Index] =0.0;
+
+                avgSurfStruImmob[ecoregion.Index] = 0.0;
+                avgSurfMetaImmob[ecoregion.Index] = 0.0;
+
+                avgSoilDeadWImmob[ecoregion.Index] = 0.0;
+                avgSoilStruImmob[ecoregion.Index] = 0.0;
+                avgSoilMetaImmob[ecoregion.Index] = 0.0;
+
+                avgSOM1SurfImmob[ecoregion.Index] = 0.0;
+                avgSOM1SoilImmob[ecoregion.Index] = 0.0;
+                avgSOM2Immob[ecoregion.Index] = 0.0;
+                avgSOM3Immob[ecoregion.Index] = 0.0;
+
+
+               
+                avgNuptake[ecoregion.Index] = 0.0;
+                avgImmob[ecoregion.Index] = 0.0;
+                avgNetMin[ecoregion.Index] = 0.0;
             }
 
 
@@ -211,8 +287,9 @@ namespace Landis.Extension.Succession.Century
                 
                 avgNEEc[ecoregion.Index]    += SiteVars.AnnualNEE[site];
                 avgSOMtc[ecoregion.Index]    += GetOrganicCarbon(site);
-                avgAGB[ecoregion.Index] += (SiteVars.CohortLeafC[site] + SiteVars.CohortWoodC[site]) * 2.13;
-                
+
+                //wang
+                avgAGB[ecoregion.Index] += (SiteVars.CohortLeafC[site] + SiteVars.CohortWoodC[site] + SiteVars.CohortBranchC[site]) * 2.13;
                 avgNPPtc[ecoregion.Index]    += SiteVars.AGNPPcarbon[site];
                 avgBGNPPtc[ecoregion.Index]    += SiteVars.BGNPPcarbon[site];
                 avgLittertc[ecoregion.Index] += SiteVars.LitterfallC[site];
@@ -224,7 +301,10 @@ namespace Landis.Extension.Succession.Century
 
                 avgCohortLeafC[ecoregion.Index] += SiteVars.CohortLeafC[site];
                 avgCohortWoodC[ecoregion.Index] += SiteVars.CohortWoodC[site];
-                avgWoodC[ecoregion.Index]       += SiteVars.SurfaceDeadWood[site].Carbon; 
+                avgWoodC[ecoregion.Index]       += SiteVars.SurfaceDeadWood[site].Carbon;
+                //wang
+                avgCohortBranchC[ecoregion.Index] += SiteVars.CohortBranchC[site];
+                avgBranchC[ecoregion.Index] += SiteVars.SurfaceDeadBranch[site].Carbon; 
                 avgCRootC[ecoregion.Index]      += SiteVars.SoilDeadWood[site].Carbon; 
                 
                 avgSurfStrucC[ecoregion.Index] += SiteVars.SurfaceStructural[site].Carbon; 
@@ -239,7 +319,11 @@ namespace Landis.Extension.Succession.Century
 
                 avgCohortLeafN[ecoregion.Index]   += SiteVars.CohortLeafN[site];
                 avgCohortWoodN[ecoregion.Index]   += SiteVars.CohortWoodN[site];
-                avgWoodN[ecoregion.Index]     += SiteVars.SurfaceDeadWood[site].Nitrogen; 
+                avgWoodN[ecoregion.Index]     += SiteVars.SurfaceDeadWood[site].Nitrogen;
+                
+                //wang
+                avgCohortBranchN[ecoregion.Index] += SiteVars.CohortBranchN[site];
+                avgBranchN[ecoregion.Index] += SiteVars.SurfaceDeadBranch[site].Nitrogen; 
                 avgCRootN[ecoregion.Index]    += SiteVars.SoilDeadWood[site].Nitrogen; 
                 
                 avgSurfStrucN[ecoregion.Index] += SiteVars.SurfaceStructural[site].Nitrogen; 
@@ -266,6 +350,37 @@ namespace Landis.Extension.Succession.Century
                 avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen;
                 avgFireEfflux[ecoregion.Index] += SiteVars.FireEfflux[site];
                 
+                //wang
+                avgSurfDeadWNetMin[ecoregion.Index] += SiteVars.SurfaceDeadWood[site].NetMineralization;
+                avgSurfDeadBNetMin[ecoregion.Index] += SiteVars.SurfaceDeadBranch[site].NetMineralization;
+                avgSoilDeadWNetMin[ecoregion.Index] += SiteVars.SoilDeadWood[site].NetMineralization;
+
+
+
+
+                avgSurfDeadWImmob[ecoregion.Index] += SiteVars.SurfaceDeadWood[site].ImmobilNW ;
+                avgSurfDeadBImmob[ecoregion.Index] += SiteVars.SurfaceDeadBranch[site].ImmobilNW ;
+
+                avgSurfStruImmob[ecoregion.Index] += SiteVars.SurfaceStructural[site].ImmobilNW;
+                avgSurfMetaImmob[ecoregion.Index] += SiteVars.SurfaceMetabolic[site].ImmobilNW ;
+
+                avgSoilDeadWImmob[ecoregion.Index] += SiteVars.SoilDeadWood[site].ImmobilNW ;
+                avgSoilStruImmob[ecoregion.Index] += SiteVars.SoilStructural[site].ImmobilNW ;
+                avgSoilMetaImmob[ecoregion.Index] += SiteVars.SoilMetabolic[site].ImmobilNW ;
+
+                avgSOM1SurfImmob[ecoregion.Index] += SiteVars.SOM1surface[site].ImmobilNW ;
+                avgSOM1SoilImmob[ecoregion.Index] += SiteVars.SOM1soil[site].ImmobilNW ;
+                avgSOM2Immob[ecoregion.Index] += SiteVars.SOM2[site].ImmobilNW ;
+                avgSOM3Immob[ecoregion.Index] += SiteVars.SOM3[site].ImmobilNW ;
+
+                              
+                
+                
+                
+                
+                avgNuptake[ecoregion.Index] += SiteVars.Nuptake[site];
+                avgImmob[ecoregion.Index] += TotalImmob(site);
+                avgNetMin[ecoregion.Index] += TotalNetMin(site) ;
             }
             
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
@@ -293,10 +408,13 @@ namespace Landis.Extension.Succession.Century
                         (avgTotalN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),              
                         (avgGrossMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
+                    log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, {4:0.0}, {5:0.0},", 
                         (avgCohortLeafC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),              
                         (avgCohortWoodC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),              
+                        //wang
+                        (avgCohortBranchC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgWoodC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]), 
+                        (avgBranchC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]), 
                         (avgCRootC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])           
                         );
                     log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
@@ -311,10 +429,13 @@ namespace Landis.Extension.Succession.Century
                         (avgSOM2C[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),           
                         (avgSOM3C[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, ", 
+                    log.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}, {5:0.00},", 
                         (avgCohortLeafN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),              
                         (avgCohortWoodN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),              
-                        (avgWoodN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),          
+                        //wang
+                        (avgCohortBranchN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgWoodN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),   
+                        (avgBranchN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),  
                         (avgCRootN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, ", 
@@ -323,29 +444,57 @@ namespace Landis.Extension.Succession.Century
                         (avgSoilStrucN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),           
                         (avgSoilMetaN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, ", 
+                    log.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},{4:0.0000}, ", 
                         (avgSOM1surfN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]), 
                         (avgSOM1soilN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),          
                         (avgSOM2N[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),           
-                        (avgSOM3N[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgSOM3N[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgNetMin[ecoregion.Index]/(double) EcoregionData.ActiveSiteCount[ecoregion]) 
                         );
-                    log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.0000}, {3:0.0000}, {4:0.0000}, {5:0.0000},{6:0.0000}, ",
+                        (avgSurfDeadWNetMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgSurfDeadBNetMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),     
                         (avgSurfStrucNetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]), 
-                        (avgSurfMetaNetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),          
+                        (avgSurfMetaNetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgSoilDeadWNetMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),   
                         (avgSoilStrucNetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),           
                         (avgSoilMetaNetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.0000}, {3:0.0000}, ", 
                         (avgSOM1surfNetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]), 
                         (avgSOM1soilNetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),          
                         (avgSOM2NetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),           
                         (avgSOM3NetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}", 
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.000},{4:0.0000},", 
                         (avgStreamC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgStreamN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgFireEfflux[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgFireEfflux[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgNuptake[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgImmob[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
+
+//wang
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.0000}, {3:0.0000},{4:0.0000}, {5:0.0000},{6:0.0000}, {7:0.0000},{8:0.0000}, {9:0.0000}, {10:0.0000},", 
+                    (avgSurfDeadWImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    (avgSurfDeadBImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+
+                    (avgSurfStruImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    (avgSurfMetaImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    
+                    
+                    (avgSoilDeadWImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    (avgSoilStruImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    (avgSoilMetaImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    
+                    
+                    (avgSOM1SurfImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    (avgSOM1SoilImmob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    (avgSOM2Immob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                    (avgSOM3Immob[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+
+                    );
+
                     log.WriteLine("");
                 }
             
@@ -353,7 +502,6 @@ namespace Landis.Extension.Succession.Century
             SiteVars.FireEfflux.ActiveSiteValues = 0.0;
             SiteVars.AgeMortality.ActiveSiteValues = 0.0;
 
-            
             }
         }
 
@@ -391,18 +539,18 @@ namespace Landis.Extension.Succession.Century
             {
                 IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
                 
-                ppt[ecoregion.Index]    = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
-                airtemp[ecoregion.Index]   = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
-                //soiltemp[ecoregion.Index]   += SiteVars.SoilTemperature[site][month];
- 
-                avgNPPtc[ecoregion.Index]    += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
-                avgResp[ecoregion.Index]     += SiteVars.MonthlyResp[site][month];  
-                avgNEE[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
+               ppt[ecoregion.Index]    = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
+               airtemp[ecoregion.Index]   = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
+               //soiltemp[ecoregion.Index]   += SiteVars.SoilTemperature[site][month];
+
+               avgNPPtc[ecoregion.Index]    += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
+               avgResp[ecoregion.Index]     += SiteVars.MonthlyResp[site][month];  
+               avgNEE[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];
+               SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
                 
-                SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
+               Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
                 
-                Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
-                Nvol[ecoregion.Index] += SiteVars.MineralN[site] * 0.02 * OtherData.MonthAdjust; //same calc as in Century.cs
+               Nvol[ecoregion.Index] += SiteVars.MineralN[site] * 0.02 * OtherData.MonthAdjust; //same calc as in Century.cs
                 
             }
             
@@ -452,7 +600,8 @@ namespace Landis.Extension.Succession.Century
             double totalN = 
                     SiteVars.CohortLeafN[site] 
                     + SiteVars.CohortWoodN[site] 
-                    
+                    //wang
+                    + SiteVars.CohortBranchN[site] 
                     + SiteVars.MineralN[site]
                     
                     + SiteVars.SurfaceDeadWood[site].Nitrogen
@@ -489,6 +638,50 @@ namespace Landis.Extension.Succession.Century
         
             return totalC;
         }
-        
+
+
+        private static double TotalImmob(ActiveSite site)
+        {
+          
+        double TotalImmob=
+                SiteVars.SurfaceDeadWood[site].ImmobilNW
+                + SiteVars.SurfaceDeadBranch[site].ImmobilNW
+                + SiteVars.SurfaceStructural[site].ImmobilNW
+                + SiteVars.SurfaceMetabolic[site].ImmobilNW
+                + SiteVars.SoilDeadWood[site].ImmobilNW
+                + SiteVars.SoilStructural[site].ImmobilNW
+                + SiteVars.SoilMetabolic[site].ImmobilNW
+                + SiteVars.SOM1surface[site].ImmobilNW
+                + SiteVars.SOM1soil[site].ImmobilNW
+                + SiteVars.SOM2[site].ImmobilNW
+                + SiteVars.SOM3[site].ImmobilNW
+                ;
+                return TotalImmob;
+        }
+
+
+        private static double TotalNetMin(ActiveSite site)
+        {
+
+            double TotalNetMin =
+                    SiteVars.SurfaceDeadWood[site].NetMineralization 
+                    + SiteVars.SurfaceDeadBranch[site].NetMineralization 
+                    + SiteVars.SurfaceStructural[site].NetMineralization 
+                    + SiteVars.SurfaceMetabolic[site].NetMineralization 
+                    + SiteVars.SoilDeadWood[site].NetMineralization 
+                    + SiteVars.SoilStructural[site].NetMineralization 
+                    + SiteVars.SoilMetabolic[site].NetMineralization 
+                    + SiteVars.SOM1surface[site].NetMineralization 
+                    + SiteVars.SOM1soil[site].NetMineralization 
+                    + SiteVars.SOM2[site].NetMineralization 
+                    + SiteVars.SOM3[site].NetMineralization 
+                    ;
+            return TotalNetMin;
+        }
+
+
+
     }
 }
+
+

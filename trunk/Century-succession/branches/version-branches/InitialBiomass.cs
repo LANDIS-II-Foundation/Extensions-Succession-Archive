@@ -5,6 +5,7 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Library.InitialCommunities;
+using Landis.Library.Succession;
 using System.Collections.Generic;
 using Landis.Library.LeafBiomassCohorts;
 //using Landis.Cohorts;
@@ -20,6 +21,9 @@ namespace Landis.Extension.Succession.Century
         private ISiteCohorts cohorts;
         
         private Layer surfaceDeadWood;
+        //wang
+        private Layer surfaceDeadBranch;
+
         private Layer surfaceStructural;
         private Layer surfaceMetabolic;
         
@@ -38,6 +42,10 @@ namespace Landis.Extension.Succession.Century
         private double cohortWoodC;
         private double cohortWoodN;
         
+        //wang
+        private double cohortBranchC;
+        private double cohortBranchN;
+        
         //---------------------------------------------------------------------
 
         /// <summary>
@@ -53,6 +61,15 @@ namespace Landis.Extension.Succession.Century
         public Layer SurfaceDeadWood 
         { get { return surfaceDeadWood; } 
         } 
+
+        //wang
+        public Layer SurfaceDeadBranch
+        {
+            get { return surfaceDeadBranch; }
+        } 
+
+
+
         public Layer SoilDeadWood 
         { get { return soilDeadWood; } 
         } 
@@ -87,11 +104,19 @@ namespace Landis.Extension.Succession.Century
         public double CohortWoodC { get { return cohortWoodC; } } 
         public double CohortWoodN { get { return cohortWoodN; } } 
 
+        //wang
+
+        public double CohortBranchC { get { return cohortBranchC; } }
+        public double CohortBranchN { get { return cohortBranchN; } } 
+
         //---------------------------------------------------------------------
 
         private InitialBiomass(ISiteCohorts cohorts,
                 
                 Layer surfaceDeadWood,
+            //wang
+            Layer surfaceDeadBranch,
+
                 Layer surfaceStructural,
                 Layer surfaceMetabolic,
                 
@@ -108,12 +133,19 @@ namespace Landis.Extension.Succession.Century
                 double cohortLeafC,
                 double cohortLeafN,
                 double cohortWoodC,
-                double cohortWoodN
+                double cohortWoodN,
+            //wang
+                double cohortBranchC,
+                double cohortBranchN
+
                 )
         {
             this.cohorts = cohorts;
             
             this.surfaceDeadWood = surfaceDeadWood;
+            //wang
+            this.surfaceDeadBranch = surfaceDeadBranch;
+
             this.surfaceStructural = surfaceStructural;
             this.surfaceMetabolic = surfaceMetabolic;
             
@@ -131,6 +163,9 @@ namespace Landis.Extension.Succession.Century
             this.cohortLeafN = cohortLeafN;
             this.cohortWoodC = cohortWoodC;
             this.cohortWoodN = cohortWoodN;
+            //wang
+            this.cohortBranchC = cohortBranchC;
+            this.cohortBranchN = cohortBranchN;
         }
 
         //---------------------------------------------------------------------
@@ -139,7 +174,8 @@ namespace Landis.Extension.Succession.Century
             ISiteCohorts clone = new SiteCohorts();
             foreach (ISpeciesCohorts speciesCohorts in site_cohorts)
                 foreach (ICohort cohort in speciesCohorts)
-                    clone.AddNewCohort(cohort.Species, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);  //species.cohorts.Add(speciesCohorts.Clone());
+                    //wang
+                    clone.AddNewCohort(cohort.Species, cohort.Age, cohort.WoodBiomass, cohort.BranchBiomass, cohort.LeafBiomass);  //species.cohorts.Add(speciesCohorts.Clone());
             return clone;
         }
         //---------------------------------------------------------------------
@@ -218,6 +254,8 @@ namespace Landis.Extension.Succession.Century
                         cohorts,
                         
                         SiteVars.SurfaceDeadWood[site],
+                        //wang
+                        SiteVars.SurfaceDeadBranch[site],
                         SiteVars.SurfaceStructural[site],
                         SiteVars.SurfaceMetabolic[site],
                         
@@ -234,7 +272,11 @@ namespace Landis.Extension.Succession.Century
                         SiteVars.CohortLeafC[site],
                         SiteVars.CohortLeafN[site],
                         SiteVars.CohortWoodC[site],
-                        SiteVars.CohortWoodN[site]
+                        SiteVars.CohortWoodN[site],
+                        //wang
+                        SiteVars.CohortBranchC[site],
+                        SiteVars.CohortBranchN[site]
+
                         );
 
             initialSites[key] = initialBiomass;
@@ -321,9 +363,9 @@ namespace Landis.Extension.Succession.Century
                     ISpecies species = ageCohorts[indexNextAgeCohort].Species;
 
                     float[] initialBiomass = initialBiomassMethod(species, SiteVars.Cohorts[site], site);
-
+                    //wang
                     SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
-                                                initialBiomass[0], initialBiomass[1]);
+                                                initialBiomass[0], initialBiomass[1], initialBiomass[2]);
                     indexNextAgeCohort++;
                 }
                 

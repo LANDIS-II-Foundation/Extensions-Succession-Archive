@@ -381,7 +381,7 @@ namespace Landis.Extension.Succession.Century
             
             //Leach(site, stormFlow, baseFlow);
 
-            //PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}", availableWater, soilWaterContent, wiltingPoint, soilDepth);
+             // PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}", availableWater, soilWaterContent, wiltingPoint, soilDepth);
             //PlugIn.ModelCore.Log.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
 
             return;
@@ -560,7 +560,7 @@ namespace Landis.Extension.Succession.Century
                 leachIntensity = Math.Max(leachIntensity, 0.0);
                 amtLeached = fractionLeach * SiteVars.MineralN[site] * leachIntensity;
                 
-                //PlugIn.ModelCore.Log.WriteLine("amtLeach={0:0.0}, fractionLeach={1:0.0}, leachIntensity={2:0.0}, stormF={3}.", amtLeached, fractionLeach, leachIntensity, stormFlow);
+                PlugIn.ModelCore.Log.WriteLine("amtLeach={0:0.0}, fractionLeach={1:0.0}, leachIntensity={2:0.0}, stormF={3}.", amtLeached, fractionLeach, leachIntensity, stormFlow);
 
                  //...Compute storm flow.
                 stormFlowN = amtLeached * stormFlow;

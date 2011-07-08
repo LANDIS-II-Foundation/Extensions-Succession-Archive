@@ -27,7 +27,7 @@ namespace Landis.Extension.Succession.Century
         // P2CO2 & P3CO2 - Controls flow from soil organic matter with intermediate turnover
         // to CO2 (fraction of C lost as CO2 during decomposition).
         // Values from ffix.100 file.
-        public const double FractionSOM2toCO2 = 0.56;
+        public const double FractionSOM2toCO2 = 0.55;
         public const double FractionSOM3toCO2 = 0.55;
 
         //> Base DecayRate SOM2 (DEC5) and SOM3 (DEC4)
@@ -93,8 +93,8 @@ namespace Landis.Extension.Succession.Century
         public const double PS1S3_Intercept = 0.003;
         public const double PS1S3_Slope = 0.032;
 
-        public const double PS2S3_Intercept = 0.003;
-        public const double PS2S3_Slope = 0.009;
+        public const double PS2S3_Intercept = 0.009;
+        public const double PS2S3_Slope = 0.027;
 
         // OMLECH(1 & 2) Parameters for the effect of sand on leaching of organic compounds. Values from ffix.100 file and
         // OMLECH(3) - The amount of water in centimeters (cm) that needs to flow
@@ -196,7 +196,9 @@ namespace Landis.Extension.Succession.Century
         //public const double MinDeadWoodCN = 50.0;
 
         // dtm
+        //wang
         public const double MonthAdjust = 1.0;
+       
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
@@ -217,8 +219,8 @@ namespace Landis.Extension.Succession.Century
 
             // Decomposition rate of organic matter with active turnover, the fraction of the pool
             // that turns over each year
-            litterParmsSurface.DecayRateMicrobes = 6.0; //DEC3(1)
-            litterParmsSoil.DecayRateMicrobes = 7.3; //DEC3(2)
+            litterParmsSurface.DecayRateMicrobes = 3.84; //DEC3(1)
+            litterParmsSoil.DecayRateMicrobes = 4.672; //DEC3(2)
 
             LitterParameters[0] = litterParmsSurface;
             LitterParameters[1] = litterParmsSoil;

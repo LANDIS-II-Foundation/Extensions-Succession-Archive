@@ -19,6 +19,8 @@ namespace Landis.Extension.Succession.Century
     //: IDisturbance
     {
         private double woodReduction;
+        //wang
+        private double branchReduction;
         private double litterReduction;
         //private static ActiveSite currentSite;
         //private static FireReductions singleton;
@@ -81,6 +83,25 @@ namespace Landis.Extension.Succession.Century
             }
                
         }
+
+        //wang
+        public double BranchReduction
+        {
+            get
+            {
+                return branchReduction;
+            }
+            set
+            {
+                if (value < 0.0 || value > 1.0)
+                    throw new InputValueException(value.ToString(), "Wood reduction due to fire must be between 0 and 1.0");
+                branchReduction = value;
+            }
+
+        }
+
+
+
         public double LitterReduction
         {
             get {
@@ -97,6 +118,8 @@ namespace Landis.Extension.Succession.Century
         public FireReductions()
         {
             this.WoodReduction = 0.0; 
+            //wang
+            this.BranchReduction = 0.0; 
             this.LitterReduction = 0.0;
         }
     }
@@ -164,16 +187,29 @@ namespace Landis.Extension.Succession.Century
             // Surface dead wood
 
             double woodLossMultiplier = ReductionsTable[severity].WoodReduction;
+            //wang
+            double branchLossMultiplier = ReductionsTable[severity].BranchReduction;
+
+            carbonLoss = SiteVars.SurfaceDeadWood[site].Carbon * woodLossMultiplier;
+            nitrogenLoss = SiteVars.SurfaceDeadWood[site].Nitrogen * woodLossMultiplier;   
+           
+            //wang?
+           carbonLoss = SiteVars.SurfaceDeadBranch[site].Carbon * branchLossMultiplier;
+           nitrogenLoss = SiteVars.SurfaceDeadBranch[site].Nitrogen * branchLossMultiplier;
             
-            carbonLoss   = SiteVars.SurfaceDeadWood[site].Carbon * woodLossMultiplier;
-            nitrogenLoss = SiteVars.SurfaceDeadWood[site].Nitrogen * woodLossMultiplier;
             summaryNLoss += nitrogenLoss;
             
             SiteVars.SurfaceDeadWood[site].Carbon   -= carbonLoss;
+            //wang
+            SiteVars.SurfaceDeadBranch[site].Carbon -= carbonLoss;
             SiteVars.SourceSink[site].Carbon        += carbonLoss;
             SiteVars.FireEfflux[site]               += carbonLoss;
             
             SiteVars.SurfaceDeadWood[site].Nitrogen -= nitrogenLoss;
+            //wang
+            SiteVars.SurfaceDeadBranch[site].Nitrogen -= nitrogenLoss;
+
+
             SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
 
             SiteVars.MineralN[site] += summaryNLoss * 0.01;

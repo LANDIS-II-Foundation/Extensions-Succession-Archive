@@ -21,6 +21,9 @@ namespace Landis.Extension.Succession.Century
 
             double wood2c = SiteVars.SurfaceDeadWood[site].Carbon;
 
+            //wang
+            double branch2c = SiteVars.SurfaceDeadBranch[site].Carbon;
+
             double anerb = SiteVars.AnaerobicEffect[site];
 
             //....LARGE WOOD....
@@ -41,6 +44,33 @@ namespace Landis.Extension.Succession.Century
                 // Decompose large wood into SOM1 and SOM2 with CO2 loss.
                 SiteVars.SurfaceDeadWood[site].DecomposeLignin(totalCFlow, site);
             }
+
+
+
+//wang
+
+            //....LARGE WOOD....
+            if (branch2c > 0.0000001)
+            {
+
+                double ligninFactor = System.Math.Exp(-1 * OtherData.LigninDecayEffect * SiteVars.SurfaceDeadBranch[site].FractionLignin);
+                double decayRate = Math.Min(1.0, SiteVars.DecayFactor[site]
+                                                * SiteVars.SurfaceDeadBranch[site].DecayValue
+                                                * ligninFactor
+                                                * OtherData.MonthAdjust);
+
+                //Compute total C flow out of large wood
+                double totalCFlow = branch2c * decayRate;
+
+                //PlugIn.ModelCore.Log.WriteLine("Decompose wood.  C={0:0.00}, Cflow={1:0.00}, DF={2:0.00}, DV={3:0.00}, LigninF={4:0.000}.", wood2c, totalCFlow, SiteVars.DecayFactor[site], SiteVars.SurfaceDeadWood[site].DecayValue, ligninFactor);
+
+                // Decompose large wood into SOM1 and SOM2 with CO2 loss.
+                SiteVars.SurfaceDeadBranch[site].DecomposeLignin(totalCFlow, site);
+            }
+
+
+
+
 
 
                 //....COARSE ROOTS (SoilDeadWood)....
@@ -80,8 +110,9 @@ namespace Landis.Extension.Succession.Century
 
             // from dry matter to C, 0.5 ratio
             double totalC = inputMass * 0.47;
-
-            if (totalC < 0.0000001)
+           
+           if (totalC < 0.0000001)
+            
                 return;
 
             // ...For each mineral element..
@@ -126,11 +157,19 @@ namespace Landis.Extension.Succession.Century
 
             Layer layer;
 
-            if((int) name == (int) LayerName.Wood)
+            if ((int)name == (int)LayerName.Wood)
+            {
                 layer = SiteVars.SurfaceDeadWood[site];
+            }
+            //wang
+            else if ((int)name == (int)LayerName.Branch)
+           {
+             layer = SiteVars.SurfaceDeadBranch[site];
+            }
             else
+            {
                 layer = SiteVars.SoilDeadWood[site];
-
+            }
             layer.Carbon += totalC;
             layer.Nitrogen += totalNitrogen;
 
@@ -142,6 +181,9 @@ namespace Landis.Extension.Succession.Century
 
         //}
         }
+
+
+
 
     }
 }

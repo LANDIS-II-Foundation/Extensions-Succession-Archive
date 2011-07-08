@@ -57,7 +57,6 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.FineRootLitterCN[species],
                             SpeciesData.FineRootLignin[species],
                             OtherData.StructuralCN,
-
                             LayerName.FineRoot,
                             LayerType.Soil,
                             site);
@@ -71,11 +70,11 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         public static double CalculateCoarseRoot(double wood)
         {
-            return (wood * 0.25);
+            return (wood * 0.235);
         }
         public static double CalculateFineRoot(double foliarBiomass)
         {
-            return (foliarBiomass * 0.7);
+            return (foliarBiomass * 0.78);
         }
     }
 }

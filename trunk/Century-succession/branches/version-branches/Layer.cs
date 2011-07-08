@@ -11,7 +11,7 @@ using Landis.SpatialModeling;
 namespace Landis.Extension.Succession.Century
 {
 
-    public enum LayerName {Leaf, FineRoot, Wood, CoarseRoot, Metabolic, Structural, SOM1, SOM2, SOM3, Other};
+    public enum LayerName { Leaf, FineRoot, Wood, Branch, CoarseRoot, Metabolic, Structural, SOM1, SOM2, SOM3,  Other }; //wang
     public enum LayerType {Surface, Soil, Other}
 
     /// <summary>
@@ -27,7 +27,9 @@ namespace Landis.Extension.Succession.Century
         private double fractionLignin;
         private double netMineralization;
         private double grossMineralization;
+        private double immobilNW;
 
+        
 
         //---------------------------------------------------------------------
         public Layer(LayerName name, LayerType type)
@@ -42,7 +44,8 @@ namespace Landis.Extension.Succession.Century
 
             this.netMineralization = 0.0;
             this.grossMineralization = 0.0;
-
+            //wang
+            this.immobilNW = 0;
         }
         //---------------------------------------------------------------------
         /// <summary>
@@ -169,6 +172,24 @@ namespace Landis.Extension.Succession.Century
             }
         }
 
+        //wang
+        /// <summary>
+        /// Immobilization
+        /// </summary>
+        public double ImmobilNW
+        {
+            get
+            {
+                return immobilNW;
+            }
+            set
+            {
+                immobilNW = value;
+            }
+        }
+
+
+
         public Layer Clone()
         {
             Layer newLayer = new Layer(this.Name, this.Type);
@@ -181,7 +202,8 @@ namespace Landis.Extension.Succession.Century
 
             newLayer.netMineralization = this.netMineralization ;
             newLayer.grossMineralization = this.grossMineralization ;
-
+            //wang
+            newLayer.immobilNW = this.immobilNW;
             return newLayer;
         }
 
@@ -405,6 +427,11 @@ namespace Landis.Extension.Succession.Century
                //     since  ratioCNtoDestination = netCFlow / (Nflow + immobileN),
                //     where immobileN is the extra N needed from the mineral pool
                 double immobileN = (CFlow / ratioCNtoDestination) - NFlow;
+                
+                
+                //wang
+                this.ImmobilNW += immobileN;
+
 
                 //...Schedule flow from Box A to Box B (outofa)
                 //flow(anps,bnps,time,outofa);

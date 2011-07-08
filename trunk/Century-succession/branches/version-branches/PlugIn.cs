@@ -4,7 +4,6 @@
 using Landis.Core;
 using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
-
 using Landis.Library.InitialCommunities;
 using Landis.Library.Succession;
 using Landis.Library.LeafBiomassCohorts;
@@ -194,6 +193,7 @@ namespace Landis.Extension.Succession.Century
                     {
                         if (site.IsActive) {
                             pixel.MapCode.Value = (ushort) SiteVars.AGNPPcarbon[site];
+                            
                         }
                         else {
                             //  Inactive site
@@ -275,6 +275,9 @@ namespace Landis.Extension.Succession.Century
             SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts); //.Clone();
 
             SiteVars.SurfaceDeadWood[site]       = initialBiomass.SurfaceDeadWood.Clone();
+            //wang
+            SiteVars.SurfaceDeadBranch[site] = initialBiomass.SurfaceDeadBranch.Clone();
+
             SiteVars.SurfaceStructural[site]     = initialBiomass.SurfaceStructural.Clone();
             SiteVars.SurfaceMetabolic[site]      = initialBiomass.SurfaceMetabolic.Clone();
 
@@ -292,6 +295,10 @@ namespace Landis.Extension.Succession.Century
             SiteVars.CohortLeafN[site]           = initialBiomass.CohortLeafN;
             SiteVars.CohortWoodC[site]           = initialBiomass.CohortWoodC;
             SiteVars.CohortWoodN[site]           = initialBiomass.CohortWoodN;
+            //wang
+
+            SiteVars.CohortBranchC[site] = initialBiomass.CohortBranchC;
+            SiteVars.CohortBranchN[site] = initialBiomass.CohortBranchN;
         }
 
 
@@ -310,17 +317,20 @@ namespace Landis.Extension.Succession.Century
             double foliar = (double) cohort.LeafBiomass;
 
             double wood = (double) cohort.WoodBiomass;
+            //wang
+            double branch = (double)cohort.BranchBiomass;
 
-            //PlugIn.ModelCore.Log.WriteLine("Cohort Died: species={0}, age={1}, biomass={2}, foliage={3}.", cohort.Species.Name, cohort.Age, cohort.Biomass, foliar);
+            PlugIn.ModelCore.Log.WriteLine("Cohort Died: species={0}, age={1}, biomass={2}, foliage={3}.", cohort.Species.Name, cohort.Age, cohort.Biomass, foliar);
 
             if (disturbanceType == null) {
                 //PlugIn.ModelCore.Log.WriteLine("NO EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
 
                 ForestFloor.AddWoodLitter(wood, cohort.Species, eventArgs.Site);
+                ForestFloor.AddBranchLitter(branch, cohort.Species, eventArgs.Site); //wang
                 ForestFloor.AddFoliageLitter(foliar, cohort.Species, eventArgs.Site);
-
-                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(wood), cohort.Species, eventArgs.Site);
-                Roots.AddFineRootLitter(Roots.CalculateFineRoot(foliar), cohort.Species, eventArgs.Site);
+                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(wood), cohort.Species, eventArgs.Site); 
+                Roots.AddFineRootLitter(Roots.CalculateFineRoot(foliar), cohort.Species, eventArgs.Site); 
+ 
             }
 
             if (disturbanceType != null) {
@@ -389,7 +399,8 @@ namespace Landis.Extension.Succession.Century
         public void AddNewCohort(ISpecies species, ActiveSite site)
         {
             float[] initialBiomass = CohortBiomass.InitialBiomass(species, SiteVars.Cohorts[site], site);
-            SiteVars.Cohorts[site].AddNewCohort(species, 1, initialBiomass[0], initialBiomass[1]);
+            //wang
+            SiteVars.Cohorts[site].AddNewCohort(species, 1, initialBiomass[0], initialBiomass[1], initialBiomass[2]);
         }
         //---------------------------------------------------------------------
 

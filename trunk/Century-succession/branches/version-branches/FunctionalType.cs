@@ -16,6 +16,7 @@ namespace Landis.Extension.Succession.Century
         double PPDF3{get;set;}
         double PPDF4{get;set;}
         double FCFRACleaf{get;set;}
+        double FCFRACbranch { get; set;}
         double BTOLAI{get;set;}
         double KLAI{get;set;}
         double MAXLAI{get;set;}
@@ -23,6 +24,10 @@ namespace Landis.Extension.Succession.Century
         double PPRPTS3 {get;set;}
         double MonthlyWoodMortality{get;set;}
         double WoodDecayRate{get;set;}
+        //wang
+        double MonthlyBranchMortality { get; set; }
+        double BranchDecayRate { get; set; }
+
         double MortCurveShape{get;set;}
         int LeafNeedleDrop{get;set;}
 
@@ -36,6 +41,7 @@ namespace Landis.Extension.Succession.Century
         private double ppdf3;
         private double ppdf4;
         private double fcfracLeaf;
+        private double fcfracBranch;
         private double btolai;
         private double klai;
         private double maxlai;
@@ -43,6 +49,10 @@ namespace Landis.Extension.Succession.Century
         private double pprpts3;
         private double monthlyWoodMortality;
         private double woodDecayRate;
+        //wang
+        private double monthlyBranchMortality;
+        private double branchDecayRate;
+        
         private double mortCurveShape;
         private int leafNeedleDrop;
 
@@ -137,6 +147,30 @@ namespace Landis.Extension.Succession.Century
                 fcfracLeaf = value;
             }
         }
+
+
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// C allocation fraction of old leaves for mature forest.
+        /// Century Model Interface Help - Colorado State University, Fort Collins, CO  80523
+        /// </summary>
+        public double FCFRACbranch
+        {
+            get
+            {
+                return fcfracBranch;
+            }
+            set
+            {
+                if (value < 0.0 || value > 1.0)
+                    throw new InputValueException(value.ToString(),
+                        "The fraction of NPP allocated to leaves must be between 0 and 1.0");
+                fcfracBranch = value;
+            }
+        }
+
+
         //---------------------------------------------------------------------
         /// <summary>
         /// Biomass to leaf area index (LAI) conversion factor for trees.  This is a biome-specific parameters.  
@@ -237,7 +271,40 @@ namespace Landis.Extension.Succession.Century
                 woodDecayRate = value;
             }
         }
+
+
+        //wang---
         
+        //---------------------------------------------------------------------
+        public double MonthlyBranchMortality
+        {
+            get {
+                return monthlyBranchMortality;
+            }
+            set {
+                    if (value  < 0.0 || value  > 1.0)
+                        throw new InputValueException(value.ToString(),
+                            "Monthly Branch Mortality is a fraction and must be between 0.0 and 1.0");
+                monthlyBranchMortality = value;
+            }
+        }
+        //-----------------------------------------------------------------
+        public double BranchDecayRate
+        {
+            get
+            {
+                return branchDecayRate;
+            }
+            set
+            {
+                if (value <= 0.0 || value > 2.0)
+                    throw new InputValueException(value.ToString(),
+                        "Decay rate must be between 0.0 and 2.0");
+                branchDecayRate = value;
+            }
+        }
+
+
         //---------------------------------------------------------------------
         /// <summary>
         /// Determines the shape of the age-related mortality curve.  Ranges from a gradual senescence (5)
