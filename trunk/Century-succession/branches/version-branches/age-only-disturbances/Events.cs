@@ -27,19 +27,26 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
             ActiveSite site = eventArgs.Site;
             float foliar = cohort.LeafBiomass; 
             float wood = cohort.WoodBiomass; 
-            
+            //wang
+            float branch = cohort.BranchBiomass;
 
             float foliarInput = ReduceInput(foliar, cohortReductions.Foliar, site);
             float woodInput   = ReduceInput(wood, cohortReductions.Wood, site);
+            //wang
+            float branchInput = ReduceInput(branch, cohortReductions.Branch, site);
+
 
             //PlugIn.ModelCore.Log.WriteLine("EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
             //PlugIn.ModelCore.Log.WriteLine("       Cohort Reductions:  Foliar={0:0.00}.  Wood={1:0.00}.", cohortReductions.Foliar, cohortReductions.Wood);
             //PlugIn.ModelCore.Log.WriteLine("       InputB/TotalB:  Foliar={0:0.00}/{1:0.00}, Wood={2:0.0}/{3:0.0}.", foliarInput, foliar, woodInput, wood);
             
             ForestFloor.AddWoodLitter(woodInput, cohort.Species, site);
+            Roots.AddCoarseRootLitter(wood, cohort.Species, site);  //wang?
+            // All of cohorts roots are killed.//wang
+            ForestFloor.AddBranchLitter(branchInput, cohort.Species, site);
+
             ForestFloor.AddFoliageLitter(foliarInput, cohort.Species, site);
-            
-            Roots.AddCoarseRootLitter(wood, cohort.Species, site);  // All of cohorts roots are killed.
+           
             Roots.AddFineRootLitter(foliar, cohort.Species, site);
             
         }

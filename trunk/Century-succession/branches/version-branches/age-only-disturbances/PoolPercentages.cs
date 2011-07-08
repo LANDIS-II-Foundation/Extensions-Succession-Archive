@@ -14,6 +14,8 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
     {
         private Percentage wood;
         private Percentage foliar;
+        /*wang*/
+        private Percentage branch;
 
         //---------------------------------------------------------------------
 
@@ -30,6 +32,29 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
                 wood = value;
             }
         }
+
+
+        //wang
+        /// <summary>
+        /// The percentage associated with the dead branch pool.
+        /// </summary>
+        public Percentage Branch
+        {
+            get
+            {
+                return branch;
+            }
+            set
+            {
+                ValidatePercentage(value);
+                branch = value;
+            }
+        }
+
+
+
+
+
 
         //---------------------------------------------------------------------
 

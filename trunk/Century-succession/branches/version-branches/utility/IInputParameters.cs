@@ -69,10 +69,17 @@ namespace Landis.Extension.Succession.Century
         Species.AuxParm<bool> Epicormic {get;}
         Species.AuxParm<double> LeafLignin {get;}
         Species.AuxParm<double> WoodLignin {get;}
+
+        //wang
+        Species.AuxParm<double> BranchLignin {get;}
+
         Species.AuxParm<double> CoarseRootLignin {get;}
         Species.AuxParm<double> FineRootLignin {get;}
         Species.AuxParm<double> LeafCN {get;}
         Species.AuxParm<double> WoodCN {get;}
+        //wang
+        Species.AuxParm<double> BranchCN {get;}
+
         Species.AuxParm<double> CoarseRootCN {get;}
         Species.AuxParm<double> FoliageLitterCN {get;}
         Species.AuxParm<double> FineRootLitterCN {get;}

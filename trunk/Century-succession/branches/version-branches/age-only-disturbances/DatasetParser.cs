@@ -61,6 +61,8 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
 
             InputVar<string> disturbance = new InputVar<string>("Disturbance");
             InputVar<Percentage> woodPercentage = new InputVar<Percentage>("Woody");
+            //wang
+            InputVar<Percentage> branchPercentage = new InputVar<Percentage>("Branch");
             InputVar<Percentage> foliarPercentage = new InputVar<Percentage>("Non-Woody");
             string lastColumn = "the " + foliarPercentage.Name + " column";
 
@@ -100,7 +102,11 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
                 }
 
                 ReadValue(woodPercentage, currentLine);
+                //wang
+                ReadValue(branchPercentage, currentLine);
                 percentages.Wood = woodPercentage.Value;
+                //wang
+                percentages.Branch = branchPercentage.Value;
 
                 ReadValue(foliarPercentage, currentLine);
                 percentages.Foliar = foliarPercentage.Value;
