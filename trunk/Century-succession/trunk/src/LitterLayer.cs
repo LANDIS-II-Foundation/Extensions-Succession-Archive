@@ -36,7 +36,6 @@ namespace Landis.Extension.Succession.Century
                             LayerType type,
                             ActiveSite site)
         {
-        //lock(site){
 
             double cAddToMetabolic, cAddToStructural, directAbsorb;
             double NAddToMetabolic, NAddToStructural, Npart;

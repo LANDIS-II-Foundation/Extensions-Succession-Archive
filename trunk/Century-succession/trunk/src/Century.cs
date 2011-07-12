@@ -117,7 +117,6 @@ namespace Landis.Extension.Succession.Century
                 foreach (ISpeciesCohorts speciesCohorts in cohorts)
                     foreach (ICohort cohort in speciesCohorts)
                         total += (int) (cohort.WoodBiomass + cohort.LeafBiomass);
-                    //total += ComputeBiomass(speciesCohorts);
             return total;
         }
 
@@ -148,6 +147,7 @@ namespace Landis.Extension.Succession.Century
             return;
         }
 
+        //---------------------------------------------------------------------
         /// <summary>
         /// Summarize cohort C&N for output.
         /// </summary>

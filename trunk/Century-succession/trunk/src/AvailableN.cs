@@ -20,7 +20,7 @@ namespace Landis.Extension.Succession.Century
         //New method for calculating N limits, called from Century.cs Run method before calling Grow
         //Iterates through cohorts, assigning each a N gathering efficiency based on fine root biomass
         //and N tolerance.
-        public static double CalculateNLimits(Site site)
+        public static void CalculateNLimits(Site site)
         {
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
             double NMultTotal=0.0;
@@ -69,7 +69,7 @@ namespace Landis.Extension.Succession.Century
                 //throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
             }
 
-            return 0.0;
+            return; 
         }
 
         //Calculates a multiplier for how much N a cohort can take up
@@ -151,100 +151,5 @@ namespace Landis.Extension.Succession.Century
                             (leafFractionN - litterFractionN);
             return transN;
         }
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Reduces growth (ANPP) depending upon how much N is available.
-        /// </summary>
-        /*public static double GrowthReductionAvailableN(ActiveSite site, ISpecies species)
-        {
-            double availableN = SiteVars.MineralN[site] * 10.0 * 0.75;  // units to kg/ha to match the original equations
-            //double availableN = SiteVars.PlantAvailableN[site] * 10.0;  // units to kg/ha to match the original equations
-
-
-            //availableN += SiteVars.SOM2[site].Nitrogen * 0.1 * 10.0;
-
-            int Ntolerance = SpeciesData.NTolerance[species];
-
-            if (Ntolerance == 4)
-                return 1.0;
-
-            if(availableN <= 0.0)
-                return 0.0;
-
-
-
-            //Calc species soil N growth multiplier
-            // Mitchell and Chandler. 1939. Black Rock Forest Bull. 11,
-            // Aber et al. 1979. Can. J. For. Res. 9:10 - 14.
-            double a = 0.0;
-            double b = 0.0;
-            double c = 0.0;
-            double d = 0.0;
-            double e = 0.0;
-            double soilNitrogenMultiplier = 0.0;
-
-            double availMC = -170.0 + 4.0 * availableN;
-
-            if(Ntolerance == 1)  //Intolerant to low nitrogen
-            {
-                a = 2.99;
-                b = 207.43;
-                c = 0.00175;
-                d = -1.7;
-                e = 1.0;
-            } else if (Ntolerance == 2) //Mid-tolerant of low nitrogen
-            {
-                a = 2.94;
-                b = 117.52;
-                c = 0.00234;
-                d = -0.5;
-                e = 0.5;
-            } else if (Ntolerance == 3) //Tolerant of low nitrogen
-            {
-                a = 2.79;
-                b = 219.77;
-                c = 0.00179;
-                d = -0.3;
-                e = 0.6;
-            } else if (Ntolerance >= 4) //Not at all limited by nitrogen
-            {
-                //Needs further review: NTolerance = 4, 5, or 6 means N-fixer
-                //Adds N to the soil from nowhere--value needs to be scaled
-                //SiteVars.MineralSoil[site].ContentN += 5;
-
-                soilNitrogenMultiplier = 1.0;
-            } else
-            {
-                PlugIn.ModelCore.Log.WriteLine("Species = {0}.  Ntolerance = {1}.", species.Name, Ntolerance);
-                throw new System.ApplicationException("Error: Incorrect N tolerance value .");
-            }
-
-            //concNinLeaves = percent N in green leaves
-            double concNinLeaves = a * (1.0 - System.Math.Pow(10.0, ((-1.0 * c) * (availMC + b))));
-
-            // Limit concentration to +/- 20% of input leaf N concentration?
-            // Testing reveals that this results in a greatly heightened mineralN and totalN
-            // And this generally ignores available N and causes N tolerant species to have a lower
-            // N limit..
-            bool limitLeafNconcentration = false;
-            if (limitLeafNconcentration)
-            {
-                double potentialLeafN = 1.0 / (SpeciesData.LeafCN[species] * 2.0) * 100.0;
-                //PlugIn.ModelCore.Log.WriteLine("potentialLeafN={0},", potentialLeafN);
-                concNinLeaves = Math.Max(concNinLeaves, potentialLeafN * 0.8);
-                concNinLeaves = Math.Min(concNinLeaves, potentialLeafN * 1.2);
-            }
-
-
-            soilNitrogenMultiplier = d + (e * concNinLeaves); //(3) Aber 1979
-
-            //PlugIn.ModelCore.Log.WriteLine("   Yr={0}. Spp={1}, Nx={2:0.00}, availN={3:0.00}, leafN={4}", PlugIn.ModelCore.CurrentTime, species.Name, soilNitrogenMultiplier, availableN, concNinLeaves);
-            //Changing min Nmultiplier to 0.05 from 0.0, to allow some growth of N-intolerant trees --bsulman
-            soilNitrogenMultiplier = Math.Min(1.0, soilNitrogenMultiplier);
-            soilNitrogenMultiplier = Math.Max(0.05, soilNitrogenMultiplier);
-
-            return soilNitrogenMultiplier;
-        }*/
-
     }
 }

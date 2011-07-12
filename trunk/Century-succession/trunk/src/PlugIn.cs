@@ -12,7 +12,6 @@ using Landis.Library.Climate;
 
 using System;
 using System.Collections.Generic;
-//using System.Threading;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -115,12 +114,9 @@ namespace Landis.Extension.Succession.Century
         public override void Run()
         {
 
-            //if(PlugIn.ModelCore.CurrentTime == Timestep)
-            //    Outputs.WriteLogFile(0);
 
             if(PlugIn.ModelCore.CurrentTime > 0)
                 SiteVars.InitializeDisturbances();
-
 
             Dynamic.Module.CheckForUpdate();
             EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep);

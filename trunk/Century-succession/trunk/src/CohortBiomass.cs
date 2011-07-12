@@ -165,6 +165,7 @@ namespace Landis.Extension.Succession.Century
             //  estimation of growth.  ANPP cannot be negative.
             double actualANPP = Math.Max(0.0, potentialNPP - mortalityAge[0] - mortalityAge[1]);
 
+            // A link to external reduction of growth, e.g., insect defoliators.
             double growthReduction = CohortGrowthReduction.Compute(cohort, site, (int) siteBiomass);
             if (growthReduction > 0)
                 actualANPP *= (1.0 - growthReduction);
