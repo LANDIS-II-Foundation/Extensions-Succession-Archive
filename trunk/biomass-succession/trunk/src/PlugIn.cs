@@ -21,6 +21,7 @@ namespace Landis.Extension.Succession.Biomass
         private List<ISufficientLight> sufficientLight;
         public static bool CalibrateMode;
         public static double CurrentYearSiteMortality;
+        private static int time;
 
         //---------------------------------------------------------------------
 
@@ -31,8 +32,7 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        public override void LoadParameters(string dataFile,
-                                            ICore mCore)
+        public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
             SiteVars.Initialize();
@@ -50,7 +50,15 @@ namespace Landis.Extension.Succession.Biomass
                 return modelCore;
             }
         }
+        //---------------------------------------------------------------------
 
+        public static int SuccessionTimeStep
+        {
+            get
+            {
+                return time;
+            }
+        }
 
         //---------------------------------------------------------------------
 
@@ -58,6 +66,7 @@ namespace Landis.Extension.Succession.Biomass
         {
 
             Timestep = parameters.Timestep;
+            time = Timestep;
             CalibrateMode = parameters.CalibrateMode;
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
 
