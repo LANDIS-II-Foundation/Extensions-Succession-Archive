@@ -80,6 +80,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
 
             ActiveSite site = eventArgs.Site;
             SiteVars.SurfaceDeadWood[site].ReduceMass(poolReductions.Wood);
+            SiteVars.SurfaceDeadBranch[site].ReduceMass(poolReductions.Branch);//wang
             SiteVars.SurfaceStructural[site].ReduceMass(poolReductions.Foliar);
             SiteVars.SurfaceMetabolic[site].ReduceMass(poolReductions.Foliar);
         }

@@ -83,8 +83,8 @@ namespace Landis.Extension.Succession.Century
             IEcoregion ecoregion    = PlugIn.ModelCore.Ecoregion[site];
             
             double litterBiomass    = (SiteVars.SurfaceStructural[site].Carbon + SiteVars.SurfaceMetabolic[site].Carbon) * 2.0;
-            double deadBiomass = SiteVars.SurfaceDeadWood[site].Carbon * 2.0;
-            double soilWaterContent = SiteVars.SoilWaterContent[site] ;
+            double deadBiomass = SiteVars.SurfaceDeadWood[site].Carbon * 2.0 + SiteVars.SurfaceDeadBranch[site].Carbon * 2.0;//wang
+            double soilWaterContent = SiteVars.SoilWaterContent[site];
 
             double H2Oinputs        = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month]; //rain + irract;
             double tave             = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
