@@ -95,7 +95,7 @@ namespace Landis.Extension.Succession.Century
                     totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
             }
 
-            //Ensure all translocated N is used and reduce available N
+            //Reduce available N
             double Nreduction         = AvailableN.CohortUptakeAvailableN(cohort.Species, site, actualANPP);
             SiteVars.MineralN[site] -= Math.Min(Nreduction, SiteVars.MineralN[site]);
 
@@ -188,6 +188,19 @@ namespace Landis.Extension.Succession.Century
 
             leafNPP  = actualANPP * leafFractionNPP;
             woodNPP  = actualANPP * (1.0 - leafFractionNPP);
+
+            if (leafNPP == Double.NaN || woodNPP == Double.NaN)
+            {
+                PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
+                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
+                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     OTHER: Max={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
+                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     WoodNPP={0}, LeafNPP={1}.", woodNPP, leafNPP);
+                if (leafNPP == Double.NaN)
+                    leafNPP = 0.0;
+                if (woodNPP == Double.NaN)
+                    woodNPP = 0.0;
+
+            }
 
             return new double[2]{woodNPP, leafNPP};
 
@@ -368,6 +381,7 @@ namespace Landis.Extension.Succession.Century
         {
             double NPPwood = (double) AGNPP[0] * 0.47;
             double NPPleaf = (double) AGNPP[1] * 0.47;
+
             double NPPcoarseRoot = Roots.CalculateCoarseRoot(NPPwood);
             double NPPfineRoot = Roots.CalculateFineRoot(NPPleaf);
 
