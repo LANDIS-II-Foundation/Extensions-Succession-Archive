@@ -385,6 +385,21 @@ namespace Landis.Extension.Succession.Century
             double NPPcoarseRoot = Roots.CalculateCoarseRoot(NPPwood);
             double NPPfineRoot = Roots.CalculateFineRoot(NPPleaf);
 
+            if (NPPwood == Double.NaN || NPPleaf == Double.NaN || NPPcoarseRoot == Double.NaN || NPPfineRoot == Double.NaN)
+            {
+                PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or LEAF NPP or COARSE ROOT or FINE ROOT = NaN!  Will set to zero.");
+                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     WoodNPP={0}, LeafNPP={1}, CRootNPP={2}, FRootNPP={3}.", NPPwood, NPPleaf, NPPcoarseRoot, NPPfineRoot);
+                if (NPPleaf == Double.NaN)
+                    NPPleaf = 0.0;
+                if (NPPwood == Double.NaN)
+                    NPPwood = 0.0;
+                if (NPPcoarseRoot == Double.NaN)
+                    NPPcoarseRoot = 0.0;
+                if (NPPfineRoot == Double.NaN)
+                    NPPfineRoot = 0.0;
+            }
+
+
             SiteVars.AGNPPcarbon[site] += NPPwood + NPPleaf;
             SiteVars.BGNPPcarbon[site] += NPPcoarseRoot + NPPfineRoot;
             SiteVars.MonthlyAGNPPcarbon[site][month] += NPPwood + NPPleaf;
