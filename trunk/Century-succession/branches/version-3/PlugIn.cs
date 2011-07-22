@@ -147,13 +147,13 @@ namespace Landis.Extension.Succession.Century
             if(SoilCarbonMapNames != null && (PlugIn.ModelCore.CurrentTime % SoilCarbonMapFrequency) == 0)
             {
                 string path = MapNames.ReplaceTemplateVars(SoilCarbonMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort) ((SiteVars.SOM1surface[site].Carbon + SiteVars.SOM1soil[site].Carbon + SiteVars.SOM2[site].Carbon + SiteVars.SOM3[site].Carbon) / 100.0);
+                            pixel.MapCode.Value = (short) ((SiteVars.SOM1surface[site].Carbon + SiteVars.SOM1soil[site].Carbon + SiteVars.SOM2[site].Carbon + SiteVars.SOM3[site].Carbon) / 100.0);
                         }
                         else {
                             //  Inactive site
@@ -168,12 +168,12 @@ namespace Landis.Extension.Succession.Century
             if(SoilNitrogenMapNames != null && (PlugIn.ModelCore.CurrentTime % SoilNitrogenMapFrequency) == 0)
             {
                 string path2 = MapNames.ReplaceTemplateVars(SoilNitrogenMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path2, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites) {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort) (SiteVars.MineralN[site]);
+                            pixel.MapCode.Value = (short) (SiteVars.MineralN[site]);
                         }
                         else {
                             //  Inactive site
@@ -187,13 +187,13 @@ namespace Landis.Extension.Succession.Century
             if(ANPPMapNames != null && (PlugIn.ModelCore.CurrentTime % ANPPMapFrequency) == 0)
             {
                 string path3 = MapNames.ReplaceTemplateVars(ANPPMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path3, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path3, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort) SiteVars.AGNPPcarbon[site];
+                            pixel.MapCode.Value = (short) SiteVars.AGNPPcarbon[site];
                         }
                         else {
                             //  Inactive site
@@ -207,13 +207,13 @@ namespace Landis.Extension.Succession.Century
             {
 
                 string path4 = MapNames.ReplaceTemplateVars(ANEEMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path4, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path4, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort)(SiteVars.AnnualNEE[site]+1000);
+                            pixel.MapCode.Value = (short)(SiteVars.AnnualNEE[site]+1000);
                         }
                         else {
                             //  Inactive site

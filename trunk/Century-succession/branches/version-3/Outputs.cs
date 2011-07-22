@@ -85,7 +85,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgSOMtc      = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgAGB        = new double[PlugIn.ModelCore.Ecoregions.Count];
             
-            double[] avgNPPtc      = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgAGNPPtc      = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgBGNPPtc      = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgLittertc   = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgAgeMc = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -148,7 +148,7 @@ namespace Landis.Extension.Succession.Century
                 avgSOMtc[ecoregion.Index] = 0.0;
                 avgAGB[ecoregion.Index] = 0.0;
                 
-                avgNPPtc[ecoregion.Index] = 0.0;
+                avgAGNPPtc[ecoregion.Index] = 0.0;
                 avgBGNPPtc[ecoregion.Index] = 0.0;
                 avgLittertc[ecoregion.Index] = 0.0;
                 avgAgeMc[ecoregion.Index] = 0.0;
@@ -213,7 +213,7 @@ namespace Landis.Extension.Succession.Century
                 avgSOMtc[ecoregion.Index]    += GetOrganicCarbon(site);
                 avgAGB[ecoregion.Index] += (SiteVars.CohortLeafC[site] + SiteVars.CohortWoodC[site]) * 2.13;
                 
-                avgNPPtc[ecoregion.Index]    += SiteVars.AGNPPcarbon[site];
+                avgAGNPPtc[ecoregion.Index]    += SiteVars.AGNPPcarbon[site];
                 avgBGNPPtc[ecoregion.Index]    += SiteVars.BGNPPcarbon[site];
                 avgLittertc[ecoregion.Index] += SiteVars.LitterfallC[site];
                 avgAgeMc[ecoregion.Index] += SiteVars.AgeMortality[site] * 0.47;
@@ -283,7 +283,7 @@ namespace Landis.Extension.Succession.Century
                         (avgAGB[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])  
                         );
                     log.Write("{0:0.00}, {1:0.0}, {2:0.0}, {3:0.0}, ",
-                        (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgAGNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgBGNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgLittertc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgAgeMc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
@@ -437,10 +437,10 @@ namespace Landis.Extension.Succession.Century
         
         //---------------------------------------------------------------------
         /*
-        private IOutputRaster<UShortPixel> CreateMap(string path)
+        private IOutputRaster<ShortPixel> CreateMap(string path)
         {
             PlugIn.ModelCore.Log.WriteLine("Writing output map to {0} ...", path);
-            return PlugIn.ModelCore.CreateRaster<UShortPixel>(path,
+            return PlugIn.ModelCore.CreateRaster<ShortPixel>(path,
                                                         PlugIn.ModelCore.Landscape.Dimensions,
                                                         PlugIn.ModelCore.LandscapeMapMetadata);
         }*/

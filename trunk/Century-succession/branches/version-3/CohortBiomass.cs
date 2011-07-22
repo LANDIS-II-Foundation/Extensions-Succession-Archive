@@ -91,7 +91,7 @@ namespace Landis.Extension.Succession.Century
 
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
 
-                if (defoliation > 0)
+                if (defoliation > 0.0)
                     totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
             }
 
@@ -109,7 +109,7 @@ namespace Landis.Extension.Succession.Century
 
             if(OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, Age={3}.", PlugIn.ModelCore.CurrentTime, month+1, cohort.Species.Name, cohort.Age);
+                //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, Age={3}.", PlugIn.ModelCore.CurrentTime, month+1, cohort.Species.Name, cohort.Age);
                 PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. ANPPact={2:0.0}, M={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, (actualANPP[0] + actualANPP[1]), (totalMortality[0] + totalMortality[1]));
             }
 

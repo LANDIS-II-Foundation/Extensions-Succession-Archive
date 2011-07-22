@@ -115,7 +115,7 @@
     <Compile Include="utility\InputParameters.cs" />
     <Compile Include="utility\MapNames.cs" />
     <Compile Include="utility\Species_AuxParm.cs" />
-    <Compile Include="utility\UShortPixel.cs" />
+    <Compile Include="utility\ShortPixel.cs" />
     <Compile Include="utility\Util.cs" />
     <Compile Include="WoodLayer.cs" />
   </ItemGroup>
