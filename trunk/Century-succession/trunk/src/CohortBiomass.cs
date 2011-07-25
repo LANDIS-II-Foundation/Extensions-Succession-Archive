@@ -294,13 +294,13 @@ namespace Landis.Extension.Succession.Century
             if(mortality_wood > 0.0)
             {
                 ForestFloor.AddWoodLitter(mortality_wood, species, site);
-                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(mortality_wood), species, site);
+                Roots.AddCoarseRootLitter(mortality_wood, species, site);
             }
 
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddFoliageLitter(mortality_nonwood, species, site);
-                Roots.AddFineRootLitter(Roots.CalculateFineRoot(mortality_nonwood), species, site);
+                Roots.AddFineRootLitter(mortality_nonwood, species, site);
             }
 
             return;
