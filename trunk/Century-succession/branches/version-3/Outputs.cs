@@ -44,7 +44,7 @@ namespace Landis.Extension.Succession.Century
             log.Write("N:SOM1surf, N:SOM1soil, N:SOM2, N:SOM3, ");
             log.Write("SurfStrucNetMin, SurfMetaNetMin, SoilStrucNetMin, SoilMetaNetMin, ");
             log.Write("SOM1surfNetMin, SOM1soilNetMin, SOM2NetMin, SOM3NetMin, ");
-            log.Write("StreamC, StreamN, FireEfflux");
+            log.Write("StreamC, Nloss, FireEfflux");
             log.WriteLine("");
 
 
@@ -263,7 +263,7 @@ namespace Landis.Extension.Succession.Century
                 avgSOM3NetMin[ecoregion.Index]     += SiteVars.SOM3[site].NetMineralization; 
                 
                 avgStreamC[ecoregion.Index] += SiteVars.Stream[site].Carbon;
-                avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen;
+                avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen + SiteVars.NLoss[site];
                 avgFireEfflux[ecoregion.Index] += SiteVars.FireEfflux[site];
                 
             }

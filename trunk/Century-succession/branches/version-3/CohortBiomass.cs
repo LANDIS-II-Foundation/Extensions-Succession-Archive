@@ -97,20 +97,32 @@ namespace Landis.Extension.Succession.Century
 
             //Reduce available N
             double Nreduction         = AvailableN.CohortUptakeAvailableN(cohort.Species, site, actualANPP);
-            SiteVars.MineralN[site] -= Math.Min(Nreduction, SiteVars.MineralN[site]);
+            
+            if (SiteVars.MineralN[site] >= Nreduction )
+                SiteVars.MineralN[site] -= Nreduction;
+            else
+            {
+                double NreductionAdjusted = SiteVars.MineralN[site];
+                SiteVars.MineralN[site] = 0.0;
+                actualANPP[0] = NreductionAdjusted / Nreduction;
+                actualANPP[1] = NreductionAdjusted / Nreduction;
+                //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
+            }
+
+            //SiteVars.MineralN[site] -= Math.Min(Nreduction, SiteVars.MineralN[site]); // WRONG!
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float) (actualANPP[1] - totalMortality[1]);
 
             float[] deltas  = new float[2]{deltaWood, deltaLeaf};
 
-            CalculateNPPcarbon(site, actualANPP);
             UpdateDeadBiomass(cohort.Species, site, totalMortality);
+            CalculateNPPcarbon(site, actualANPP);
 
             if(OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
                 //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, Age={3}.", PlugIn.ModelCore.CurrentTime, month+1, cohort.Species.Name, cohort.Age);
-                PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. ANPPact={2:0.0}, M={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, (actualANPP[0] + actualANPP[1]), (totalMortality[0] + totalMortality[1]));
+                PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     ANPPleaf={2:0.0}, ANPPwood={3:0.0}, Mleaf={4:0.0}, Mwood={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0], totalMortality[1], totalMortality[0]);
             }
 
             return deltas;
@@ -306,13 +318,13 @@ namespace Landis.Extension.Succession.Century
             if(mortality_wood > 0.0)
             {
                 ForestFloor.AddWoodLitter(mortality_wood, species, site);
-                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(mortality_wood), species, site);
+                Roots.AddCoarseRootLitter(mortality_wood, species, site);
             }
 
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddFoliageLitter(mortality_nonwood, species, site);
-                Roots.AddFineRootLitter(Roots.CalculateFineRoot(mortality_nonwood), species, site);
+                Roots.AddFineRootLitter(mortality_nonwood, species, site);
             }
 
             return;
@@ -364,8 +376,17 @@ namespace Landis.Extension.Succession.Century
             }
 
             Nreduction = AvailableN.CohortUptakeAvailableN(species, site, initialB);
+            //SiteVars.MineralN[site] -= Math.Min(SiteVars.MineralN[site], Nreduction);
 
-            SiteVars.MineralN[site] -= Math.Min(Nreduction, SiteVars.MineralN[site]);
+            /*if (SiteVars.MineralN[site] > Nreduction)
+                SiteVars.MineralN[site] -= Nreduction;
+            else
+            {
+                double NreductionAdjusted = SiteVars.MineralN[site];
+                SiteVars.MineralN[site] = 0.0;
+                initialB[0] = NreductionAdjusted / Nreduction;
+                initialB[1] = NreductionAdjusted / Nreduction;
+            }*/
 
             float[] initialWoodLeafBiomass = new float[2]{(float) initialB[0], (float) initialB[1]};
 

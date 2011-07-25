@@ -324,7 +324,7 @@ namespace Landis.Extension.Succession.Century
                 parameters.SetLeafCN(species, leafCN.Value);
 
                 ReadValue(fRootCN, currentLine);
-                parameters.SetFineRootLitterCN(species, fRootCN.Value);
+                parameters.SetFineRootCN(species, fRootCN.Value);
 
                 ReadValue(woodCN, currentLine);
                 parameters.SetWoodCN(species, woodCN.Value);

@@ -135,7 +135,7 @@ namespace Landis.Extension.Succession.Century
             int[] months = new int[12]{6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5};
 
             if(OtherData.CalibrateMode)
-            months = new int[12]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+                months = new int[12]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
             for (int i = 0; i < 12; i++)
             {
@@ -319,8 +319,8 @@ namespace Landis.Extension.Succession.Century
                 ForestFloor.AddWoodLitter(wood, cohort.Species, eventArgs.Site);
                 ForestFloor.AddFoliageLitter(foliar, cohort.Species, eventArgs.Site);
 
-                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(wood), cohort.Species, eventArgs.Site);
-                Roots.AddFineRootLitter(Roots.CalculateFineRoot(foliar), cohort.Species, eventArgs.Site);
+                Roots.AddCoarseRootLitter(wood, cohort.Species, eventArgs.Site);
+                Roots.AddFineRootLitter(foliar, cohort.Species, eventArgs.Site);
             }
 
             if (disturbanceType != null) {

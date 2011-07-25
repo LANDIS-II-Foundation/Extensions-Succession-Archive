@@ -20,7 +20,7 @@ namespace Landis.Extension.Succession.Century
         //New method for calculating N limits, called from Century.cs Run method before calling Grow
         //Iterates through cohorts, assigning each a N gathering efficiency based on fine root biomass
         //and N tolerance.
-        public static double CalculateNLimits(Site site)
+        public static void CalculateNLimits(Site site)
         {
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
             double NMultTotal=0.0;
@@ -69,7 +69,7 @@ namespace Landis.Extension.Succession.Century
                 //throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
             }
 
-            return 0.0;
+            return;
         }
 
         //Calculates a multiplier for how much N a cohort can take up
@@ -79,7 +79,7 @@ namespace Landis.Extension.Succession.Century
         {
             if (Ntolerance == 4) Ntolerance = 0;  // N-fixing shrubs do not take up N
 
-            return Math.Max(Math.Pow(biomass, 0.2) * Ntolerance, 1.0);
+            return Math.Max(Math.Pow(biomass, 0.2), 1.0);
         }
 
 
@@ -105,19 +105,19 @@ namespace Landis.Extension.Succession.Century
             {
                 ANPPwood = actualANPP[0];
                 ANPPcoarseRoot = Roots.CalculateCoarseRoot(ANPPwood);
-                woodN       = ANPPwood * 0.5  / SpeciesData.WoodCN[species];
-                coarseRootN = ANPPcoarseRoot * 0.5  / SpeciesData.CoarseRootCN[species];
+                woodN       = ANPPwood * 0.47  / SpeciesData.WoodCN[species];
+                coarseRootN = ANPPcoarseRoot * 0.47  / SpeciesData.CoarseRootCN[species];
             }
 
             if(actualANPP[1] > 0.0)
             {
                 ANPPleaf = actualANPP[1];
                 ANPPfineRoot = Roots.CalculateFineRoot(ANPPleaf);
-                leafN       = ANPPleaf * 0.5 / SpeciesData.LeafLitterCN[species];
-                fineRootN   = ANPPfineRoot * 0.5  / SpeciesData.FineRootLitterCN[species];
+                leafN       = ANPPleaf * 0.47 / SpeciesData.LeafCN[species];
+                fineRootN   = ANPPfineRoot * 0.47  / SpeciesData.FineRootCN[species];
             }
 
-            double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.5;
+            double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.47;
             double Nreduction = leafN + woodN + coarseRootN + fineRootN;
 
             //PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot);
@@ -128,10 +128,10 @@ namespace Landis.Extension.Succession.Century
                 throw new ApplicationException("Error: N Reduction is < 0.  See AvailableN.cs");
             }
 
-            if(Nreduction > SiteVars.MineralN[site])
+            /*if(Nreduction > SiteVars.MineralN[site])
             {
                 Nreduction = SiteVars.MineralN[site];
-            }
+            }*/
 
             return Nreduction;
         }

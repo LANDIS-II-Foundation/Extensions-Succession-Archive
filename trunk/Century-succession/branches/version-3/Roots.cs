@@ -54,7 +54,7 @@ namespace Landis.Extension.Succession.Century
             LitterLayer.PartitionResidue(
                             fineRootBiomass,
                             inputDecayValue,
-                            SpeciesData.FineRootLitterCN[species],
+                            SpeciesData.FineRootCN[species],
                             SpeciesData.FineRootLignin[species],
                             OtherData.StructuralCN,
 

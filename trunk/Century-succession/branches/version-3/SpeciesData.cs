@@ -32,7 +32,7 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<double> WoodCN;
         public static Species.AuxParm<double> CoarseRootCN;
         public static Species.AuxParm<double> LeafLitterCN;
-        public static Species.AuxParm<double> FineRootLitterCN;
+        public static Species.AuxParm<double> FineRootCN;
         //public static Species.AuxParm<double> NLimits;
 
         public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbability;
@@ -60,7 +60,7 @@ namespace Landis.Extension.Succession.Century
             WoodCN              = parameters.WoodCN;
             CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;
-            FineRootLitterCN    = parameters.FineRootLitterCN;
+            FineRootCN          = parameters.FineRootCN;
             //NLimits = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             
             Establishment.Initialize();

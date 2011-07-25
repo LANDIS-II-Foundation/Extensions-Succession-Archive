@@ -65,6 +65,7 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyNEE;
         public static ISiteVar<double> AnnualNEE;
         public static ISiteVar<double> FireEfflux;
+        public static ISiteVar<double> NLoss;
         private static ISiteVar<double[]> monthlyResp;
         
         public static ISiteVar<double> TotalWoodBiomass;
@@ -131,6 +132,7 @@ namespace Landis.Extension.Succession.Century
             
             TotalWoodBiomass = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AgeMortality =      PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            NLoss = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             PrevYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
@@ -252,6 +254,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SOM2[site].NetMineralization = 0.0;
             SiteVars.SOM3[site].NetMineralization = 0.0;
             SiteVars.AnnualNEE[site] = 0.0;
+            SiteVars.NLoss[site] = 0.0;
             //SiteVars.FireEfflux[site] = 0.0;
                         
 

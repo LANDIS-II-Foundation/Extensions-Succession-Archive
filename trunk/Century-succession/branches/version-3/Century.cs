@@ -95,6 +95,7 @@ namespace Landis.Extension.Succession.Century
                     double volatilize = SiteVars.MineralN[site] * 0.02 / 12.0; // monthly value
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
+                    SiteVars.NLoss[site] += volatilize;
                     //SoilWater.Leach(site);
 
                     SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyAGNPPcarbon[site][month];
@@ -169,7 +170,7 @@ namespace Landis.Extension.Succession.Century
             double leafN  = leafC /       SpeciesData.LeafCN[species];
             double woodN  = woodC /       SpeciesData.WoodCN[species];
             double cRootN = cRootC /      SpeciesData.CoarseRootCN[species];
-            double fRootN = fRootC /      SpeciesData.FineRootLitterCN[species];
+            double fRootN = fRootC /      SpeciesData.FineRootCN[species];
 
             double totalN = woodN + cRootN + leafN + fRootN;
 

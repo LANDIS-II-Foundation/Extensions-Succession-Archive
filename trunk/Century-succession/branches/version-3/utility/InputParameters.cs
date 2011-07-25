@@ -44,7 +44,7 @@ namespace Landis.Extension.Succession.Century
         private Species.AuxParm<double> woodCN;
         private Species.AuxParm<double> coarseRootCN;
         private Species.AuxParm<double> foliageLitterCN;
-        private Species.AuxParm<double> fineRootLitterCN;
+        private Species.AuxParm<double> fineRootCN;
         
         private Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
         private List<ISufficientLight> sufficientLight;
@@ -330,10 +330,10 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        public Species.AuxParm<double> FineRootLitterCN
+        public Species.AuxParm<double> FineRootCN
         {
             get {
-                return fineRootLitterCN;
+                return fineRootCN;
             }
         }
         //---------------------------------------------------------------------
@@ -621,11 +621,11 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        public void SetFineRootLitterCN(ISpecies           species,
+        public void SetFineRootCN(ISpecies           species,
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            fineRootLitterCN[species] = CheckBiomassParm(newValue, 5.0, 100.0);
+            fineRootCN[species] = CheckBiomassParm(newValue, 5.0, 100.0);
         }
         //---------------------------------------------------------------------
 
@@ -799,7 +799,7 @@ namespace Landis.Extension.Succession.Century
             woodCN                  = new Species.AuxParm<double>(speciesDataset);
             coarseRootCN            = new Species.AuxParm<double>(speciesDataset);
             foliageLitterCN         = new Species.AuxParm<double>(speciesDataset);
-            fineRootLitterCN        = new Species.AuxParm<double>(speciesDataset);
+            fineRootCN        = new Species.AuxParm<double>(speciesDataset);
 
             minRelativeBiomass = new Ecoregions.AuxParm<Percentage>[6];
             for (byte shadeClass = 1; shadeClass <= 5; shadeClass++) {

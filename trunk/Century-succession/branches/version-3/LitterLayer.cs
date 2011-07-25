@@ -91,7 +91,7 @@ namespace Landis.Extension.Succession.Century
 
             // ...Partition carbon into structural and metabolic fraction of
             //      residue (including direct absorption) which is nitrogen
-            fracN =  totalNitrogen / (totalC * 2.0);
+            fracN = totalNitrogen / inputMass; // (totalC * 2.0);
 
             // ...Lignin/nitrogen ratio of residue
             ratioLigninN = fracLignin / fracN;

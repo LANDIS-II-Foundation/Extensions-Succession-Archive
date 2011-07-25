@@ -75,7 +75,7 @@ namespace Landis.Extension.Succession.Century
         Species.AuxParm<double> WoodCN {get;}
         Species.AuxParm<double> CoarseRootCN {get;}
         Species.AuxParm<double> FoliageLitterCN {get;}
-        Species.AuxParm<double> FineRootLitterCN {get;}
+        Species.AuxParm<double> FineRootCN {get;}
 
         Ecoregions.AuxParm<double> PercentClay {get;}
         Ecoregions.AuxParm<double> PercentSand {get;}
