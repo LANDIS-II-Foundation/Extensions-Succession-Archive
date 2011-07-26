@@ -92,6 +92,9 @@ namespace Landis.Extension.Succession.Century
             if(actualANPP[0] <= 0.0 && actualANPP[1] <= 0.0)
                 return 0.0;
 
+            if (SpeciesData.NTolerance[species] == 4)
+                return 0.0;
+
             double ANPPwood = 0.0;
             double ANPPcoarseRoot = 0.0;
             double ANPPleaf = 0.0;
