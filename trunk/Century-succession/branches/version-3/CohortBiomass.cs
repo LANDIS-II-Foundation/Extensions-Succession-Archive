@@ -47,7 +47,7 @@ namespace Landis.Extension.Succession.Century
             if(PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, Age={3}.", PlugIn.ModelCore.CurrentTime, month+1, cohort.Species.Name, cohort.Age);
 
-            double siteBiomass = SiteVars.TotalWoodBiomass[site];
+            double siteBiomass = Century.ComputeLivingBiomass(SiteVars.Cohorts[site]);
 
             if(siteBiomass < 0)
                 throw new ApplicationException("Error: Site biomass < 0");
@@ -177,6 +177,8 @@ namespace Landis.Extension.Succession.Century
             //  estimation of growth.  ANPP cannot be negative.
             double actualANPP = Math.Max(0.0, potentialNPP - mortalityAge[0] - mortalityAge[1]);
 
+            // Growth can be reduced by another extension via this method.
+            // To date, no extension has been written to utilize this hook.
             double growthReduction = CohortGrowthReduction.Compute(cohort, site, (int) siteBiomass);
             if (growthReduction > 0)
                 actualANPP *= (1.0 - growthReduction);

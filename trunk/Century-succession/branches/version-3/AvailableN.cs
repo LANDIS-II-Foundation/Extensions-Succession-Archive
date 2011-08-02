@@ -23,21 +23,21 @@ namespace Landis.Extension.Succession.Century
         public static void CalculateNLimits(Site site)
         {
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
-            double NMultTotal=0.0;
+            double NAllocTotal=0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
                 foreach (ICohort cohort in speciesCohorts)
                 {
                     int Ntolerance = SpeciesData.NTolerance[cohort.Species];
 
-                    //NMultiplier is a measure of how much N a cohort can gather relative to other cohorts
-                    double NMultiplier = CalculateNMultiplier(cohort.Biomass, Ntolerance);
-                    NMultTotal += NMultiplier;
+                    //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
+                    double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass);
+                    NAllocTotal += Nallocation;
                     Dictionary<int,double> newEntry = new Dictionary<int,double>();
-                    newEntry.Add(cohort.Age,NMultiplier);
+                    newEntry.Add(cohort.Age,Nallocation);
 
                     if (CohortNlimits.ContainsKey(cohort.Species.Index))
                     {
-                        CohortNlimits[cohort.Species.Index].Add(cohort.Age,NMultiplier);
+                        CohortNlimits[cohort.Species.Index].Add(cohort.Age,Nallocation);
                     }
                     else
                     {
@@ -56,8 +56,8 @@ namespace Landis.Extension.Succession.Century
             {
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    double NMultiplier = CohortNlimits[cohort.Species.Index][cohort.Age];
-                    double Nfrac = NMultiplier / NMultTotal;
+                    double Nallocation = CohortNlimits[cohort.Species.Index][cohort.Age];
+                    double Nfrac = Nallocation / NAllocTotal;
                     CohortNlimits[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
                     totalNUptake += Nfrac * availableN;
                 }

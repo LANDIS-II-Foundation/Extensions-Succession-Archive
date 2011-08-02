@@ -233,6 +233,8 @@ namespace Landis.Extension.Succession.Century
 
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
+            byte finalShade = 0;
+
             if (!ecoregion.Active)
                 return 0;
 
@@ -257,13 +259,17 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.Log.WriteLine("Shade Calculation:  lastMort={0:0.0}, B_MAX={1}, oldB={2}, B_ACT={3}, shade={4}.", lastMortality, B_MAX,oldBiomass,B_ACT,shade);
                 if (B_AM >= EcoregionData.ShadeBiomass[shade][ecoregion])
                 {
-                    return shade;
+                    finalShade = shade;
+                    break;
                 }
             }
 
-            //PlugIn.ModelCore.Log.WriteLine("Shade Calculation:  lastMort={0:0.0}, B_MAX={1}, oldB={2}, B_ACT={3}, shade=0.", lastMortality, B_MAX,oldBiomass,B_ACT);
+            if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
+            {
+                PlugIn.ModelCore.Log.WriteLine("Yr={0},      Shade Calculation:  B_MAX={1}, B_ACT={2}, Shade={3}.", PlugIn.ModelCore.CurrentTime, B_MAX, B_ACT, finalShade);
+            }
 
-            return 0;
+            return finalShade;
         }
         //---------------------------------------------------------------------
 

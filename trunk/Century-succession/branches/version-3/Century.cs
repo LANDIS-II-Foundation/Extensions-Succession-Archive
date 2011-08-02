@@ -111,7 +111,7 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        private static int ComputeLivingBiomass(ISiteCohorts cohorts)
+        public static int ComputeLivingBiomass(ISiteCohorts cohorts)
         {
             int total = 0;
             if (cohorts != null)

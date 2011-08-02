@@ -211,7 +211,7 @@ namespace Landis.Extension.Succession.Century
                 
                 avgNEEc[ecoregion.Index]    += SiteVars.AnnualNEE[site];
                 avgSOMtc[ecoregion.Index]    += GetOrganicCarbon(site);
-                avgAGB[ecoregion.Index] += (SiteVars.CohortLeafC[site] + SiteVars.CohortWoodC[site]) * 2.13;
+                avgAGB[ecoregion.Index] += Century.ComputeLivingBiomass(SiteVars.Cohorts[site]); // + SiteVars.CohortWoodC[site]) * 2.13;
                 
                 avgAGNPPtc[ecoregion.Index]    += SiteVars.AGNPPcarbon[site];
                 avgBGNPPtc[ecoregion.Index]    += SiteVars.BGNPPcarbon[site];
