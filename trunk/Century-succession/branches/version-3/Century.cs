@@ -76,7 +76,7 @@ namespace Landis.Extension.Succession.Century
                     SoilWater.Run(y, month, liveBiomass, site);
 
                     // Calculate N limitations for each cohort
-                    AvailableN.CohortNlimits = new Dictionary<int, Dictionary<int,double>>();
+                    AvailableN.CohortNallocation = new Dictionary<int, Dictionary<int,double>>();
                 	AvailableN.CalculateNLimits(site);
 
                     CohortBiomass.month = month;

@@ -15,7 +15,7 @@ namespace Landis.Extension.Succession.Century
     public class AvailableN
     {
         //Nested dictionary of species,cohort
-        public static Dictionary<int, Dictionary<int,double>> CohortNlimits;
+        public static Dictionary<int, Dictionary<int,double>> CohortNallocation;
 
         //New method for calculating N limits, called from Century.cs Run method before calling Grow
         //Iterates through cohorts, assigning each a N gathering efficiency based on fine root biomass
@@ -35,13 +35,13 @@ namespace Landis.Extension.Succession.Century
                     Dictionary<int,double> newEntry = new Dictionary<int,double>();
                     newEntry.Add(cohort.Age,Nallocation);
 
-                    if (CohortNlimits.ContainsKey(cohort.Species.Index))
+                    if (CohortNallocation.ContainsKey(cohort.Species.Index))
                     {
-                        CohortNlimits[cohort.Species.Index].Add(cohort.Age,Nallocation);
+                        CohortNallocation[cohort.Species.Index].Add(cohort.Age,Nallocation);
                     }
                     else
                     {
-                        CohortNlimits.Add(cohort.Species.Index,newEntry);
+                        CohortNallocation.Add(cohort.Species.Index,newEntry);
                     }
                 }
 
@@ -56,9 +56,9 @@ namespace Landis.Extension.Succession.Century
             {
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    double Nallocation = CohortNlimits[cohort.Species.Index][cohort.Age];
+                    double Nallocation = CohortNallocation[cohort.Species.Index][cohort.Age];
                     double Nfrac = Nallocation / NAllocTotal;
-                    CohortNlimits[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
+                    CohortNallocation[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
                     totalNUptake += Nfrac * availableN;
                 }
             }

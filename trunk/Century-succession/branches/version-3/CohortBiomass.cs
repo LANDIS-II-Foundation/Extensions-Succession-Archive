@@ -97,7 +97,7 @@ namespace Landis.Extension.Succession.Century
 
             //Reduce available N
             double Nreduction         = AvailableN.CohortUptakeAvailableN(cohort.Species, site, actualANPP);
-            
+
             if (SiteVars.MineralN[site] >= Nreduction )
                 SiteVars.MineralN[site] -= Nreduction;
             else
@@ -149,19 +149,23 @@ namespace Landis.Extension.Succession.Century
 
             //Get limitN from CohortNlimits.  This value is the maximum N that the cohort could take up, based on other cohorts and available N.
             //The actual N limit is this max uptake divided by the N it would take up if it grew at maxNPP.
-            double limitN = 0.0;
+            double Nallocation = 0.0;
             Dictionary<int,double> cohortDict;
 
-            if (AvailableN.CohortNlimits.TryGetValue(cohort.Species.Index,out cohortDict))
-                cohortDict.TryGetValue(cohort.Age, out limitN);
+            if (AvailableN.CohortNallocation.TryGetValue(cohort.Species.Index,out cohortDict))
+                cohortDict.TryGetValue(cohort.Age, out Nallocation);
 
             double maxLeafNPP = Math.Max(maxNPP*leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double maxWoodNPP = maxNPP*(1.0-leafFractionNPP);
+            double limitN = 1.0;
             if (SpeciesData.NTolerance[cohort.Species] == 4)
                 limitN = 1.0;  // No limit for N-fixing shrubs
             else
-                limitN = Math.Min(1.0, limitN / (AvailableN.CohortUptakeAvailableN(cohort.Species, site, new double[2] { maxWoodNPP, maxLeafNPP })));
-
+            {
+                // Divide allocation N by N demand here:
+                double Ndemand = (AvailableN.CohortUptakeAvailableN(cohort.Species, site, new double[2] { maxWoodNPP, maxLeafNPP }));
+                limitN = Math.Min(1.0, Nallocation / Ndemand);
+            }
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
 
             double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
