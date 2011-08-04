@@ -46,6 +46,7 @@ namespace Landis.Extension.Succession.Biomass
 
             double[] avgLiveB       = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgAG_NPP      = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgDefoliation = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgLitterB     = new double[PlugIn.ModelCore.Ecoregions.Count];
 
 
@@ -53,6 +54,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 avgLiveB[ecoregion.Index] = 0.0;
                 avgAG_NPP[ecoregion.Index] = 0.0;
+                avgDefoliation[ecoregion.Index] = 0.0;
                 avgLitterB[ecoregion.Index] = 0.0;
             }
 
@@ -65,7 +67,8 @@ namespace Landis.Extension.Succession.Biomass
 
                 avgLiveB[ecoregion.Index] += Cohorts.ComputeBiomass(SiteVars.Cohorts[site], out youngBiomass);
                 avgAG_NPP[ecoregion.Index]   += SiteVars.AGNPP[site];
-                avgLitterB[ecoregion.Index]  += SiteVars.Litter[site].Mass;
+                avgDefoliation[ecoregion.Index] += SiteVars.Defoliation[site];
+                avgLitterB[ecoregion.Index] += SiteVars.Litter[site].Mass;
             }
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
@@ -77,10 +80,11 @@ namespace Landis.Extension.Succession.Biomass
                         ecoregion.Name,
                         EcoregionData.ActiveSiteCount[ecoregion]
                         );
-                    log.Write("{0:0.00}, {1:0.0}, {2:0.0}",
+                    log.Write("{0:0.00}, {1:0.0}, {2:0.0}, {3:0.0}",
                         (avgLiveB[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgAG_NPP[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgLitterB[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgLitterB[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgDefoliation[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.WriteLine("");
                 }

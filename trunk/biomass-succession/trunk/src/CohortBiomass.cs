@@ -33,8 +33,7 @@ namespace Landis.Extension.Succession.Biomass
         private double growthReduction;
         private double defoliation;
         public static double SpinupMortalityFraction;
-        public static double CanopyLightExtinction;
-
+        //public static double CanopyLightExtinction;
 
         //---------------------------------------------------------------------
 
@@ -107,6 +106,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 double standing_nonwood = ComputeFractionANPPleaf(cohort.Species) * actualANPP;
                 defoliationLoss = standing_nonwood * defoliation;
+                SiteVars.Defoliation[site] += defoliationLoss;
             }
             // ---------------------------------------------------------
 
@@ -154,17 +154,18 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        private double ComputeActualANPP(ICohort cohort,
-                                         ActiveSite site)
-                                         //int siteBiomass,
-                                         //int prevYearSiteMortality)
+        private double ComputeActualANPP(ICohort cohort, ActiveSite site)
         {
-            // double prevYearSiteMortality = SiteVars.PreviousYearMortality[site];
             int siteBiomass = SiteVars.TotalBiomass[site];
 
+            // ---------------------------------------------------------
+            // Growth reduction ranges from 1.0 (total) to none (0.0).
+            // Growth reduction is calculated by an disturbance function, typically an extension
+            // with a dedicated calculator.  The method CohortGrowthReduction.Compute is a delegate method
+            // and lives within the disturbance extension.
             growthReduction = CohortGrowthReduction.Compute(cohort, site);
+            
             double growthShape = SpeciesData.GrowthCurveShapeParm[cohort.Species];
-
             double cohortBiomass = cohort.Biomass;
             double capacityReduction = 1.0;
 
@@ -199,13 +200,7 @@ namespace Landis.Extension.Succession.Biomass
                 throw new ApplicationException("Application terminating.");
             }
 
-
-            //  Ratio of cohort's potential biomass to maximum biomass.  The
-            //  ratio cannot be exceed 1.
-            double indexOldSchool = Math.Min(1.0, potentialBiomass / maxBiomass);
-            double initialMultiplier = (CanopyLightExtinction == 0.0 ? indexC : 1.0);
-            double indexLightC = initialMultiplier * Math.Exp(CanopyLightExtinction);
-            B_PM = indexLightC;
+            B_PM = indexC; 
             // PlugIn.ModelCore.Log.WriteLine("indexC={0:0.00}, lightIndexC={1:0.00}, OldSchool={2:0.00}.", indexC, indexLightC, indexOldSchool);
 
             //  Actual ANPP: equation (4) from Scheller & Mladenoff, 2004.
@@ -220,17 +215,12 @@ namespace Landis.Extension.Succession.Biomass
             if (growthReduction > 0)
                 actualANPP *= (1.0 - growthReduction);
 
-            //double LAIactual = SpeciesData.MAXLAI[cohort.Species] * actualANPP / maxANPP;
-            //CanopyLightExtinction += (-1.0 * SpeciesData.LightExtinctionCoeff[cohort.Species] * LAIactual) * indexC;
-
-
             if(PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}. Calculate ANPPactual...", (PlugIn.ModelCore.CurrentTime+SubYear));
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}.     Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}.     MaxANPP={1}, MaxB={2:0}, Bsite={3}, Bcohort={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), maxANPP, maxBiomass, (int) siteBiomass, cohort.Biomass);
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}.     B_PM={1:0.0}, B_AP={2:0.0}, actualANPP={3:0.0}, capacityReduction={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), B_PM, B_AP, actualANPP, capacityReduction);
-                //PlugIn.ModelCore.Log.WriteLine("Yr={0}.     CanopyLightExtinction = {1:0.00}, LightTransmittance = {2:0.00}, LAIactual={3:0.0}.", (PlugIn.ModelCore.CurrentTime + SubYear), CanopyLightExtinction, B_PM, LAIactual);
             }
 
             return actualANPP;
@@ -245,10 +235,6 @@ namespace Landis.Extension.Succession.Biomass
         /// </summary>
         private double ComputeGrowthMortality(ICohort cohort, ActiveSite site)
         {
-            //double percentDefoliation = CohortDefoliation.Compute(cohort, site, siteBiomass);
-
-            //const double y0 = 0.01;
-            //const double r = 0.08;
             double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
             double M_BIO = 0.0;
 
@@ -257,10 +243,6 @@ namespace Landis.Extension.Succession.Biomass
                 M_BIO = maxANPP * B_PM;
             else
                 M_BIO = maxANPP * (2.0 * B_AP) / (1.0 + B_AP) * B_PM;
-
-            //double M_BIO = maxANPP *
-            //        (y0 / (y0 + (1 - y0) * Math.Exp(-r / y0 * B_AP))) *
-            //        B_PM;
 
             //  Mortality should not exceed the amount of living biomass
             M_BIO = Math.Min(cohort.Biomass, M_BIO);
@@ -390,20 +372,10 @@ namespace Landis.Extension.Succession.Biomass
                                                     ActiveSite site)
         {
 
-            // IISiteCohorts ISiteCohorts = SiteVars.Cohorts[site];
             ISiteCohorts ISiteCohorts = SiteVars.Cohorts[site];
 
             double mortalityAge = ComputeAgeMortality(cohort);
-
-            //if(ISiteCohorts == null) return new Percentage(0.0);
-
-            // double actualANPP = ComputeActualANPP(cohort, site, ISiteCohorts.TotalBiomass,
-            //                     ISiteCohorts.PrevYearMortality);
-
-            double actualANPP = ComputeActualANPP(cohort, site); //, ISiteCohorts.TotalBiomass,
-                                //ISiteCohorts.PrevYearMortality);
-                                //ComputeActualANPP(cohort, site, ISiteCohorts.TotalBiomass(SiteVars.Cohorts[site]));
-                                //ISiteCohorts.StaticPrevYearMortality);
+            double actualANPP = ComputeActualANPP(cohort, site); 
 
             //  Age mortality is discounted from ANPP to prevent the over-
             //  estimation of mortality.  ANPP cannot be negative.
