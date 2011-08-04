@@ -33,6 +33,7 @@ namespace Landis.Extension.Succession.Century
         public static int ANPPMapFrequency;
         public static string ANEEMapNames = null;
         public static int ANEEMapFrequency;
+        public static int SuccessionTimeStep;
 
         //---------------------------------------------------------------------
 
@@ -70,6 +71,7 @@ namespace Landis.Extension.Succession.Century
         {
             PlugIn.ModelCore.Log.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
+            SuccessionTimeStep = Timestep;
             sufficientLight       = parameters.LightClassProbabilities;
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
 

@@ -96,20 +96,18 @@ namespace Landis.Extension.Succession.Century
             }
 
             //Reduce available N
-            double Nreduction         = AvailableN.CohortUptakeAvailableN(cohort.Species, site, actualANPP);
+            double Ndemand         = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
 
-            if (SiteVars.MineralN[site] >= Nreduction )
-                SiteVars.MineralN[site] -= Nreduction;
+            if (SiteVars.MineralN[site] >= Ndemand )
+                SiteVars.MineralN[site] -= Ndemand;
             else
             {
-                double NreductionAdjusted = SiteVars.MineralN[site];
+                double NdemandAdjusted = SiteVars.MineralN[site];
                 SiteVars.MineralN[site] = 0.0;
-                actualANPP[0] = NreductionAdjusted / Nreduction;
-                actualANPP[1] = NreductionAdjusted / Nreduction;
+                actualANPP[0] = NdemandAdjusted / Ndemand;
+                actualANPP[1] = NdemandAdjusted / Ndemand;
                 //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
             }
-
-            //SiteVars.MineralN[site] -= Math.Min(Nreduction, SiteVars.MineralN[site]); // WRONG!
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float) (actualANPP[1] - totalMortality[1]);
@@ -147,26 +145,9 @@ namespace Landis.Extension.Succession.Century
 
             double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
-            //Get limitN from CohortNlimits.  This value is the maximum N that the cohort could take up, based on other cohorts and available N.
-            //The actual N limit is this max uptake divided by the N it would take up if it grew at maxNPP.
-            double Nallocation = 0.0;
-            Dictionary<int,double> cohortDict;
-
-            if (AvailableN.CohortNallocation.TryGetValue(cohort.Species.Index,out cohortDict))
-                cohortDict.TryGetValue(cohort.Age, out Nallocation);
-
-            double maxLeafNPP = Math.Max(maxNPP*leafFractionNPP, 0.002 * cohort.WoodBiomass);
-            double maxWoodNPP = maxNPP*(1.0-leafFractionNPP);
-            double limitN = 1.0;
-            if (SpeciesData.NTolerance[cohort.Species] == 4)
-                limitN = 1.0;  // No limit for N-fixing shrubs
-            else
-            {
-                // Divide allocation N by N demand here:
-                double Ndemand = (AvailableN.CohortUptakeAvailableN(cohort.Species, site, new double[2] { maxWoodNPP, maxLeafNPP }));
-                limitN = Math.Min(1.0, Nallocation / Ndemand);
-            }
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
+
+            double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
 
             double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
 
@@ -349,7 +330,7 @@ namespace Landis.Extension.Succession.Century
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             double leafFrac = FunctionalType.Table[SpeciesData.FuncType[species]].FCFRACleaf;
-            double Nreduction = 0.0;
+            double Ndemand = 0.0;
 
             double B_ACT = SiteVars.ActualSiteBiomass(site);
             double B_MAX = SpeciesData.B_MAX_Spp[species][ecoregion];
@@ -381,7 +362,7 @@ namespace Landis.Extension.Succession.Century
                 initialB[1] = initialBiomass * leafFrac;
             }
 
-            Nreduction = AvailableN.CohortUptakeAvailableN(species, site, initialB);
+            Ndemand = AvailableN.CalculateCohortNDemand(species, site, initialB);
             //SiteVars.MineralN[site] -= Math.Min(SiteVars.MineralN[site], Nreduction);
 
             /*if (SiteVars.MineralN[site] > Nreduction)
@@ -434,6 +415,39 @@ namespace Landis.Extension.Succession.Century
 
         }
 
+        //--------------------------------------------------------------------------
+        //N limit is actual demand divided by maximum uptake.
+        private double calculateN_Limit(ActiveSite site, ICohort cohort, double maxNPP, double leafFractionNPP)
+        {
+
+            //Get Cohort Mineral and Resorbed N allocation.  
+            double mineralNallocation = 0.0;
+            double resorbedNallocation = 0.0;
+            Dictionary<int, double> cohortDict;
+
+            if (AvailableN.CohortMineralNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
+                cohortDict.TryGetValue(cohort.Age, out mineralNallocation);
+
+            int currentYear = PlugIn.ModelCore.CurrentTime;
+            int successionTime = PlugIn.SuccessionTimeStep;
+            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+            if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
+                cohortDict.TryGetValue(cohortAddYear, out resorbedNallocation);
+
+            double maxLeafNPP = Math.Max(maxNPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
+            double maxWoodNPP = maxNPP * (1.0 - leafFractionNPP);
+            double limitN = 1.0;
+            if (SpeciesData.NTolerance[cohort.Species] == 4)
+                limitN = 1.0;  // No limit for N-fixing shrubs
+            else
+            {
+                // Divide allocation N by N demand here:
+                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[2] { maxWoodNPP, maxLeafNPP }));
+                limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);
+            }
+
+            return limitN;
+        }
         //--------------------------------------------------------------------------
         // Originally from lacalc.f of CENTURY model
 

@@ -43,7 +43,8 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<Layer> sourceSink;
         
         // Other variables:
-        private static ISiteVar<double> mineralN;  //top layer only
+        private static ISiteVar<double> mineralN;
+        private static ISiteVar<double> resorbedN;
         private static ISiteVar<double> waterMovement;  
         private static ISiteVar<double> availableWater;  
         private static ISiteVar<double> soilWaterContent;  
@@ -106,6 +107,7 @@ namespace Landis.Extension.Succession.Century
             
             // Other variables
             mineralN            = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            resorbedN           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             waterMovement       = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             availableWater      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             soilWaterContent    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -130,10 +132,10 @@ namespace Landis.Extension.Succession.Century
             cohortWoodN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             
-            TotalWoodBiomass = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            AgeMortality =      PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            NLoss = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            PrevYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            NLoss               = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
@@ -446,6 +448,22 @@ namespace Landis.Extension.Succession.Century
             }
             set {
                 mineralN = value;
+            }
+        }
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// The amount of N resorbed before leaf fall
+        /// </summary>
+        public static ISiteVar<double> ResorbedN
+        {
+            get
+            {
+                return resorbedN;
+            }
+            set
+            {
+                resorbedN = value;
             }
         }
         //---------------------------------------------------------------------

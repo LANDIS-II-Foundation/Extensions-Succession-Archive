@@ -15,19 +15,71 @@ namespace Landis.Extension.Succession.Century
     public class AvailableN
     {
         //Nested dictionary of species,cohort
-        public static Dictionary<int, Dictionary<int,double>> CohortNallocation;
+        public static Dictionary<int, Dictionary<int,double>> CohortMineralNallocation;
+        public static Dictionary<int, Dictionary<int, double>> CohortResorbedNallocation;
 
-        //New method for calculating N limits, called from Century.cs Run method before calling Grow
-        //Iterates through cohorts, assigning each a N gathering efficiency based on fine root biomass
-        //and N tolerance.
-        public static void CalculateNLimits(Site site)
+        public static void CalculateResorbedNallocation(Site site)
+        {
+            // Iterate through the first time, assigning each cohort un un-normalized N multiplier
+            //double NAllocTotal = 0.0;
+            foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+                foreach (ICohort cohort in speciesCohorts)
+                {
+                    int currentYear = PlugIn.ModelCore.CurrentTime;
+                    int successionTime = PlugIn.SuccessionTimeStep;
+                    int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;  
+
+                    //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
+                    double Nallocation = TranslocatedN(cohort);
+                    //NAllocTotal += Nallocation;
+                    Dictionary<int, double> newEntry = new Dictionary<int, double>();
+                    newEntry.Add(cohortAddYear, Nallocation);
+
+                    if (CohortResorbedNallocation.ContainsKey(cohort.Species.Index))
+                    {
+                        CohortResorbedNallocation[cohort.Species.Index].Add(cohortAddYear, Nallocation);
+                    }
+                    else
+                    {
+                        CohortResorbedNallocation.Add(cohort.Species.Index, newEntry);
+                    }
+                }
+
+            //double availableN = SiteVars.ResorbedN[site];  // g/m2
+
+            //Iterate through a second time now that we have total N multiplier
+            //Divide through by total and multiply by total available N so each cohort has a max N value
+            //and the sum of cohort max N values is the site available N
+
+            /*double totalNresorbed = 0.0;
+            foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+            {
+                foreach (ICohort cohort in speciesCohorts)
+                {
+                    double Nallocation = CohortResorbedNallocation[cohort.Species.Index][cohort.Age];
+                    double Nfrac = Nallocation / NAllocTotal;
+                    CohortResorbedNallocation[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
+                    totalNresorbed += Nfrac * availableN;
+                }
+            }
+            if (totalNresorbed > availableN)
+            {
+                throw new ApplicationException("Error: N resorbed > available resorbed N.  See AvailableN.cs");
+            }*/
+
+            return;
+        }
+
+
+        // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
+        // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
+        public static void CalculateMineralNallocation(Site site)
         {
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
             double NAllocTotal=0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    int Ntolerance = SpeciesData.NTolerance[cohort.Species];
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
                     double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass);
@@ -35,13 +87,13 @@ namespace Landis.Extension.Succession.Century
                     Dictionary<int,double> newEntry = new Dictionary<int,double>();
                     newEntry.Add(cohort.Age,Nallocation);
 
-                    if (CohortNallocation.ContainsKey(cohort.Species.Index))
+                    if (CohortMineralNallocation.ContainsKey(cohort.Species.Index))
                     {
-                        CohortNallocation[cohort.Species.Index].Add(cohort.Age,Nallocation);
+                        CohortMineralNallocation[cohort.Species.Index].Add(cohort.Age,Nallocation);
                     }
                     else
                     {
-                        CohortNallocation.Add(cohort.Species.Index,newEntry);
+                        CohortMineralNallocation.Add(cohort.Species.Index,newEntry);
                     }
                 }
 
@@ -56,9 +108,9 @@ namespace Landis.Extension.Succession.Century
             {
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    double Nallocation = CohortNallocation[cohort.Species.Index][cohort.Age];
+                    double Nallocation = CohortMineralNallocation[cohort.Species.Index][cohort.Age];
                     double Nfrac = Nallocation / NAllocTotal;
-                    CohortNallocation[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
+                    CohortMineralNallocation[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
                     totalNUptake += Nfrac * availableN;
                 }
             }
@@ -72,21 +124,23 @@ namespace Landis.Extension.Succession.Century
             return;
         }
 
-        //Calculates a multiplier for how much N a cohort can take up
-        //Units are arbitrary, since it all gets normalized later
-        //Start with a simple multiplier, so a tree with Ntolerance 3 takes up 3/2 more N than a tree with Ntolerance 2
-        private static double CalculateNMultiplier(double biomass, int Ntolerance)
-        {
-            if (Ntolerance == 4) Ntolerance = 0;  // N-fixing shrubs do not take up N
 
-            return Math.Max(Math.Pow(biomass, 0.2), 1.0);
+        private static double TranslocatedN(ICohort cohort)
+        {
+
+            // Translocated N = Leaf Bioamss * Some percentage of leaf N
+            // Leaf N calculate from Leaf CN ratio
+            // This means that we will need to adjust the leaf litter CN appropriately.
+            // Or should translocated N be calculated from the difference between leaf and litter CN??
+            // Returns the amount translocated:  g N m-2
+            return 0.0;
         }
 
 
         /// <summary>
-        /// Reduces Available N depending upon how much N was removed through growth (ANPP).
+        /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP).
         /// </summary>
-        public static double CohortUptakeAvailableN(ISpecies species, ActiveSite site, double[] actualANPP)
+        public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, double[] actualANPP)
         {
 
             if(actualANPP[0] <= 0.0 && actualANPP[1] <= 0.0)
@@ -130,11 +184,6 @@ namespace Landis.Extension.Succession.Century
                 PlugIn.ModelCore.Log.WriteLine("   ERROR:  TotalANPP-C={0:0.00} Nreduction={1:0.00}.", totalANPP_C, Nreduction);
                 throw new ApplicationException("Error: N Reduction is < 0.  See AvailableN.cs");
             }
-
-            /*if(Nreduction > SiteVars.MineralN[site])
-            {
-                Nreduction = SiteVars.MineralN[site];
-            }*/
 
             return Nreduction;
         }
