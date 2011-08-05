@@ -286,7 +286,7 @@ namespace Landis.Extension.Succession.Century
 
             // Resorbed N:  We are assuming that any leaves dropped as a function of normal
             // growth and maintenance (e.g., fall senescence) will involve resorbtion of leaf N.
-            double resorbedN = AvailableN.ResorbedN(cohort.Species, M_leaf, month);
+            double resorbedN = AvailableN.CalculateResorbedN(cohort.Species, M_leaf, month);
             AvailableN.SetResorbedNallocation(cohort, resorbedN);
 
             double[] M_BIO = new double[2]{M_wood, M_leaf};

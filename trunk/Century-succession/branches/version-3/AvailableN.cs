@@ -72,7 +72,7 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         // Method for calculationg how much N should be resorbed.
         // month is only included for logging purposes.
-        public static double ResorbedN(ISpecies species, double leafBiomass, int month)
+        public static double CalculateResorbedN(ISpecies species, double leafBiomass, int month)
         {
             // Translocated N = Leaf Bioamss * Some percentage of leaf N
             // Leaf N calculate from Leaf CN ratio
