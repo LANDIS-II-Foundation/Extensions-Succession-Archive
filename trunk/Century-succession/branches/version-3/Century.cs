@@ -75,9 +75,13 @@ namespace Landis.Extension.Succession.Century
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     SoilWater.Run(y, month, liveBiomass, site);
 
-                    // Calculate N limitations for each cohort
+                    // Calculate N allocation for each cohort
                     AvailableN.CohortMineralNallocation = new Dictionary<int, Dictionary<int,double>>();
                 	AvailableN.CalculateMineralNallocation(site);
+
+                    // Reset N resorbtion if it is July
+                    if(month == 6)
+                        AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
 
                     CohortBiomass.month = month;
                     if(month==11)

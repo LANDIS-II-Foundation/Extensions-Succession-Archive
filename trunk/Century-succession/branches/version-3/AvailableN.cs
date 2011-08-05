@@ -18,7 +18,7 @@ namespace Landis.Extension.Succession.Century
         public static Dictionary<int, Dictionary<int,double>> CohortMineralNallocation;
         public static Dictionary<int, Dictionary<int, double>> CohortResorbedNallocation;
 
-        public static void CalculateResorbedNallocation(Site site)
+        /*public static void CalculateResorbedNallocation(Site site)
         {
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
             //double NAllocTotal = 0.0;
@@ -65,10 +65,10 @@ namespace Landis.Extension.Succession.Century
             if (totalNresorbed > availableN)
             {
                 throw new ApplicationException("Error: N resorbed > available resorbed N.  See AvailableN.cs");
-            }*/
+            }
 
             return;
-        }
+        }*/
 
 
         // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
@@ -125,15 +125,32 @@ namespace Landis.Extension.Succession.Century
         }
 
 
-        private static double TranslocatedN(ICohort cohort)
+        private static void TranslocateN(ICohort cohort, double Nallocation)
         {
-
             // Translocated N = Leaf Bioamss * Some percentage of leaf N
             // Leaf N calculate from Leaf CN ratio
             // This means that we will need to adjust the leaf litter CN appropriately.
             // Or should translocated N be calculated from the difference between leaf and litter CN??
-            // Returns the amount translocated:  g N m-2
-            return 0.0;
+            int currentYear = PlugIn.ModelCore.CurrentTime;
+            int successionTime = PlugIn.SuccessionTimeStep;
+            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+
+            //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
+            //double Nallocation = TranslocatedN(cohort);
+            //NAllocTotal += Nallocation;
+            Dictionary<int, double> newEntry = new Dictionary<int, double>();
+            newEntry.Add(cohortAddYear, Nallocation);
+
+            if (CohortResorbedNallocation.ContainsKey(cohort.Species.Index))
+            {
+                CohortResorbedNallocation[cohort.Species.Index].Add(cohortAddYear, Nallocation);
+            }
+            else
+            {
+                CohortResorbedNallocation.Add(cohort.Species.Index, newEntry);
+            }
+
+            return;
         }
 
 

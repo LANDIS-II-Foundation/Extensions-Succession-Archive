@@ -98,15 +98,30 @@ namespace Landis.Extension.Succession.Century
             //Reduce available N
             double Ndemand         = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
 
-            if (SiteVars.MineralN[site] >= Ndemand )
-                SiteVars.MineralN[site] -= Ndemand;
-            else
+            int currentYear = PlugIn.ModelCore.CurrentTime;
+            int successionTime = PlugIn.SuccessionTimeStep;
+            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+            double resorbedNallocation = 0.0;
+            Dictionary<int, double> cohortDict;
+            if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
+                cohortDict.TryGetValue(cohortAddYear, out resorbedNallocation);
+
+            if (resorbedNallocation >= Ndemand)
+                resorbedNallocation -= Ndemand;  // NEEDS TO BE DICTIONARY ADJUSTMENT
+            if (resorbedNallocation < Ndemand)
             {
-                double NdemandAdjusted = SiteVars.MineralN[site];
-                SiteVars.MineralN[site] = 0.0;
-                actualANPP[0] = NdemandAdjusted / Ndemand;
-                actualANPP[1] = NdemandAdjusted / Ndemand;
-                //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
+                resorbedNallocation = 0.0;  // NEEDS TO BE DICTIONARY ADJUSTMENT
+                Ndemand -= resorbedNallocation;
+                if(SiteVars.MineralN[site] >= Ndemand)
+                    SiteVars.MineralN[site] -= Ndemand;
+                else
+                {
+                    double NdemandAdjusted = SiteVars.MineralN[site];
+                    SiteVars.MineralN[site] = 0.0;
+                    actualANPP[0] = NdemandAdjusted / Ndemand;
+                    actualANPP[1] = NdemandAdjusted / Ndemand;
+                    //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
+                }
             }
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
@@ -273,6 +288,7 @@ namespace Landis.Extension.Succession.Century
                 if(month > FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].LeafNeedleDrop-1)
                 {
                     M_leaf = cohort.LeafBiomass / 2.0;  //spread across 2 months
+                    // TRANSLOCATE N HERE!
                 }
             }
 
