@@ -97,20 +97,13 @@ namespace Landis.Extension.Succession.Century
 
             //Reduce available N
             double Ndemand         = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
-
-            int currentYear = PlugIn.ModelCore.CurrentTime;
-            int successionTime = PlugIn.SuccessionTimeStep;
-            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
-            double resorbedNallocation = 0.0;
-            Dictionary<int, double> cohortDict;
-            if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
-                cohortDict.TryGetValue(cohortAddYear, out resorbedNallocation);
+            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             if (resorbedNallocation >= Ndemand)
-                resorbedNallocation -= Ndemand;  // NEEDS TO BE DICTIONARY ADJUSTMENT
+                AvailableN.SetResorbedNallocation(cohort, resorbedNallocation - Ndemand);
             if (resorbedNallocation < Ndemand)
             {
-                resorbedNallocation = 0.0;  // NEEDS TO BE DICTIONARY ADJUSTMENT
+                AvailableN.SetResorbedNallocation(cohort, 0.0);
                 Ndemand -= resorbedNallocation;
                 if(SiteVars.MineralN[site] >= Ndemand)
                     SiteVars.MineralN[site] -= Ndemand;
@@ -288,9 +281,13 @@ namespace Landis.Extension.Succession.Century
                 if(month > FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].LeafNeedleDrop-1)
                 {
                     M_leaf = cohort.LeafBiomass / 2.0;  //spread across 2 months
-                    // TRANSLOCATE N HERE!
                 }
             }
+
+            // Resorbed N:  We are assuming that any leaves dropped as a function of normal
+            // growth and maintenance (e.g., fall senescence) will involve resorbtion of leaf N.
+            double resorbedN = AvailableN.ResorbedN(cohort.Species, M_leaf, month);
+            AvailableN.SetResorbedNallocation(cohort, resorbedN);
 
             double[] M_BIO = new double[2]{M_wood, M_leaf};
 
@@ -326,7 +323,7 @@ namespace Landis.Extension.Succession.Century
 
             if(mortality_nonwood > 0.0)
             {
-                ForestFloor.AddFoliageLitter(mortality_nonwood, species, site);
+                ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, species, site);
                 Roots.AddFineRootLitter(mortality_nonwood, species, site);
             }
 
@@ -438,17 +435,12 @@ namespace Landis.Extension.Succession.Century
 
             //Get Cohort Mineral and Resorbed N allocation.  
             double mineralNallocation = 0.0;
-            double resorbedNallocation = 0.0;
             Dictionary<int, double> cohortDict;
 
             if (AvailableN.CohortMineralNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
                 cohortDict.TryGetValue(cohort.Age, out mineralNallocation);
 
-            int currentYear = PlugIn.ModelCore.CurrentTime;
-            int successionTime = PlugIn.SuccessionTimeStep;
-            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
-            if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
-                cohortDict.TryGetValue(cohortAddYear, out resorbedNallocation);
+            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             double maxLeafNPP = Math.Max(maxNPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double maxWoodNPP = maxNPP * (1.0 - leafFractionNPP);

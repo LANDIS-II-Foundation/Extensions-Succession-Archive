@@ -18,59 +18,82 @@ namespace Landis.Extension.Succession.Century
         public static Dictionary<int, Dictionary<int,double>> CohortMineralNallocation;
         public static Dictionary<int, Dictionary<int, double>> CohortResorbedNallocation;
 
-        /*public static void CalculateResorbedNallocation(Site site)
+        //---------------------------------------------------------------------
+        // Method for retrieving the available resorbed N for each cohort.
+        // Return amount of resorbed N in g N m-2.
+        public static double GetResorbedNallocation(ICohort cohort)
         {
-            // Iterate through the first time, assigning each cohort un un-normalized N multiplier
-            //double NAllocTotal = 0.0;
-            foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
-                foreach (ICohort cohort in speciesCohorts)
+            int currentYear = PlugIn.ModelCore.CurrentTime;
+            int successionTime = PlugIn.SuccessionTimeStep;
+            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+            double resorbedNallocation = 0.0;
+            Dictionary<int, double> cohortDict;
+            
+            if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
+                cohortDict.TryGetValue(cohortAddYear, out resorbedNallocation);
+
+            return resorbedNallocation;
+        }
+
+        //---------------------------------------------------------------------
+        // Method for setting the available resorbed N for each cohort.
+        // Amount of resorbed N must be in units of g N m-2.
+        public static void SetResorbedNallocation(ICohort cohort, double resorbedNallocation)
+        {
+            int currentYear = PlugIn.ModelCore.CurrentTime;
+            int successionTime = PlugIn.SuccessionTimeStep;
+            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+            Dictionary<int, double> cohortDict;
+            double oldResorbedNallocation;
+
+            // If the dictionary entry exists for the cohort, overwrite it:
+            if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
+                if (cohortDict.TryGetValue(cohortAddYear, out oldResorbedNallocation))
                 {
-                    int currentYear = PlugIn.ModelCore.CurrentTime;
-                    int successionTime = PlugIn.SuccessionTimeStep;
-                    int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;  
-
-                    //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
-                    double Nallocation = TranslocatedN(cohort);
-                    //NAllocTotal += Nallocation;
-                    Dictionary<int, double> newEntry = new Dictionary<int, double>();
-                    newEntry.Add(cohortAddYear, Nallocation);
-
-                    if (CohortResorbedNallocation.ContainsKey(cohort.Species.Index))
-                    {
-                        CohortResorbedNallocation[cohort.Species.Index].Add(cohortAddYear, Nallocation);
-                    }
-                    else
-                    {
-                        CohortResorbedNallocation.Add(cohort.Species.Index, newEntry);
-                    }
+                    CohortResorbedNallocation[cohort.Species.Index][cohortAddYear] = resorbedNallocation;
+                    return;
                 }
 
-            //double availableN = SiteVars.ResorbedN[site];  // g/m2
+            // If the dictionary does not exist for the cohort, create it:
+            Dictionary<int, double> newEntry = new Dictionary<int, double>();
+            newEntry.Add(cohortAddYear, resorbedNallocation);
 
-            //Iterate through a second time now that we have total N multiplier
-            //Divide through by total and multiply by total available N so each cohort has a max N value
-            //and the sum of cohort max N values is the site available N
-
-            /*double totalNresorbed = 0.0;
-            foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+            if (CohortResorbedNallocation.ContainsKey(cohort.Species.Index))
             {
-                foreach (ICohort cohort in speciesCohorts)
-                {
-                    double Nallocation = CohortResorbedNallocation[cohort.Species.Index][cohort.Age];
-                    double Nfrac = Nallocation / NAllocTotal;
-                    CohortResorbedNallocation[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
-                    totalNresorbed += Nfrac * availableN;
-                }
+                CohortResorbedNallocation[cohort.Species.Index].Add(cohortAddYear, resorbedNallocation);
             }
-            if (totalNresorbed > availableN)
+            else
             {
-                throw new ApplicationException("Error: N resorbed > available resorbed N.  See AvailableN.cs");
+                CohortResorbedNallocation.Add(cohort.Species.Index, newEntry);
             }
-
             return;
-        }*/
+        }
+
+        //---------------------------------------------------------------------
+        // Method for calculationg how much N should be resorbed.
+        // month is only included for logging purposes.
+        public static double ResorbedN(ISpecies species, double leafBiomass, int month)
+        {
+            // Translocated N = Leaf Bioamss * Some percentage of leaf N
+            // Leaf N calculate from Leaf CN ratio
+            // This means that we will need to adjust the leaf litter CN appropriately.
+            // Or should translocated N be calculated from the difference between leaf and litter CN??
+
+            double leafN = leafBiomass * 0.47 / SpeciesData.LeafCN[species];
+            double litterN = leafBiomass * 0.47 / SpeciesData.LeafLitterCN[species];
+
+            double resorbedN = leafN - litterN;
+
+            if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
+            {
+                PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     leafN={2:0.00}, litterN={3:0.00}, resorbedN={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, leafN, litterN, resorbedN);
+            }
 
 
+            return resorbedN;
+        }
+
+        //---------------------------------------------------------------------
         // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
         // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
         public static void CalculateMineralNallocation(Site site)
@@ -124,36 +147,7 @@ namespace Landis.Extension.Succession.Century
             return;
         }
 
-
-        private static void TranslocateN(ICohort cohort, double Nallocation)
-        {
-            // Translocated N = Leaf Bioamss * Some percentage of leaf N
-            // Leaf N calculate from Leaf CN ratio
-            // This means that we will need to adjust the leaf litter CN appropriately.
-            // Or should translocated N be calculated from the difference between leaf and litter CN??
-            int currentYear = PlugIn.ModelCore.CurrentTime;
-            int successionTime = PlugIn.SuccessionTimeStep;
-            int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
-
-            //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
-            //double Nallocation = TranslocatedN(cohort);
-            //NAllocTotal += Nallocation;
-            Dictionary<int, double> newEntry = new Dictionary<int, double>();
-            newEntry.Add(cohortAddYear, Nallocation);
-
-            if (CohortResorbedNallocation.ContainsKey(cohort.Species.Index))
-            {
-                CohortResorbedNallocation[cohort.Species.Index].Add(cohortAddYear, Nallocation);
-            }
-            else
-            {
-                CohortResorbedNallocation.Add(cohort.Species.Index, newEntry);
-            }
-
-            return;
-        }
-
-
+        //---------------------------------------------------------------------
         /// <summary>
         /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP).
         /// </summary>
@@ -204,116 +198,6 @@ namespace Landis.Extension.Succession.Century
 
             return Nreduction;
         }
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Calculates available nitrogen from external and internal sources.
-        /// </summary>
-        public static double GetTranslocatedN(ISpecies species,
-                                       double annualLeafTurnover,
-                                       double leafMortality)
-        {
-            double leafFractionN = 1.0 / (SpeciesData.LeafCN[species] * 2.0);
-            double litterFractionN = 1.0 / (SpeciesData.LeafLitterCN[species] * 2.0);
-
-            double transN = (annualLeafTurnover + leafMortality) *
-                            (leafFractionN - litterFractionN);
-            return transN;
-        }
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Reduces growth (ANPP) depending upon how much N is available.
-        /// </summary>
-        /*public static double GrowthReductionAvailableN(ActiveSite site, ISpecies species)
-        {
-            double availableN = SiteVars.MineralN[site] * 10.0 * 0.75;  // units to kg/ha to match the original equations
-            //double availableN = SiteVars.PlantAvailableN[site] * 10.0;  // units to kg/ha to match the original equations
-
-
-            //availableN += SiteVars.SOM2[site].Nitrogen * 0.1 * 10.0;
-
-            int Ntolerance = SpeciesData.NTolerance[species];
-
-            if (Ntolerance == 4)
-                return 1.0;
-
-            if(availableN <= 0.0)
-                return 0.0;
-
-
-
-            //Calc species soil N growth multiplier
-            // Mitchell and Chandler. 1939. Black Rock Forest Bull. 11,
-            // Aber et al. 1979. Can. J. For. Res. 9:10 - 14.
-            double a = 0.0;
-            double b = 0.0;
-            double c = 0.0;
-            double d = 0.0;
-            double e = 0.0;
-            double soilNitrogenMultiplier = 0.0;
-
-            double availMC = -170.0 + 4.0 * availableN;
-
-            if(Ntolerance == 1)  //Intolerant to low nitrogen
-            {
-                a = 2.99;
-                b = 207.43;
-                c = 0.00175;
-                d = -1.7;
-                e = 1.0;
-            } else if (Ntolerance == 2) //Mid-tolerant of low nitrogen
-            {
-                a = 2.94;
-                b = 117.52;
-                c = 0.00234;
-                d = -0.5;
-                e = 0.5;
-            } else if (Ntolerance == 3) //Tolerant of low nitrogen
-            {
-                a = 2.79;
-                b = 219.77;
-                c = 0.00179;
-                d = -0.3;
-                e = 0.6;
-            } else if (Ntolerance >= 4) //Not at all limited by nitrogen
-            {
-                //Needs further review: NTolerance = 4, 5, or 6 means N-fixer
-                //Adds N to the soil from nowhere--value needs to be scaled
-                //SiteVars.MineralSoil[site].ContentN += 5;
-
-                soilNitrogenMultiplier = 1.0;
-            } else
-            {
-                PlugIn.ModelCore.Log.WriteLine("Species = {0}.  Ntolerance = {1}.", species.Name, Ntolerance);
-                throw new System.ApplicationException("Error: Incorrect N tolerance value .");
-            }
-
-            //concNinLeaves = percent N in green leaves
-            double concNinLeaves = a * (1.0 - System.Math.Pow(10.0, ((-1.0 * c) * (availMC + b))));
-
-            // Limit concentration to +/- 20% of input leaf N concentration?
-            // Testing reveals that this results in a greatly heightened mineralN and totalN
-            // And this generally ignores available N and causes N tolerant species to have a lower
-            // N limit..
-            bool limitLeafNconcentration = false;
-            if (limitLeafNconcentration)
-            {
-                double potentialLeafN = 1.0 / (SpeciesData.LeafCN[species] * 2.0) * 100.0;
-                //PlugIn.ModelCore.Log.WriteLine("potentialLeafN={0},", potentialLeafN);
-                concNinLeaves = Math.Max(concNinLeaves, potentialLeafN * 0.8);
-                concNinLeaves = Math.Min(concNinLeaves, potentialLeafN * 1.2);
-            }
-
-
-            soilNitrogenMultiplier = d + (e * concNinLeaves); //(3) Aber 1979
-
-            //PlugIn.ModelCore.Log.WriteLine("   Yr={0}. Spp={1}, Nx={2:0.00}, availN={3:0.00}, leafN={4}", PlugIn.ModelCore.CurrentTime, species.Name, soilNitrogenMultiplier, availableN, concNinLeaves);
-            //Changing min Nmultiplier to 0.05 from 0.0, to allow some growth of N-intolerant trees --bsulman
-            soilNitrogenMultiplier = Math.Min(1.0, soilNitrogenMultiplier);
-            soilNitrogenMultiplier = Math.Max(0.05, soilNitrogenMultiplier);
-
-            return soilNitrogenMultiplier;
-        }*/
 
     }
 }
