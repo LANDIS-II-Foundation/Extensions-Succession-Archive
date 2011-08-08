@@ -55,7 +55,30 @@ namespace Landis.Extension.Succession.Century
                                 site);
 
         }
+
+
+        /// <summary>
+        /// Adds some biomass for a species to the WOOD litter pools at a site.
+        /// </summary>
+        public static void AddBranchHLitter(double branchBiomass,
+                                    ISpecies species,
+                                    ActiveSite site)
+        {
+
+            if (branchBiomass > 0)
+                WoodLayer.PartitionResidue(branchBiomass,
+                                FunctionalType.Table[SpeciesData.FuncType[species]].BranchHDecayRate,
+                                SpeciesData.BranchHCN[species],
+                                SpeciesData.BranchHLignin[species],
+                                LayerName.BranchH,
+                                LayerType.Surface,
+                                site);
+
+        }
        
+
+
+
 
 
         //---------------------------------------------------------------------

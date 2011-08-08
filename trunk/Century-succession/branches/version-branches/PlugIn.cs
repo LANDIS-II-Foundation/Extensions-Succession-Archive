@@ -277,6 +277,9 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SurfaceDeadWood[site]       = initialBiomass.SurfaceDeadWood.Clone();
             //wang
             SiteVars.SurfaceDeadBranch[site] = initialBiomass.SurfaceDeadBranch.Clone();
+            
+           
+
 
             SiteVars.SurfaceStructural[site]     = initialBiomass.SurfaceStructural.Clone();
             SiteVars.SurfaceMetabolic[site]      = initialBiomass.SurfaceMetabolic.Clone();

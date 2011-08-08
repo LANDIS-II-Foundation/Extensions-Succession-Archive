@@ -28,6 +28,7 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<double> WoodLignin;
         //wang
         public static Species.AuxParm<double> BranchLignin;
+        public static Species.AuxParm<double> BranchHLignin;
 
         public static Species.AuxParm<double> CoarseRootLignin;
         public static Species.AuxParm<double> FineRootLignin;
@@ -35,6 +36,7 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<double> WoodCN;
         //wang 
         public static Species.AuxParm<double> BranchCN;
+        public static Species.AuxParm<double> BranchHCN;
 
         public static Species.AuxParm<double> CoarseRootCN;
         public static Species.AuxParm<double> LeafLitterCN;
@@ -61,7 +63,8 @@ namespace Landis.Extension.Succession.Century
             LeafLignin          = parameters.LeafLignin;
             WoodLignin          = parameters.WoodLignin ;
             //wang
-            BranchLignin            = parameters.BranchLignin;
+            BranchLignin        = parameters.BranchLignin;
+            BranchHLignin = parameters.BranchHLignin;
 
             CoarseRootLignin    = parameters.CoarseRootLignin ;
             FineRootLignin      = parameters.FineRootLignin ;
@@ -69,6 +72,7 @@ namespace Landis.Extension.Succession.Century
             WoodCN              = parameters.WoodCN;
             //wang
             BranchCN            = parameters.BranchCN;
+            BranchHCN           = parameters.BranchHCN;
 
             CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;

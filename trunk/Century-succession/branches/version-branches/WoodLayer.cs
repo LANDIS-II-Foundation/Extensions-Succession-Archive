@@ -23,6 +23,8 @@ namespace Landis.Extension.Succession.Century
 
             //wang
             double branch2c = SiteVars.SurfaceDeadBranch[site].Carbon;
+            double branchH2c = SiteVars.SurfaceDeadBranchH[site].Carbon;
+
 
             double anerb = SiteVars.AnaerobicEffect[site];
 
@@ -49,7 +51,7 @@ namespace Landis.Extension.Succession.Century
 
 //wang
 
-            //....LARGE WOOD....
+            //....Branch
             if (branch2c > 0.0000001)
             {
 
@@ -66,6 +68,26 @@ namespace Landis.Extension.Succession.Century
 
                 // Decompose large wood into SOM1 and SOM2 with CO2 loss.
                 SiteVars.SurfaceDeadBranch[site].DecomposeLignin(totalCFlow, site);
+            }
+
+
+            //....harvested Branch
+            if (branchH2c > 0.0000001)
+            {
+
+                double ligninFactor = System.Math.Exp(-1 * OtherData.LigninDecayEffect * SiteVars.SurfaceDeadBranchH[site].FractionLignin);
+                double decayRate = Math.Min(1.0, SiteVars.DecayFactor[site]
+                                                * SiteVars.SurfaceDeadBranchH[site].DecayValue
+                                                * ligninFactor
+                                                * OtherData.MonthAdjust);
+
+                //Compute total C flow out of large wood
+                double totalCFlow = branchH2c * decayRate;
+
+                //PlugIn.ModelCore.Log.WriteLine("Decompose wood.  C={0:0.00}, Cflow={1:0.00}, DF={2:0.00}, DV={3:0.00}, LigninF={4:0.000}.", wood2c, totalCFlow, SiteVars.DecayFactor[site], SiteVars.SurfaceDeadWood[site].DecayValue, ligninFactor);
+
+                // Decompose large wood into SOM1 and SOM2 with CO2 loss.
+                SiteVars.SurfaceDeadBranchH[site].DecomposeLignin(totalCFlow, site);
             }
 
 
@@ -166,12 +188,22 @@ namespace Landis.Extension.Succession.Century
            {
              layer = SiteVars.SurfaceDeadBranch[site];
             }
+
+            else if ((int)name == (int)LayerName.BranchH)
+            {
+                layer = SiteVars.SurfaceDeadBranchH[site];
+            }
+
+
             else
             {
                 layer = SiteVars.SoilDeadWood[site];
             }
             layer.Carbon += totalC;
             layer.Nitrogen += totalNitrogen;
+
+            //PlugIn.ModelCore.Log.WriteLine("litter:  SurfaceDeadBranchH.carbon={0:0.0000}. SurfaceDeadBranchH.totalC={1:0.0000}.", SiteVars.SurfaceDeadBranchH[site].Carbon, totalC);
+           
 
             // ...Adjust lignin and decay rates in Structural Layers
             layer.AdjustLignin(totalC, fracLignin);

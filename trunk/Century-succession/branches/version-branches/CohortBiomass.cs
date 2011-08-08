@@ -108,7 +108,7 @@ namespace Landis.Extension.Succession.Century
             
             
             //wang
-            PlugIn.ModelCore.Log.WriteLine("Nuptake1={0:0.000}", Nreduction);
+            //PlugIn.ModelCore.Log.WriteLine("Nuptake1={0:0.000}", Nreduction);
             NuptakeSite(site, Nreduction);
 
 
@@ -131,7 +131,7 @@ namespace Landis.Extension.Succession.Century
             {
                 PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, Age={3}.", PlugIn.ModelCore.CurrentTime, month+1, cohort.Species.Name, cohort.Age);
                // PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. ANPPact={2:0.0}, M={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, (actualANPP[0] + actualANPP[1]), (totalMortality[0] + totalMortality[1]));
-                PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, ANPPact={2:0.0}, M={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, (actualANPP[0] + actualANPP[1] + +actualANPP[2]), (totalMortality[0] + totalMortality[1] + totalMortality[2]));
+               // PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, ANPPact={2:0.0}, M={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, (actualANPP[0] + actualANPP[1] + +actualANPP[2]), (totalMortality[0] + totalMortality[1] + totalMortality[2]));
             }
 
             return deltas;
@@ -179,10 +179,10 @@ namespace Landis.Extension.Succession.Century
             //double maxWoodNPP = maxNPP * (1.0 - leafFractionNPP);
             //double amaxWoodNPP = potentialNPP - amaxLeafNPP - amaxBranchNPP;//wang??
            
-            double NmaxWoodNPP = potentialNPP * 0.53;
-            //wang, 0.53 is the wood fraction of aboveground biomass for my project
+            double NmaxWoodNPP = potentialNPP *(1- leafFractionNPP-branchFraction);
+            //wang, 0.53=(1- leafFractionNPP-branchFraction) is the wood fraction of aboveground biomass for my project
 
-            PlugIn.ModelCore.Log.WriteLine("NmaxLeafNPP={0:0.00}, NmaxBranchNPP={1:0.00}, Nmaxwoodnpp={2:0.00}", NmaxLeafNPP, NmaxBranchNPP, NmaxWoodNPP);
+            //PlugIn.ModelCore.Log.WriteLine("NmaxLeafNPP={0:0.00}, NmaxBranchNPP={1:0.00}, Nmaxwoodnpp={2:0.00}", NmaxLeafNPP, NmaxBranchNPP, NmaxWoodNPP);
 
 
             if (SpeciesData.NTolerance[cohort.Species] == 4)
@@ -195,12 +195,12 @@ namespace Landis.Extension.Succession.Century
             }
             
             limitN = Math.Min(1.0, limitN);
-            potentialNPP = potentialNPP * limitN;
+           // potentialNPP = potentialNPP * limitN;
 
             if(PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
             {
                 PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month+1, limitLAI, limitH20, limitN, limitT, limitCapacity);
-                PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     OTHER: Max={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.BranchBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]); //wang?
+                PlugIn.ModelCore.Log.WriteLine("potentialnpp={0:0.00},", potentialNPP); //wang?
             }
 
 
@@ -241,10 +241,12 @@ namespace Landis.Extension.Succession.Century
             //wang
             branchNPP = actualANPP *  branchFraction;
          //woodNPP  = actualANPP * (1.0 - leafFractionNPP);
-            woodNPP = actualANPP - branchNPP - leafNPP;
+            woodNPP = actualANPP*(1 - leafFractionNPP - branchFraction);
             
+                    
+            PlugIn.ModelCore.Log.WriteLine("actual_woodNPP={0:0.00}, actual_branchNPP={1:0.00}, actual_leafNPP={2:0.00}", woodNPP, branchNPP, leafNPP); 
+        
             return new double[3]{woodNPP, branchNPP, leafNPP}; //wang?
-            
         }
         
         
@@ -419,7 +421,7 @@ namespace Landis.Extension.Succession.Century
             double initialLeafB = initialBiomass * leafFrac;
             //wang?
             double initialBranchB = initialBiomass* branchFraction;
-            double initialWoodB = initialBiomass - initialBranchB - initialLeafB;
+            double initialWoodB = initialBiomass*(1 - leafFrac - branchFraction);
             //double initialWoodB = initialBiomass * (1.0 - leafFrac);
             double[] initialB = new double[3] { initialWoodB, initialBranchB, initialLeafB }; //wang?
 
@@ -437,7 +439,7 @@ namespace Landis.Extension.Succession.Century
                 initialB[1] = initialBiomass * branchFraction; //wang?
                 initialB[2] = initialBiomass * leafFrac; //wang?
                 //initialB[3] = initialBiomass * (1.0 - leafFrac);
-                initialB[0] = initialBiomass - initialB[2] - initialB[3];
+                initialB[0] = initialBiomass*(1- branchFraction - leafFrac);
             }
 
             Nreduction = AvailableN.CohortUptakeAvailableN(species, site, initialB);
@@ -516,7 +518,7 @@ namespace Landis.Extension.Succession.Century
 
             //...Local variables
             double lai = 0.0;
-            double laitop = -0.47;  // This is the value given for all biomes in the tree.100 file.
+            double laitop = FunctionalType.Table[SpeciesData.FuncType[species]].LAITOP; ;  // This is the value given for all biomes in the tree.100 file.
             double btolai = FunctionalType.Table[SpeciesData.FuncType[species]].BTOLAI;
             double klai   = FunctionalType.Table[SpeciesData.FuncType[species]].KLAI;
             double maxlai = FunctionalType.Table[SpeciesData.FuncType[species]].MAXLAI;

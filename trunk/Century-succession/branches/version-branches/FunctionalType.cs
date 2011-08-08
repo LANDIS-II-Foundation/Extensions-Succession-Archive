@@ -19,6 +19,7 @@ namespace Landis.Extension.Succession.Century
         double FCFRACbranch { get; set;}
         double BTOLAI{get;set;}
         double KLAI{get;set;}
+        double LAITOP { get; set; }
         double MAXLAI{get;set;}
         double PPRPTS2 {get;set;}
         double PPRPTS3 {get;set;}
@@ -27,6 +28,7 @@ namespace Landis.Extension.Succession.Century
         //wang
         double MonthlyBranchMortality { get; set; }
         double BranchDecayRate { get; set; }
+        double BranchHDecayRate { get; set; }
 
         double MortCurveShape{get;set;}
         int LeafNeedleDrop{get;set;}
@@ -44,6 +46,7 @@ namespace Landis.Extension.Succession.Century
         private double fcfracBranch;
         private double btolai;
         private double klai;
+        private double laitop;
         private double maxlai;
         private double pprpts2;
         private double pprpts3;
@@ -52,7 +55,8 @@ namespace Landis.Extension.Succession.Century
         //wang
         private double monthlyBranchMortality;
         private double branchDecayRate;
-        
+        private double branchHDecayRate;
+
         private double mortCurveShape;
         private int leafNeedleDrop;
 
@@ -206,6 +210,23 @@ namespace Landis.Extension.Succession.Century
                 klai = value;
             }
         }
+
+
+        public double LAITOP
+        {
+            get
+            {
+                return laitop;
+            }
+            set
+            {
+                if (value < -10 || value > -0.01)
+                    throw new InputValueException(value.ToString(),
+                        "LAITOP is better between -0.01 and -10");
+                laitop = value;
+            }
+        }
+
         //---------------------------------------------------------------------
         /// <summary>
         /// The Century manual recommends a maximum of 20 (?)
@@ -301,6 +322,22 @@ namespace Landis.Extension.Succession.Century
                     throw new InputValueException(value.ToString(),
                         "Decay rate must be between 0.0 and 2.0");
                 branchDecayRate = value;
+            }
+        }
+
+        //-----------------------------------------------------------------
+        public double BranchHDecayRate
+        {
+            get
+            {
+                return branchHDecayRate;
+            }
+            set
+            {
+                if (value <= 0.0 || value > 2.0)
+                    throw new InputValueException(value.ToString(),
+                        "Decay rate must be between 0.0 and 2.0");
+                branchHDecayRate = value;
             }
         }
 

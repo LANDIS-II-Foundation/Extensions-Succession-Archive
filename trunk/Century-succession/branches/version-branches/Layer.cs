@@ -11,8 +11,8 @@ using Landis.SpatialModeling;
 namespace Landis.Extension.Succession.Century
 {
 
-    public enum LayerName { Leaf, FineRoot, Wood, Branch, CoarseRoot, Metabolic, Structural, SOM1, SOM2, SOM3,  Other }; //wang
-    public enum LayerType {Surface, Soil, Other}
+    public enum LayerName {Leaf, FineRoot, Wood, Branch, CoarseRoot, Metabolic, Structural, SOM1, SOM2, SOM3,  Other, BranchH }; //wang
+    public enum LayerType {Surface, Soil, Other};
 
     /// <summary>
     /// A Century soil model carbon and nitrogen pool.

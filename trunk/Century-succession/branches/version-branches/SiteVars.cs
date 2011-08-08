@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.Century
 
         //wang
         private static ISiteVar<Layer> surfaceDeadBranch;
-
+        private static ISiteVar<Layer> surfaceDeadBranchH;
         private static ISiteVar<Layer> soilDeadWood;
         
         private static ISiteVar<Layer> surfaceStructural;
@@ -106,7 +106,7 @@ namespace Landis.Extension.Succession.Century
             surfaceDeadWood     = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
             //wang
             surfaceDeadBranch   = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
-            
+            surfaceDeadBranchH = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
             soilDeadWood        = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
             
             surfaceStructural   = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
@@ -179,7 +179,7 @@ namespace Landis.Extension.Succession.Century
                 surfaceDeadWood[site]       = new Layer(LayerName.Wood, LayerType.Surface);
                 //wang
                 surfaceDeadBranch[site] = new Layer(LayerName.Branch, LayerType.Surface);
-                
+                surfaceDeadBranchH[site] = new Layer(LayerName.BranchH, LayerType.Surface);
                 soilDeadWood[site]          = new Layer(LayerName.CoarseRoot, LayerType.Soil);
                 
                 surfaceStructural[site]     = new Layer(LayerName.Structural, LayerType.Surface);
@@ -286,7 +286,7 @@ namespace Landis.Extension.Succession.Century
             
             //wang
             SiteVars.SurfaceDeadBranch[site].NetMineralization = 0.0;
-
+            SiteVars.SurfaceDeadBranchH[site].NetMineralization = 0.0;
             SiteVars.SurfaceStructural[site].NetMineralization = 0.0;
             SiteVars.SurfaceMetabolic[site].NetMineralization = 0.0;
             
@@ -310,7 +310,7 @@ namespace Landis.Extension.Succession.Century
             //wang
             SiteVars.SurfaceDeadWood[site].ImmobilNW = 0.0;
             SiteVars.SurfaceDeadBranch[site].ImmobilNW = 0.0;
-
+            SiteVars.SurfaceDeadBranchH[site].ImmobilNW = 0.0;
             SiteVars.SurfaceStructural[site].ImmobilNW = 0.0;
             SiteVars.SurfaceMetabolic[site].ImmobilNW = 0.0;
 
@@ -366,6 +366,18 @@ namespace Landis.Extension.Succession.Century
             }
         }
 
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// The intact dead branch pools for the landscape's sites.
+        /// </summary>
+        public static ISiteVar<Layer> SurfaceDeadBranchH
+        {
+            get
+            {
+                return surfaceDeadBranchH;
+            }
+        }
 
 
 
