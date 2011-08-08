@@ -32,21 +32,35 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
 
             float foliarInput = ReduceInput(foliar, cohortReductions.Foliar, site);
             float woodInput   = ReduceInput(wood, cohortReductions.Wood, site);
+
+           
             //wang
             float branchInput = ReduceInput(branch, cohortReductions.Branch, site);
+            
+            
+            PlugIn.ModelCore.Log.WriteLine("EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
+            PlugIn.ModelCore.Log.WriteLine(" Cohort Reductions:  branch_reduction%={0:0.00}.  branchdead={1:0.0000}. branchlive={2:0.0000}.", (float)cohortReductions.Branch, branchInput*0.47, branch*0.47);
+           
+           
+           
 
 
-            //PlugIn.ModelCore.Log.WriteLine("EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
-            //PlugIn.ModelCore.Log.WriteLine("       Cohort Reductions:  Foliar={0:0.00}.  Wood={1:0.00}.", cohortReductions.Foliar, cohortReductions.Wood);
-            //PlugIn.ModelCore.Log.WriteLine("       InputB/TotalB:  Foliar={0:0.00}/{1:0.00}, Wood={2:0.0}/{3:0.0}.", foliarInput, foliar, woodInput, wood);
+            if ((float)cohortReductions.Branch == 1.0 | (float)cohortReductions.Branch == 0.0)
+            ForestFloor.AddBranchLitter(branchInput, cohort.Species, site);
+            else
+            ForestFloor.AddBranchHLitter(branchInput, cohort.Species, site);
+            
+
+
+            
+             //PlugIn.ModelCore.Log.WriteLine("       InputB/TotalB:  Foliar={0:0.00}/{1:0.00}, Wood={2:0.0}/{3:0.0}.", foliarInput, foliar, woodInput, wood);
             
             ForestFloor.AddWoodLitter(woodInput, cohort.Species, site);
             Roots.AddCoarseRootLitter(wood, cohort.Species, site);  //wang?
             // All of cohorts roots are killed.//wang
-            ForestFloor.AddBranchLitter(branchInput, cohort.Species, site);
+            
 
             ForestFloor.AddFoliageLitter(foliarInput, cohort.Species, site);
-           
             Roots.AddFineRootLitter(foliar, cohort.Species, site);
             
         }
@@ -81,6 +95,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
             ActiveSite site = eventArgs.Site;
             SiteVars.SurfaceDeadWood[site].ReduceMass(poolReductions.Wood);
             SiteVars.SurfaceDeadBranch[site].ReduceMass(poolReductions.Branch);//wang
+           
             SiteVars.SurfaceStructural[site].ReduceMass(poolReductions.Foliar);
             SiteVars.SurfaceMetabolic[site].ReduceMass(poolReductions.Foliar);
         }

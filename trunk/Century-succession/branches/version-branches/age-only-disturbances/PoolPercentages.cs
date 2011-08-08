@@ -16,7 +16,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         private Percentage foliar;
         /*wang*/
         private Percentage branch;
-
+       
         //---------------------------------------------------------------------
 
         /// <summary>
@@ -99,6 +99,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         /// </summary>
         public PoolPercentages()
         {
+        
         }
     }
 }
