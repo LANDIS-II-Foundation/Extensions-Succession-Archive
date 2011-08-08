@@ -40,6 +40,7 @@ namespace Landis.Extension.Succession.Century
         private Species.AuxParm<double> woodLignin;
         //wang
         private Species.AuxParm<double> branchLignin;
+        private Species.AuxParm<double> branchHLignin;
 
         private Species.AuxParm<double> coarseRootLignin;
         private Species.AuxParm<double> fineRootLignin;
@@ -47,6 +48,7 @@ namespace Landis.Extension.Succession.Century
         private Species.AuxParm<double> woodCN;
         //wang
         private Species.AuxParm<double> branchCN;
+        private Species.AuxParm<double> branchHCN;
 
         private Species.AuxParm<double> coarseRootCN;
         private Species.AuxParm<double> foliageLitterCN;
@@ -298,6 +300,14 @@ namespace Landis.Extension.Succession.Century
             }
         }
 
+        public Species.AuxParm<double> BranchHLignin
+        {
+            get
+            {
+                return branchHLignin;
+            }
+        }
+
 
         //---------------------------------------------------------------------
         public Species.AuxParm<double> CoarseRootLignin
@@ -339,6 +349,18 @@ namespace Landis.Extension.Succession.Century
                 return branchCN;
             }
         }
+
+        //wang---------------------------------------------------------------------
+
+        public Species.AuxParm<double> BranchHCN
+        {
+            get
+            {
+                return branchHCN;
+            }
+        }
+
+
         //---------------------------------------------------------------------
 
         public Species.AuxParm<double> CoarseRootCN
@@ -609,6 +631,15 @@ namespace Landis.Extension.Succession.Century
         }
 
 
+        public void SetBranchHLignin(ISpecies species,
+                                          InputValue<double> newValue)
+        {
+            Debug.Assert(species != null);
+            branchHLignin[species] = CheckBiomassParm(newValue, 0.0, 0.4);
+        }
+
+
+
         //---------------------------------------------------------------------
 
         public void SetCoarseRootLignin(ISpecies           species,
@@ -651,6 +682,14 @@ namespace Landis.Extension.Succession.Century
             Debug.Assert(species != null);
             branchCN[species] = CheckBiomassParm(newValue, 5.0, 600.0);
         }
+
+        public void SetBranchHCN(ISpecies species,
+                                          InputValue<double> newValue)
+        {
+            Debug.Assert(species != null);
+            branchHCN[species] = CheckBiomassParm(newValue, 5.0, 600.0);
+        }
+
 
 
         //---------------------------------------------------------------------
@@ -845,12 +884,15 @@ namespace Landis.Extension.Succession.Century
             woodLignin              = new Species.AuxParm<double>(speciesDataset);
             //wang
             branchLignin            = new Species.AuxParm<double>(speciesDataset);
+            branchHLignin           = new Species.AuxParm<double>(speciesDataset);
+
             coarseRootLignin        = new Species.AuxParm<double>(speciesDataset);
             fineRootLignin          = new Species.AuxParm<double>(speciesDataset);
             leafCN                  = new Species.AuxParm<double>(speciesDataset);
             woodCN                  = new Species.AuxParm<double>(speciesDataset);
             //wang
             branchCN                = new Species.AuxParm<double>(speciesDataset);
+            branchHCN               = new Species.AuxParm<double>(speciesDataset);
             coarseRootCN            = new Species.AuxParm<double>(speciesDataset);
             foliageLitterCN         = new Species.AuxParm<double>(speciesDataset);
             fineRootLitterCN        = new Species.AuxParm<double>(speciesDataset);

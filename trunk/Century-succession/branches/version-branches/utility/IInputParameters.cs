@@ -72,6 +72,7 @@ namespace Landis.Extension.Succession.Century
 
         //wang
         Species.AuxParm<double> BranchLignin {get;}
+        Species.AuxParm<double> BranchHLignin { get; }
 
         Species.AuxParm<double> CoarseRootLignin {get;}
         Species.AuxParm<double> FineRootLignin {get;}
@@ -79,6 +80,7 @@ namespace Landis.Extension.Succession.Century
         Species.AuxParm<double> WoodCN {get;}
         //wang
         Species.AuxParm<double> BranchCN {get;}
+        Species.AuxParm<double> BranchHCN { get; }
 
         Species.AuxParm<double> CoarseRootCN {get;}
         Species.AuxParm<double> FoliageLitterCN {get;}
