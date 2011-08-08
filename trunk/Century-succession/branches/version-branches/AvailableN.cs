@@ -62,7 +62,9 @@ namespace Landis.Extension.Succession.Century
                     double NMultiplier = CohortNlimits[cohort.Species.Index][cohort.Age];
                     double Nfrac = NMultiplier / NMultTotal;
                     CohortNlimits[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
-                    PlugIn.ModelCore.Log.WriteLine(" CohortNlimits={0}", Nfrac * availableN);
+                    
+                    //PlugIn.ModelCore.Log.WriteLine(" CohortNlimits={0}", Nfrac * availableN);
+                    
                     totalNUptake += Nfrac * availableN;
                 }
             }
