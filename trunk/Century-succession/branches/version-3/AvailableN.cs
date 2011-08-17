@@ -146,8 +146,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             return;
-            SiteVars.MonthlyNuptake[site] += totalNUptake;
-          
+            
           
         }
 

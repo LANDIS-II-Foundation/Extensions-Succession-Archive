@@ -67,7 +67,7 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.MonthlyResp[site][month] = 0.0;
                     SiteVars.SourceSink[site].Carbon = 0.0;
                     SiteVars.TotalWoodBiomass[site] = Century.ComputeWoodBiomass((ActiveSite) site);
-                    SiteVars.MonthlyNuptake[site][month] = 0.0;
+                    
 
                     double monthlyNdeposition = EcoregionData.AnnualWeather[PlugIn.ModelCore.Ecoregion[site]].MonthlyNdeposition[month];
                     SiteVars.MineralN[site] += monthlyNdeposition;

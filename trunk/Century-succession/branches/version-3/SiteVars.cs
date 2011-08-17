@@ -68,8 +68,8 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<double> FireEfflux;
         public static ISiteVar<double> NLoss;
         private static ISiteVar<double[]> monthlyResp;
-        private static ISiteVar<double[]> monthlyNuptake;
-        private static ISiteVar<double[]> monthlyNresorbed;
+        private static ISiteVar<double> totalNuptake;
+        private static ISiteVar<double> totalNresorbed;
         
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<int> PrevYearMortality;
@@ -134,13 +134,15 @@ namespace Landis.Extension.Succession.Century
             cohortLeafC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            monthlyNuptake      = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
-            monthlyNresorbed    = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
+            totalNuptake      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            totalNresorbed    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             
             TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             NLoss               = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            TotalNuptake = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            ResorbedN = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
@@ -173,8 +175,7 @@ namespace Landis.Extension.Succession.Century
                 monthlyBGNPPC[site]           = new double[12];
                 monthlyNEE[site]            = new double[12];
                 monthlyResp[site]           = new double[12];
-                monthlyNuptake[site]        = new double[12];
-                monthlyNresorbed[site]      = new double[12];
+                
 
             }
             
@@ -265,6 +266,9 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SOM3[site].NetMineralization = 0.0;
             SiteVars.AnnualNEE[site] = 0.0;
             SiteVars.NLoss[site] = 0.0;
+            SiteVars.AnnualNEE[site] = 0.0;
+            SiteVars.totalNuptake[site] = 0.0;
+            SiteVars.totalNresorbed[site] = 0.0;
             //SiteVars.FireEfflux[site] = 0.0;
                         
 
@@ -692,32 +696,18 @@ namespace Landis.Extension.Succession.Century
                /// <summary>
         /// A summary of N uptake (g N/m2)
         /// </summary>
-        public static ISiteVar<double[]> MonthlyNuptake
+        public static ISiteVar<double> TotalNuptake
         {
             get
             {
-                return monthlyNuptake;
+                return totalNuptake;
             }
             set
             {
-                monthlyNuptake = value;
+                totalNuptake = value;
             }
         }
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// A summary of N resorbed (g N/m2)
-        /// </summary>
-        public static ISiteVar<double[]> MonthlyNresorbed
-        {
-            get
-            {
-                return monthlyNresorbed;
-            }
-            set
-            {
-                monthlyNresorbed = value;
-            }
-        }
+        
     }
 }
  
