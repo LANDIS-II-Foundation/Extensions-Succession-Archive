@@ -369,6 +369,9 @@ namespace Landis.Extension.Succession.Century
             
             double[] Ndep          = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] Nvol          = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] totalNuptake  = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] totalNresorbed = new double[PlugIn.ModelCore.Ecoregions.Count];
+            
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
@@ -382,6 +385,8 @@ namespace Landis.Extension.Succession.Century
                 
                 Ndep[ecoregion.Index] = 0.0;
                 Nvol[ecoregion.Index] = 0.0;
+                totalNuptake[ecoregion.Index] = 0.0;
+                totalNresorbed[ecoregion.Index] = 0.0;
                 
             }
 
@@ -403,6 +408,8 @@ namespace Landis.Extension.Succession.Century
                 
                 Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
                 Nvol[ecoregion.Index] += SiteVars.MineralN[site] * 0.02 * OtherData.MonthAdjust; //same calc as in Century.cs
+                totalNuptake[ecoregion.Index] += SiteVars.MonthlyNuptake[site][month];
+                totalNresorbed[ecoregion.Index] += SiteVars.MonthlyNresorbed[site][month];
                 
             }
             
@@ -429,6 +436,8 @@ namespace Landis.Extension.Succession.Century
                         Ndep[ecoregion.Index],
                         (Nvol[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
+                    logMonthly.Write("{0:0.00}, {1:0.00} ",
+                        totalNuptake[ecoregion.Index], totalNresorbed[ecoregion.Index]);
                     logMonthly.WriteLine("");
                 }
             }

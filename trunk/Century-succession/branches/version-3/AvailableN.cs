@@ -1,3 +1,4 @@
+
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
 //  Author: Robert Scheller, Ben Sulman
 
@@ -74,7 +75,7 @@ namespace Landis.Extension.Succession.Century
         // month is only included for logging purposes.
         public static double CalculateResorbedN(ISpecies species, double leafBiomass, int month)
         {
-            // Translocated N = Leaf Bioamss * Some percentage of leaf N
+            // Translocated N = Leaf Biomass * Some percentage of leaf N
             // Leaf N calculate from Leaf CN ratio
             // This means that we will need to adjust the leaf litter CN appropriately.
             // Or should translocated N be calculated from the difference between leaf and litter CN??
@@ -145,11 +146,14 @@ namespace Landis.Extension.Succession.Century
             }
 
             return;
+            SiteVars.MonthlyNuptake[site] += totalNUptake;
+          
+          
         }
 
         //---------------------------------------------------------------------
         /// <summary>
-        /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP).
+        /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP) of leaves, wood, coarse roots and fine roots.
         /// </summary>
         public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, double[] actualANPP)
         {
@@ -172,18 +176,37 @@ namespace Landis.Extension.Succession.Century
             if(actualANPP[0] > 0.0)
             {
                 ANPPwood = actualANPP[0];
+
+                if (actualANPP.Length > 2)
+                {
+                    ANPPcoarseRoot = actualANPP[2];
+
+                } else {
+
                 ANPPcoarseRoot = Roots.CalculateCoarseRoot(ANPPwood);
+
+                }
                 woodN       = ANPPwood * 0.47  / SpeciesData.WoodCN[species];
                 coarseRootN = ANPPcoarseRoot * 0.47  / SpeciesData.CoarseRootCN[species];
-            }
+                }
 
             if(actualANPP[1] > 0.0)
             {
                 ANPPleaf = actualANPP[1];
+                
+                if (actualANPP.Length > 2)
+
+                {
+                    ANPPfineRoot = actualANPP[3];
+
+                } else {
+
                 ANPPfineRoot = Roots.CalculateFineRoot(ANPPleaf);
+               
+                }
                 leafN       = ANPPleaf * 0.47 / SpeciesData.LeafCN[species];
                 fineRootN   = ANPPfineRoot * 0.47  / SpeciesData.FineRootCN[species];
-            }
+                }
 
             double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.47;
             double Nreduction = leafN + woodN + coarseRootN + fineRootN;

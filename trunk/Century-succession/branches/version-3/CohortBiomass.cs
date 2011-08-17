@@ -1,4 +1,4 @@
-//  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
+ //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
 //  Author: Robert Scheller, Ben Sulman
 
 using Edu.Wisc.Forest.Flel.Util;
@@ -285,7 +285,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             // Resorbed N:  We are assuming that any leaves dropped as a function of normal
-            // growth and maintenance (e.g., fall senescence) will involve resorbtion of leaf N.
+            // growth and maintenance (e.g., fall senescence) will involve resorption of leaf N.
             double resorbedN = AvailableN.CalculateResorbedN(cohort.Species, M_leaf, month);
             AvailableN.SetResorbedNallocation(cohort, resorbedN);
 
@@ -425,6 +425,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.BGNPPcarbon[site] += NPPcoarseRoot + NPPfineRoot;
             SiteVars.MonthlyAGNPPcarbon[site][month] += NPPwood + NPPleaf;
             SiteVars.MonthlyBGNPPcarbon[site][month] += NPPcoarseRoot + NPPfineRoot;
+            
 
         }
 
@@ -444,13 +445,15 @@ namespace Landis.Extension.Succession.Century
 
             double maxLeafNPP = Math.Max(maxNPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double maxWoodNPP = maxNPP * (1.0 - leafFractionNPP);
+            double maxFineRootNPP = maxLeafNPP * .75;
+            double maxCoarseRootNPP = maxWoodNPP * .75;
             double limitN = 1.0;
             if (SpeciesData.NTolerance[cohort.Species] == 4)
                 limitN = 1.0;  // No limit for N-fixing shrubs
             else
             {
                 // Divide allocation N by N demand here:
-                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[2] { maxWoodNPP, maxLeafNPP }));
+                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { maxWoodNPP, maxLeafNPP, maxFineRootNPP, maxCoarseRootNPP }));
                 limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);
             }
 

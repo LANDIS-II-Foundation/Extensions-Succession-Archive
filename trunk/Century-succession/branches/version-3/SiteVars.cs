@@ -68,11 +68,14 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<double> FireEfflux;
         public static ISiteVar<double> NLoss;
         private static ISiteVar<double[]> monthlyResp;
+        private static ISiteVar<double[]> monthlyNuptake;
+        private static ISiteVar<double[]> monthlyNresorbed;
         
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<int> PrevYearMortality;
         public static ISiteVar<byte> FireSeverity;
         public static ISiteVar<double> AgeMortality;
+        
         
         //---------------------------------------------------------------------
 
@@ -131,11 +134,14 @@ namespace Landis.Extension.Succession.Century
             cohortLeafC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            monthlyNuptake      = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
+            monthlyNresorbed    = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             
             TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             NLoss               = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
@@ -167,6 +173,8 @@ namespace Landis.Extension.Succession.Century
                 monthlyBGNPPC[site]           = new double[12];
                 monthlyNEE[site]            = new double[12];
                 monthlyResp[site]           = new double[12];
+                monthlyNuptake[site]        = new double[12];
+                monthlyNresorbed[site]      = new double[12];
 
             }
             
@@ -680,5 +688,36 @@ namespace Landis.Extension.Succession.Century
                 sourceSink = value;
             }
         }
+        //---------------------------------------------------------------------
+               /// <summary>
+        /// A summary of N uptake (g N/m2)
+        /// </summary>
+        public static ISiteVar<double[]> MonthlyNuptake
+        {
+            get
+            {
+                return monthlyNuptake;
+            }
+            set
+            {
+                monthlyNuptake = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of N resorbed (g N/m2)
+        /// </summary>
+        public static ISiteVar<double[]> MonthlyNresorbed
+        {
+            get
+            {
+                return monthlyNresorbed;
+            }
+            set
+            {
+                monthlyNresorbed = value;
+            }
+        }
     }
 }
+ 
