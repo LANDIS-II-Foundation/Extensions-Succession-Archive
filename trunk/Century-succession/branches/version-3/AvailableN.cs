@@ -73,26 +73,27 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         // Method for calculationg how much N should be resorbed.
         // month is only included for logging purposes.
-        public static double CalculateResorbedN(ISpecies species, double leafBiomass, int month)
+        public static double CalculateResorbedN(ActiveSite site, ISpecies species, double leafBiomass, int month)
         {
             // Translocated N = Leaf Biomass * Some percentage of leaf N
             // Leaf N calculate from Leaf CN ratio
             // This means that we will need to adjust the leaf litter CN appropriately.
             // Or should translocated N be calculated from the difference between leaf and litter CN??
 
-            double leafN = leafBiomass * 0.47 / SpeciesData.LeafCN[species];
-            double litterN = leafBiomass * 0.47 / SpeciesData.LeafLitterCN[species];
+                double leafN = leafBiomass * 0.47 / SpeciesData.LeafCN[species];
+                double litterN = leafBiomass * 0.47 / SpeciesData.LeafLitterCN[species];
 
-            double resorbedN = leafN - litterN;
+                double resorbedN = leafN - litterN;
 
-            if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
-            {
-                PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     leafN={2:0.00}, litterN={3:0.00}, resorbedN={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, leafN, litterN, resorbedN);
-            }
+                if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
+                {
+                    PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     leafN={2:0.00}, litterN={3:0.00}, resorbedN={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, leafN, litterN, resorbedN);
+                }
 
+                SiteVars.ResorbedN[site] = resorbedN;
 
-            return resorbedN;
-        }
+                return resorbedN;
+         }
 
         //---------------------------------------------------------------------
         // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
@@ -145,9 +146,11 @@ namespace Landis.Extension.Succession.Century
                 //throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
             }
 
+            SiteVars.TotalNuptake[site] = totalNUptake;
+
             return;
+                     
             
-          
         }
 
         //---------------------------------------------------------------------

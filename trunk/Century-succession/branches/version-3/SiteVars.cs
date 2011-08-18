@@ -69,8 +69,7 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<double> NLoss;
         private static ISiteVar<double[]> monthlyResp;
         private static ISiteVar<double> totalNuptake;
-        private static ISiteVar<double> totalNresorbed;
-        
+                
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<int> PrevYearMortality;
         public static ISiteVar<byte> FireSeverity;
@@ -134,16 +133,13 @@ namespace Landis.Extension.Succession.Century
             cohortLeafC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            totalNuptake      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            totalNresorbed    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            
+                        
             TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             NLoss               = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-            TotalNuptake = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            ResorbedN = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            
+            totalNuptake        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+                       
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
@@ -267,8 +263,8 @@ namespace Landis.Extension.Succession.Century
             SiteVars.AnnualNEE[site] = 0.0;
             SiteVars.NLoss[site] = 0.0;
             SiteVars.AnnualNEE[site] = 0.0;
-            SiteVars.totalNuptake[site] = 0.0;
-            SiteVars.totalNresorbed[site] = 0.0;
+            SiteVars.TotalNuptake[site] = 0.0;
+           // SiteVars.TotalNresorbed[site] = 0.0;
             //SiteVars.FireEfflux[site] = 0.0;
                         
 
@@ -702,10 +698,12 @@ namespace Landis.Extension.Succession.Century
             {
                 return totalNuptake;
             }
-            set
+            set 
             {
                 totalNuptake = value;
             }
+                
+            
         }
         
     }
