@@ -80,10 +80,14 @@ namespace Landis.Extension.Succession.Century
                     AvailableN.CohortMineralNallocation = new Dictionary<int, Dictionary<int,double>>();
                 	AvailableN.CalculateMineralNallocation(site);
 
-                    // Reset N resorbtion if it is July
-                    if(month == 6)
+                    // Reset N resorbtion if it is August
+                    if (month == 7)
+                    {
                         AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
+                        ComputeResorbedN(siteCohorts, site, month);
+                    }
 
+                        
                     CohortBiomass.month = month;
                     if(month==11)
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), true);
@@ -114,6 +118,24 @@ namespace Landis.Extension.Succession.Century
 
             return siteCohorts;
         }
+
+        //---------------------------------------------------------------------
+
+        public static void ComputeResorbedN(ISiteCohorts cohorts, ActiveSite site, int month)
+        {
+            if (cohorts != null)
+                foreach (ISpeciesCohorts speciesCohorts in cohorts)
+                    foreach (ICohort cohort in speciesCohorts)
+                    {
+                        // Resorbed N:  We are assuming that any leaves dropped as a function of normal
+                        // growth and maintenance (e.g., fall senescence) will involve resorption of leaf N.
+                        double resorbedN = AvailableN.CalculateResorbedN(site, cohort.Species, cohort.LeafBiomass, month);
+                        AvailableN.SetResorbedNallocation(cohort, resorbedN);
+                    }
+            return;
+        }
+
+        
         //---------------------------------------------------------------------
 
         public static int ComputeLivingBiomass(ISiteCohorts cohorts)

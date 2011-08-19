@@ -199,8 +199,8 @@ namespace Landis.Extension.Succession.Century
             if (leafNPP == Double.NaN || woodNPP == Double.NaN)
             {
                 PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
-                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
-                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     OTHER: Max={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
+                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
+                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
                 PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     WoodNPP={0}, LeafNPP={1}.", woodNPP, leafNPP);
                 if (leafNPP == Double.NaN)
                     leafNPP = 0.0;
@@ -283,11 +283,6 @@ namespace Landis.Extension.Succession.Century
                     M_leaf = cohort.LeafBiomass / 2.0;  //spread across 2 months
                 }
             }
-
-            // Resorbed N:  We are assuming that any leaves dropped as a function of normal
-            // growth and maintenance (e.g., fall senescence) will involve resorption of leaf N.
-            double resorbedN = AvailableN.CalculateResorbedN(site, cohort.Species, M_leaf, month);
-            AvailableN.SetResorbedNallocation(cohort, resorbedN);
 
             double[] M_BIO = new double[2]{M_wood, M_leaf};
 

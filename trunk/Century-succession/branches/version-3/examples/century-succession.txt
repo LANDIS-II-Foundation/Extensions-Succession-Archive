@@ -9,7 +9,7 @@ InitialCommunitiesMap   "./initial-communities.gis"
 
 ClimateFile	century-climate-inputs.txt
 
-CalibrateMode 	no
+CalibrateMode 	yes
 
 WaterDecayFunction Ratio <<Linear or Ratio
 

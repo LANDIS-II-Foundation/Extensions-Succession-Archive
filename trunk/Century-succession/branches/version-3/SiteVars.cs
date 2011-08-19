@@ -171,8 +171,8 @@ namespace Landis.Extension.Succession.Century
                 monthlyBGNPPC[site]           = new double[12];
                 monthlyNEE[site]            = new double[12];
                 monthlyResp[site]           = new double[12];
-                
 
+                AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
             }
             
         }
