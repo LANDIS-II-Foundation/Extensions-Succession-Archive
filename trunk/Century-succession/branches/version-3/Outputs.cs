@@ -69,7 +69,7 @@ namespace Landis.Extension.Succession.Century
             logMonthly.Write("Time, Month, Ecoregion, NumSites,");
             logMonthly.Write("PPT, T, ");
             logMonthly.Write("NPPC, Resp, NEE, ");
-            logMonthly.Write("Ndeposition, Nvolatilization");
+            logMonthly.Write("Ndeposition, Nvolatilization, MineralN,");
             logMonthly.WriteLine("");
 
 
@@ -140,6 +140,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgFireEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNuptake = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNresorbed = new double[PlugIn.ModelCore.Ecoregions.Count];
+            
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
@@ -269,7 +270,7 @@ namespace Landis.Extension.Succession.Century
                 avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen + SiteVars.NLoss[site];
                 avgFireEfflux[ecoregion.Index] += SiteVars.FireEfflux[site];
                 avgNuptake[ecoregion.Index]    += SiteVars.TotalNuptake[site];
-                avgNresorbed[ecoregion.Index]    += SiteVars.ResorbedN[site];
+                avgNresorbed[ecoregion.Index] += SiteVars.ResorbedN[site];
                 
             }
             
@@ -378,6 +379,7 @@ namespace Landis.Extension.Succession.Century
             
             double[] Ndep          = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] Nvol          = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] mineralN       = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             
 
@@ -393,7 +395,7 @@ namespace Landis.Extension.Succession.Century
                 
                 Ndep[ecoregion.Index] = 0.0;
                 Nvol[ecoregion.Index] = 0.0;
-               
+                mineralN[ecoregion.Index] = 0.0;
                 
             }
 
@@ -415,6 +417,7 @@ namespace Landis.Extension.Succession.Century
                 
                 Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
                 Nvol[ecoregion.Index] += SiteVars.MineralN[site] * 0.02 * OtherData.MonthAdjust; //same calc as in Century.cs
+                mineralN[ecoregion.Index]    += SiteVars.MonthlyMineralN[site][month];  
                 
                 
             }
@@ -438,9 +441,10 @@ namespace Landis.Extension.Succession.Century
                         (avgResp[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgNEE[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    logMonthly.Write("{0:0.00}, {1:0.00} ",
+                    logMonthly.Write("{0:0.00}, {1:0.00}, {2:0.00}, ", 
                         Ndep[ecoregion.Index],
-                        (Nvol[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+                        (Nvol[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),                      
+                        (mineralN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
                    logMonthly.WriteLine("");
                 }

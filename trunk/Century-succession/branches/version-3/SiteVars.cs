@@ -69,6 +69,7 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<double> NLoss;
         private static ISiteVar<double[]> monthlyResp;
         private static ISiteVar<double> totalNuptake;
+        private static ISiteVar<double[]> monthlymineralN;
                 
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<int> PrevYearMortality;
@@ -139,6 +140,7 @@ namespace Landis.Extension.Succession.Century
             NLoss               = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             totalNuptake        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            monthlymineralN     = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
                        
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
@@ -171,6 +173,7 @@ namespace Landis.Extension.Succession.Century
                 monthlyBGNPPC[site]           = new double[12];
                 monthlyNEE[site]            = new double[12];
                 monthlyResp[site]           = new double[12];
+                monthlymineralN[site]       = new double[12];
 
                 AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
             }
@@ -705,7 +708,21 @@ namespace Landis.Extension.Succession.Century
                 
             
         }
-        
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of monthly mineral N (g C/m2)
+        /// </summary>
+        public static ISiteVar<double[]> MonthlyMineralN
+        {
+            get
+            {
+                return monthlymineralN;
+            }
+            set
+            {
+                monthlymineralN = value;
+            }
+        } 
     }
 }
  

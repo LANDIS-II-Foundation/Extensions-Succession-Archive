@@ -90,7 +90,7 @@ namespace Landis.Extension.Succession.Century
                     PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     leafN={2:0.00}, litterN={3:0.00}, resorbedN={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, leafN, litterN, resorbedN);
                 }
 
-                SiteVars.ResorbedN[site] = resorbedN;
+                SiteVars.ResorbedN[site] += resorbedN;
 
                 return resorbedN;
          }
