@@ -128,7 +128,7 @@ namespace Landis.Extension.Succession.Century
             //Divide through by total and multiply by total available N so each cohort has a max N value
             //and the sum of cohort max N values is the site available N
             
-            double totalNUptake = 0.0;
+            //double totalNUptake = 0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
             {
                 foreach (ICohort cohort in speciesCohorts)
@@ -136,17 +136,17 @@ namespace Landis.Extension.Succession.Century
                     double Nallocation = CohortMineralNallocation[cohort.Species.Index][cohort.Age];
                     double Nfrac = Nallocation / NAllocTotal;
                     CohortMineralNallocation[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
-                    totalNUptake += Nfrac * availableN;
+                    //totalNUptake += Nfrac * availableN;
                 }
             }
-            if (totalNUptake > availableN)
+            /*if (totalNUptake > availableN)
             {
                 totalNUptake = availableN;
                 //PlugIn.ModelCore.Log.WriteLine("   ERROR:  Total max N uptake = {0:0.000}, availableN = {1:0.000}.", totalNUptake, availableN);
                 //throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
             }
 
-            SiteVars.TotalNuptake[site] = totalNUptake;
+            SiteVars.TotalNuptake[site] = totalNUptake;*/
 
             return;
                      

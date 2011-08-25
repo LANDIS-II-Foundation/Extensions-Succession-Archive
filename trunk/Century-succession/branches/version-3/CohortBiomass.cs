@@ -105,16 +105,22 @@ namespace Landis.Extension.Succession.Century
             {
                 AvailableN.SetResorbedNallocation(cohort, 0.0);
                 Ndemand -= resorbedNallocation;
-                if(SiteVars.MineralN[site] >= Ndemand)
+                double Nuptake = 0.0;
+                if (SiteVars.MineralN[site] >= Ndemand)
+                {
                     SiteVars.MineralN[site] -= Ndemand;
+                    Nuptake = Ndemand;
+                }
                 else
                 {
                     double NdemandAdjusted = SiteVars.MineralN[site];
                     SiteVars.MineralN[site] = 0.0;
                     actualANPP[0] = NdemandAdjusted / Ndemand;
                     actualANPP[1] = NdemandAdjusted / Ndemand;
+                    Nuptake *= NdemandAdjusted / Ndemand;
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
                 }
+                SiteVars.TotalNuptake[site] += Nuptake;
             }
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
