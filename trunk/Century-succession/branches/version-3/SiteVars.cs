@@ -708,21 +708,8 @@ namespace Landis.Extension.Succession.Century
                 
             
         }
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// A summary of monthly mineral N (g C/m2)
-        /// </summary>
-        public static ISiteVar<double[]> MonthlyMineralN
-        {
-            get
-            {
-                return monthlymineralN;
-            }
-            set
-            {
-                monthlymineralN = value;
-            }
-        } 
+        
+    
     }
 }
  
