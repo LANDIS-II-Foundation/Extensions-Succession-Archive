@@ -97,7 +97,9 @@ namespace Landis.Extension.Succession.Century
 
             //Reduce available N
             double Ndemand         = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
-            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+            double resorbedNallocation = 0.0;
+            if(month > 3)  //Resorbed N cannot be used until the following spring.
+                resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             if (resorbedNallocation >= Ndemand)
                 AvailableN.SetResorbedNallocation(cohort, resorbedNallocation - Ndemand);
@@ -117,7 +119,7 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.MineralN[site] = 0.0;
                     actualANPP[0] = NdemandAdjusted / Ndemand;
                     actualANPP[1] = NdemandAdjusted / Ndemand;
-                    Nuptake *= NdemandAdjusted / Ndemand;
+                    Nuptake = SiteVars.MineralN[site] * NdemandAdjusted / Ndemand;
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
                 }
                 SiteVars.TotalNuptake[site] += Nuptake;
@@ -161,9 +163,12 @@ namespace Landis.Extension.Succession.Century
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
 
-            double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
+            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
+            //double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
+            double limitN = calculateN_Limit(site, cohort, potentialNPP, leafFractionNPP);
+            potentialNPP *= limitN;
 
-            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
+            //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
 
             if(PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
             {
@@ -432,7 +437,7 @@ namespace Landis.Extension.Succession.Century
 
         //--------------------------------------------------------------------------
         //N limit is actual demand divided by maximum uptake.
-        private double calculateN_Limit(ActiveSite site, ICohort cohort, double maxNPP, double leafFractionNPP)
+        private double calculateN_Limit(ActiveSite site, ICohort cohort, double NPP, double leafFractionNPP)
         {
 
             //Get Cohort Mineral and Resorbed N allocation.  
@@ -444,18 +449,18 @@ namespace Landis.Extension.Succession.Century
 
             double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
-            double maxLeafNPP = Math.Max(maxNPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
-            double maxWoodNPP = maxNPP * (1.0 - leafFractionNPP);
-            double maxFineRootNPP = maxLeafNPP * .75;
-            double maxCoarseRootNPP = maxWoodNPP * .75;
+            double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
+            double WoodNPP = NPP * (1.0 - leafFractionNPP);
+            double FineRootNPP = LeafNPP * .75;
+            double CoarseRootNPP = WoodNPP * .75;
             double limitN = 1.0;
             if (SpeciesData.NTolerance[cohort.Species] == 4)
                 limitN = 1.0;  // No limit for N-fixing shrubs
             else
             {
                 // Divide allocation N by N demand here:
-                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { maxWoodNPP, maxLeafNPP, maxFineRootNPP, maxCoarseRootNPP }));
-                limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);
+                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP, FineRootNPP, CoarseRootNPP }));
+                limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
             }
 
             return limitN;
