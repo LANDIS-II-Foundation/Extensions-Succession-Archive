@@ -34,7 +34,7 @@ namespace Landis.Extension.Succession.Biomass
 
             log.AutoFlush = true;
             log.Write("Time, Ecoregion, NumSites,");
-            log.Write("LiveB, AG_NPP, LitterB, MeanDefoliation");
+            log.Write("LiveB, AG_NPP, LitterB, ExternalGrowthReduction");
             log.WriteLine("");
 
 
