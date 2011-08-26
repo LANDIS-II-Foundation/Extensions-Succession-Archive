@@ -84,6 +84,7 @@ namespace Landis.Extension.Succession.Century
                 double litterN = leafBiomass * 0.47 / SpeciesData.LeafLitterCN[species];
 
                 double resorbedN = leafN - litterN;
+               
 
                 if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
                 {

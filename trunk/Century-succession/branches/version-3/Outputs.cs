@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.Century
             log.Write("SurfStrucNetMin, SurfMetaNetMin, SoilStrucNetMin, SoilMetaNetMin, ");
             log.Write("SOM1surfNetMin, SOM1soilNetMin, SOM2NetMin, SOM3NetMin, ");
             log.Write("StreamC, Nloss, FireEfflux,");
-            log.Write("Nuptake, Nresorbed,");
+            log.Write("Nuptake, Nresorbed,TotalSoilN,");
             log.WriteLine("");
 
 
@@ -140,6 +140,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgFireEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNuptake = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNresorbed = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgTotalSoilN = new double[PlugIn.ModelCore.Ecoregions.Count];
             
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
@@ -205,6 +206,7 @@ namespace Landis.Extension.Succession.Century
                 avgFireEfflux[ecoregion.Index] = 0.0;
                 avgNuptake[ecoregion.Index] = 0.0;
                 avgNresorbed[ecoregion.Index] = 0.0;
+                avgTotalSoilN[ecoregion.Index] = 0.0;
             }
 
 
@@ -271,6 +273,7 @@ namespace Landis.Extension.Succession.Century
                 avgFireEfflux[ecoregion.Index] += SiteVars.FireEfflux[site];
                 avgNuptake[ecoregion.Index]    += SiteVars.TotalNuptake[site];
                 avgNresorbed[ecoregion.Index] += SiteVars.ResorbedN[site];
+                avgTotalSoilN[ecoregion.Index] += GetTotalSoilNitrogen(site);
                 
             }
             
@@ -352,9 +355,10 @@ namespace Landis.Extension.Succession.Century
                         (avgStreamN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgFireEfflux[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0000}, {1:0.0000}",
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, ",
                         (avgNuptake[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgNresorbed[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgNresorbed[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgTotalSoilN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.WriteLine("");
                 }
@@ -466,9 +470,9 @@ namespace Landis.Extension.Succession.Century
         
             
             double totalN =
-/*                   SiteVars.CohortLeafN[site] 
+                    + SiteVars.CohortLeafN[site] 
                     + SiteVars.CohortWoodN[site] 
-*/
+
                     + SiteVars.MineralN[site]
                     
                     + SiteVars.SurfaceDeadWood[site].Nitrogen
@@ -486,6 +490,31 @@ namespace Landis.Extension.Succession.Century
                     ;
         
             return totalN;
+        }
+
+        private static double GetTotalSoilNitrogen(ActiveSite site)
+        {
+
+
+            double totalsoilN =
+
+                    +SiteVars.MineralN[site]
+
+                   + SiteVars.SurfaceDeadWood[site].Nitrogen
+                   + SiteVars.SoilDeadWood[site].Nitrogen
+
+                    + SiteVars.SurfaceStructural[site].Nitrogen
+                    + SiteVars.SoilStructural[site].Nitrogen
+                    + SiteVars.SurfaceMetabolic[site].Nitrogen
+            +SiteVars.SoilMetabolic[site].Nitrogen
+
+            + SiteVars.SOM1surface[site].Nitrogen
+            + SiteVars.SOM1soil[site].Nitrogen
+            + SiteVars.SOM2[site].Nitrogen
+            + SiteVars.SOM3[site].Nitrogen
+                    ;
+
+            return totalsoilN;
         }
         //---------------------------------------------------------------------
         private static double GetOrganicCarbon(ActiveSite site)
