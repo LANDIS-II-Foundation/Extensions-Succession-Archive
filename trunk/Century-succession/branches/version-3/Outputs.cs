@@ -511,7 +511,7 @@ namespace Landis.Extension.Succession.Century
             + SiteVars.SOM1surface[site].Nitrogen
             + SiteVars.SOM1soil[site].Nitrogen
             + SiteVars.SOM2[site].Nitrogen
-            + SiteVars.SOM3[site].Nitrogen
+            //+ SiteVars.SOM3[site].Nitrogen;
                     ;
 
             return totalsoilN;

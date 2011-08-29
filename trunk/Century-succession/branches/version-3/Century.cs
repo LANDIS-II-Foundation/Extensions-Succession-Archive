@@ -81,7 +81,7 @@ namespace Landis.Extension.Succession.Century
                     AvailableN.CohortMineralNallocation = new Dictionary<int, Dictionary<int,double>>();
                 	AvailableN.CalculateMineralNallocation(site);
 
-                    // Reset N resorbtion if it is August
+                    // Reset N resorption if it is August
                     if (month == 7)
                     {
                         AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();

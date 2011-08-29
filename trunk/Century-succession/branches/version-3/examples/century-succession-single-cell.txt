@@ -1,6 +1,6 @@
 LandisData  "Century Succession"
 
-Timestep  1
+Timestep  5
 
 SeedingAlgorithm  WardSeedDispersal
 
@@ -9,7 +9,7 @@ InitialCommunitiesMap   "./single_cell_3.img"
 
 ClimateFile	ClimateInputs.txt
 
-CalibrateMode 	yes
+CalibrateMode 	no
 
 WaterDecayFunction Ratio <<Linear or Ratio
 
