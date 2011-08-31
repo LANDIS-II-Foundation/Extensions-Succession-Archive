@@ -450,8 +450,9 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.MineralN[site] += mineralNFlow;
 
-                //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, mineralNFlow = {1:0.000}, mineralizedN={2:0.000}", NFlow, mineralNFlow, mineralizedN);
-             }
+                PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, N mineralalization = {1:0.000}", NFlow, mineralNFlow);
+                PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+            }
 
             if (mineralNFlow > 0)
                 SiteVars.GrossMineralization[site] += mineralNFlow;
@@ -479,7 +480,7 @@ namespace Landis.Extension.Succession.Century
         //c         netMineralization = net mineralization for layer N
 
             //c...Mineralization associated with respiration is proportional to the N fraction.
-            double mineralNFlow = co2loss * this.Nitrogen / this.Carbon; //(this.LabeledC + this.UnlabeledC);
+            double mineralNFlow = co2loss * this.Nitrogen / this.Carbon; 
 
             if(mineralNFlow > this.Nitrogen)
             {
@@ -505,6 +506,10 @@ namespace Landis.Extension.Succession.Century
 
             this.Nitrogen -= mineralNFlow;
             SiteVars.MineralN[site] += mineralNFlow;
+
+            PlugIn.ModelCore.Log.WriteLine("  Respiration mineralNFlow = {0:0.000}", mineralNFlow);
+            PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+
 
             //c...Update gross mineralization
             // this.GrossMineralization += mineralNFlow;
