@@ -308,10 +308,13 @@ namespace Landis.Extension.Succession.Century
             //  special treatment because if we start at time = -N with a
             //  cohort with age = 1, then at time = 0, its age will N+1 not N.
             //  Therefore, when timestep = 1, the ending time is -1.
-            //PlugIn.ModelCore.Log.WriteLine("  Adding new cohorts.  Oldest cohorts={0}, timestep={1}.", ageCohorts[0].Age, successionTimestep);
-            int endTime = (successionTimestep == 1) ? -1 : 0;
-            for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
+            
+            //int endTime = (successionTimestep == 1) ? -1 : -1;
+            //PlugIn.ModelCore.Log.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}, endTime={2}.", ageCohorts[0].Age, successionTimestep, endTime);
+            //for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
+            for (int time = -(ageCohorts[0].Age); time <= -1; time += successionTimestep)
             {
+                //PlugIn.ModelCore.Log.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
                 EcoregionData.GenerateNewClimate(0, successionTimestep);
 
                 //  Add those cohorts that were born at the current year
