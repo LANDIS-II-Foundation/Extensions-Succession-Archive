@@ -168,8 +168,8 @@ namespace Landis.Extension.Succession.Century
                 return 0.0;
 
             double ANPPwood = 0.0;
-            double ANPPcoarseRoot = 0.0;
             double ANPPleaf = 0.0;
+            double ANPPcoarseRoot = 0.0;
             double ANPPfineRoot = 0.0;
             double woodN = 0.0;
             double coarseRootN = 0.0;

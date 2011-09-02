@@ -459,7 +459,7 @@ namespace Landis.Extension.Succession.Century
             else
             {
                 // Divide allocation N by N demand here:
-                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP, FineRootNPP, CoarseRootNPP }));
+                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP, CoarseRootNPP, FineRootNPP}));
                 limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
             }
 
