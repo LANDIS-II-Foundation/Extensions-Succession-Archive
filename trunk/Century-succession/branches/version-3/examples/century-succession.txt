@@ -1,6 +1,6 @@
 LandisData  "Century Succession"
 
-Timestep  5
+Timestep  1
 
 SeedingAlgorithm  WardSeedDispersal
 
@@ -9,7 +9,7 @@ InitialCommunitiesMap   "./initial-communities.gis"
 
 ClimateFile	century-climate-inputs.txt
 
-CalibrateMode 	yes
+CalibrateMode 	no
 
 WaterDecayFunction Ratio <<Linear or Ratio
 
@@ -76,8 +76,8 @@ InitialEcoregionParameters
 >> 	SOM1	SOM1	SOM1	SOM1	SOM2	SOM2	SOM3	SOM3	Minrl
 >> 	C	N	C	N	C	N	C	N	N
 >> 	surf	surf	soil	soil
-eco1	110	6	150	17	4500	145	1294.0	50	20.0
-eco2	110	6	150	17	4500	145	1294.0	50	20.0
+eco1	110	6	150	17	4500	145	1294.0	50	2.0
+eco2	110	6	150	17	4500	145	1294.0	50	2.0
 	
 EcoregionParameters
 >>	Soil	Percent	Percent	Field	Wilt	StormF	BaseF	Drain	Atmos	Atmos	Lat-	Decay	Decay

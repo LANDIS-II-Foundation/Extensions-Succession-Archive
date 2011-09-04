@@ -163,9 +163,10 @@ namespace Landis.Extension.Succession.Century
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
 
+            double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
+
             double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
-            //double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
-            double limitN = calculateN_Limit(site, cohort, potentialNPP, leafFractionNPP);
+            
             potentialNPP *= limitN;
 
             //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
