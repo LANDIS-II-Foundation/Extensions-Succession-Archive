@@ -184,7 +184,7 @@ namespace Landis.Extension.Succession.Century
 
             // Growth can be reduced by another extension via this method.
             // To date, no extension has been written to utilize this hook.
-            double growthReduction = CohortGrowthReduction.Compute(cohort, site, (int) siteBiomass);
+            double growthReduction = CohortGrowthReduction.Compute(cohort, site);
             if (growthReduction > 0)
                 actualANPP *= (1.0 - growthReduction);
 
