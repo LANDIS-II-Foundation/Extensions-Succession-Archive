@@ -389,12 +389,12 @@ namespace Landis.Extension.Succession.Century
 
             if((NFlow - this.Nitrogen) > 0.01)
             {
-                PlugIn.ModelCore.Log.WriteLine("  Transfer N:  N flow > source N.");
-                PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
-                PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
-                PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
-                PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
-                PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
+                //PlugIn.ModelCore.Log.WriteLine("  Transfer N:  N flow > source N.");
+                //PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
+                //PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+                //PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
+                //PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
+                //PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
             }
 
             //...If C/N of Box A > C/N of new material entering Box B
@@ -438,20 +438,20 @@ namespace Landis.Extension.Succession.Century
 
                 if((mineralNFlow - this.Nitrogen) > 0.01)
                 {
-                    PlugIn.ModelCore.Log.WriteLine("  Transfer N mineralization:  mineralN > source N.");
-                    PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);
-                    PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
-                    PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
-                    PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
-                    PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
+                    //PlugIn.ModelCore.Log.WriteLine("  Transfer N mineralization:  mineralN > source N.");
+                    //PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);
+                    //PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+                    //PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
+                    //PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
+                    //PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
                 }
 
                 this.Nitrogen -= mineralNFlow;
 
                 SiteVars.MineralN[site] += mineralNFlow;
 
-                PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, N mineralalization = {1:0.000}", NFlow, mineralNFlow);
-                PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+                //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, N mineralalization = {1:0.000}", NFlow, mineralNFlow);
+                //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
             }
 
             if (mineralNFlow > 0)
@@ -507,8 +507,8 @@ namespace Landis.Extension.Succession.Century
             this.Nitrogen -= mineralNFlow;
             SiteVars.MineralN[site] += mineralNFlow;
 
-            PlugIn.ModelCore.Log.WriteLine("  Respiration mineralNFlow = {0:0.000}", mineralNFlow);
-            PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+            //PlugIn.ModelCore.Log.WriteLine("  Respiration mineralNFlow = {0:0.000}", mineralNFlow);
+            //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
 
 
             //c...Update gross mineralization

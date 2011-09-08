@@ -208,7 +208,8 @@ namespace Landis.Extension.Succession.Century
                
                 }
                 leafN       = ANPPleaf * 0.47 / SpeciesData.LeafCN[species];
-                fineRootN   = ANPPfineRoot * 0.47  / SpeciesData.FineRootCN[species];
+                fineRootN   = ANPPfineRoot * 0.47/ SpeciesData.FineRootCN[species];
+
                 }
 
             double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.47;
