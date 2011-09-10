@@ -450,8 +450,8 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.MineralN[site] += mineralNFlow;
 
-                PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, N mineralalization = {1:0.000}", NFlow, mineralNFlow);
-                PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+                //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, N mineralalization = {1:0.000}", NFlow, mineralNFlow);
+                //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
             }
 
             if (mineralNFlow > 0)
@@ -507,8 +507,8 @@ namespace Landis.Extension.Succession.Century
             this.Nitrogen -= mineralNFlow;
             SiteVars.MineralN[site] += mineralNFlow;
 
-            PlugIn.ModelCore.Log.WriteLine("  Respiration mineralNFlow = {0:0.000}", mineralNFlow);
-            PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+            //PlugIn.ModelCore.Log.WriteLine("  Respiration mineralNFlow = {0:0.000}", mineralNFlow);
+            //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
 
 
             //c...Update gross mineralization
