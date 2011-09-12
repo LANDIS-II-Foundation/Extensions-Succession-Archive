@@ -331,6 +331,7 @@ namespace Landis.Extension.Succession.Century
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, species, site);
+                //ForestFloor.AddFrassLitter(mortality_nonwood, species, site);
                 Roots.AddFineRootLitter(mortality_nonwood, species, site);
             }
 
