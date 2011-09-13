@@ -153,13 +153,21 @@ namespace Landis.Extension.Succession.Century
         // PCEMIC(2,1) - Minimum C / N ratio for surface microbial pool.
         // PCEMIC(3,1) - Minimum N content of decomposing aboveground material,
         // above which the C / N ratio of the surface microbes equals PCEMIC(2,*).
-        //CNratiofrass- C/N ratio of frass as calculated by Lovett and Ruesink 1995 (Oecologia 104:133).
-        // Values from the ffix.100 file.
+        // Values from the ffix.100 file.  
+        
         public const double MaxCNSurfMicrobes          = 16.0;
         public const double MinCNSurfMicrobes          = 10.0;
         public const double MinNContentCNSurfMicrobes  = 0.02;
-        //public const double CNratiofrass = 23.0;
 
+        //Constants needed to calculate frass deposition and C/N ratio of frass.
+        //Frass amount calculated as a function of %defoliation using Clark et al 2010 (Figure 3)
+        //public const double frassdepk=22.989;
+        //public const double frassdepyint=0.9935
+
+        
+        //CNratiofrass- C/N ratio of frass as calculated by Lovett and Ruesink 1995 (Oecologia 104:133).
+        //public const double CNratiofrass = 23.0;
+        
         // TMELT(1) - Minimum temperature above which at least some snow will melt.
         // TMELT(2) - Ratio between degrees above the minimum and centimeters of snow that will melt.
         // Values from the ffix.100 file.

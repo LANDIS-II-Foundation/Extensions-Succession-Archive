@@ -32,14 +32,10 @@ namespace Landis.Extension.Succession.Century
                             double inputCNratio,
                             double fracLignin,
                             double ratioCNstructural,
-                            //double CNratiofrass,  
                             LayerName name,
                             LayerType type,
-                            
                             ActiveSite site)
         {
-        //lock(site){
-
             double cAddToMetabolic, cAddToStructural, directAbsorb;
             double NAddToMetabolic, NAddToStructural, Npart;
             double fracStructuralLignin, fracMetabolic, fracN, ratioCNtotal, ratioLigninN;

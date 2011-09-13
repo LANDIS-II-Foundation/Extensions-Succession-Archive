@@ -91,8 +91,12 @@ namespace Landis.Extension.Succession.Century
 
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
 
-                if (defoliation > 0.0)
-                    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
+                //ForestFloor.AddFrassLitter(frassMortality, species, site);
+                //double frassMortality = OtherData.frassdepyint* Exp(OtherData.frassdepk*defoliation);
+                
+
+                //if (defoliation > 0.0)
+                //    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
             }
 
             //Reduce available N
@@ -126,7 +130,7 @@ namespace Landis.Extension.Succession.Century
               }
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
-            float deltaLeaf = (float) (actualANPP[1] - totalMortality[1]);
+            float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]);// - defoliatedLeafBiomass);
 
             float[] deltas  = new float[2]{deltaWood, deltaLeaf};
 
@@ -311,7 +315,7 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        private void UpdateDeadBiomass(ISpecies species, ActiveSite site, double[] totalMortality)
+        private void UpdateDeadBiomass(ISpecies species, ActiveSite site, double[] totalMortality) //, frassMortality)
         {
 
 
@@ -331,9 +335,10 @@ namespace Landis.Extension.Succession.Century
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, species, site);
-                //ForestFloor.AddFrassLitter(mortality_nonwood, species, site);
                 Roots.AddFineRootLitter(mortality_nonwood, species, site);
             }
+
+            //ForestFloor.AddFrassLitter(frassMortality, species, site);
 
             return;
 

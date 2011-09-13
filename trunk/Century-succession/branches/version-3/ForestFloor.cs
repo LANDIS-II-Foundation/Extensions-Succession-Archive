@@ -58,7 +58,6 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
-                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -87,7 +86,6 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafLitterCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
-                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -111,12 +109,11 @@ namespace Landis.Extension.Succession.Century
                 SiteVars.LitterfallC[site] += foliarBiomass * 0.47;
                 
                 LitterLayer.PartitionResidue(
-                            foliarBiomass,
+                            frassBiomass,
                             inputDecayValue,
-                            SpeciesData.LeafCN[species],
-                            SpeciesData.LeafLignin[species],
-                            OtherData.StructuralCN,
-                            OtherData.CNratiofrass,
+                            FrassCN,
+                            FrassLignin,
+                            FrassStructuralCN,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
