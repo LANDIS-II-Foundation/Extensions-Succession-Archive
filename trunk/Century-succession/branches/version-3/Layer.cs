@@ -387,7 +387,7 @@ namespace Landis.Extension.Succession.Century
                 return;
             }
 
-            if((NFlow - this.Nitrogen) > 0.01)
+            if ((NFlow - this.Nitrogen) > 0.01)
             {
                 PlugIn.ModelCore.Log.WriteLine("  Transfer N:  N flow > source N.");
                 PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
@@ -395,7 +395,7 @@ namespace Landis.Extension.Succession.Century
                 PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
                 PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
                 PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
-            }
+           }
 
             //...If C/N of Box A > C/N of new material entering Box B
             if ((CFlow / NFlow) > ratioCNtoDestination)
@@ -436,7 +436,7 @@ namespace Landis.Extension.Succession.Century
 
                 mineralNFlow = NFlow - mineralizedN;
 
-                if((mineralNFlow - this.Nitrogen) > 0.01)
+                if ((mineralNFlow - this.Nitrogen) > 0.01) 
                 {
                     PlugIn.ModelCore.Log.WriteLine("  Transfer N mineralization:  mineralN > source N.");
                     PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);

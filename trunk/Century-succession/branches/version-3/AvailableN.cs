@@ -71,15 +71,11 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
-        // Method for calculationg how much N should be resorbed.
+        // Method for calculationg how much N should be resorbed, based the difference in N content between leaves and litterfall;
         // month is only included for logging purposes.
         public static double CalculateResorbedN(ActiveSite site, ISpecies species, double leafBiomass, int month)
         {
-            // Translocated N = Leaf Biomass * Some percentage of leaf N
-            // Leaf N calculate from Leaf CN ratio
-            // This means that we will need to adjust the leaf litter CN appropriately.
-            // Or should translocated N be calculated from the difference between leaf and litter CN??
-
+            
                 double leafN = leafBiomass * 0.47 / SpeciesData.LeafCN[species];
                 double litterN = leafBiomass * 0.47 / SpeciesData.LeafLitterCN[species];
 

@@ -91,8 +91,8 @@ namespace Landis.Extension.Succession.Century
 
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
 
-                //ForestFloor.AddFrassLitter(frassMortality, species, site);
-                //double frassMortality = OtherData.frassdepyint* Exp(OtherData.frassdepk*defoliation);
+                //ForestFloor.AddFrassLitter(frass, species, site);
+                //double frass = OtherData.frassdepyint* OtherData.frassdepk * defoliation);
                 
 
                 //if (defoliation > 0.0)
@@ -167,13 +167,13 @@ namespace Landis.Extension.Succession.Century
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
 
+            //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
+
             double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
 
-            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
-            
-            potentialNPP *= limitN;
+            //potentialNPP *= limitN;
 
-            //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
+            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
 
             if(PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
             {
@@ -315,7 +315,7 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        private void UpdateDeadBiomass(ISpecies species, ActiveSite site, double[] totalMortality) //, frassMortality)
+        private void UpdateDeadBiomass(ISpecies species, ActiveSite site, double[] totalMortality) //, frass)
         {
 
 
@@ -338,7 +338,7 @@ namespace Landis.Extension.Succession.Century
                 Roots.AddFineRootLitter(mortality_nonwood, species, site);
             }
 
-            //ForestFloor.AddFrassLitter(frassMortality, species, site);
+            //ForestFloor.AddFrassLitter(frass, species, site);
 
             return;
 
