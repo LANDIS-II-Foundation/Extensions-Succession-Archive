@@ -76,6 +76,34 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
+
+       
+        public static void InitializeMonthly(IInputParameters parameters)
+        {
+
+            string logFileName = "Century-succession-limits-log.csv";
+            PlugIn.ModelCore.Log.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
+            try
+            {
+                logMonthly = new StreamWriter(logFileName);
+            }
+            catch (Exception err)
+            {
+                string mesg = string.Format("{0}", err.Message);
+                throw new System.ApplicationException(mesg);
+            }
+
+            logMonthly.AutoFlush = true;
+            logMonthly.Write("Time, Month, Ecoregion, NumSites,");
+            logMonthly.Write("Species, Age, ");
+            logMonthly.Write("maxNPP, limitLAI, limitH20, limitT, limitCapacity, ");
+            logMonthly.Write("NPPC,");
+            logMonthly.WriteLine("");
+
+
+        }
+
+        //---------------------------------------------------------------------
         public static void WriteLogFile(int CurrentTime)
         {
             
@@ -379,34 +407,34 @@ namespace Landis.Extension.Succession.Century
 
         public static void WriteMonthlyLogFile(int month)
         {
-            
-            double[] ppt            = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] airtemp           = new double[PlugIn.ModelCore.Ecoregions.Count];
-            
-            double[] avgNPPtc      = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double [] avgResp      = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgNEE        = new double[PlugIn.ModelCore.Ecoregions.Count];
-            
-            double[] Ndep          = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] Nvol          = new double[PlugIn.ModelCore.Ecoregions.Count];
-           
-            
-            
+
+            double[] ppt = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] airtemp = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+            double[] avgNPPtc = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgResp = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgNEE = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+            double[] Ndep = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] Nvol = new double[PlugIn.ModelCore.Ecoregions.Count];
+
+
+
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 ppt[ecoregion.Index] = 0.0;
                 airtemp[ecoregion.Index] = 0.0;
                 //soiltemp[ecoregion.Index] = 0.0;
-                
+
                 avgNPPtc[ecoregion.Index] = 0.0;
-                avgResp[ecoregion.Index]  = 0.0;
+                avgResp[ecoregion.Index] = 0.0;
                 avgNEE[ecoregion.Index] = 0.0;
-                
+
                 Ndep[ecoregion.Index] = 0.0;
                 Nvol[ecoregion.Index] = 0.0;
-                
-                
+
+
             }
 
 
@@ -414,25 +442,101 @@ namespace Landis.Extension.Succession.Century
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-                
-                ppt[ecoregion.Index]    = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
-                airtemp[ecoregion.Index]   = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
+
+                ppt[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
+                airtemp[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
                 //soiltemp[ecoregion.Index]   += SiteVars.SoilTemperature[site][month];
- 
-                avgNPPtc[ecoregion.Index]    += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
-                avgResp[ecoregion.Index]     += SiteVars.MonthlyResp[site][month];  
-                avgNEE[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
-                
+
+                avgNPPtc[ecoregion.Index] += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
+                avgResp[ecoregion.Index] += SiteVars.MonthlyResp[site][month];
+                avgNEE[ecoregion.Index] += SiteVars.MonthlyNEE[site][month];
+
                 SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
-                
+
                 Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
                 Nvol[ecoregion.Index] += SiteVars.MineralN[site] * 0.02; //same calc as in Century.cs
+
+
+
+            }
+
+            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+            {
+                if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
+                {
+                    logMonthly.Write("{0}, {1}, {2}, {3},",
+                        PlugIn.ModelCore.CurrentTime,
+                        month + 1,
+                        ecoregion.Name,
+                        EcoregionData.ActiveSiteCount[ecoregion]
+                        );
+                    logMonthly.Write("{0:0.0}, {1:0.0}, ",
+                        ppt[ecoregion.Index],
+                        airtemp[ecoregion.Index]
+                        );
+                    logMonthly.Write("{0:0.00}, {1:0.00}, {2:0.00}, ",
+                        (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgResp[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgNEE[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        );
+                    logMonthly.Write("{0:0.00}, {1:0.00}, ",
+                        Ndep[ecoregion.Index],
+                        (Nvol[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        );
+                    logMonthly.WriteLine("");
+                }
+            }
+        }
+            //Write log file for growth and limits
+            public static void WriteMonthlyLimitsLogFile(int month)
+        {
+            
+            double[] maxNPP            = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] limitLAI           = new double[PlugIn.ModelCore.Ecoregions.Count];
+            
+            double[] limitH20      = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double [] limitT      = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] limitCapacity        = new double[PlugIn.ModelCore.Ecoregions.Count];
+                        
+
+                 logMonthly.Write("Time, Month, Ecoregion, NumSites,");
+            logMonthly.Write("Species, Age, ");
+            logMonthly.Write("maxNPP, limitLAI, limitH20, limitT, limitCapacity, ");
+            logMonthly.Write("NPPC,");
+            logMonthly.WriteLine("");
+            
+
+            foreach (ISpecies species in PlugIn.ModelCore.Ecoregions)
+            {
+                maxNPP[ecoregion.Index] = 0.0;
+               limitLAI[ecoregion.Index] = 0.0;
+                limitH20[ecoregion.Index] = 0.0;
+               limitT[ecoregion.Index]  = 0.0;
+                limitCapacity[ecoregion.Index] = 0.0;
+               
+                             
                 
+            }
+
+
+
+            foreach (Age in PlugIn.ModelCore.Landscape)
+            {
+                IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+                
+                avgNPPtc[ecoregion.Index]    += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
+                maxNPP[ecoregion.Index]     += SiteVars.MonthlyResp[site][month];  
+                limitLAI[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];
+                limitH20[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
+                limitT[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
+                limitCapacity[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
+              
+                                
                 
                 
             }
             
-            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+            foreach (Age IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 {
@@ -440,20 +544,18 @@ namespace Landis.Extension.Succession.Century
                         PlugIn.ModelCore.CurrentTime,
                         month+1,
                         ecoregion.Name,                         
-                        EcoregionData.ActiveSiteCount[ecoregion]       
-                        );
-                    logMonthly.Write("{0:0.0}, {1:0.0}, ", 
-                        ppt[ecoregion.Index],
-                        airtemp[ecoregion.Index]
+                        EcoregionData.ActiveSiteCount[ecoregion],
+                        ISpecies,
+                        Age,
                         );
                     logMonthly.Write("{0:0.00}, {1:0.00}, {2:0.00}, ", 
                         (avgNPPtc[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgResp[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgNEE[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+                        (maxNPP[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (limitH20[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     logMonthly.Write("{0:0.00}, {1:0.00}, ", 
-                        Ndep[ecoregion.Index],
-                        (Nvol[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])                      
+                        (limitT[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (limitCapacity[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),        
                         );
                    logMonthly.WriteLine("");
                 }

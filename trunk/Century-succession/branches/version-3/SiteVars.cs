@@ -708,8 +708,75 @@ namespace Landis.Extension.Succession.Century
                 
             
         }
-        
+
+        /// <summary>
+        /// A summary of LAI limits (ranges from 0-1)
+        /// </summary>
+        public static ISiteVar<double> LimitLAI
+        {
+            get
+            {
+                return limitLAI;
+            }
+            set
+            {
+                limitLAI = value;
+            }
+
+
+        }
     
+
+         /// <summary>
+        /// A summary of Water limits (ranges from 0-1)
+        /// </summary>
+        public static ISiteVar<double> LimitH20
+        {
+            get
+            {
+                return limitH20;
+            }
+            set
+            {
+                limitH20 = value;
+            }
+
+
+        }
+    
+     /// <summary>
+        /// A summary of Temperature limits (ranges from 0-1)
+        /// </summary>
+        public static ISiteVar<double> LimitT
+        {
+            get
+            {
+                return limitT;
+            }
+            set
+            {
+                limitT = value;
+            }
+
+
+        }
+
+         /// <summary>
+        /// A summary of Growth capacity limits (ranges from 0-1)
+        /// </summary>
+        public static ISiteVar<double> LimitCapacity
+        {
+            get
+            {
+                return limitcapacity;
+            }
+            set
+            {
+                limitcapacity = value;
+            }
+
+
+        }
     }
 }
  
