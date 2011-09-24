@@ -16,6 +16,7 @@ namespace Landis.Extension.Succession.Century
     
         private static StreamWriter log;
         private static StreamWriter logMonthly;
+        public static StreamWriter CalibrateLog;
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
@@ -75,33 +76,6 @@ namespace Landis.Extension.Succession.Century
 
         }
 
-        //---------------------------------------------------------------------
-
-       
-        public static void InitializeMonthly(IInputParameters parameters)
-        {
-
-            string logFileName = "Century-succession-limits-log.csv";
-            PlugIn.ModelCore.Log.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
-            try
-            {
-                logMonthly = new StreamWriter(logFileName);
-            }
-            catch (Exception err)
-            {
-                string mesg = string.Format("{0}", err.Message);
-                throw new System.ApplicationException(mesg);
-            }
-
-            logMonthly.AutoFlush = true;
-            logMonthly.Write("Time, Month, Ecoregion, NumSites,");
-            logMonthly.Write("Species, Age, ");
-            logMonthly.Write("maxNPP, limitLAI, limitH20, limitT, limitCapacity, ");
-            logMonthly.Write("NPPC,");
-            logMonthly.WriteLine("");
-
-
-        }
 
         //---------------------------------------------------------------------
         public static void WriteLogFile(int CurrentTime)
@@ -487,79 +461,33 @@ namespace Landis.Extension.Succession.Century
                 }
             }
         }
-            //Write log file for growth and limits
-            public static void WriteMonthlyLimitsLogFile(int month)
+        
+        //Write log file for growth and limits
+        public static void CreateCalibrateLogFile()
         {
-            
-            double[] maxNPP            = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] limitLAI           = new double[PlugIn.ModelCore.Ecoregions.Count];
-            
-            double[] limitH20      = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double [] limitT      = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] limitCapacity        = new double[PlugIn.ModelCore.Ecoregions.Count];
-                        
-
-                 logMonthly.Write("Time, Month, Ecoregion, NumSites,");
-            logMonthly.Write("Species, Age, ");
-            logMonthly.Write("maxNPP, limitLAI, limitH20, limitT, limitCapacity, ");
-            logMonthly.Write("NPPC,");
-            logMonthly.WriteLine("");
-            
-
-            foreach (ISpecies species in PlugIn.ModelCore.Ecoregions)
+            string logFileName = "Century-calibrate-log.csv";
+            PlugIn.ModelCore.Log.WriteLine("   Opening Century calibrate log file \"{0}\" ...", logFileName);
+            try
             {
-                maxNPP[ecoregion.Index] = 0.0;
-               limitLAI[ecoregion.Index] = 0.0;
-                limitH20[ecoregion.Index] = 0.0;
-               limitT[ecoregion.Index]  = 0.0;
-                limitCapacity[ecoregion.Index] = 0.0;
-               
-                             
-                
+                CalibrateLog = new StreamWriter(logFileName);
+            }
+            catch (Exception err)
+            {
+                string mesg = string.Format("{0}", err.Message);
+                throw new System.ApplicationException(mesg);
             }
 
+            CalibrateLog.AutoFlush = true;
 
-
-            foreach (Age in PlugIn.ModelCore.Landscape)
-            {
-                IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-                
-                avgNPPtc[ecoregion.Index]    += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
-                maxNPP[ecoregion.Index]     += SiteVars.MonthlyResp[site][month];  
-                limitLAI[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];
-                limitH20[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
-                limitT[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
-                limitCapacity[ecoregion.Index]    += SiteVars.MonthlyNEE[site][month];  
-              
-                                
-                
-                
-            }
+            CalibrateLog.Write("Year, Month, EcoregionIndex, SpeciesName, CohortAge, CohortWoodB, CohortLeafB, ");  // from ComputeChange
+            CalibrateLog.Write("MortalityAGEwood, MortalityAGEleaf, ");  // from ComputeAgeMortality
+            CalibrateLog.Write("MortalityBIOwood, MortalityBIOleaf, ");  // from ComputeGrowthMortality
+            CalibrateLog.Write("limitLAI, limitH20, limitT, limitCapacity, limitN, ");  //from ComputeActualANPP
+            CalibrateLog.Write("maxNPP, Bmax, Bsite, Bcohort, soilTemp, ");  //from ComputeActualANPP
+            CalibrateLog.Write("actualWoodNPP, actualLeafNPP, ");  //from ComputeActualANPP
+            CalibrateLog.WriteLine("deltaWood, deltaLeaf, totalMortalityWood, totalMortalityLeaf");  // from ComputeChange
             
-            foreach (Age IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
-            {
-                if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
-                {
-                    logMonthly.Write("{0}, {1}, {2}, {3},", 
-                        PlugIn.ModelCore.CurrentTime,
-                        month+1,
-                        ecoregion.Name,                         
-                        EcoregionData.ActiveSiteCount[ecoregion],
-                        ISpecies,
-                        Age,
-                        );
-                    logMonthly.Write("{0:0.00}, {1:0.00}, {2:0.00}, ", 
-                        (avgNPPtc[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (maxNPP[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (limitH20[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
-                        );
-                    logMonthly.Write("{0:0.00}, {1:0.00}, ", 
-                        (limitT[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (limitCapacity[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),        
-                        );
-                   logMonthly.WriteLine("");
-                }
-            }
+
         }
         
         

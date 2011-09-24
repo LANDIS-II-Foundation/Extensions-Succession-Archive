@@ -108,7 +108,8 @@ namespace Landis.Extension.Succession.Century
             EcoregionData.Initialize(parameters);
             FireEffects.Initialize(parameters);
             InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
-
+            if (parameters.CalibrateMode)
+                Outputs.CreateCalibrateLogFile();
 
         }
 
@@ -266,10 +267,7 @@ namespace Landis.Extension.Succession.Century
                 }
             }
 
-            if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
-            {
-                PlugIn.ModelCore.Log.WriteLine("Yr={0},      Shade Calculation:  B_MAX={1}, B_ACT={2}, Shade={3}.", PlugIn.ModelCore.CurrentTime, B_MAX, B_ACT, finalShade);
-            }
+            //PlugIn.ModelCore.Log.WriteLine("Yr={0},      Shade Calculation:  B_MAX={1}, B_ACT={2}, Shade={3}.", PlugIn.ModelCore.CurrentTime, B_MAX, B_ACT, finalShade);
 
             return finalShade;
         }

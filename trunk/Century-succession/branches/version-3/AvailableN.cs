@@ -80,12 +80,8 @@ namespace Landis.Extension.Succession.Century
                 double litterN = leafBiomass * 0.47 / SpeciesData.LeafLitterCN[species];
 
                 double resorbedN = leafN - litterN;
-               
 
-                if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
-                {
-                    PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     leafN={2:0.00}, litterN={3:0.00}, resorbedN={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, leafN, litterN, resorbedN);
-                }
+                //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     leafN={2:0.00}, litterN={3:0.00}, resorbedN={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, leafN, litterN, resorbedN);
 
                 SiteVars.ResorbedN[site] += resorbedN;
 
@@ -97,14 +93,16 @@ namespace Landis.Extension.Succession.Century
         // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
         public static void CalculateMineralNallocation(Site site)
         {
+
             // Iterate through the first time, assigning each cohort un un-normalized N multiplier
             double NAllocTotal=0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
                 foreach (ICohort cohort in speciesCohorts)
                 {
+                    double cohortLeafBiomass = Math.Max(cohort.LeafBiomass, 0.002 * cohort.WoodBiomass);
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
-                    double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass);
+                    double Nallocation = Roots.CalculateFineRoot(cohortLeafBiomass);
                     NAllocTotal += Nallocation;
                     Dictionary<int,double> newEntry = new Dictionary<int,double>();
                     newEntry.Add(cohort.Age,Nallocation);
