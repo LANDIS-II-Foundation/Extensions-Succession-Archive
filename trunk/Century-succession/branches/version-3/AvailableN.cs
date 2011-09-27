@@ -94,14 +94,21 @@ namespace Landis.Extension.Succession.Century
         // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
         public static void CalculateMineralNfraction(Site site)
         {
+            //int currentYear = PlugIn.ModelCore.CurrentTime;
+            //int successionTime = PlugIn.SuccessionTimeStep;
+            AvailableN.CohortMineralNfraction = new Dictionary<int, Dictionary<int, double>>();
                         
             double NAllocTotal = 0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+            {
                 foreach (ICohort cohort in speciesCohorts)
                 {
+                    //int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
                     double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass);
+                    Nallocation = Math.Max(Nallocation, cohort.WoodBiomass * 0.01);
+
                     NAllocTotal += Nallocation;
                     Dictionary<int, double> newEntry = new Dictionary<int, double>();
                     newEntry.Add(cohort.Age, Nallocation);
@@ -115,25 +122,44 @@ namespace Landis.Extension.Succession.Century
                         CohortMineralNfraction.Add(cohort.Species.Index, newEntry);
                     }
                 }
-        }
-            
 
-            //Iterate through a second time now that we have total N multiplier
-            //Divide through by total and multiply by total available N so each cohort has a max N value
-            //and the sum of cohort max N values is the site available N
-            // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
-        // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
-        public static void CohortMineralNallocation(Site site)
-            {
+                // Next relativize
+                foreach (ICohort cohort in speciesCohorts)
+                {
+                    //int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+                    double Nallocation = CohortMineralNfraction[cohort.Species.Index][cohort.Age];
+                    CohortMineralNfraction[cohort.Species.Index][cohort.Age] = Nallocation / NAllocTotal;
+                }
+            }
+
+        }
+
+        public static void CalculateMineralNallocation(Site site)
+        {
+            AvailableN.CohortMineralNallocation = new Dictionary<int, Dictionary<int, double>>();
+            
+            //int currentYear = PlugIn.ModelCore.CurrentTime;
+            //int successionTime = PlugIn.SuccessionTimeStep;
 
             double availableN = SiteVars.MineralN[site];  // g/m2
-            double totalNUptake = 0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
             {
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    double Nallocation = CohortMineralNfraction[cohort.Species.Index][cohort.Age];
-                    totalNUptake += Nallocation * availableN;
+                    //int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+                    double Nfraction = CohortMineralNfraction[cohort.Species.Index][cohort.Age];
+                    double Nallocation = Nfraction * availableN;
+                    Dictionary<int, double> newEntry = new Dictionary<int, double>();
+                    newEntry.Add(cohort.Age, Nallocation);
+
+                    if (CohortMineralNallocation.ContainsKey(cohort.Species.Index))
+                    {
+                        CohortMineralNallocation[cohort.Species.Index].Add(cohort.Age, Nallocation);
+                    }
+                    else
+                    {
+                        CohortMineralNallocation.Add(cohort.Species.Index, newEntry);
+                    }
                 }
             }
             /*if (totalNUptake > availableN)
@@ -142,14 +168,27 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.Log.WriteLine("   ERROR:  Total max N uptake = {0:0.000}, availableN = {1:0.000}.", totalNUptake, availableN);
                 //throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
             }
-
             SiteVars.TotalNuptake[site] = totalNUptake;*/
 
             return;
-                     
-            
         }
 
+        //---------------------------------------------------------------------
+        // Method for retrieving the available mineral N for each cohort.
+        // Return amount of resorbed N in g N m-2.
+        public static double GetMineralNallocation(ICohort cohort)
+        {
+            //int currentYear = PlugIn.ModelCore.CurrentTime;
+            //int successionTime = PlugIn.SuccessionTimeStep;
+            //int cohortAddYear = currentYear - cohort.Age - currentYear % successionTime;
+            double mineralNallocation = 0.0;
+            Dictionary<int, double> cohortDict;
+
+            if (AvailableN.CohortMineralNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
+                cohortDict.TryGetValue(cohort.Age, out mineralNallocation);
+
+            return mineralNallocation;
+        }
         //---------------------------------------------------------------------
         /// <summary>
         /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP) of leaves, wood, coarse roots and fine roots.

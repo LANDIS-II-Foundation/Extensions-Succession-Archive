@@ -454,20 +454,19 @@ namespace Landis.Extension.Succession.Century
         private double calculateN_Limit(ActiveSite site, ICohort cohort, double NPP, double leafFractionNPP)
         {
 
+            //Dictionary<int, double> cohortDict;
+            //if (AvailableN.CohortMineralNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
+            //    cohortDict.TryGetValue(cohort.Age, out mineralNallocation);
+
             //Get Cohort Mineral and Resorbed N allocation.  
-            double mineralNallocation = 0.0;
-            Dictionary<int, double> cohortDict;
-
-            if (AvailableN.CohortMineralNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
-                cohortDict.TryGetValue(cohort.Age, out mineralNallocation);
-
+            double mineralNallocation = AvailableN.GetMineralNallocation(cohort);
             double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double WoodNPP = NPP * (1.0 - leafFractionNPP);
             double FineRootNPP = LeafNPP * 0.75;
             double CoarseRootNPP = WoodNPP * 0.75;
-            double limitN = 1.0;
+            double limitN = 0.0;
             if (SpeciesData.NTolerance[cohort.Species] == 4)
                 limitN = 1.0;  // No limit for N-fixing shrubs
             else
@@ -476,6 +475,9 @@ namespace Landis.Extension.Succession.Century
                 double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP, CoarseRootNPP, FineRootNPP}));
                 limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
             }
+
+            if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", mineralNallocation, resorbedNallocation);
 
             return limitN;
         }

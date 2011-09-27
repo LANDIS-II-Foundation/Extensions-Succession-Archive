@@ -40,7 +40,6 @@ namespace Landis.Extension.Succession.Century
                 if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
                 {
                     EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
-
                     EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
                 }
 
@@ -78,11 +77,6 @@ namespace Landis.Extension.Succession.Century
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     SoilWater.Run(y, month, liveBiomass, site);
 
-                    // Calculate N allocation for each cohort
-                    AvailableN.CohortMineralNallocation = new Dictionary<int, Dictionary<int,double>>();
-                        AvailableN.CalculateMineralNallocation(site);
-
-                                   
 
                     // Reset N resorption if it is August
                     if (month == 7)
@@ -91,13 +85,16 @@ namespace Landis.Extension.Succession.Century
                         ComputeResorbedN(siteCohorts, site, month);
                     }
 
-                    // Calculate N allocation based on fine root biomass (leaf biomass) in July 
-                    if (month == 6)
+                    // Calculate mineral N fractions based on fine root biomass (leaf biomass) in July 
+                    /*if (month == 6)
                     {
-                        AvailableN.CohortMineralNfraction = new Dictionary<int, Dictionary<int, double>>();
-                        
-                    }
-    
+                    }*/
+
+                    // Calculate N allocation for each cohort
+                    AvailableN.CalculateMineralNfraction(site);
+                    AvailableN.CalculateMineralNallocation(site);
+
+
                     CohortBiomass.month = month;
                     if(month==11)
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), true);
