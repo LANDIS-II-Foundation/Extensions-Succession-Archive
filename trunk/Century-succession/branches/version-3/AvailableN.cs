@@ -16,7 +16,8 @@ namespace Landis.Extension.Succession.Century
     public class AvailableN
     {
         //Nested dictionary of species,cohort
-        public static Dictionary<int, Dictionary<int,double>> CohortMineralNallocation;
+        public static Dictionary<int, Dictionary<int,double>> CohortMineralNfraction;  //calculated once per year
+        public static Dictionary<int, Dictionary<int, double>> CohortMineralNallocation;  //calculated monthly
         public static Dictionary<int, Dictionary<int, double>> CohortResorbedNallocation;
 
         //---------------------------------------------------------------------
@@ -91,47 +92,48 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
         // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
-        public static void CalculateMineralNallocation(Site site)
+        public static void CalculateMineralNfraction(Site site)
         {
-
-            // Iterate through the first time, assigning each cohort un un-normalized N multiplier
-            double NAllocTotal=0.0;
+                        
+            double NAllocTotal = 0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    double cohortLeafBiomass = Math.Max(cohort.LeafBiomass, 0.002 * cohort.WoodBiomass);
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
-                    double Nallocation = Roots.CalculateFineRoot(cohortLeafBiomass);
+                    double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass);
                     NAllocTotal += Nallocation;
-                    Dictionary<int,double> newEntry = new Dictionary<int,double>();
-                    newEntry.Add(cohort.Age,Nallocation);
+                    Dictionary<int, double> newEntry = new Dictionary<int, double>();
+                    newEntry.Add(cohort.Age, Nallocation);
 
-                    if (CohortMineralNallocation.ContainsKey(cohort.Species.Index))
+                    if (CohortMineralNfraction.ContainsKey(cohort.Species.Index))
                     {
-                        CohortMineralNallocation[cohort.Species.Index].Add(cohort.Age,Nallocation);
+                        CohortMineralNfraction[cohort.Species.Index].Add(cohort.Age, Nallocation);
                     }
                     else
                     {
-                        CohortMineralNallocation.Add(cohort.Species.Index,newEntry);
+                        CohortMineralNfraction.Add(cohort.Species.Index, newEntry);
                     }
                 }
-
-            double availableN = SiteVars.MineralN[site];  // g/m2
+        }
+            
 
             //Iterate through a second time now that we have total N multiplier
             //Divide through by total and multiply by total available N so each cohort has a max N value
             //and the sum of cohort max N values is the site available N
-            
-            //double totalNUptake = 0.0;
+            // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
+        // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
+        public static void CohortMineralNallocation(Site site)
+            {
+
+            double availableN = SiteVars.MineralN[site];  // g/m2
+            double totalNUptake = 0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
             {
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    double Nallocation = CohortMineralNallocation[cohort.Species.Index][cohort.Age];
-                    double Nfrac = Nallocation / NAllocTotal;
-                    CohortMineralNallocation[cohort.Species.Index][cohort.Age] = Nfrac * availableN;
-                    //totalNUptake += Nfrac * availableN;
+                    double Nallocation = CohortMineralNfraction[cohort.Species.Index][cohort.Age];
+                    totalNUptake += Nallocation * availableN;
                 }
             }
             /*if (totalNUptake > availableN)

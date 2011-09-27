@@ -80,7 +80,9 @@ namespace Landis.Extension.Succession.Century
 
                     // Calculate N allocation for each cohort
                     AvailableN.CohortMineralNallocation = new Dictionary<int, Dictionary<int,double>>();
-                	AvailableN.CalculateMineralNallocation(site);
+                        AvailableN.CalculateMineralNallocation(site);
+
+                                   
 
                     // Reset N resorption if it is August
                     if (month == 7)
@@ -89,7 +91,13 @@ namespace Landis.Extension.Succession.Century
                         ComputeResorbedN(siteCohorts, site, month);
                     }
 
+                    // Calculate N allocation based on fine root biomass (leaf biomass) in July 
+                    if (month == 6)
+                    {
+                        AvailableN.CohortMineralNfraction = new Dictionary<int, Dictionary<int, double>>();
                         
+                    }
+    
                     CohortBiomass.month = month;
                     if(month==11)
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), true);

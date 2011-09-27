@@ -164,13 +164,13 @@ namespace Landis.Extension.Succession.Century
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
 
-            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
+            //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
 
-            double limitN = calculateN_Limit(site, cohort, potentialNPP, leafFractionNPP);
+            double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
 
-            potentialNPP *= limitN;
+            //potentialNPP *= limitN;
 
-            //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
+            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
 
             //  Age mortality is discounted from ANPP to prevent the over-
             //  estimation of growth.  ANPP cannot be negative.
