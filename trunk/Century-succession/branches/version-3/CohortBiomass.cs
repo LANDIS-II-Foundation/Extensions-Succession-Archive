@@ -101,15 +101,20 @@ namespace Landis.Extension.Succession.Century
 
             //Reduce available N
             double Ndemand         = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
-            double resorbedNallocation = 0.0;
-            if(month > 2 && month < 6)  //Resorbed N cannot be used until the following spring.
-                resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+            //double resorbedNallocation = 0.0;
+            
+            //if(month > 2 && month < 6)  //Resorbed N cannot be used until the following spring.
+            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
-            if (resorbedNallocation >= Ndemand)
-                AvailableN.SetResorbedNallocation(cohort, resorbedNallocation - Ndemand);
-            if (resorbedNallocation < Ndemand)
+            if (resorbedNallocation >= Ndemand && month > 2 && month < 6)
             {
-                AvailableN.SetResorbedNallocation(cohort, 0.0);
+                //resorbedNallocation -= Ndemand;
+                AvailableN.SetResorbedNallocation(cohort, resorbedNallocation - Ndemand);
+            }
+            if ((resorbedNallocation + SiteVars.MineralN[site]) < Ndemand)
+            {
+                //if (month > 2 && month < 6) 
+                //AvailableN.SetResorbedNallocation(cohort, resorbedNallocation);
                 Ndemand -= resorbedNallocation;
                 double Nuptake = 0.0;
                 if (SiteVars.MineralN[site] >= Ndemand)
