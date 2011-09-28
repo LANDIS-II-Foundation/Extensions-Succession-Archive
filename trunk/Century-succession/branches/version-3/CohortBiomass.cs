@@ -102,7 +102,7 @@ namespace Landis.Extension.Succession.Century
             //Reduce available N
             double Ndemand         = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
             double resorbedNallocation = 0.0;
-            if(month > 3)  //Resorbed N cannot be used until the following spring.
+            if(month > 2 && month < 6)  //Resorbed N cannot be used until the following spring.
                 resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             if (resorbedNallocation >= Ndemand)
@@ -137,8 +137,11 @@ namespace Landis.Extension.Succession.Century
             UpdateDeadBiomass(cohort.Species, site, totalMortality);
             CalculateNPPcarbon(site, actualANPP);
 
-            if(OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
-                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
+            if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
+            {
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, ", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
+                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, ", resorbedNallocation, SiteVars.MineralN[site]);
+            }
 
             return deltas;
         }
@@ -460,7 +463,10 @@ namespace Landis.Extension.Succession.Century
 
             //Get Cohort Mineral and Resorbed N allocation.  
             double mineralNallocation = AvailableN.GetMineralNallocation(cohort);
-            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+            double resorbedNallocation = 0.0;
+            
+            if (month > 3)
+                resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double WoodNPP = NPP * (1.0 - leafFractionNPP);

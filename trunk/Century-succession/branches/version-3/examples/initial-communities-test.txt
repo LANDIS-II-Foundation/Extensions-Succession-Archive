@@ -2,6 +2,6 @@ LandisData   "Initial Communities"
 
 MapCode 3
    acerrubr 10
-   betualle 1
-   betupapy 1
+   >>betualle 1
+   >>betupapy 1
 

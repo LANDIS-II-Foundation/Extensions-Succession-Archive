@@ -13,7 +13,7 @@ namespace Landis.Extension.Succession.Century
     /// </summary>
     public class Century
     {
-
+        public static int Year;
 
         /// <summary>
         /// Grows all cohorts at a site for a specified number of years.
@@ -30,6 +30,8 @@ namespace Landis.Extension.Succession.Century
 
 
             for (int y = 0; y < years; ++y) {
+
+                Year = y + 1;
 
                 SiteVars.ResetAnnualValues(site);
 
@@ -58,7 +60,12 @@ namespace Landis.Extension.Succession.Century
                 for (int i = 0; i < 12; i++)
                 {
 
+                    if(PlugIn.ModelCore.CurrentTime == 0)
+                        AvailableN.CalculateMineralNfraction(site);
+
+
                     int month = months[i];
+                    CohortBiomass.month = month;
 
                     SiteVars.MonthlyAGNPPcarbon[site][month] = 0.0;
                     SiteVars.MonthlyBGNPPcarbon[site][month] = 0.0;
@@ -86,16 +93,14 @@ namespace Landis.Extension.Succession.Century
                     }
 
                     // Calculate mineral N fractions based on fine root biomass (leaf biomass) in July 
-                    /*if (month == 6)
+                    if (month == 6)
                     {
-                    }*/
+                        AvailableN.CalculateMineralNfraction(site);
+                    }
 
                     // Calculate N allocation for each cohort
-                    AvailableN.CalculateMineralNfraction(site);
                     AvailableN.CalculateMineralNallocation(site);
 
-
-                    CohortBiomass.month = month;
                     if(month==11)
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), true);
                     else
