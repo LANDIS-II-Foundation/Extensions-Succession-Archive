@@ -111,7 +111,8 @@ namespace Landis.Extension.Succession.Century
                 //resorbedNallocation -= Ndemand;
                 AvailableN.SetResorbedNallocation(cohort, resorbedNallocation - Ndemand);
             }
-            if ((resorbedNallocation + SiteVars.MineralN[site]) < Ndemand)
+            //if ((resorbedNallocation + SiteVars.MineralN[site]) < Ndemand)
+            if (resorbedNallocation < Ndemand && month > 2 && month < 6)
             {
                 //if (month > 2 && month < 6) 
                 //AvailableN.SetResorbedNallocation(cohort, resorbedNallocation);
@@ -124,11 +125,14 @@ namespace Landis.Extension.Succession.Century
                 }
                 else
                 {
-                    double NdemandAdjusted = SiteVars.MineralN[site];
-                    SiteVars.MineralN[site] = 0.0;
-                    actualANPP[0] = NdemandAdjusted / Ndemand;
-                    actualANPP[1] = NdemandAdjusted / Ndemand;
-                    Nuptake = SiteVars.MineralN[site] * NdemandAdjusted / Ndemand;
+                    //double NdemandAdjusted = SiteVars.MineralN[site];
+                    double mineralN = SiteVars.MineralN[site];
+                    //SiteVars.MineralN[site] = 0.0;
+                    //actualANPP[0] = NdemandAdjusted / Ndemand;
+                    //actualANPP[1] = NdemandAdjusted / Ndemand;
+                                                                                
+                    //Nuptake = SiteVars.MineralN[site] * NdemandAdjusted / Ndemand;
+                    Nuptake = mineralN;
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
                 }
                 SiteVars.TotalNuptake[site] += Nuptake;

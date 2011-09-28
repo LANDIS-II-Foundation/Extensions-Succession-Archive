@@ -183,8 +183,8 @@ namespace Landis.Extension.Succession.Century
                 //throw new ApplicationException("Error: Max N uptake > availableN.  See AvailableN.cs");
             }
             SiteVars.TotalNuptake[site] = totalNUptake;*/
-
-            return;
+        
+           
         }
 
         //---------------------------------------------------------------------
