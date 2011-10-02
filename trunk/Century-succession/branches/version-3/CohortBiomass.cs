@@ -99,40 +99,42 @@ namespace Landis.Extension.Succession.Century
                 //    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
             }
 
-            //Reduce available N
-            double Ndemand         = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
-            //double resorbedNallocation = 0.0;
-            
-            //if(month > 2 && month < 6)  //Resorbed N cannot be used until the following spring.
-            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+            double Ndemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
+            double resorbedNused = 0.0;
+            double mineralNused = 0.0;
 
-            if (resorbedNallocation >= Ndemand && month > 2 && month < 6)
+            // Treat Resorbed N first and only if it is spring time.
+            if (month > 2 && month < 6)  
             {
-                //resorbedNallocation -= Ndemand;
-                AvailableN.SetResorbedNallocation(cohort, resorbedNallocation - Ndemand);
-            }
-            //if ((resorbedNallocation + SiteVars.MineralN[site]) < Ndemand)
-            if (resorbedNallocation < Ndemand && month > 2 && month < 6)
-            {
-                //if (month > 2 && month < 6) 
-                //AvailableN.SetResorbedNallocation(cohort, resorbedNallocation);
+                double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+
+                AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - Ndemand));
+
+                resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - Ndemand);
+
                 Ndemand -= resorbedNallocation;
+            }
+
+            // Reduce available N after taking into account that some N may have been provided
+            // via resorption (above).
+            if (SiteVars.MineralN[site] < Ndemand)
+            {
                 double Nuptake = 0.0;
                 if (SiteVars.MineralN[site] >= Ndemand)
                 {
                     SiteVars.MineralN[site] -= Ndemand;
+                    mineralNused = Ndemand;
                     Nuptake = Ndemand;
                 }
                 else
                 {
-                    //double NdemandAdjusted = SiteVars.MineralN[site];
-                    double mineralN = SiteVars.MineralN[site];
-                    //SiteVars.MineralN[site] = 0.0;
-                    //actualANPP[0] = NdemandAdjusted / Ndemand;
-                    //actualANPP[1] = NdemandAdjusted / Ndemand;
+                    double NdemandAdjusted = SiteVars.MineralN[site];
+                    SiteVars.MineralN[site] = 0.0;
+                    mineralNused = SiteVars.MineralN[site];
+                    actualANPP[0] = NdemandAdjusted / Ndemand;
+                    actualANPP[1] = NdemandAdjusted / Ndemand;
                                                                                 
-                    //Nuptake = SiteVars.MineralN[site] * NdemandAdjusted / Ndemand;
-                    Nuptake = mineralN;
+                    Nuptake = SiteVars.MineralN[site] * NdemandAdjusted / Ndemand;
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
                 }
                 SiteVars.TotalNuptake[site] += Nuptake;
@@ -149,7 +151,7 @@ namespace Landis.Extension.Succession.Century
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, ", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
-                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, ", resorbedNallocation, SiteVars.MineralN[site]);
+                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, ", resorbedNused, mineralNused);
             }
 
             return deltas;
@@ -466,15 +468,11 @@ namespace Landis.Extension.Succession.Century
         private double calculateN_Limit(ActiveSite site, ICohort cohort, double NPP, double leafFractionNPP)
         {
 
-            //Dictionary<int, double> cohortDict;
-            //if (AvailableN.CohortMineralNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
-            //    cohortDict.TryGetValue(cohort.Age, out mineralNallocation);
-
             //Get Cohort Mineral and Resorbed N allocation.  
             double mineralNallocation = AvailableN.GetMineralNallocation(cohort);
             double resorbedNallocation = 0.0;
-            
-            if (month > 3)
+
+            if (month > 2 && month < 6)
                 resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
@@ -492,7 +490,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", mineralNallocation, resorbedNallocation);
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", AvailableN.GetMineralNallocation(cohort), AvailableN.GetResorbedNallocation(cohort));
 
             return limitN;
         }

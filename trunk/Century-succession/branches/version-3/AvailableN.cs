@@ -34,7 +34,7 @@ namespace Landis.Extension.Succession.Century
             if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
                 cohortDict.TryGetValue(cohortAddYear, out resorbedNallocation);
 
-            //PlugIn.ModelCore.Log.WriteLine("GetResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
+            //PlugIn.ModelCore.Log.WriteLine("GETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
 
             return resorbedNallocation;
         }
