@@ -79,7 +79,7 @@ namespace Landis.Extension.Succession.Century
         // month is only included for logging purposes.
         public static double CalculateResorbedN(ActiveSite site, ISpecies species, double leafBiomass, int month)
         {
-            
+           
                 double leafN = leafBiomass * 0.47 / SpeciesData.LeafCN[species];
                 double litterN = leafBiomass * 0.47 / SpeciesData.LeafLitterCN[species];
 
@@ -89,8 +89,12 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.ResorbedN[site] += resorbedN;
 
+
                 return resorbedN;
-         }
+           
+            
+        }   
+         
 
         //---------------------------------------------------------------------
         // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
@@ -264,7 +268,7 @@ namespace Landis.Extension.Succession.Century
             double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.47;
             double Nreduction = leafN + woodN + coarseRootN + fineRootN;
 
-            //PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot);
+            PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0}, Nreduction={4:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot,Nreduction);
 
             if(Nreduction < 0.0)
             {

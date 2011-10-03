@@ -132,7 +132,7 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
-
+        
         public static void ComputeResorbedN(ISiteCohorts cohorts, ActiveSite site, int month)
         {
             if (cohorts != null)
@@ -142,7 +142,9 @@ namespace Landis.Extension.Succession.Century
                         // Resorbed N:  We are assuming that any leaves dropped as a function of normal
                         // growth and maintenance (e.g., fall senescence) will involve resorption of leaf N.
                         double resorbedN = AvailableN.CalculateResorbedN(site, cohort.Species, cohort.LeafBiomass, month);
+
                         AvailableN.SetResorbedNallocation(cohort, resorbedN);
+                        
                     }
             return;
         }

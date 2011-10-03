@@ -117,8 +117,8 @@ namespace Landis.Extension.Succession.Century
 
             // Reduce available N after taking into account that some N may have been provided
             // via resorption (above).
-            if (SiteVars.MineralN[site] < Ndemand)
-            {
+            //if (SiteVars.MineralN[site] < Ndemand)
+            //{
                 double Nuptake = 0.0;
                 if (SiteVars.MineralN[site] >= Ndemand)
                 {
@@ -138,7 +138,7 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
                 }
                 SiteVars.TotalNuptake[site] += Nuptake;
-              }
+              //}
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]);// - defoliatedLeafBiomass);
@@ -150,7 +150,7 @@ namespace Landis.Extension.Succession.Century
 
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, ", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1], Ndemand);
                 Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, ", resorbedNused, mineralNused);
             }
 
