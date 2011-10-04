@@ -107,7 +107,7 @@ namespace Landis.Extension.Succession.Century
             // Treat Resorbed N first and only if it is spring time.
             if (month > 2 && month < 6)  
             {
-                double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+                double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
 
                 resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
                 

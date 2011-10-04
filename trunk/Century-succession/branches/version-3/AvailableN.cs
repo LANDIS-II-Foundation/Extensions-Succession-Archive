@@ -268,7 +268,7 @@ namespace Landis.Extension.Succession.Century
             double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.47;
             double Nreduction = leafN + woodN + coarseRootN + fineRootN;
 
-            PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0}, Nreduction={4:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot,Nreduction);
+            //PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0}, Nreduction={4:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot,Nreduction);
 
             if(Nreduction < 0.0)
             {
