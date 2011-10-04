@@ -217,7 +217,7 @@ namespace Landis.Extension.Succession.Century
             if(actualANPP[0] <= 0.0 && actualANPP[1] <= 0.0)
                 return 0.0;
 
-            if (SpeciesData.NTolerance[species] == 4)
+            if (SpeciesData.NTolerance[species] == 4)  // We fix our own N!
                 return 0.0;
 
             double ANPPwood = 0.0;
@@ -229,7 +229,7 @@ namespace Landis.Extension.Succession.Century
             double leafN = 0.0;
             double fineRootN = 0.0;
 
-            if(actualANPP[0] > 0.0)
+            if(actualANPP[0] > 0.0)  // Wood
             {
                 ANPPwood = actualANPP[0];
 
@@ -246,7 +246,7 @@ namespace Landis.Extension.Succession.Century
                 coarseRootN = ANPPcoarseRoot * 0.47  / SpeciesData.CoarseRootCN[species];
                 }
 
-            if(actualANPP[1] > 0.0)
+            if(actualANPP[1] > 0.0)  // Leaf
             {
                 ANPPleaf = actualANPP[1];
                 

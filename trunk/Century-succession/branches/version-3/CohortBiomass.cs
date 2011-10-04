@@ -99,7 +99,8 @@ namespace Landis.Extension.Succession.Century
                 //    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
             }
 
-            double Ndemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
+            double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
+            double adjNdemand = 0;
             double resorbedNused = 0.0;
             double mineralNused = 0.0;
 
@@ -108,37 +109,34 @@ namespace Landis.Extension.Succession.Century
             {
                 double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
-                AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - Ndemand));
+                resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
+                
+                AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
 
-                resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - Ndemand);
-
-                Ndemand -= resorbedNallocation;
+                adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
             }
 
             // Reduce available N after taking into account that some N may have been provided
             // via resorption (above).
-            //if (SiteVars.MineralN[site] < Ndemand)
-            //{
-                double Nuptake = 0.0;
-                if (SiteVars.MineralN[site] >= Ndemand)
-                {
-                    SiteVars.MineralN[site] -= Ndemand;
-                    mineralNused = Ndemand;
-                    Nuptake = Ndemand;
-                }
-                else
-                {
+            double Nuptake = 0.0;
+            if (SiteVars.MineralN[site] >= adjNdemand)
+            {
+                    SiteVars.MineralN[site] -= adjNdemand;
+                    mineralNused = adjNdemand;
+                    Nuptake = adjNdemand;
+            }
+            else
+            {
                     double NdemandAdjusted = SiteVars.MineralN[site];
                     SiteVars.MineralN[site] = 0.0;
                     mineralNused = SiteVars.MineralN[site];
-                    actualANPP[0] = NdemandAdjusted / Ndemand;
-                    actualANPP[1] = NdemandAdjusted / Ndemand;
-                                                                                
-                    Nuptake = SiteVars.MineralN[site] * NdemandAdjusted / Ndemand;
+                    actualANPP[0] = NdemandAdjusted / adjNdemand;
+                    actualANPP[1] = NdemandAdjusted / adjNdemand;
+
+                    Nuptake = SiteVars.MineralN[site]; // *NdemandAdjusted / adjNdemand;
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
-                }
-                SiteVars.TotalNuptake[site] += Nuptake;
-              //}
+            }
+            SiteVars.TotalNuptake[site] += Nuptake;
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]);// - defoliatedLeafBiomass);
@@ -150,8 +148,8 @@ namespace Landis.Extension.Succession.Century
 
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1], Ndemand);
-                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, ", resorbedNused, mineralNused);
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
+                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00}", resorbedNused, mineralNused, totalNdemand);
             }
 
             return deltas;
@@ -377,7 +375,7 @@ namespace Landis.Extension.Succession.Century
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             double leafFrac = FunctionalType.Table[SpeciesData.FuncType[species]].FCFRACleaf;
-            double Ndemand = 0.0;
+            //double Ndemand = 0.0;
 
             double B_ACT = SiteVars.ActualSiteBiomass(site);
             double B_MAX = SpeciesData.B_MAX_Spp[species][ecoregion];
@@ -409,7 +407,7 @@ namespace Landis.Extension.Succession.Century
                 initialB[1] = initialBiomass * leafFrac;
             }*/
 
-            Ndemand = AvailableN.CalculateCohortNDemand(species, site, initialB);
+            //Ndemand = AvailableN.CalculateCohortNDemand(species, site, initialB);
             //SiteVars.MineralN[site] -= Math.Min(SiteVars.MineralN[site], Nreduction);
 
             /*if (SiteVars.MineralN[site] > Nreduction)
