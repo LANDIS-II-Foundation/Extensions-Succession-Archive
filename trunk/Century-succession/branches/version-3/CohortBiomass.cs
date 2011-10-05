@@ -100,7 +100,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
-            double adjNdemand = 0;
+            double adjNdemand = totalNdemand;
             double resorbedNused = 0.0;
             double mineralNused = 0.0;
 
@@ -128,10 +128,10 @@ namespace Landis.Extension.Succession.Century
             else
             {
                     double NdemandAdjusted = SiteVars.MineralN[site];
-                    SiteVars.MineralN[site] = 0.0;
                     mineralNused = SiteVars.MineralN[site];
-                    actualANPP[0] = NdemandAdjusted / adjNdemand;
-                    actualANPP[1] = NdemandAdjusted / adjNdemand;
+                    SiteVars.MineralN[site] = 0.0;
+                    //actualANPP[0] = NdemandAdjusted / adjNdemand;
+                    //actualANPP[1] = NdemandAdjusted / adjNdemand;
 
                     Nuptake = SiteVars.MineralN[site]; // *NdemandAdjusted / adjNdemand;
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
