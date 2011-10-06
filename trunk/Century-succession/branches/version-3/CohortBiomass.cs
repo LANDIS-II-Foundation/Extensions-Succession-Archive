@@ -78,6 +78,7 @@ namespace Landis.Extension.Succession.Century
             // ****** Growth *******
             double[] actualANPP = ComputeActualANPP(cohort, site, siteBiomass, mortalityAge);
             double defoliatedLeafBiomass = 0.0;
+            double frassbiomass = 0.0;
 
             if(month == 6)  //July = 6
             {
@@ -91,12 +92,13 @@ namespace Landis.Extension.Succession.Century
 
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
 
-                //ForestFloor.AddFrassLitter(frass, species, site);
-                //double frass = OtherData.frassdepyint* OtherData.frassdepk * defoliation);
-                
+                frassbiomass = OtherData.frassdepyint * OtherData.frassdepk * defoliation;
 
-                //if (defoliation > 0.0)
-                //    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
+                //LitterLayer.AddFrassLitter(frassbiomass, site);
+                              
+
+                if (defoliation > 0.0)
+                    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
             }
 
             double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
@@ -334,12 +336,14 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        private void UpdateDeadBiomass(ISpecies species, ActiveSite site, double[] totalMortality) //, frass)
+        private void UpdateDeadBiomass(ISpecies species, ActiveSite site, double[] totalMortality)
         {
 
 
             double mortality_wood    = (double) totalMortality[0];
             double mortality_nonwood = (double) totalMortality[1];
+            double frass = frassdeposition;
+            
 
 
             //  Add mortality to dead biomass pools.
@@ -354,10 +358,12 @@ namespace Landis.Extension.Succession.Century
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, species, site);
+                ForestFloor.Addfrass(mortality_nonwood, species, site);
                 Roots.AddFineRootLitter(mortality_nonwood, species, site);
+
             }
 
-            //ForestFloor.AddFrassLitter(frass, species, site);
+            //LitterLayer.AddFrassLitter(frassbiomass, site);
 
             return;
 
@@ -681,6 +687,12 @@ namespace Landis.Extension.Succession.Century
             return U1;
         }
 
+        private static double Calculatefrassdeposition(ActiveSite site, IEcoregion ecoregion);
+
+             double defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
+        defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
+
+                frassbiomass = OtherData.frassdepyint * OtherData.frassdepk * defoliation;
 
     }
 }

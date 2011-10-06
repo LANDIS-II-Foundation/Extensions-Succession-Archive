@@ -161,12 +161,12 @@ namespace Landis.Extension.Succession.Century
 
         //Constants needed to calculate frass deposition and C/N ratio of frass.
         //Frass amount calculated as a function of %defoliation using Clark et al 2010 (Figure 3)
-        //public const double frassdepk=22.989;
-        //public const double frassdepyint=0.9935
+        public const double frassdepk=22.989;
+        public const double frassdepyint = 0.9935;
 
         
         //CNratiofrass- C/N ratio of frass as calculated by Lovett and Ruesink 1995 (Oecologia 104:133).
-        //public const double CNratiofrass = 23.0;
+        public const double CNratiofrass = 23.0;
         
         // TMELT(1) - Minimum temperature above which at least some snow will melt.
         // TMELT(2) - Ratio between degrees above the minimum and centimeters of snow that will melt.

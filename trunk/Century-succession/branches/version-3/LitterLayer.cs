@@ -14,7 +14,7 @@ namespace Landis.Extension.Succession.Century
     {
 
         /// <summary>
-        /// Decomposes Sturctural Litter
+        /// Decomposes Structural Litter
         /// </summary>
         public static void Decompose(ActiveSite site)
         {
