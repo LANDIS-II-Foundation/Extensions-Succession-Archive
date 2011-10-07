@@ -58,6 +58,7 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
+                            OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -86,13 +87,43 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafLitterCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
+                            OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
             }
         }
 
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Adds frass for a species to the foliar LITTER pools at a site.
+        /// Assumes that some of the N has been resorbed.
+        /// </summary>
+        public static void AddFrassLitter(double foliarBiomass, ISpecies species, ActiveSite site)
+        {
+
+            double inputDecayValue = 1.0;   // Decay value is calculated for surface/soil layers (leaf/fine root), 
+            // therefore, this is just a dummy value.
+
             
+            if (foliarBiomass > 0)
+            {
+                SiteVars.LitterfallC[site] += foliarBiomass * 0.47;
+
+                double frassBiomass = OtherData.frassdepyint * OtherData.frassdepk * foliarBiomass;
+
+                LitterLayer.PartitionResidue(
+                            foliarBiomass,
+                            inputDecayValue,
+                            SpeciesData.LeafLitterCN[species],
+                            SpeciesData.LeafLignin[species],
+                            OtherData.StructuralCN,
+                            OtherData.CNratiofrass,
+                            LayerName.Leaf,
+                            LayerType.Surface,
+                            site);
+            }
+        } 
 
     }
 }
