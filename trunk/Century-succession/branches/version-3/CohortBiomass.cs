@@ -90,6 +90,7 @@ namespace Landis.Extension.Succession.Century
                 if(defoliation > 1.0) defoliation = 1.0;
 
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
+                ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
                                
                 if (defoliation > 0.0)
                     totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
@@ -352,7 +353,7 @@ namespace Landis.Extension.Succession.Century
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, species, site);
-                ForestFloor.AddFrassLitter(mortality_nonwood, species, site);
+                //ForestFloor.AddFrassLitter(mortality_nonwood, species, site);
                 Roots.AddFineRootLitter(mortality_nonwood, species, site);
 
             }

@@ -57,7 +57,7 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.FineRootCN[species],
                             SpeciesData.FineRootLignin[species],
                             OtherData.StructuralCN,
-                            OtherData.CNratiofrass,
+                            //OtherData.CNratiofrass,
                             LayerName.FineRoot,
                             LayerType.Soil,
                             site);
