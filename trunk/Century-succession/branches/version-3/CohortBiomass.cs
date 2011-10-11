@@ -78,22 +78,23 @@ namespace Landis.Extension.Succession.Century
             // ****** Growth *******
             double[] actualANPP = ComputeActualANPP(cohort, site, siteBiomass, mortalityAge);
             double defoliatedLeafBiomass = 0.0;
+            double scorch = 0.0;
             
             if(month == 6)  //July = 6
             {
                 // Defoliation ranges from 1.0 (total) to none (0.0).
                 double defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
 
-                if(SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
-                    defoliation += FireEffects.CrownScorching(cohort, SiteVars.FireSeverity[site]);
-
                 if(defoliation > 1.0) defoliation = 1.0;
 
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
                 ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
-                               
-                if (defoliation > 0.0)
-                    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
+
+                if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
+                    scorch = FireEffects.CrownScorching(cohort, SiteVars.FireSeverity[site]);
+                
+                if (scorch > 0.0)  // NEED TO DOUBLE CHECK WHAT CROWN SCORCHING RETURNS
+                    totalMortality[1] = Math.Min(cohort.LeafBiomass, scorch + totalMortality[1]);  
             }
 
             double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
@@ -136,7 +137,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.TotalNuptake[site] += Nuptake;
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
-            float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]);// - defoliatedLeafBiomass);
+            float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]);
 
             float[] deltas  = new float[2]{deltaWood, deltaLeaf};
 
@@ -337,9 +338,6 @@ namespace Landis.Extension.Succession.Century
 
             double mortality_wood    = (double) totalMortality[0];
             double mortality_nonwood = (double) totalMortality[1];
-            
-            
-
 
             //  Add mortality to dead biomass pools.
             //  Coarse root mortality is assumed proportional to aboveground woody mortality
@@ -353,9 +351,7 @@ namespace Landis.Extension.Succession.Century
             if(mortality_nonwood > 0.0)
             {
                 ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, species, site);
-                //ForestFloor.AddFrassLitter(mortality_nonwood, species, site);
                 Roots.AddFineRootLitter(mortality_nonwood, species, site);
-
             }
 
             return;

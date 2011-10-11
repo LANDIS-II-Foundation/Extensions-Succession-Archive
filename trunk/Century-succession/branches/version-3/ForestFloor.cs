@@ -4,7 +4,7 @@
 using Landis.Core;
 using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
-
+using System;
 using System.Collections.Generic;
 
 
@@ -58,7 +58,7 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
-                            OtherData.CNratiofrass,
+                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -110,7 +110,7 @@ namespace Landis.Extension.Succession.Century
             {
                 SiteVars.LitterfallC[site] += defoliatedLeafBiomass * 0.47;
 
-                double frassBiomass = OtherData.frassdepyint * OtherData.frassdepk * defoliatedLeafBiomass;
+                double frassBiomass = Math.Max(0.0, OtherData.frassdepyint * OtherData.frassdepk * defoliatedLeafBiomass);
 
                 LitterLayer.PartitionResidue(
                             frassBiomass,
