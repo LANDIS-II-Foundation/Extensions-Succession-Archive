@@ -46,7 +46,7 @@ namespace Landis.Extension.Succession.Century
             log.Write("SurfStrucNetMin, SurfMetaNetMin, SoilStrucNetMin, SoilMetaNetMin, ");
             log.Write("SOM1surfNetMin, SOM1soilNetMin, SOM2NetMin, SOM3NetMin, ");
             log.Write("StreamC, Nloss, FireEfflux,");
-            log.Write("Nuptake, Nresorbed,TotalSoilN,soilNuptake,");
+            log.Write("Nuptake, Nresorbed,TotalSoilN,soilNuptake,avgfrassC,");
             log.WriteLine("");
 
 
@@ -144,6 +144,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgNresorbed = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgTotalSoilN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgsoilNuptake = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgfrassC = new double[PlugIn.ModelCore.Ecoregions.Count];
             
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
@@ -280,6 +281,7 @@ namespace Landis.Extension.Succession.Century
                 avgNresorbed[ecoregion.Index] += SiteVars.ResorbedN[site];
                 avgTotalSoilN[ecoregion.Index] += GetTotalSoilNitrogen(site);
                 avgsoilNuptake[ecoregion.Index] += GetSoilNuptake(site);
+                avgfrassC[ecoregion.Index] += SiteVars.FrassC[site];
                
                 
             }
@@ -367,6 +369,9 @@ namespace Landis.Extension.Succession.Century
                         (avgNresorbed[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgTotalSoilN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgsoilNuptake[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
+                        );
+                    log.Write("{0:0.0000},  ",
+                        (avgfrassC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.WriteLine("");
                 }

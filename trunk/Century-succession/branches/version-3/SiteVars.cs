@@ -31,14 +31,14 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<Layer> surfaceMetabolic;
         private static ISiteVar<Layer> soilStructural;
         private static ISiteVar<Layer> soilMetabolic;
-        
+                       
         // Soil layers
         private static ISiteVar<Layer> som1surface;
         private static ISiteVar<Layer> som1soil;
         private static ISiteVar<Layer> som2;
         private static ISiteVar<Layer> som3;
         
-        // Similar to soil layers in respect to their pools:
+        // Similar to soil layers with respect to their pools:
         private static ISiteVar<Layer> stream;
         private static ISiteVar<Layer> sourceSink;
         
@@ -70,6 +70,7 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyResp;
         private static ISiteVar<double> totalNuptake;
         private static ISiteVar<double[]> monthlymineralN;
+        private static ISiteVar<double> frassC;
                 
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<int> PrevYearMortality;
@@ -141,6 +142,8 @@ namespace Landis.Extension.Succession.Century
             PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             totalNuptake        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             monthlymineralN     = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
+            frassC              = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            
                        
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
@@ -268,6 +271,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.AnnualNEE[site] = 0.0;
             SiteVars.TotalNuptake[site] = 0.0;
             SiteVars.ResorbedN[site] = 0.0;
+            SiteVars.FrassC[site] = 0.0;
             //SiteVars.FireEfflux[site] = 0.0;
                         
 
@@ -707,6 +711,23 @@ namespace Landis.Extension.Succession.Century
             }
                 
             
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of frass deposition (g C/m2)
+        /// </summary>
+        public static ISiteVar<double> FrassC
+        {
+            get
+            {
+                return frassC;
+            }
+            set
+            {
+                frassC = value;
+            }
+
+
         }
     }
 }
