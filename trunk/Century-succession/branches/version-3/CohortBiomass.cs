@@ -189,8 +189,8 @@ namespace Landis.Extension.Succession.Century
             // Growth can be reduced by another extension via this method.
             // To date, no extension has been written to utilize this hook.
             double growthReduction = CohortGrowthReduction.Compute(cohort, site);
-            if (growthReduction > 0)
-                actualANPP *= (1.0 - growthReduction);
+            //if (growthReduction > 0)
+            //    actualANPP *= (1.0 - growthReduction);
 
 
             double leafNPP  = actualANPP * leafFractionNPP;
@@ -212,7 +212,7 @@ namespace Landis.Extension.Succession.Century
             leafNPP  = actualANPP * leafFractionNPP;
             woodNPP  = actualANPP * (1.0 - leafFractionNPP);
 
-            if (leafNPP == Double.NaN || woodNPP == Double.NaN)
+            if (leafNPP == Double.NaN || woodNPP == Double.NaN || leafNPP < 0.00 || woodNPP < 0.0 )
             {
                 PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
                 PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
