@@ -12,6 +12,8 @@
 [Files]
 ; Auxiliary libs
 #define BuildDir "C:\Program Files\LANDIS-II\6.0\bin"
+Source: {#BuildDir}\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
+Source: {#BuildDir}\Landis.Library.Cohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
 Source: {#BuildDir}\Landis.Library.LeafBiomassCohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
 Source: {#BuildDir}\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
 Source: {#BuildDir}\Landis.Library.Climate.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion

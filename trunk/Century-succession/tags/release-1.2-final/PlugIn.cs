@@ -145,6 +145,41 @@ namespace Landis.Extension.Succession.Century
             }
             Outputs.WriteLogFile(Model.Core.CurrentTime);
 
+            if(Model.Core.CurrentTime > 0)
+            {
+                string path = MapNames.ReplaceTemplateVars("century/TotalC-{timestep}.gis", Model.Core.CurrentTime);
+                IOutputRaster<UShortPixel> map = Model.Core.CreateRaster<UShortPixel>(path, Model.Core.Landscape.Dimensions, Model.Core.LandscapeMapMetadata);
+                using (map)
+                {
+                    UShortPixel pixel = new UShortPixel();
+                    foreach (Site site in Model.Core.Landscape.AllSites)
+                    {
+                        if (site.IsActive)
+                        {
+                            pixel.Band0 = (ushort)((SiteVars.SOM1surface[site].Carbon +
+                                                    SiteVars.SOM1soil[site].Carbon +
+                                                    SiteVars.SOM2[site].Carbon +
+                                                    SiteVars.SOM3[site].Carbon +
+                                                    SiteVars.CohortLeafC[site] +
+                                                    SiteVars.CohortWoodC[site] +
+                                                    SiteVars.SurfaceDeadWood[site].Carbon +
+                                                    SiteVars.SurfaceStructural[site].Carbon +
+                                                    SiteVars.SurfaceMetabolic[site].Carbon +
+                                                    SiteVars.SoilDeadWood[site].Carbon +
+                                                    SiteVars.SoilStructural[site].Carbon +
+                                                    SiteVars.SoilMetabolic[site].Carbon) / 100.0);
+                        }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.Band0 = 0;
+                        }
+                        map.WritePixel(pixel);
+                    }
+                }
+            }
+
+            
             if(SoilCarbonMapNames != null && (Model.Core.CurrentTime % SoilCarbonMapFrequency) == 0)
             {
                 string path = MapNames.ReplaceTemplateVars(SoilCarbonMapNames, Model.Core.CurrentTime);

@@ -110,13 +110,13 @@ namespace Landis.Extension.Succession.Century
             {
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    int cohortAddYear = currentYear - (cohort.Age - Century.Year); // +(CohortBiomass.month == 11 ? 1 : 0);
+                    int cohortAddYear = currentYear - (cohort.Age - Century.Year); 
                     //PlugIn.ModelCore.Log.WriteLine("SETmineralNfraction: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
                     double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass);
 
-                    if (PlugIn.ModelCore.CurrentTime == 0)
+                    if (Nallocation <= 0.0) //PlugIn.ModelCore.CurrentTime == 0)
                         Nallocation = Math.Max(Nallocation, cohort.WoodBiomass * 0.01);
 
                     NAllocTotal += Nallocation;
@@ -136,9 +136,17 @@ namespace Landis.Extension.Succession.Century
                 // Next relativize
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    int cohortAddYear = currentYear - (cohort.Age - Century.Year); // +(CohortBiomass.month == 11 ? 1 : 0);
+                    int cohortAddYear = currentYear - (cohort.Age - Century.Year); 
                     double Nallocation = CohortMineralNfraction[cohort.Species.Index][cohortAddYear];
-                    CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = Nallocation / NAllocTotal;
+                    double relativeNallocation = Nallocation / NAllocTotal;
+                    CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = relativeNallocation;
+                    
+                    if (Double.IsNaN(relativeNallocation) || Double.IsNaN(Nallocation) || Double.IsNaN(NAllocTotal))
+                    {
+                        PlugIn.ModelCore.Log.WriteLine("  N ALLOCATION CALCULATION = NaN!  ");
+                        PlugIn.ModelCore.Log.WriteLine("  Nallocation={0:0.00}, NAllocTotal={1:0.00}, relativeNallocation={2:0.00}.", Nallocation, NAllocTotal, relativeNallocation);
+                        PlugIn.ModelCore.Log.WriteLine("  Wood={0:0.00}, Leaf={1:0.00}.", cohort.WoodBiomass, cohort.LeafBiomass);
+                    }
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. MineralNfraction={2:0.00}", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, CohortMineralNfraction[cohort.Species.Index][cohortAddYear]);
                 }
             }
@@ -160,13 +168,19 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.Log.WriteLine("SETmineralNalloc: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
 
                     double Nfraction = 0.05;  //even a new cohort gets a little love
-                    Dictionary<int, double> cohortDict;
+                    Dictionary<int, double> cohortDict = new Dictionary<int,double>();
 
                     if (AvailableN.CohortMineralNfraction.TryGetValue(cohort.Species.Index, out cohortDict))
                         cohortDict.TryGetValue(cohortAddYear, out Nfraction);
                     
                     //CohortMineralNfraction[cohort.Species.Index][cohortAddYear];
                     double Nallocation = Nfraction * availableN;
+                    if (Double.IsNaN(Nallocation) || Double.IsNaN(Nfraction) || Double.IsNaN(availableN))
+                    {
+                        PlugIn.ModelCore.Log.WriteLine("  LIMIT N CALCULATION = NaN!  ");
+                        PlugIn.ModelCore.Log.WriteLine("  Nallocation={0:0.00}, Nfraction={1:0.00}, availableN={2:0.00}.", Nallocation, Nfraction, availableN);
+                    }
+
                     Dictionary<int, double> newEntry = new Dictionary<int, double>();
                     newEntry.Add(cohortAddYear, Nallocation);
 

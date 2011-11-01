@@ -182,15 +182,29 @@ namespace Landis.Extension.Succession.Century
 
             double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
 
+            //if (Double.IsNaN(limitT) || Double.IsNaN(limitH20) || Double.IsNaN(limitLAI) || Double.IsNaN(limitCapacity) || Double.IsNaN(limitN))
+            //{
+            //    PlugIn.ModelCore.Log.WriteLine("  A limit = NaN!  Will set to zero.");
+            //    PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
+            //    PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
+            //}
+
+
             //  Age mortality is discounted from ANPP to prevent the over-
             //  estimation of growth.  ANPP cannot be negative.
             double actualANPP = Math.Max(0.0, potentialNPP - mortalityAge[0] - mortalityAge[1]);
 
             // Growth can be reduced by another extension via this method.
             // To date, no extension has been written to utilize this hook.
-            double growthReduction = CohortGrowthReduction.Compute(cohort, site);
-            //if (growthReduction > 0)
-            //    actualANPP *= (1.0 - growthReduction);
+            double growthReduction = 0.0;
+            growthReduction = CohortGrowthReduction.Compute(cohort, site);
+
+            if (growthReduction > 0.0)
+            {
+                actualANPP *= (1.0 - growthReduction);
+                //PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
+                //PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
+            }
 
 
             double leafNPP  = actualANPP * leafFractionNPP;
@@ -212,15 +226,15 @@ namespace Landis.Extension.Succession.Century
             leafNPP  = actualANPP * leafFractionNPP;
             woodNPP  = actualANPP * (1.0 - leafFractionNPP);
 
-            if (leafNPP == Double.NaN || woodNPP == Double.NaN || leafNPP < 0.00 || woodNPP < 0.0 )
+            if (Double.IsNaN(leafNPP) || Double.IsNaN(woodNPP))
             {
                 PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
                 PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
                 PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
-                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     WoodNPP={0}, LeafNPP={1}.", woodNPP, leafNPP);
-                if (leafNPP == Double.NaN)
+                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     WoodNPP={2:0.00}, LeafNPP={3:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, woodNPP, leafNPP);
+                if (Double.IsNaN(leafNPP))
                     leafNPP = 0.0;
-                if (woodNPP == Double.NaN)
+                if (Double.IsNaN(woodNPP))
                     woodNPP = 0.0;
 
             }
@@ -433,17 +447,17 @@ namespace Landis.Extension.Succession.Century
             double NPPcoarseRoot = Roots.CalculateCoarseRoot(NPPwood);
             double NPPfineRoot = Roots.CalculateFineRoot(NPPleaf);
 
-            if (NPPwood == Double.NaN || NPPleaf == Double.NaN || NPPcoarseRoot == Double.NaN || NPPfineRoot == Double.NaN)
+            if (Double.IsNaN(NPPwood) || Double.IsNaN(NPPleaf) || Double.IsNaN(NPPcoarseRoot) || Double.IsNaN(NPPfineRoot))
             {
                 PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or LEAF NPP or COARSE ROOT or FINE ROOT = NaN!  Will set to zero.");
                 PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     WoodNPP={0}, LeafNPP={1}, CRootNPP={2}, FRootNPP={3}.", NPPwood, NPPleaf, NPPcoarseRoot, NPPfineRoot);
-                if (NPPleaf == Double.NaN)
+                if (Double.IsNaN(NPPleaf))
                     NPPleaf = 0.0;
-                if (NPPwood == Double.NaN)
+                if (Double.IsNaN(NPPwood))
                     NPPwood = 0.0;
-                if (NPPcoarseRoot == Double.NaN)
+                if (Double.IsNaN(NPPcoarseRoot))
                     NPPcoarseRoot = 0.0;
-                if (NPPfineRoot == Double.NaN)
+                if (Double.IsNaN(NPPfineRoot))
                     NPPfineRoot = 0.0;
             }
 
@@ -470,16 +484,27 @@ namespace Landis.Extension.Succession.Century
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double WoodNPP = NPP * (1.0 - leafFractionNPP);
-            double FineRootNPP = LeafNPP * 0.75;
-            double CoarseRootNPP = WoodNPP * 0.75;
+            //double FineRootNPP = LeafNPP * 0.75;
+            //double CoarseRootNPP = WoodNPP * 0.75;
             double limitN = 0.0;
             if (SpeciesData.NTolerance[cohort.Species] == 4)
                 limitN = 1.0;  // No limit for N-fixing shrubs
             else
             {
                 // Divide allocation N by N demand here:
-                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP, CoarseRootNPP, FineRootNPP}));
-                limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
+                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP}));
+                if (maximumNdemand > 0.0)
+                {
+                    limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
+                    //if (Double.IsNaN(mineralNallocation) || Double.IsNaN(resorbedNallocation) || Double.IsNaN(maximumNdemand))
+                    //{
+                    //    PlugIn.ModelCore.Log.WriteLine("  LIMIT N CALCULATION = NaN!  ");
+                    //    PlugIn.ModelCore.Log.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, maximumNdemand);
+                    //}
+
+                }
+                else
+                    limitN = 1.0; // No demand means that it is a new or very small cohort.  Will allow it to grow anyways.
             }
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
