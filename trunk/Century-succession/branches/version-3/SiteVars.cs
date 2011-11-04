@@ -178,7 +178,7 @@ namespace Landis.Extension.Succession.Century
                 monthlyResp[site]           = new double[12];
                 //monthlymineralN[site]       = new double[12];
 
-                //AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
+                AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
             }
             
         }
