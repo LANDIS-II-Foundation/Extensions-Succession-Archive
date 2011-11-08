@@ -85,8 +85,8 @@ namespace Landis.Extension.Succession.Century
                     SoilWater.Run(y, month, liveBiomass, site);
 
 
-                    // Reset N resorption if it is August
-                    if (month == 7)
+                    // Reset N resorption if it is September
+                    if (month == 8)
                     {
                         AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
                         ComputeResorbedN(siteCohorts, site, month);
