@@ -484,18 +484,22 @@ namespace Landis.Extension.Succession.Century
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double WoodNPP = NPP * (1.0 - leafFractionNPP);
-            //double FineRootNPP = LeafNPP * 0.75;
-            //double CoarseRootNPP = WoodNPP * 0.75;
+            double FineRootNPP = LeafNPP * 0.75;
+            double CoarseRootNPP = WoodNPP * 0.75;
             double limitN = 0.0;
             if (SpeciesData.NTolerance[cohort.Species] == 4)
                 limitN = 1.0;  // No limit for N-fixing shrubs
             else
             {
                 // Divide allocation N by N demand here:
-                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP}));
+                PlugIn.ModelCore.Log.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP, FineRootNPP, CoarseRootNPP);
+                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP, FineRootNPP, CoarseRootNPP }));
+                //double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP));
                 if (maximumNdemand > 0.0)
                 {
                     limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
+                    PlugIn.ModelCore.Log.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, maximumNdemand);
+                   
                     //if (Double.IsNaN(mineralNallocation) || Double.IsNaN(resorbedNallocation) || Double.IsNaN(maximumNdemand))
                     //{
                     //    PlugIn.ModelCore.Log.WriteLine("  LIMIT N CALCULATION = NaN!  ");
