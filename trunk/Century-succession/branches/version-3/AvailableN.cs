@@ -141,6 +141,8 @@ namespace Landis.Extension.Succession.Century
                     double relativeNallocation = Nallocation / NAllocTotal;
                     CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = relativeNallocation;
                     
+                    PlugIn.ModelCore.Log.WriteLine("  Nallocation={0:0.00}, NAllocTotal={1:0.00}, relativeNallocation={2:0.00}.", Nallocation, NAllocTotal, relativeNallocation);
+                    
                     if (Double.IsNaN(relativeNallocation) || Double.IsNaN(Nallocation) || Double.IsNaN(NAllocTotal))
                     {
                         PlugIn.ModelCore.Log.WriteLine("  N ALLOCATION CALCULATION = NaN!  ");
@@ -175,6 +177,8 @@ namespace Landis.Extension.Succession.Century
                     
                     //CohortMineralNfraction[cohort.Species.Index][cohortAddYear];
                     double Nallocation = Nfraction * availableN;
+                    PlugIn.ModelCore.Log.WriteLine("  NallocationlimitedbymineralN={0:0.00}, Nfraction={1:0.00}, availableN={2:0.00}.", Nallocation, Nfraction, availableN);
+                   
                     if (Double.IsNaN(Nallocation) || Double.IsNaN(Nfraction) || Double.IsNaN(availableN))
                     {
                         PlugIn.ModelCore.Log.WriteLine("  LIMIT N CALCULATION = NaN!  ");
