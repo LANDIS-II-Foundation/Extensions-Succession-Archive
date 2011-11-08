@@ -60,9 +60,9 @@ namespace Landis.Extension.Succession.Century
                 for (int i = 0; i < 12; i++)
                 {
 
-                    if(PlugIn.ModelCore.CurrentTime == 0)
+                    // If in spin-up mode and calibration mode, then this needs to happen first.
+                    if(PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
                         AvailableN.CalculateMineralNfraction(site);
-
 
                     int month = months[i];
                     CohortBiomass.month = month;

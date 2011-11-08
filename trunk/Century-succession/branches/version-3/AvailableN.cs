@@ -229,10 +229,10 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP) of leaves, wood, coarse roots and fine roots.
         /// </summary>
-        public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, double[] actualANPP)
+        public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, double[] ANPP)
         {
 
-            if(actualANPP[0] <= 0.0 && actualANPP[1] <= 0.0)
+            if(ANPP[0] <= 0.0 && ANPP[1] <= 0.0)
                 return 0.0;
 
             if (SpeciesData.NTolerance[species] == 4)  // We fix our own N!
@@ -247,54 +247,52 @@ namespace Landis.Extension.Succession.Century
             double leafN = 0.0;
             double fineRootN = 0.0;
 
-            if(actualANPP[0] > 0.0)  // Wood
+            if(ANPP[0] > 0.0)  // Wood
             {
-                ANPPwood = actualANPP[0];
+                ANPPwood = ANPP[0];
 
-                if (actualANPP.Length > 2)
-                {
-                    ANPPcoarseRoot = actualANPP[2];
+                //if (actualANPP.Length > 2)
+                //{
+                //    ANPPcoarseRoot = actualANPP[2];
 
-                } else {
-
+                //} else 
+                //{
                 ANPPcoarseRoot = Roots.CalculateCoarseRoot(ANPPwood);
-
-                }
+                //}
+                
                 woodN       = ANPPwood * 0.47  / SpeciesData.WoodCN[species];
                 coarseRootN = ANPPcoarseRoot * 0.47  / SpeciesData.CoarseRootCN[species];
-                }
+            }
 
-            if(actualANPP[1] > 0.0)  // Leaf
+            if(ANPP[1] > 0.0)  // Leaf
             {
-                ANPPleaf = actualANPP[1];
+                ANPPleaf = ANPP[1];
                 
-                if (actualANPP.Length > 2)
-
-                {
-                    ANPPfineRoot = actualANPP[3];
-
-                } else {
+                //if (actualANPP.Length > 2)
+                //{
+                //    ANPPfineRoot = actualANPP[3];
+                //} else {
 
                 ANPPfineRoot = Roots.CalculateFineRoot(ANPPleaf);
                
-                }
+                //}
                 leafN       = ANPPleaf * 0.47 / SpeciesData.LeafCN[species];
                 fineRootN   = ANPPfineRoot * 0.47/ SpeciesData.FineRootCN[species];
 
-                }
+            }
 
             double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.47;
-            double Nreduction = leafN + woodN + coarseRootN + fineRootN;
+            double Ndemand = leafN + woodN + coarseRootN + fineRootN;
 
             //PlugIn.ModelCore.Log.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0}, Nreduction={4:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot,Nreduction);
 
-            if(Nreduction < 0.0)
+            if(Ndemand < 0.0)
             {
                 PlugIn.ModelCore.Log.WriteLine("   ERROR:  TotalANPP-C={0:0.00} Nreduction={1:0.00}.", totalANPP_C, Nreduction);
                 throw new ApplicationException("Error: N Reduction is < 0.  See AvailableN.cs");
             }
 
-            return Nreduction;
+            return Ndemand;
         }
 
     }
