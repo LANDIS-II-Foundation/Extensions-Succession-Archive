@@ -495,7 +495,9 @@ namespace Landis.Extension.Succession.Century
             {
                 // Divide allocation N by N demand here:
                 //PlugIn.ModelCore.Log.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
+                
                 double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); //, FineRootNPP, CoarseRootNPP }));
+                
                 //double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP));
                 if (maximumNdemand > 0.0)
                 {
