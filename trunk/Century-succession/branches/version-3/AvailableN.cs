@@ -104,7 +104,9 @@ namespace Landis.Extension.Succession.Century
             int currentYear = PlugIn.ModelCore.CurrentTime;
             //int successionTime = PlugIn.SuccessionTimeStep;
             AvailableN.CohortMineralNfraction = new Dictionary<int, Dictionary<int, double>>();
-                        
+
+            PlugIn.ModelCore.Log.WriteLine("");
+            PlugIn.ModelCore.Log.WriteLine("Start of Nallocation calculation");
             double NAllocTotal = 0.0;
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
             {
@@ -114,11 +116,14 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.Log.WriteLine("SETmineralNfraction: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
-                    double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass);
+                    //double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass); 
+                    double Nallocation = Roots.CalculateCoarseRoot(cohort.WoodBiomass);
+
 
                     if (Nallocation <= 0.0) //PlugIn.ModelCore.CurrentTime == 0)
                         Nallocation = Math.Max(Nallocation, cohort.WoodBiomass * 0.01);
 
+                    PlugIn.ModelCore.Log.WriteLine("Species = {0}, Age = {1}, Nallocation = {2}, WoodBiomass = {3}, LeafBioMass = {4}", cohort.Species.Name, cohort.Age, Nallocation, cohort.WoodBiomass, cohort.LeafBiomass);
                     NAllocTotal += Nallocation;
                     Dictionary<int, double> newEntry = new Dictionary<int, double>();
                     newEntry.Add(cohortAddYear, Nallocation);
@@ -133,16 +138,24 @@ namespace Landis.Extension.Succession.Century
                     }
                 }
 
-                // Next relativize
+            }
+            
+            // Next relativize
+            PlugIn.ModelCore.Log.WriteLine(" Start of relativize");
+            foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+            {
+                PlugIn.ModelCore.Log.WriteLine(" SpeciesCohorts = {0}", speciesCohorts.Species.Name);
                 foreach (ICohort cohort in speciesCohorts)
                 {
-                    int cohortAddYear = currentYear - (cohort.Age - Century.Year); 
+                    PlugIn.ModelCore.Log.WriteLine(" cohort = {0}, age = {1}", cohort.Species.Name, cohort.Age);
+
+                    int cohortAddYear = currentYear - (cohort.Age - Century.Year);
                     double Nallocation = CohortMineralNfraction[cohort.Species.Index][cohortAddYear];
                     double relativeNallocation = Nallocation / NAllocTotal;
                     CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = relativeNallocation;
-                    
-                    //PlugIn.ModelCore.Log.WriteLine("  Nallocation={0:0.00}, NAllocTotal={1:0.00}, relativeNallocation={2:0.00}.", Nallocation, NAllocTotal, relativeNallocation);
-                    
+
+                    PlugIn.ModelCore.Log.WriteLine("  Nallocation={0:0.00}, NAllocTotal={1:0.00}, relativeNallocation={2:0.00}.", Nallocation, NAllocTotal, relativeNallocation);
+
                     if (Double.IsNaN(relativeNallocation) || Double.IsNaN(Nallocation) || Double.IsNaN(NAllocTotal))
                     {
                         PlugIn.ModelCore.Log.WriteLine("  N ALLOCATION CALCULATION = NaN!  ");
