@@ -494,13 +494,13 @@ namespace Landis.Extension.Succession.Century
             else
             {
                 // Divide allocation N by N demand here:
-                PlugIn.ModelCore.Log.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP, FineRootNPP, CoarseRootNPP);
+                //PlugIn.ModelCore.Log.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
                 double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); //, FineRootNPP, CoarseRootNPP }));
                 //double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP));
                 if (maximumNdemand > 0.0)
                 {
                     limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
-                    PlugIn.ModelCore.Log.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, maximumNdemand);
+                    //PlugIn.ModelCore.Log.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, maximumNdemand);
                    
                     //if (Double.IsNaN(mineralNallocation) || Double.IsNaN(resorbedNallocation) || Double.IsNaN(maximumNdemand))
                     //{
