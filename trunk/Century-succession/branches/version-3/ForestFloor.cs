@@ -110,7 +110,7 @@ namespace Landis.Extension.Succession.Century
             {
                 SiteVars.LitterfallC[site] += defoliatedLeafBiomass * 0.47;
 
-                double frassBiomass = Math.Max(0.0, OtherData.frassdepyint * OtherData.frassdepk * defoliatedLeafBiomass);
+                double frassBiomass = Math.Max(0.0, OtherData.frassdepk * defoliatedLeafBiomass);
                 double frassBiomassC = frassBiomass * 0.47;
                 
                 SiteVars.FrassC[site] += frassBiomassC;

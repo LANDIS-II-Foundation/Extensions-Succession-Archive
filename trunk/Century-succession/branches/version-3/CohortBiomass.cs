@@ -86,7 +86,7 @@ namespace Landis.Extension.Succession.Century
                 double defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
 
                 if(defoliation > 1.0) defoliation = 1.0;
-
+                
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
                 ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
 

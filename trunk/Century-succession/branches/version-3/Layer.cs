@@ -439,7 +439,7 @@ namespace Landis.Extension.Succession.Century
                 if ((mineralNFlow - this.Nitrogen) > 0.01) 
                 {
                     PlugIn.ModelCore.Log.WriteLine("  Transfer N mineralization:  mineralN > source N.");
-                    PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);
+                    //PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);
                     PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
                     PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
                     PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);

@@ -160,11 +160,9 @@ namespace Landis.Extension.Succession.Century
         public const double MinNContentCNSurfMicrobes  = 0.02;
 
         //Constants needed to calculate frass deposition and C/N ratio of frass.
-        //Frass amount calculated as a function of %defoliation using Clark et al 2010 (Figure 3)
-        public const double frassdepk=22.989;
-        public const double frassdepyint = 0.9935;
-
-        
+        //Frass amount calculated as a function of %defoliation using correspondence with Jane Foster citing Phil Townsends in press paper
+        public const double frassdepk=0.86;
+                
         //CNratiofrass- C/N ratio of frass as calculated by Lovett and Ruesink 1995 (Oecologia 104:133).
         public const double CNratiofrass = 23.0;
         

@@ -117,7 +117,7 @@ namespace Landis.Extension.Succession.Century
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
                     //double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass); 
-                    double Nallocation = Roots.CalculateCoarseRoot(cohort.WoodBiomass);
+                    double Nallocation = 1- Math.Exp((-Roots.CalculateCoarseRoot(cohort.WoodBiomass)*0.02));
 
 
                     if (Nallocation <= 0.0) //PlugIn.ModelCore.CurrentTime == 0)
