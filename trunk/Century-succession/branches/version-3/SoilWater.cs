@@ -377,10 +377,8 @@ namespace Landis.Extension.Succession.Century
             SiteVars.DecayFactor[site] = CalculateDecayFactor((int)OtherData.WType, SiteVars.SoilTemperature[site], relativeWaterContent, ratioPrecipPET, month);
             SiteVars.AnaerobicEffect[site] = CalculateAnaerobicEffect(drain, ratioPrecipPET, pet, tave);
 
-            //SiteVars.StormFlow[site] = stormFlow;
-
-            //Leach(site, stormFlow, baseFlow);
-
+            double leachN = SoilWater.Leach(site);
+           
             //PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}", availableWater, soilWaterContent, wiltingPoint, soilDepth);
             //PlugIn.ModelCore.Log.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
 
@@ -531,8 +529,8 @@ namespace Landis.Extension.Succession.Century
            
             //  double minlch, double frlech[3], double stream[8], double basef, double stormf)
             //Originally from leach.f of CENTURY model
-            //...This routine computes the leaching of nitrogen, phosphorus, and sulfur.
-            //...Written 2/92 -rm
+            //...This routine computes the leaching of inorganic nitrogen (potential for use with phosphorus, and sulfur)
+            //...Written 2/92 -rm. Revised on 12/11 by ML
 
             //...Called From:   SIMSOM
 
@@ -543,41 +541,26 @@ namespace Landis.Extension.Succession.Century
 
             //Outputs:
             //minerl and stream are recomputed
-
-            double baseFlow = 0.0; 
-            double stormFlow = 0.0;
-            //SiteVars.StormFlow[site]
-
-            double stormFlowN = 0.0;
-            double baseFlowN = 0.0;
-
             double waterMove = SiteVars.WaterMovement[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
-            double amtLeached = 0.0;
-            double textureEffect = OtherData.OMLeachIntercept + OtherData.OMLeachSlope * EcoregionData.PercentSand[ecoregion];
-            double fractionLeach = textureEffect * OtherData.OMLeachWater;
-
-            //...AMOV > 0. indicates a saturated water flow out of layer lyr
+            double amtNLeached = 0.0;
+           
+         //...AMOV > 0. indicates a saturated water flow out of layer lyr
             if (waterMove > 0.0 && SiteVars.MineralN[site] > 0.0)
             {
+                double textureEffect = OtherData.MineralLeachIntercept + OtherData.MineralLeachSlope * EcoregionData.PercentSand[ecoregion];
                 double leachIntensity = Math.Min(1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater, 1.0);
                 leachIntensity = Math.Max(leachIntensity, 0.0);
-                amtLeached = fractionLeach * SiteVars.MineralN[site] * leachIntensity;
+                amtNLeached = textureEffect * SiteVars.MineralN[site] * leachIntensity * OtherData.NfracLeachWater;
 
-                PlugIn.ModelCore.Log.WriteLine("amtLeach={0:0.0}, fractionLeach={1:0.0}, leachIntensity={2:0.0}, stormF={3}.", amtLeached, fractionLeach, leachIntensity, stormFlow);
-
-                //...Compute storm flow.
-                stormFlowN = amtLeached * stormFlow;
+                PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, fractionNLeach={1:0.0}, leachIntensity={2:0.0}, .", amtNLeached, textureEffect, leachIntensity);                              
             }
-           
-            //...Compute baseFlow flow and mineral stream flows.
-            baseFlowN = SiteVars.MineralN[site] * baseFlow;
-            baseFlowN = 0.0;
-            double totalFlowN = Math.Min(SiteVars.MineralN[site], stormFlowN);
 
-            SiteVars.MineralN[site] -= totalFlowN;
-            SiteVars.Stream[site].Nitrogen += totalFlowN;
+            SiteVars.MineralN[site] -= amtNLeached;
+            SiteVars.Stream[site].Nitrogen += amtNLeached;
+
+            PlugIn.ModelCore.Log.WriteLine("amtNLeached={0:0.0}.", amtNLeached);
 
             return;
         }

@@ -66,12 +66,12 @@ namespace Landis.Extension.Succession.Century
         
         /// <summary>
         /// Calculate coarse and fine roots based on aboveground wood and leaf biomass.
-        /// Coarse root:Aboveground Wood from White et al. 2000/Niklas & Enquist 2002; Fine root:foliar biomass estimated from Park et al. 2008 at HBEF and Sleepers River.
-        /// Averages of deciduous and conifer species
+        /// Coarse root:stem mass of loblolly pine from Albaugh et al 2006; Fine root:foliar biomass estimated from Park et al. 2008 at HBEF and Sleepers River.
+        /// Fine root is an average of deciduous and conifer species since they didn't differ in Park et al. 2008.
         /// </summary>
         public static double CalculateCoarseRoot(double wood)
         {
-            return (wood * 0.25);
+            return (wood * 0.5);
         }
         public static double CalculateFineRoot(double foliarBiomass)
         {
