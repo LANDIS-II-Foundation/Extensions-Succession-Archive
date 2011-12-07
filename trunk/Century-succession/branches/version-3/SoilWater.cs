@@ -377,7 +377,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.DecayFactor[site] = CalculateDecayFactor((int)OtherData.WType, SiteVars.SoilTemperature[site], relativeWaterContent, ratioPrecipPET, month);
             SiteVars.AnaerobicEffect[site] = CalculateAnaerobicEffect(drain, ratioPrecipPET, pet, tave);
 
-            double leachN = SoilWater.Leach(site);
+            SoilWater.Leach(site);
            
             //PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}", availableWater, soilWaterContent, wiltingPoint, soilDepth);
             //PlugIn.ModelCore.Log.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
@@ -524,7 +524,7 @@ namespace Landis.Extension.Succession.Century
             return soilTemp;
         }
         //--------------------------------------------------------------------------
-        public static void Leach(ActiveSite site)
+        public static void Leach(Site site)
         {
            
             //  double minlch, double frlech[3], double stream[8], double basef, double stormf)
