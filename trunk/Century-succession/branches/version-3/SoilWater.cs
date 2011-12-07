@@ -550,7 +550,7 @@ namespace Landis.Extension.Succession.Century
             if (waterMove > 0.0 && SiteVars.MineralN[site] > 0.0)
             {
                 double textureEffect = OtherData.MineralLeachIntercept + OtherData.MineralLeachSlope * EcoregionData.PercentSand[ecoregion];
-                double leachIntensity = Math.Min(1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater, 1.0);
+                double leachIntensity = Math.Min(1.0 - (OtherData.MaxWaterFlow - waterMove) / OtherData.MaxWaterFlow, 1.0);
                 leachIntensity = Math.Max(leachIntensity, 0.0);
                 amtNLeached = textureEffect * SiteVars.MineralN[site] * leachIntensity * OtherData.NfracLeachWater;
 
