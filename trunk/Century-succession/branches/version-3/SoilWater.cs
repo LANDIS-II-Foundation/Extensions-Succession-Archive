@@ -252,7 +252,7 @@ namespace Landis.Extension.Succession.Century
             if (soilWaterContent > waterFull)
             {
                 //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, soilWaterContent > waterFull", year, month); 
-                waterMovement = soilWaterContent - waterFull;
+                waterMovement = (soilWaterContent - waterFull) / soilWaterContent;
                 soilWaterContent = waterFull;
 
                 //...Compute storm flow.
@@ -377,9 +377,9 @@ namespace Landis.Extension.Succession.Century
             SiteVars.DecayFactor[site] = CalculateDecayFactor((int)OtherData.WType, SiteVars.SoilTemperature[site], relativeWaterContent, ratioPrecipPET, month);
             SiteVars.AnaerobicEffect[site] = CalculateAnaerobicEffect(drain, ratioPrecipPET, pet, tave);
 
-            SoilWater.Leach(site);
-           
-            //PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}", availableWater, soilWaterContent, wiltingPoint, soilDepth);
+            //SoilWater.Leach(site);
+
+            //PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}, waterMovement={4}", availableWater, soilWaterContent, wiltingPoint, soilDepth, waterMovement);
             //PlugIn.ModelCore.Log.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
 
             return;
@@ -541,26 +541,23 @@ namespace Landis.Extension.Succession.Century
 
             //Outputs:
             //minerl and stream are recomputed
-            double waterMove = SiteVars.WaterMovement[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            double waterMove = SiteVars.WaterMovement[site];
 
             double amtNLeached = 0.0;
            
-         //...AMOV > 0. indicates a saturated water flow out of layer lyr
+         //...waterMove > 0. indicates a saturated water flow out of layer lyr
             if (waterMove > 0.0 && SiteVars.MineralN[site] > 0.0)
             {
                 double textureEffect = OtherData.MineralLeachIntercept + OtherData.MineralLeachSlope * EcoregionData.PercentSand[ecoregion];
-                double leachIntensity = Math.Min(1.0 - (OtherData.MaxWaterFlow - waterMove) / OtherData.MaxWaterFlow, 1.0);
-                leachIntensity = Math.Max(leachIntensity, 0.0);
+                double leachIntensity = (1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater);
                 amtNLeached = textureEffect * SiteVars.MineralN[site] * leachIntensity * OtherData.NfracLeachWater;
 
-                PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, fractionNLeach={1:0.0}, leachIntensity={2:0.0}, .", amtNLeached, textureEffect, leachIntensity);                              
+                PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, leachIntensity={2:0.0}, waterMove={2:0.0}.", amtNLeached, textureEffect, leachIntensity, waterMove);                              
             }
 
             SiteVars.MineralN[site] -= amtNLeached;
             SiteVars.Stream[site].Nitrogen += amtNLeached;
-
-            PlugIn.ModelCore.Log.WriteLine("amtNLeached={0:0.0}.", amtNLeached);
 
             return;
         }

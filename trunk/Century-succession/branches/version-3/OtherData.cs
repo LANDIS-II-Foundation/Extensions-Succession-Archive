@@ -112,8 +112,7 @@ namespace Landis.Extension.Succession.Century
         public const double MineralLeachSlope = 0.4;                  // Century:  FLEACH(2)
         public const double MineralLeachIntercept = 0.6;                  // Century:  FLEACH(1)
         public const double NfracLeachWater = 0.95;                      // Century:  FLEACH(3)
-        public const double MaxWaterFlow = 0.1;                      // Century:  Minlch
-
+        
         // SPL:  Parameter for metabolic (vs. structural) split.
         public const double MetaStructSplitIntercept   = 0.85;         // Century:  SPL(1)
         public const double MetaStructSplitSlope   = 0.013;            // Century:  SPL(2)

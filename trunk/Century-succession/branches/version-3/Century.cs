@@ -118,7 +118,7 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
                     SiteVars.NLoss[site] += volatilize;
                     
-                    //SoilWater.Leach(site);
+                    SoilWater.Leach(site);
 
                     SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyAGNPPcarbon[site][month];
                     SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyBGNPPcarbon[site][month];
