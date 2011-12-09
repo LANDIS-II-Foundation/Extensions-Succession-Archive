@@ -15,9 +15,7 @@ namespace Landis.Extension.Succession.Century
 
     public class SoilWater
     {
-
-
-        public static void Run(int year, int month, double liveBiomass, Site site)
+        public static void Run(int year, int month, double liveBiomass, Site site, out double baseFlow, out double stormFlow)
         {
 
             //PlugIn.ModelCore.Log.WriteLine("year = {0}, month = {1}", year, month);
@@ -63,7 +61,7 @@ namespace Landis.Extension.Succession.Century
             //...Initialize Local Variables
             double addToSoil = 0.0;
             double bareSoilEvap = 0.0;
-            double baseFlow = 0.0;
+            baseFlow = 0.0;
             double totalEvaporated = 0.0;
             double evaporativeLoss = 0.0;
             double potentialTrans = 0.0;
@@ -71,7 +69,7 @@ namespace Landis.Extension.Succession.Century
             //double rwc1 = 0.0;
             double snow = 0.0;
             double liquidSnowpack = 0.0;
-            double stormFlow = 0.0;
+            stormFlow = 0.0;
             //double tot = 0.0;
             //double tot2 = 0.0;
             //double totalAvailableWater = 0.0;
@@ -377,7 +375,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.DecayFactor[site] = CalculateDecayFactor((int)OtherData.WType, SiteVars.SoilTemperature[site], relativeWaterContent, ratioPrecipPET, month);
             SiteVars.AnaerobicEffect[site] = CalculateAnaerobicEffect(drain, ratioPrecipPET, pet, tave);
 
-            //SoilWater.Leach(site);
+            //SoilWater.Leach(site, baseFlow, stormFlow);
 
             //PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}, waterMovement={4}", availableWater, soilWaterContent, wiltingPoint, soilDepth, waterMovement);
             //PlugIn.ModelCore.Log.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
@@ -524,13 +522,14 @@ namespace Landis.Extension.Succession.Century
             return soilTemp;
         }
         //--------------------------------------------------------------------------
-        public static void Leach(Site site)
+        public static void Leach(Site site, double baseFlow, double stormFlow)
         {
            
             //  double minlch, double frlech[3], double stream[8], double basef, double stormf)
             //Originally from leach.f of CENTURY model
             //...This routine computes the leaching of inorganic nitrogen (potential for use with phosphorus, and sulfur)
             //...Written 2/92 -rm. Revised on 12/11 by ML
+            // ML left out leaching intensity factor.  Cap on MAX leaching (MINLECH/OMLECH3) is poorly defined in CENTURY manual.
 
             //...Called From:   SIMSOM
 
@@ -550,14 +549,16 @@ namespace Landis.Extension.Succession.Century
             if (waterMove > 0.0 && SiteVars.MineralN[site] > 0.0)
             {
                 double textureEffect = OtherData.MineralLeachIntercept + OtherData.MineralLeachSlope * EcoregionData.PercentSand[ecoregion];
-                double leachIntensity = (1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater);
-                amtNLeached = textureEffect * SiteVars.MineralN[site] * leachIntensity * OtherData.NfracLeachWater;
+                //double leachIntensity = (1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater);
+                amtNLeached = textureEffect * SiteVars.MineralN[site] * OtherData.NfracLeachWater * OtherData.NO3frac;
 
-                PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, leachIntensity={2:0.0}, waterMove={2:0.0}.", amtNLeached, textureEffect, leachIntensity, waterMove);                              
+                //PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, waterMove={2:0.0}.", amtNLeached, textureEffect, waterMove);                              
             }
 
-            SiteVars.MineralN[site] -= amtNLeached;
-            SiteVars.Stream[site].Nitrogen += amtNLeached;
+            double totalNleached = (baseFlow * amtNLeached) + (stormFlow * amtNLeached);
+
+            SiteVars.MineralN[site] -= totalNleached;
+            SiteVars.Stream[site].Nitrogen += totalNleached;
 
             return;
         }

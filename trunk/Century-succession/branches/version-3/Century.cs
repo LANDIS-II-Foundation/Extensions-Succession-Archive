@@ -82,7 +82,8 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.Log.WriteLine("Month={0}, Ndeposition={1}.", i+1, monthlyNdeposition);
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
-                    SoilWater.Run(y, month, liveBiomass, site);
+                    double baseFlow, stormFlow;
+                    SoilWater.Run(y, month, liveBiomass, site, out baseFlow, out stormFlow);
 
 
                     // Reset N resorption if it is September
@@ -118,7 +119,7 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
                     SiteVars.NLoss[site] += volatilize;
                     
-                    SoilWater.Leach(site);
+                    SoilWater.Leach(site, baseFlow, stormFlow);
 
                     SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyAGNPPcarbon[site][month];
                     SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyBGNPPcarbon[site][month];
