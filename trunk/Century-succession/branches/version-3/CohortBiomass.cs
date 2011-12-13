@@ -167,6 +167,8 @@ namespace Landis.Extension.Succession.Century
 
             double leafFractionNPP  = FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].FCFRACleaf;
             double maxBiomass       = SpeciesData.B_MAX_Spp[cohort.Species][ecoregion];
+            double maxlai              = 7;
+            double sitelai          = SiteVars.LAI[site];
             double maxNPP           = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
 
             double limitT   = calculateTemp_Limit(site, cohort.Species);
@@ -175,7 +177,8 @@ namespace Landis.Extension.Succession.Century
 
             double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
-            double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
+            //double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
+            double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(sitelai / maxlai * 10.0) / Math.Exp(10.0));
 
             //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
 
@@ -183,7 +186,7 @@ namespace Landis.Extension.Succession.Century
 
             //potentialNPP *= limitN;
 
-            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitN * limitCapacity;
+            double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
 
             //if (Double.IsNaN(limitT) || Double.IsNaN(limitH20) || Double.IsNaN(limitLAI) || Double.IsNaN(limitCapacity) || Double.IsNaN(limitN))
             //{
@@ -603,10 +606,13 @@ namespace Landis.Extension.Succession.Century
             //if (lai < 0.5) lai = 0.5;
             if (lai < 0.1) lai = 0.1;
 
+            SiteVars.LAI[site] += lai;
+            
             double LAI_limit = Math.Max(0.0, 1.0 - Math.Exp(laitop * lai));
 
 
             //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, leafC={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, leafC, largeWoodC);
+            //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. Spp={2}, lai={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, lai, largeWoodC);
             //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     LAI Limits:  lai={2:0.0}, woodLAI={3:0.0}, leafLAI={4:0.0}, LAIlimit={5:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, lai, woodLAI, leafLAI, LAI_limit);
 
             return LAI_limit;

@@ -145,7 +145,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgTotalSoilN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgsoilNuptake = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgfrassC = new double[PlugIn.ModelCore.Ecoregions.Count];
-            
+            double[] avglai = new double[PlugIn.ModelCore.Ecoregions.Count];            
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {

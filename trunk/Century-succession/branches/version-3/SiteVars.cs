@@ -71,6 +71,7 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double> totalNuptake;
         private static ISiteVar<double[]> monthlymineralN;
         private static ISiteVar<double> frassC;
+        private static ISiteVar<double> lai;
                 
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<int> PrevYearMortality;
@@ -143,6 +144,7 @@ namespace Landis.Extension.Succession.Century
             totalNuptake        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             monthlymineralN     = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             frassC              = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            lai                 = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             
                        
 
@@ -272,6 +274,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.TotalNuptake[site] = 0.0;
             SiteVars.ResorbedN[site] = 0.0;
             SiteVars.FrassC[site] = 0.0;
+            SiteVars.LAI[site] = 0.0;
             //SiteVars.FireEfflux[site] = 0.0;
                         
 
@@ -725,6 +728,23 @@ namespace Landis.Extension.Succession.Century
             set
             {
                 frassC = value;
+            }
+
+
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of LAI (m2/m2)
+        /// </summary>
+        public static ISiteVar<double> LAI
+        {
+            get
+            {
+                return lai;
+            }
+            set
+            {
+                lai = value;
             }
 
 
