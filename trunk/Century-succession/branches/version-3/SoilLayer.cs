@@ -14,6 +14,9 @@ namespace Landis.Extension.Succession.Century
         
         public static void Decompose(ActiveSite site)
         {
+            //PlugIn.ModelCore.Log.WriteLine("SiteVars.SOM2[site].Nitrogen = {0:0.00}", SiteVars.SOM2[site].Nitrogen);
+            //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}", SiteVars.MineralN[site]);
+            
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             
             //---------------------------------------------------------------------
@@ -32,9 +35,12 @@ namespace Landis.Extension.Succession.Century
                 ratioCNtoSOM2 = System.Math.Max(ratioCNtoSOM2, OtherData.SurfaceActivePoolCNMinimum);
         
                 //Compute total C flow out of surface microbes.
-                double totalCFlow = som1c_surface 
+                //PlugIn.ModelCore.Log.WriteLine("SiteVars.DecayFactor = {0:0.00}, SurfaceDecayRateMicrobes = {1:0.00}",
+                    //SiteVars.DecayFactor[site], OtherData.LitterParameters[(int)LayerType.Surface].DecayRateMicrobes);
+                double totalCflow = som1c_surface
                     * SiteVars.DecayFactor[site] 
-                    * OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
+                    //* OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
+                    *0.2
                     * OtherData.MonthAdjust;
                     
                 // If decomposition can occur, schedule flows associated with respiration
@@ -43,13 +49,13 @@ namespace Landis.Extension.Succession.Century
                 {   
                     
                     //CO2 loss - Compute and schedule respiration flows.
-                    double co2loss = totalCFlow * OtherData.P1CO2_Surface;
+                    double co2loss = totalCflow * OtherData.P1CO2_Surface;
 
                     SiteVars.SOM1surface[site].Respiration(co2loss, site);
 
                     // Decompose Surface SOM1 to SOM2
                     // cflowS1surfToS2 is C Flow from SurFace som1 to Som2
-                    double netCFlow = totalCFlow - co2loss;
+                    double netCFlow = totalCflow - co2loss;
 
                     //Partition and schedule C and N flows 
                     SiteVars.SOM1surface[site].TransferCarbon(SiteVars.SOM2[site], netCFlow);
@@ -62,8 +68,10 @@ namespace Landis.Extension.Succession.Century
             //---------------------------------------------------------------------
             // Soil SOM1 decomposes to SOM2 and SOM3 with CO2 loss and leaching
             
-            double som1c_soil = SiteVars.SOM1soil[site].Carbon;  
-            
+            double som1c_soil = SiteVars.SOM1soil[site].Carbon;
+            //PlugIn.ModelCore.Log.WriteLine("SOM1soil[site].Carbon={0:0.00}", som1c_soil);
+            //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - pre SOM1.", SiteVars.MineralN[site]);
+          
             if (som1c_soil > 0.0000001)
             {
             
@@ -78,8 +86,10 @@ namespace Landis.Extension.Succession.Century
                 double textureEffect = OtherData.TextureEffectIntercept 
                                         + OtherData.TextureEffectSlope * EcoregionData.PercentSand[ecoregion];
                 
-                double anerb = SiteVars.AnaerobicEffect[site];  
-                
+                double anerb = SiteVars.AnaerobicEffect[site];
+
+                //PlugIn.ModelCore.Log.WriteLine("SiteVars.DecayFactor = {0:0.00}, SoilDecayRateMicrobes = {1:0.00}, texture = {2:0.00}, anerb = {3:0.00}, MonthAdjust = {4:0.00}.",
+                    //SiteVars.DecayFactor[site], OtherData.LitterParameters[(int)LayerType.Soil].DecayRateMicrobes, textureEffect, anerb, OtherData.MonthAdjust);
                 double totalCflow = som1c_soil 
                             * SiteVars.DecayFactor[site]
                             * OtherData.LitterParameters[(int) LayerType.Soil].DecayRateMicrobes
@@ -91,6 +101,7 @@ namespace Landis.Extension.Succession.Century
                 // If it can't go to SOM2, it can't decompose at all.
 
                 //If decomposition can occur,
+                //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - SOM1: before DecomposePossible.", SiteVars.MineralN[site]);
                 if (SiteVars.SOM1soil[site].DecomposePossible(ratioCNtoSOM2, SiteVars.MineralN[site]))
                 {   
                     //CO2 Loss - Compute and schedule respiration flows
@@ -98,8 +109,11 @@ namespace Landis.Extension.Succession.Century
 
                     double co2loss = totalCflow * P1CO2_Soil;
 
+                    //PlugIn.ModelCore.Log.WriteLine("totalCflow = {0:0.00}, P1CO2_Soil = {1:0.00} - SOM1 : before respiration.", totalCflow, P1CO2_Soil);
+                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, co2loss = {1:0.00} - SOM1 : before respiration.", SiteVars.MineralN[site], co2loss);
                     SiteVars.SOM1soil[site].Respiration(co2loss, site);
-
+                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - SOM1 : after respiration.", SiteVars.MineralN[site]);
+ 
                     //Decompose Soil SOM1 to SOM3
                     //The fraction of totalCflow that goes to SOM3 is a function of
                     //clay content.
@@ -117,6 +131,7 @@ namespace Landis.Extension.Succession.Century
                                             OtherData.MinContentN_SOM3);
                      
                     //Partition and schedule C and N flows 
+                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - before SOM1 step1.", SiteVars.MineralN[site]);
                     SiteVars.SOM1soil[site].TransferCarbon(SiteVars.SOM3[site], cFlowS1S3);
                     SiteVars.SOM1soil[site].TransferNitrogen(SiteVars.SOM3[site], cFlowS1S3, som1c_soil, ratioCNto3, site);
                      
@@ -153,8 +168,11 @@ namespace Landis.Extension.Succession.Century
                     double cFlowS1S2 = totalCflow - co2loss - cFlowS1S3 - cLeached;
 
                     //Partition and schedule C and N flows 
+                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - before SOM1 step2.", SiteVars.MineralN[site]);
                     SiteVars.SOM1soil[site].TransferCarbon(SiteVars.SOM2[site], cFlowS1S2);
                     SiteVars.SOM1soil[site].TransferNitrogen(SiteVars.SOM2[site], cFlowS1S2, som1c_soil, ratioCNtoSOM2, site);
+                    //PlugIn.ModelCore.Log.WriteLine("cFlowS1S2={0:0.00}. som1c_soil={1:0.00}, ratioCNtoSOM2={2:0.00}", cFlowS1S2, som1c_soil, ratioCNtoSOM2);
+                   
 
                 }  //endif candec
             }  //endif enough mass
@@ -164,8 +182,10 @@ namespace Landis.Extension.Succession.Century
             //**********SOM2 decomposes to soil SOM1 and SOM3 with CO2 loss**********
             // PlugIn.ModelCore.Log.WriteLine("    Decompose SOM2...");
 
-            double som2c = SiteVars.SOM2[site].Carbon; 
-            
+            double som2c = SiteVars.SOM2[site].Carbon;
+            //PlugIn.ModelCore.Log.WriteLine("som2c={0:0.00}.", som2c);
+            //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - pre SOM2.", SiteVars.MineralN[site]);
+          
             if (som2c > 0.0000001)
             {
                 // Determine C/N ratios for flows to SOM1
@@ -178,12 +198,13 @@ namespace Landis.Extension.Succession.Century
 
                 //Compute total C flow out of SOM2C
                 //Added impact of soil anaerobic conditions -rm 12/91
+               
                 double totalCflow = som2c 
                                 * SiteVars.DecayFactor[site] 
                                 * EcoregionData.DecayRateSOM2[ecoregion] 
                                 * anerb
                                 * OtherData.MonthAdjust;
-
+                //PlugIn.ModelCore.Log.WriteLine("SiteVars.SOM2DecayFactor = {0:0.00}, DecayRateSOM2 = {1:0.00}, anerb = {2:0.00}, MonthAdjust = {3:0.00}.", SiteVars.DecayFactor[site], EcoregionData.DecayRateSOM2[ecoregion], anerb, OtherData.MonthAdjust);
 
                 //If SOM2 can decompose to SOM1, it will also go to SOM3.
                 //If it can't go to SOM1, it can't decompose at all.
@@ -193,8 +214,10 @@ namespace Landis.Extension.Succession.Century
                 
                     //PlugIn.ModelCore.Log.WriteLine("SOM2 CAN decompose.");
                     //CO2 loss - Compute and schedule respiration flows
+                    
                     double co2loss = totalCflow * OtherData.FractionSOM2toCO2;
 
+                    //PlugIn.ModelCore.Log.WriteLine("SOM2co2loss = {0:0.00}, SOM2totalCflow = {1:0.00}", co2loss, totalCflow);
                     SiteVars.SOM2[site].Respiration(co2loss, site);
 
                     // -----------------------------------------------
@@ -213,6 +236,7 @@ namespace Landis.Extension.Succession.Century
                     //Partition and schedule C and N flows 
                     SiteVars.SOM2[site].TransferCarbon(SiteVars.SOM3[site], cFlowS2S3);
                     SiteVars.SOM2[site].TransferNitrogen(SiteVars.SOM3[site], cFlowS2S3, som2c, ratioCNto3, site);
+                    //PlugIn.ModelCore.Log.WriteLine("cFlowS2S3 C={0:0.00}. som2c={1:0.00}, ratioCNto3={2:0.00}", cFlowS2S3, som2c, ratioCNto3);
                    
                     // -----------------------------------------------
                     // Decompose SOM2 to SOM1
@@ -238,7 +262,8 @@ namespace Landis.Extension.Succession.Century
             //---------------------------------------------------------------------
             // SOM3 decomposes to soil SOM1 with CO2 loss
             // PlugIn.ModelCore.Log.WriteLine("    Decompose SOM3...");
-            
+            //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - pre SOM3.", SiteVars.MineralN[site]);
+           
             double som3c = SiteVars.SOM3[site].Carbon; 
             
             if (som3c > 0.0000001)

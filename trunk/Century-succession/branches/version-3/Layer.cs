@@ -389,12 +389,12 @@ namespace Landis.Extension.Succession.Century
 
             if ((NFlow - this.Nitrogen) > 0.01)
             {
-                PlugIn.ModelCore.Log.WriteLine("  Transfer N:  N flow > source N.");
-                PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
-                PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
-                PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
-                PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
-                PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
+                //PlugIn.ModelCore.Log.WriteLine("  Transfer N:  N flow > source N.");
+                //PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
+                //PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+                //PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
+                //PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
+                //PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
            }
 
             //...If C/N of Box A > C/N of new material entering Box B
@@ -405,6 +405,9 @@ namespace Landis.Extension.Succession.Century
                //     since  ratioCNtoDestination = netCFlow / (Nflow + immobileN),
                //     where immobileN is the extra N needed from the mineral pool
                 double immobileN = (CFlow / ratioCNtoDestination) - NFlow;
+                
+                //PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+                //PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
 
                 //...Schedule flow from Box A to Box B (outofa)
                 //flow(anps,bnps,time,outofa);
@@ -427,7 +430,9 @@ namespace Landis.Extension.Succession.Century
                 //...MINERALIZATION occurs
                 //...Schedule flow from Box A to Box B
             {
+                //PlugIn.ModelCore.Log.WriteLine("  Transfer Nitrogen Min.");
                 double mineralizedN = (CFlow / ratioCNtoDestination);
+                
 
                 this.Nitrogen -= mineralizedN;
                 destination.Nitrogen += mineralizedN;
@@ -450,7 +455,7 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.MineralN[site] += mineralNFlow;
 
-                //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, N mineralalization = {1:0.000}", NFlow, mineralNFlow);
+                //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, mineralizedN = {1:0.000}, N mineralalization = {1:0.000}", NFlow, mineralizedN, mineralNFlow);
                 //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
             }
 
@@ -459,6 +464,8 @@ namespace Landis.Extension.Succession.Century
 
             //...Net mineralization
             this.NetMineralization += mineralNFlow;
+
+            //PlugIn.ModelCore.Log.WriteLine("     this.Nitrogen={0:0.000}.", this.Nitrogen);
 
             return;
         }

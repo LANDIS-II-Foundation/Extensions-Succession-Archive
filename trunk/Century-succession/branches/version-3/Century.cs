@@ -59,6 +59,7 @@ namespace Landis.Extension.Succession.Century
 
                 for (int i = 0; i < 12; i++)
                 {
+                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1}.", SiteVars.MineralN[site], i);
 
                     // If in spin-up mode and calibration mode, then this needs to happen first.
                     if(PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
@@ -109,7 +110,9 @@ namespace Landis.Extension.Succession.Century
 
                     WoodLayer.Decompose(site);
                     LitterLayer.Decompose(site);
+                    //PlugIn.ModelCore.Log.WriteLine("Start of SoilLayer.Decompose for month {0}.", month);
                     SoilLayer.Decompose(site);
+                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1} - post Decompose.", SiteVars.MineralN[site], i);
                     //PlugIn.ModelCore.Log.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
                     //...Volatilization loss as a function of the mineral n which
