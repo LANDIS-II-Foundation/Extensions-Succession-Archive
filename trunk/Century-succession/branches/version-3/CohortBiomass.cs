@@ -167,7 +167,6 @@ namespace Landis.Extension.Succession.Century
 
             double leafFractionNPP  = FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].FCFRACleaf;
             double maxBiomass       = SpeciesData.B_MAX_Spp[cohort.Species][ecoregion];
-            double maxlai              = 7;
             double sitelai          = SiteVars.LAI[site];
             double maxNPP           = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
 
@@ -177,15 +176,15 @@ namespace Landis.Extension.Succession.Century
 
             double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
-            //double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
-            double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(SiteVars.LAI[site] / maxlai * 10.0) / Math.Exp(10.0));
-
+            double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
+            
             //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
 
             double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
 
             //potentialNPP *= limitN;
 
+            //double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
             double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
 
             //if (Double.IsNaN(limitT) || Double.IsNaN(limitH20) || Double.IsNaN(limitLAI) || Double.IsNaN(limitCapacity) || Double.IsNaN(limitN))
@@ -605,6 +604,8 @@ namespace Landis.Extension.Succession.Century
             // The minimum LAI to calculate effect is 0.2.
             //if (lai < 0.5) lai = 0.5;
             if (lai < 0.1) lai = 0.1;
+            //SiteVars.LAI= lai;
+            
 
             //SiteVars.LAI[site] += lai;
             

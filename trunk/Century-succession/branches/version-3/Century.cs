@@ -74,6 +74,7 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.MonthlyResp[site][month] = 0.0;
                     SiteVars.SourceSink[site].Carbon = 0.0;
                     SiteVars.TotalWoodBiomass[site] = Century.ComputeWoodBiomass((ActiveSite) site);
+                    //SiteVars.LAI[site] = Century.ComputeLAI((ActiveSite)site);
 
                     //PlugIn.ModelCore.Log.WriteLine("MELISSA:  Yr {0} of {1}, Month={2}, MineralN={3:0.00}.", y, years, i + 1, SiteVars.MineralN[site]);
                     
@@ -228,5 +229,14 @@ namespace Landis.Extension.Succession.Century
             return;
 
         }
+        //public static double ComputeLAI(ActiveSite site)
+        //{
+        //    double lai = 0;
+        //    if (SiteVars.Cohorts[site] != null)
+        //        foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
+        //            foreach (ICohort cohort in speciesCohorts)
+        //                lai += cohort.LAI;
+        //    return lai;
+        //}
     }
 }

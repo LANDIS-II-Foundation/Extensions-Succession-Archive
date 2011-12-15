@@ -110,7 +110,7 @@ namespace Landis.Extension.Succession.Century
                     double co2loss = totalCflow * P1CO2_Soil;
 
                     //PlugIn.ModelCore.Log.WriteLine("totalCflow = {0:0.00}, P1CO2_Soil = {1:0.00} - SOM1 : before respiration.", totalCflow, P1CO2_Soil);
-                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, co2loss = {1:0.00} - SOM1 : before respiration.", SiteVars.MineralN[site], co2loss);
+                    PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, co2loss = {1:0.00} - SOM1 : before respiration.", SiteVars.MineralN[site], co2loss);
                     SiteVars.SOM1soil[site].Respiration(co2loss, site);
                     //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - SOM1 : after respiration.", SiteVars.MineralN[site]);
  
@@ -217,7 +217,7 @@ namespace Landis.Extension.Succession.Century
                     
                     double co2loss = totalCflow * OtherData.FractionSOM2toCO2;
 
-                    //PlugIn.ModelCore.Log.WriteLine("SOM2co2loss = {0:0.00}, SOM2totalCflow = {1:0.00}", co2loss, totalCflow);
+                    PlugIn.ModelCore.Log.WriteLine("SOM2co2loss = {0:0.00}, SOM2totalCflow = {1:0.00}", co2loss, totalCflow);
                     SiteVars.SOM2[site].Respiration(co2loss, site);
 
                     // -----------------------------------------------
