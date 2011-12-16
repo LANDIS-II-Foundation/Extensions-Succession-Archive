@@ -604,10 +604,8 @@ namespace Landis.Extension.Succession.Century
             // The minimum LAI to calculate effect is 0.2.
             //if (lai < 0.5) lai = 0.5;
             if (lai < 0.1) lai = 0.1;
-            //SiteVars.LAI= lai;
-            
-
-            //SiteVars.LAI[site] += lai;
+        
+            //SiteVars.LAI[site] += lai; Tracking LAI.
             
             double LAI_limit = Math.Max(0.0, 1.0 - Math.Exp(laitop * lai));
 

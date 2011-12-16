@@ -229,14 +229,6 @@ namespace Landis.Extension.Succession.Century
             return;
 
         }
-        //public static double ComputeLAI(ActiveSite site)
-        //{
-        //    double lai = 0;
-        //    if (SiteVars.Cohorts[site] != null)
-        //        foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
-        //            foreach (ICohort cohort in speciesCohorts)
-        //                lai += cohort.LAI;
-        //    return lai;
-        //}
+        
     }
 }
