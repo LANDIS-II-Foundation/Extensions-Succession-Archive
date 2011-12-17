@@ -18,9 +18,12 @@ namespace Landis.Extension.Succession.AgeOnly
         private ISpeciesDataset speciesDataset;
         private int timestep;
         private SeedingAlgorithms seedAlg;
-        private Species.AuxParm<Ecoregions.AuxParm<double>> establishProbs;
+        //private Species.AuxParm<Ecoregions.AuxParm<double>> establishProbs;
         private InputValue<string> initCommunities;
         private InputValue<string> communitiesMap;
+
+        private string dynamicInputFile;
+
 
         //---------------------------------------------------------------------
 
@@ -49,13 +52,28 @@ namespace Landis.Extension.Succession.AgeOnly
         }
 
         //---------------------------------------------------------------------
-
-        public Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbabilities
+        /// <summary>
+        /// Input file for the dynamic inputs
+        /// </summary>
+        public string DynamicInputFile
         {
-            get {
-                return establishProbs;
+            get
+            {
+                return dynamicInputFile;
+            }
+            set
+            {
+                dynamicInputFile = value;
             }
         }
+        //---------------------------------------------------------------------
+
+        //public Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbabilities
+        //{
+        //    get {
+        //        return establishProbs;
+        //    }
+        //}
 
         //---------------------------------------------------------------------
 
@@ -64,31 +82,31 @@ namespace Landis.Extension.Succession.AgeOnly
             ecoregionDataset = PlugIn.ModelCore.Ecoregions;
             speciesDataset = PlugIn.ModelCore.Species;
 
-            establishProbs = CreateSpeciesEcoregionParm<double>();
+            //establishProbs = CreateSpeciesEcoregionParm<double>();
         }
 
         //---------------------------------------------------------------------
 
-        public Species.AuxParm<Ecoregions.AuxParm<T>> CreateSpeciesEcoregionParm<T>()
-        {
-            Species.AuxParm<Ecoregions.AuxParm<T>> newParm;
-            newParm = new Species.AuxParm<Ecoregions.AuxParm<T>>(speciesDataset);
-            foreach (ISpecies species in speciesDataset)
-            {
-                newParm[species] = new Ecoregions.AuxParm<T>(ecoregionDataset);
-            }
-            return newParm;
-        }
+        //public Species.AuxParm<Ecoregions.AuxParm<T>> CreateSpeciesEcoregionParm<T>()
+        //{
+        //    Species.AuxParm<Ecoregions.AuxParm<T>> newParm;
+        //    newParm = new Species.AuxParm<Ecoregions.AuxParm<T>>(speciesDataset);
+        //    foreach (ISpecies species in speciesDataset)
+        //    {
+        //        newParm[species] = new Ecoregions.AuxParm<T>(ecoregionDataset);
+        //    }
+        //    return newParm;
+        //}
 
 
         //---------------------------------------------------------------------
 
-        public void SetProbability(IEcoregion ecoregion,
-                                   ISpecies   species,
-                                   double     probability)
-        {
-            establishProbs[species][ecoregion] = probability;
-        }
+        //public void SetProbability(IEcoregion ecoregion,
+        //                           ISpecies   species,
+        //                           double     probability)
+        //{
+        //    establishProbs[species][ecoregion] = probability;
+        //}
 
         //---------------------------------------------------------------------
 

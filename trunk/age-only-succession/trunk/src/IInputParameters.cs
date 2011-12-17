@@ -45,6 +45,7 @@ namespace Landis.Extension.Succession.AgeOnly
             get;
             set;
         }
+        string DynamicInputFile { get; set; }
 
         //---------------------------------------------------------------------
 
@@ -55,16 +56,16 @@ namespace Landis.Extension.Succession.AgeOnly
         /// Indexed by ecoregion and species index numbers, i.e.,
         /// [ecoregion.Index][species.Index]
         /// </remarks>
-        Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbabilities
-        {
-            get;
-        }
+        //Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbabilities
+        //{
+        //    get;
+        //}
 
         //---------------------------------------------------------------------
 
-        void SetProbability(IEcoregion ecoregion,
-                            ISpecies   species,
-                            double     probability);
+        //void SetProbability(IEcoregion ecoregion,
+        //                    ISpecies   species,
+        //                    double     probability);
 
     }
 }

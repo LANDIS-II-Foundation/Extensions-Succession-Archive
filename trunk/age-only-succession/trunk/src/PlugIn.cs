@@ -61,7 +61,9 @@ namespace Landis.Extension.Succession.AgeOnly
 
             Cohort.DeathEvent += CohortDied; 
 
-            establishProbabilities = parameters.EstablishProbabilities;
+            //establishProbabilities = parameters.EstablishProbabilities;
+            DynamicInputs.Initialize(parameters.DynamicInputFile, false);
+            SpeciesData.ChangeDynamicParameters(0);  // Year 0
 
             //Reproduction.SufficientResources = SufficientLight;
             Reproduction.Establish = Establish;
@@ -106,6 +108,7 @@ namespace Landis.Extension.Succession.AgeOnly
                                            ushort     years,
                                            int?       successionTimestep)
         {
+            SpeciesData.ChangeDynamicParameters(PlugIn.ModelCore.CurrentTime);
             SiteVars.Cohorts[site].Grow(years, site, successionTimestep, modelCore);
         }
 
@@ -140,7 +143,9 @@ namespace Landis.Extension.Succession.AgeOnly
         /// </summary>
         public bool Establish(ISpecies species, ActiveSite site)
         {
-            double establishProbability = establishProbabilities[species][modelCore.Ecoregion[site]];
+            //double establishProbability = establishProbabilities[species][modelCore.Ecoregion[site]];
+            IEcoregion ecoregion = modelCore.Ecoregion[site];
+            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
 
             return modelCore.GenerateUniform() < establishProbability;
         }
