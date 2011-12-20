@@ -176,7 +176,7 @@ namespace Landis.Extension.Succession.Century
 
             double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
-            double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 10.0) / Math.Exp(10.0));
+            double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 5.0) / Math.Exp(5.0));
             
             //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
 
