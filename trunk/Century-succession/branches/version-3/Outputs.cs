@@ -375,13 +375,10 @@ namespace Landis.Extension.Succession.Century
                         );
                     log.WriteLine("");
                 }
-            
+            }
             //Reset back to zero:
             SiteVars.FireEfflux.ActiveSiteValues = 0.0;
-            SiteVars.AgeMortality.ActiveSiteValues = 0.0;
 
-            
-            }
         }
 
         public static void WriteMonthlyLogFile(int month)
