@@ -118,10 +118,10 @@ namespace Landis.Extension.Succession.Century
 
                     //...Volatilization loss as a function of the mineral n which
                     //     remains after uptake by plants
-                    double volatilize = (SiteVars.MineralN[site] * 0.02)/12; // / 12.0; // monthly value
+                    double volatilize = (SiteVars.MineralN[site] * 0.02)/12; // monthly value
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
-                    SiteVars.NLoss[site] += volatilize;
+                    SiteVars.Nvol[site] += volatilize;
                     
                     SoilWater.Leach(site, baseFlow, stormFlow);
 

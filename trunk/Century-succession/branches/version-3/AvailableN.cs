@@ -1,6 +1,6 @@
 
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Melissa Lucash, Ben Sulman
 
 using Edu.Wisc.Forest.Flel.Util;
 using System.Collections.Generic;
@@ -98,7 +98,9 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
         // Method for calculating Mineral N allocation, called from Century.cs Run method before calling Grow
-        // Iterates through cohorts, assigning each a portion of mineral N based on fine root biomass.
+        // Iterates through cohorts, assigning each a portion of mineral N based on coarse root biomass.  Uses an exponential function to "distribute" 
+        // the N more evenly between spp. so that the ones with the most woody biomass don't get all the N (L122).
+
         public static void CalculateMineralNfraction(Site site)
         {
             int currentYear = PlugIn.ModelCore.CurrentTime;
@@ -118,7 +120,6 @@ namespace Landis.Extension.Succession.Century
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
                     //double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass); 
                     double Nallocation = 1- Math.Exp((-Roots.CalculateCoarseRoot(cohort.WoodBiomass)*0.02));
-
 
                     if (Nallocation <= 0.0) //PlugIn.ModelCore.CurrentTime == 0)
                         Nallocation = Math.Max(Nallocation, cohort.WoodBiomass * 0.01);
@@ -167,6 +168,8 @@ namespace Landis.Extension.Succession.Century
             }
 
         }
+
+        // Calculates how much N a cohort gets, based on the amount of N available.
 
         public static void CalculateMineralNallocation(Site site)
         {
@@ -240,7 +243,8 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
         /// <summary>
-        /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP) of leaves, wood, coarse roots and fine roots.
+        /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP) of leaves, wood, coarse roots and fine roots.  
+        /// Demand is then used to determine the amount of N that a cohort "wants".
         /// </summary>
         public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, double[] ANPP)
         {

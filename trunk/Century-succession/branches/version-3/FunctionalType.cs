@@ -166,9 +166,9 @@ namespace Landis.Extension.Succession.Century
                 return klai;
             }
             set {
-                    if (value  < 1.0 || value  > 5000.0)
+                    if (value  < 1.0 || value  > 10000.0)
                         throw new InputValueException(value.ToString(),
-                            "K LAI must be between 1 and 5000");
+                            "K LAI must be between 1 and 10000");
                 klai = value;
             }
         }

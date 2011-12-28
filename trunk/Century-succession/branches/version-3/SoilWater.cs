@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Melissa Lucash
 
 using System.Collections.Generic;
 using System.IO;
@@ -529,7 +529,8 @@ namespace Landis.Extension.Succession.Century
             //Originally from leach.f of CENTURY model
             //...This routine computes the leaching of inorganic nitrogen (potential for use with phosphorus, and sulfur)
             //...Written 2/92 -rm. Revised on 12/11 by ML
-            // ML left out leaching intensity factor.  Cap on MAX leaching (MINLECH/OMLECH3) is poorly defined in CENTURY manual.
+            // ML left out leaching intensity factor.  Cap on MAX leaching (MINLECH/OMLECH3) is poorly defined in CENTURY manual. Added a NO3frac factor to account 
+            //for the fact that only NO3 (not NH4) is leached from soils.  
 
             //...Called From:   SIMSOM
 

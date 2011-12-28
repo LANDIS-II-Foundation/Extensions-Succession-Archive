@@ -65,8 +65,8 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyBGNPPC;
         private static ISiteVar<double[]> monthlyNEE;
         public static ISiteVar<double> AnnualNEE;
-        public static ISiteVar<double> FireEfflux;
-        public static ISiteVar<double> NLoss;
+        public static ISiteVar<double> FireCEfflux;
+        public static ISiteVar<double> Nvol;
         private static ISiteVar<double[]> monthlyResp;
         private static ISiteVar<double> totalNuptake;
         private static ISiteVar<double[]> monthlymineralN;
@@ -129,7 +129,7 @@ namespace Landis.Extension.Succession.Century
             monthlyBGNPPC       = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             monthlyNEE          = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             AnnualNEE           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            FireEfflux          = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            FireCEfflux          = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             monthlyResp         = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
 
             cohortLeafN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -139,7 +139,7 @@ namespace Landis.Extension.Succession.Century
                         
             TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            NLoss               = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            Nvol                = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             totalNuptake        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             monthlymineralN     = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
@@ -269,7 +269,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SOM2[site].NetMineralization = 0.0;
             SiteVars.SOM3[site].NetMineralization = 0.0;
             SiteVars.AnnualNEE[site] = 0.0;
-            SiteVars.NLoss[site] = 0.0;
+            SiteVars.Nvol[site] = 0.0;
             SiteVars.AnnualNEE[site] = 0.0;
             SiteVars.TotalNuptake[site] = 0.0;
             SiteVars.ResorbedN[site] = 0.0;
