@@ -16,58 +16,9 @@ namespace Landis.Extension.Succession.Century
     /// A helper class.
     /// </summary>
     public class FireReductions
-    //: IDisturbance
     {
         private double woodReduction;
         private double litterReduction;
-        //private static ActiveSite currentSite;
-        //private static FireReductions singleton;
-        /*
-        //---------------------------------------------------------------------
-
-        ActiveSite IDisturbance.CurrentSite
-        {
-            get {
-                return currentSite;
-            }
-        }
-        //---------------------------------------------------------------------
-
-        ExtensionType IDisturbance.Type
-        {
-            get {
-                return new ExtensionType("disturbance:fire");
-            }
-        }
-        //---------------------------------------------------------------------
-
-        static FireReductions()
-        {
-            singleton = new FireReductions();
-        }
-
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Reduces the biomass of cohorts that have been marked for partial
-        /// reduction.
-        //  Original stand is the originating stand in cases where there is stand spreading.
-        /// </summary>
-        public static void ReduceCohortBiomass(ActiveSite site)
-        {
-            currentSite = site;            
-            SiteVars.Cohorts[site].RemoveCohorts(singleton);
-            
-        }
-        //---------------------------------------------------------------------
-
-        public float[] RemoveMarkedCohort(ICohort cohort)
-        {
-            float[] fireReductionLiveBiomass = new float[2]{5.0f,5.0f};
-        
-            return fireReductionLiveBiomass;  // percent reduction
-        }*/
-
         
         public double WoodReduction
         {

@@ -262,7 +262,7 @@ namespace Landis.Extension.Succession.Century
             speciesLineNums.Clear();  //  If parser re-used (i.e., for testing purposes)
 
             InputVar<int> ft = new InputVar<int>("Functional Type");
-            InputVar<int> nt = new InputVar<int>("Nitrogen Tolerance");
+            InputVar<bool> nt = new InputVar<bool>("Nitrogen Fixer");
             InputVar<int> gddmn = new InputVar<int>("Growing Degree Day Minimum");
             InputVar<int> gddmx = new InputVar<int>("Growing Degree Day Maximum");
             InputVar<int> mjt = new InputVar<int>("Minimum January Temperature");
@@ -288,7 +288,7 @@ namespace Landis.Extension.Succession.Century
                 parameters.SetFunctionalType(species, ft.Value);
 
                 ReadValue(nt, currentLine);
-                parameters.SetNTolerance(species, nt.Value);
+                parameters.NFixer[species] = nt.Value;
                 
                 ReadValue(gddmn, currentLine);
                 parameters.SetGDDmin(species, gddmn.Value);

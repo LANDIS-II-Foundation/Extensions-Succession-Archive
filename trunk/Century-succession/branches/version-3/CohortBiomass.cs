@@ -494,7 +494,7 @@ namespace Landis.Extension.Succession.Century
             //double CoarseRootNPP = WoodNPP * 0.75;
             
             double limitN = 0.0;
-            if (SpeciesData.NTolerance[cohort.Species] == 4)
+            if (SpeciesData.NFixer[cohort.Species])
                 limitN = 1.0;  // No limit for N-fixing shrubs
             else
             {

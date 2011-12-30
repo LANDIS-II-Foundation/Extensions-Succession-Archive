@@ -60,7 +60,7 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         Species.AuxParm<int> SppFunctionalType{get;}
-        Species.AuxParm<int> NTolerance{get;}
+        Species.AuxParm<bool> NFixer{get;}
         Species.AuxParm<int> GDDmin{get;}
         Species.AuxParm<int> GDDmax{get;}
         Species.AuxParm<int> MinJanTemp{get;}

@@ -252,7 +252,7 @@ namespace Landis.Extension.Succession.Century
             if(ANPP[0] <= 0.0 && ANPP[1] <= 0.0)
                 return 0.0;
 
-            if (SpeciesData.NTolerance[species] == 4)  // We fix our own N!
+            if (SpeciesData.NFixer[species])  // We fix our own N!
                 return 0.0;
 
             double ANPPwood = 0.0;

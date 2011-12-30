@@ -17,7 +17,7 @@ namespace Landis.Extension.Succession.Century
     {
 
         public static Species.AuxParm<int> FuncType;
-        public static Species.AuxParm<int> NTolerance;
+        public static Species.AuxParm<bool> NFixer;
         public static Species.AuxParm<int> GDDmin;
         public static Species.AuxParm<int> GDDmax;
         public static Species.AuxParm<int> MinJanTemp;
@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.Century
         public static void Initialize(IInputParameters parameters)
         {
             FuncType            = parameters.SppFunctionalType;
-            NTolerance          = parameters.NTolerance;
+            NFixer              = parameters.NFixer;
             GDDmin              = parameters.GDDmin;
             GDDmax              = parameters.GDDmax;
             MinJanTemp          = parameters.MinJanTemp;

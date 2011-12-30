@@ -29,7 +29,7 @@ namespace Landis.Extension.Succession.Century
         private FireReductions[] fireReductionsTable;
         
         private Species.AuxParm<int> sppFunctionalType;
-        private Species.AuxParm<int> nTolerance;
+        private Species.AuxParm<bool> nFixer;
         private Species.AuxParm<int> gddMin;
         private Species.AuxParm<int> gddMax;
         private Species.AuxParm<int> minJanTemp;
@@ -248,7 +248,7 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         public Species.AuxParm<int>     SppFunctionalType {get {return sppFunctionalType;}}
-        public Species.AuxParm<int>     NTolerance { get {return nTolerance;}}
+        public Species.AuxParm<bool>     NFixer { get {return nFixer;}}
         public Species.AuxParm<int>     GDDmin     { get { return gddMin; }}
         public Species.AuxParm<int>     GDDmax     { get { return gddMax; }}
         public Species.AuxParm<int>     MinJanTemp { get { return minJanTemp; }}
@@ -507,12 +507,12 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        public void SetNTolerance(ISpecies           species,
-                                     InputValue<int> newValue)
-        {
-            Debug.Assert(species != null);
-            nTolerance[species] = CheckBiomassParm(newValue, 1, 4);
-        }
+        //public void SetNFixer(ISpecies           species,
+        //                             InputValue<int> newValue)
+        //{
+        //    Debug.Assert(species != null);
+        //    nTolerance[species] = CheckBiomassParm(newValue, 1, 4);
+        //}
 
         //---------------------------------------------------------------------
 
@@ -784,7 +784,7 @@ namespace Landis.Extension.Succession.Century
             fireReductionsTable = new FireReductions[6];
 
             sppFunctionalType       = new Species.AuxParm<int>(speciesDataset);
-            nTolerance              = new Species.AuxParm<int>(speciesDataset);
+            nFixer                  = new Species.AuxParm<bool>(speciesDataset);
             gddMin                  = new Species.AuxParm<int>(speciesDataset);
             gddMax                  = new Species.AuxParm<int>(speciesDataset);
             minJanTemp              = new Species.AuxParm<int>(speciesDataset);
