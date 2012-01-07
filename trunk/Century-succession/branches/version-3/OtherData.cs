@@ -126,8 +126,8 @@ namespace Landis.Extension.Succession.Century
 
         // PMCO2(1 and 2) - controls flow from surface/soil metabolic to CO2 (fraction of C lost as CO2 during decomposition).
         // Values from ffix.100 file.
-        public const double MetabolicToCO2Surface = 0.55;
-        public const double MetabolicToCO2Soil = 0.55;
+        public const double MetabolicToCO2Surface = 0.85;
+        public const double MetabolicToCO2Soil = 0.95;
 
         // PS1CO2(1 and 2) Controls amount of CO2 loss when structural decomposes to SOM1.
         // Values from ffix.100 file.
@@ -235,7 +235,7 @@ namespace Landis.Extension.Succession.Century
             // Decomposition rate of organic matter with active turnover, the fraction of the pool
             // that turns over each year
             litterParmsSurface.DecayRateMicrobes = 6.0; //DEC3(1)
-            litterParmsSoil.DecayRateMicrobes = 7.3; //DEC3(2)
+            litterParmsSoil.DecayRateMicrobes = 7.3/100; //DEC3(2)
 
             LitterParameters[0] = litterParmsSurface;
             LitterParameters[1] = litterParmsSoil;

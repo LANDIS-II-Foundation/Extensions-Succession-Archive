@@ -97,7 +97,8 @@ namespace Landis.Extension.Succession.Century
             SiteVars.FireCEfflux[site]               += carbonLoss;
             
             SiteVars.SurfaceStructural[site].Nitrogen -= nitrogenLoss;
-            SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
+            SiteVars.SourceSink[site].Nitrogen += nitrogenLoss; 
+            SiteVars.Nvol[site] += nitrogenLoss;
             
             // Metabolic litter
 

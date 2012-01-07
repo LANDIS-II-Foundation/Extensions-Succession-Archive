@@ -504,6 +504,8 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> lat = new InputVar<double>("Latitude");
             InputVar<double> drsom2 = new InputVar<double>("Decay Rate SOM2");
             InputVar<double> drsom3 = new InputVar<double>("Decay Rate SOM3");
+            InputVar<double> denits = new InputVar<double>("Denitrification Slope");
+            InputVar<double> deniti = new InputVar<double>("Denitrification Intercept");
             Dictionary<string, int> lineNumbers = new Dictionary<string, int>();
 
             while (! AtEndOfInput && CurrentName != Names.FireReductionParameters ) {
@@ -552,6 +554,12 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(drsom3, currentLine);
                 parameters.SetDecayRateSOM3(ecoregion, drsom3.Value);
+
+                ReadValue(denits, currentLine);
+                parameters.SetDenitifSlope(ecoregion, denits.Value);
+
+                ReadValue(deniti, currentLine);
+                parameters.SetDenitifInterc(ecoregion, deniti.Value);
 
                 CheckNoDataAfter("the " + drsom3.Name + " column", currentLine);
                 

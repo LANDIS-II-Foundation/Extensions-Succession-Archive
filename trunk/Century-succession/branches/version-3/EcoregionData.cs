@@ -30,6 +30,8 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double> Latitude;
         public static Ecoregions.AuxParm<double> DecayRateSOM2;
         public static Ecoregions.AuxParm<double> DecayRateSOM3;
+        public static Ecoregions.AuxParm<double> DenitifSlope;
+        public static Ecoregions.AuxParm<double> DenitifInterc;
         public static Ecoregions.AuxParm<double> ActiveSiteCount;
         public static Ecoregions.AuxParm<Percentage>[] ShadeBiomass;
         public static Ecoregions.AuxParm<int> B_MAX;
@@ -58,6 +60,8 @@ namespace Landis.Extension.Succession.Century
             Latitude            = parameters.Latitude;
             DecayRateSOM2       = parameters.DecayRateSOM2;
             DecayRateSOM3       = parameters.DecayRateSOM3;
+            DenitifSlope        = parameters.DenitrifSlope;
+            DenitifInterc       = parameters.DenitrifIntercept;
             ShadeBiomass = parameters.MinRelativeBiomass;
     
             ActiveSiteCount = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
