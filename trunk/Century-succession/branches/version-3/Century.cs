@@ -120,7 +120,7 @@ namespace Landis.Extension.Succession.Century
                     //     remains after uptake by plants
                     //double volatilize = (SiteVars.MineralN[site] * 0.02)/12; // monthly value
 
-                    double volatilize = monthlyNdeposition * EcoregionData.DenitifSlope[ecoregion] + EcoregionData.DenitifInterc[ecoregion];
+                    double volatilize = (monthlyNdeposition * EcoregionData.DenitifSlope[ecoregion]) + EcoregionData.DenitifInterc[ecoregion] ;
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
                     SiteVars.Nvol[site] += volatilize;
