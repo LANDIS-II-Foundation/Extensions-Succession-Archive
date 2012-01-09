@@ -497,6 +497,7 @@ namespace Landis.Extension.Succession.Century
                     anerob = aneref3;
             }
 
+            //PlugIn.ModelCore.Log.WriteLine("Anaerobic Effect = {1}.", anerob);
             return anerob;
         }
         //---------------------------------------------------------------------------

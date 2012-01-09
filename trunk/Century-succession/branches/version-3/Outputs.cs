@@ -34,8 +34,8 @@ namespace Landis.Extension.Succession.Century
             
             log.AutoFlush = true;
             log.Write("Time, Ecoregion, NumSites,");
-            log.Write("NEEC, SOMTC, AGB, ");
-            log.Write("AG_NPPC, BG_NPPC, LitterfallTC, AgeMortality, ");
+            log.Write("NEEC, SOMT, AGB, ");
+            log.Write("AG_NPPC, BG_NPPC, LitterfallC, AgeMortality, ");
             log.Write("MineralN, TotalN, GrossMineralization, ");
             log.Write("C:LeafFRoot, C:WoodCRoot, C:DeadWood, C:DeadCRoot, ");
             log.Write("C:SurfStruc, C:SurfMeta, C:SoilStruc, C:SoilMeta, ");
@@ -378,7 +378,10 @@ namespace Landis.Extension.Succession.Century
                 }
             }
             //Reset back to zero:
+            //These are being reset here because fire effects are handled in the first year of the 
+            //growth loop but the reporting doesn't happen until after all growth is finished.
             SiteVars.FireCEfflux.ActiveSiteValues = 0.0;
+            //SiteVars.FireNEfflux.ActiveSiteValues = 0.0;
 
         }
 
