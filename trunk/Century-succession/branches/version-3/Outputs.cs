@@ -34,7 +34,7 @@ namespace Landis.Extension.Succession.Century
             
             log.AutoFlush = true;
             log.Write("Time, Ecoregion, NumSites,");
-            log.Write("NEEC, SOMT, AGB, ");
+            log.Write("NEEC, SOMTC, AGB, ");
             log.Write("AG_NPPC, BG_NPPC, LitterfallC, AgeMortality, ");
             log.Write("MineralN, TotalN, GrossMineralization, ");
             log.Write("C:LeafFRoot, C:WoodCRoot, C:DeadWood, C:DeadCRoot, ");
@@ -45,8 +45,8 @@ namespace Landis.Extension.Succession.Century
             log.Write("N:SOM1surf, N:SOM1soil, N:SOM2, N:SOM3, ");
             log.Write("SurfStrucNetMin, SurfMetaNetMin, SoilStrucNetMin, SoilMetaNetMin, ");
             log.Write("SOM1surfNetMin, SOM1soilNetMin, SOM2NetMin, SOM3NetMin, ");
-            log.Write("StreamC, StreamN, FireCEfflux,");
-            log.Write("Nuptake, Nresorbed, TotalSoilN, Nvol,avgfrassC,");
+            log.Write("StreamC, StreamN, FireCEfflux, FireNEfflux, ");
+            log.Write("Nuptake, Nresorbed, TotalSoilN, Nvol, avgfrassC");
             log.WriteLine("");
 
 
@@ -140,6 +140,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgStreamC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgStreamN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgFireCEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgFireNEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNvol = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNresorbed = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgTotalSoilN = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -208,11 +209,12 @@ namespace Landis.Extension.Succession.Century
                 avgStreamC[ecoregion.Index] = 0.0;
                 avgStreamN[ecoregion.Index] = 0.0;
                 avgFireCEfflux[ecoregion.Index] = 0.0;
-                avgNvol[ecoregion.Index] = 0.0;
+                avgFireNEfflux[ecoregion.Index] = 0.0;
                 avgNuptake[ecoregion.Index] = 0.0;
                 avgNresorbed[ecoregion.Index] = 0.0;
                 avgTotalSoilN[ecoregion.Index] = 0.0;
-                avgNuptake[ecoregion.Index] = 0.0;
+                avgNvol[ecoregion.Index] = 0.0;
+                avgfrassC[ecoregion.Index] = 0.0;
                 
             }
 
@@ -279,11 +281,13 @@ namespace Landis.Extension.Succession.Century
                 avgStreamC[ecoregion.Index] += SiteVars.Stream[site].Carbon;
                 avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen; //+ SiteVars.NLoss[site];
                 avgFireCEfflux[ecoregion.Index] += SiteVars.FireCEfflux[site];
-                avgNvol[ecoregion.Index] += SiteVars.Nvol[site];
+                avgFireNEfflux[ecoregion.Index] += SiteVars.FireNEfflux[site];
                 avgNresorbed[ecoregion.Index] += SiteVars.ResorbedN[site];
                 avgNuptake[ecoregion.Index] += GetSoilNuptake(site);
+                avgNvol[ecoregion.Index] += SiteVars.Nvol[site];
                 avgfrassC[ecoregion.Index] += SiteVars.FrassC[site];
-               
+
+                               
                 
             }
             
@@ -360,10 +364,11 @@ namespace Landis.Extension.Succession.Century
                         (avgSOM2NetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),           
                         (avgSOM3NetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, ",
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.0}, ",
                         (avgStreamC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgStreamN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
-                        (avgFireCEfflux[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion])
+                        (avgFireCEfflux[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
+                        (avgFireNEfflux[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.0}, ",
                         (avgNuptake[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
@@ -376,12 +381,13 @@ namespace Landis.Extension.Succession.Century
                         );
                     log.WriteLine("");
                 }
+               
             }
             //Reset back to zero:
             //These are being reset here because fire effects are handled in the first year of the 
             //growth loop but the reporting doesn't happen until after all growth is finished.
             SiteVars.FireCEfflux.ActiveSiteValues = 0.0;
-            //SiteVars.FireNEfflux.ActiveSiteValues = 0.0;
+            SiteVars.FireNEfflux.ActiveSiteValues = 0.0;
 
         }
 

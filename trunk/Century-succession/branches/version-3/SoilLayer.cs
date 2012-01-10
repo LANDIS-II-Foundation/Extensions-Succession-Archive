@@ -91,7 +91,8 @@ namespace Landis.Extension.Succession.Century
                     //SiteVars.DecayFactor[site], OtherData.LitterParameters[(int)LayerType.Soil].DecayRateMicrobes, textureEffect, anerb, OtherData.MonthAdjust);
                 double totalCflow = som1c_soil 
                             * SiteVars.DecayFactor[site]
-                            * OtherData.LitterParameters[(int) LayerType.Soil].DecayRateMicrobes
+                            //* OtherData.LitterParameters[(int) LayerType.Soil].DecayRateMicrobes
+                            * EcoregionData.DecayRateSOM1[ecoregion] 
                             * textureEffect  
                             * anerb
                             * OtherData.MonthAdjust;

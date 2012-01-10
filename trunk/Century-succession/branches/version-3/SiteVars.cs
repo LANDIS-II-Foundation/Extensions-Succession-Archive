@@ -66,6 +66,7 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyNEE;
         public static ISiteVar<double> AnnualNEE;
         public static ISiteVar<double> FireCEfflux;
+        public static ISiteVar<double> FireNEfflux;
         public static ISiteVar<double> Nvol;
         private static ISiteVar<double[]> monthlyResp;
         private static ISiteVar<double> totalNuptake;
@@ -129,7 +130,8 @@ namespace Landis.Extension.Succession.Century
             monthlyBGNPPC       = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             monthlyNEE          = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             AnnualNEE           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            FireCEfflux          = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            FireCEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            FireNEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             monthlyResp         = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
 
             cohortLeafN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();

@@ -229,13 +229,13 @@ namespace Landis.Extension.Succession.Century
             litterParmsSoil.DecayRateStrucC = 0.049; //DEC1(2)
 
             // Metabolic decomposition rate, the fraction of the pool that turns over each year.
-            litterParmsSurface.DecayRateMetabolicC = 0.248; //DEC2(1)
-            litterParmsSoil.DecayRateMetabolicC = 0.285; //DEC2(2)
+            litterParmsSurface.DecayRateMetabolicC = 0.208; //DEC2(1)
+            litterParmsSoil.DecayRateMetabolicC = 0.245; //DEC2(2)
 
             // Decomposition rate of organic matter with active turnover, the fraction of the pool
             // that turns over each year (SOM1)
             litterParmsSurface.DecayRateMicrobes = 0.01; //DEC3(1)  // Modified to be a fraction
-            litterParmsSoil.DecayRateMicrobes = 0.3; //DEC3(2)  // Modified to be fraction
+            //litterParmsSoil.DecayRateMicrobes = 0.3; //DEC3(2)  // Modified to be fraction
 
             LitterParameters[0] = litterParmsSurface;
             LitterParameters[1] = litterParmsSoil;

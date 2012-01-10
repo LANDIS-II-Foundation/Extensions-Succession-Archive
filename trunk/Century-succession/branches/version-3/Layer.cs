@@ -274,6 +274,7 @@ namespace Landis.Extension.Succession.Century
                                 * anerb
                                 * System.Math.Exp(-1.0 * OtherData.LigninDecayEffect * this.FractionLignin) //strlig[SRFC]);
                                 * OtherData.MonthAdjust;
+                //PlugIn.ModelCore.Log.WriteLine("     anaerobic={0:0.000}", anerb);
 
 
                //Decompose structural into som1 and som2 with CO2 loss.

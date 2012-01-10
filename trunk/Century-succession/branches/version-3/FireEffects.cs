@@ -97,8 +97,8 @@ namespace Landis.Extension.Succession.Century
             SiteVars.FireCEfflux[site]               += carbonLoss;
             
             SiteVars.SurfaceStructural[site].Nitrogen -= nitrogenLoss;
-            SiteVars.SourceSink[site].Nitrogen += nitrogenLoss; 
-            SiteVars.Nvol[site] += nitrogenLoss;
+            SiteVars.SourceSink[site].Nitrogen += nitrogenLoss;
+            SiteVars.FireNEfflux[site] += nitrogenLoss;
             
             // Metabolic litter
 
@@ -112,7 +112,7 @@ namespace Landis.Extension.Succession.Century
             
             SiteVars.SurfaceMetabolic[site].Nitrogen -= nitrogenLoss;
             SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
-            SiteVars.Nvol[site] += nitrogenLoss;
+            SiteVars.FireNEfflux[site] += nitrogenLoss;
             
             // Surface dead wood
 
@@ -128,7 +128,7 @@ namespace Landis.Extension.Succession.Century
             
             SiteVars.SurfaceDeadWood[site].Nitrogen -= nitrogenLoss;
             SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
-            SiteVars.Nvol[site] += nitrogenLoss;
+            SiteVars.FireNEfflux[site] += nitrogenLoss;
 
             SiteVars.MineralN[site] += summaryNLoss * 0.01;
             
