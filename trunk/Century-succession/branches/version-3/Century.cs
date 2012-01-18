@@ -67,6 +67,7 @@ namespace Landis.Extension.Succession.Century
 
                     int month = months[i];
                     CohortBiomass.month = month;
+                    CohortBiomass.centuryMonth = i;
 
                     SiteVars.MonthlyAGNPPcarbon[site][month] = 0.0;
                     SiteVars.MonthlyBGNPPcarbon[site][month] = 0.0;
@@ -104,7 +105,7 @@ namespace Landis.Extension.Succession.Century
                     // Calculate N allocation for each cohort
                     AvailableN.CalculateMineralNallocation(site);
 
-                    if(month==11)
+                    if (i==11)
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), true);
                     else
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), false);

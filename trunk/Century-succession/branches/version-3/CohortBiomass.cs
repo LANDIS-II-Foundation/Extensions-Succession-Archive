@@ -26,6 +26,7 @@ namespace Landis.Extension.Succession.Century
         //  Ecoregion where the cohort's site is located
         private IEcoregion ecoregion;
         public static int month;
+        public static int centuryMonth;
         public static double SpinupMortalityFraction;
 
         //---------------------------------------------------------------------
