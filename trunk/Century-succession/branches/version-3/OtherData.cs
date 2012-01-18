@@ -93,7 +93,7 @@ namespace Landis.Extension.Succession.Century
         public const double PS1S3_Intercept = 0.003;
         public const double PS1S3_Slope = 0.032;
 
-        public const double PS2S3_Intercept = 0.003;
+        public const double PS2S3_Intercept = 0.027;
         public const double PS2S3_Slope = 0.009;
 
         // OMLECH(1 & 2) Parameters for the effect of sand on leaching of organic compounds. Values from ffix.100 file and
@@ -126,8 +126,8 @@ namespace Landis.Extension.Succession.Century
 
         // PMCO2(1 and 2) - controls flow from surface/soil metabolic to CO2 (fraction of C lost as CO2 during decomposition).
         // Values from ffix.100 file.
-        public const double MetabolicToCO2Surface = 0.85;
-        public const double MetabolicToCO2Soil = 0.95;
+        public const double MetabolicToCO2Surface = 0.55;
+        public const double MetabolicToCO2Soil = 0.55;
 
         // PS1CO2(1 and 2) Controls amount of CO2 loss when structural decomposes to SOM1.
         // Values from ffix.100 file.
@@ -225,16 +225,16 @@ namespace Landis.Extension.Succession.Century
             LitterType litterParmsSoil = new LitterType();
 
             // Structural decomposition rate, the fraction of the pool that turns over each year.
-            litterParmsSurface.DecayRateStrucC = 0.039;//DEC1(1)
-            litterParmsSoil.DecayRateStrucC = 0.049; //DEC1(2)
+            litterParmsSurface.DecayRateStrucC = 3.9;//DEC1(1)
+            litterParmsSoil.DecayRateStrucC = 4.9; //DEC1(2)
 
             // Metabolic decomposition rate, the fraction of the pool that turns over each year.
-            litterParmsSurface.DecayRateMetabolicC = 0.208; //DEC2(1)
-            litterParmsSoil.DecayRateMetabolicC = 0.245; //DEC2(2)
+            litterParmsSurface.DecayRateMetabolicC = 14.8; //DEC2(1)
+            litterParmsSoil.DecayRateMetabolicC = 18.5; //DEC2(2)
 
             // Decomposition rate of organic matter with active turnover, the fraction of the pool
             // that turns over each year (SOM1)
-            litterParmsSurface.DecayRateMicrobes = 0.01; //DEC3(1)  // Modified to be a fraction
+            litterParmsSurface.DecayRateMicrobes = 1.84; //DEC3(1)  // Modified to be a fraction
             //litterParmsSoil.DecayRateMicrobes = 0.3; //DEC3(2)  // Modified to be fraction
 
             LitterParameters[0] = litterParmsSurface;
