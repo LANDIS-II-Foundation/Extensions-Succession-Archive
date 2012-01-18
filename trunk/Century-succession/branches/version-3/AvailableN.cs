@@ -28,6 +28,7 @@ namespace Landis.Extension.Succession.Century
             int currentYear = PlugIn.ModelCore.CurrentTime;
             //int successionTime = PlugIn.SuccessionTimeStep;
             int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
+            PlugIn.ModelCore.Log.WriteLine("GETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
             double resorbedNallocation = 0.0;
             Dictionary<int, double> cohortDict;
             
@@ -46,11 +47,11 @@ namespace Landis.Extension.Succession.Century
         {
             int currentYear = PlugIn.ModelCore.CurrentTime;
             int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
+            PlugIn.ModelCore.Log.WriteLine("SETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
             //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.month == 11 ? 1 : 0);
             Dictionary<int, double> cohortDict;
             double oldResorbedNallocation;
 
-            //PlugIn.ModelCore.Log.WriteLine("SETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, cohort.Species.Name, cohort.Age, cohortAddYear);
 
             // If the dictionary entry exists for the cohort, overwrite it:
             if (AvailableN.CohortResorbedNallocation.TryGetValue(cohort.Species.Index, out cohortDict))
