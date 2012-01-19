@@ -122,8 +122,12 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.Log.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
                     //...Volatilization loss as a function of the mineral n which
-                    //     remains after uptake by plants
-                    double volatilize = (monthlyNdeposition * EcoregionData.DenitifSlope[ecoregion]);
+                    //     remains after uptake by plants.  ML added a correction factor for wetlands since their denitrification rate is double that of wetlands 
+                    //based on a review paper by Seitziner 2006.
+                    //double volatilize = (SiteVars.MineralN[site] * 0.02) / 12; // monthly value
+                    
+                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.DenitifSlope[ecoregion]) / 12; // monthly value
+                    
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
                     SiteVars.Nvol[site] += volatilize;
