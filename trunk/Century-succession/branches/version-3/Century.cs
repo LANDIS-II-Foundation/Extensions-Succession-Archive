@@ -14,6 +14,8 @@ namespace Landis.Extension.Succession.Century
     public class Century
     {
         public static int Year;
+        public static int Month;
+        public static int MonthCnt;
 
         /// <summary>
         /// Grows all cohorts at a site for a specified number of years.
@@ -28,6 +30,12 @@ namespace Landis.Extension.Succession.Century
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             //PlugIn.ModelCore.Log.WriteLine("SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
+            // If in spin-up mode and calibration mode, then this needs to happen first.
+            if (PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
+            {
+                MonthCnt = 11;  // adjustment for sequence
+                AvailableN.CalculateMineralNfraction(site);
+            }
 
             for (int y = 0; y < years; ++y) {
 
@@ -57,22 +65,18 @@ namespace Landis.Extension.Succession.Century
                 if(OtherData.CalibrateMode)
                     months = new int[12]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
-                for (int i = 0; i < 12; i++)
+                for (MonthCnt = 0; MonthCnt < 12; MonthCnt++)
                 {
                     //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1}.", SiteVars.MineralN[site], i);
 
-                    // If in spin-up mode and calibration mode, then this needs to happen first.
-                    if(PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
-                        AvailableN.CalculateMineralNfraction(site);
+                    Month = months[MonthCnt];
+                    //CohortBiomass.month = month;
+                    //CohortBiomass.centuryMonth = i;
 
-                    int month = months[i];
-                    CohortBiomass.month = month;
-                    CohortBiomass.centuryMonth = i;
-
-                    SiteVars.MonthlyAGNPPcarbon[site][month] = 0.0;
-                    SiteVars.MonthlyBGNPPcarbon[site][month] = 0.0;
-                    SiteVars.MonthlyNEE[site][month] = 0.0;
-                    SiteVars.MonthlyResp[site][month] = 0.0;
+                    SiteVars.MonthlyAGNPPcarbon[site][Month] = 0.0;
+                    SiteVars.MonthlyBGNPPcarbon[site][Month] = 0.0;
+                    SiteVars.MonthlyNEE[site][Month] = 0.0;
+                    SiteVars.MonthlyResp[site][Month] = 0.0;
                     SiteVars.SourceSink[site].Carbon = 0.0;
                     SiteVars.TotalWoodBiomass[site] = Century.ComputeWoodBiomass((ActiveSite) site);
                     //SiteVars.LAI[site] = Century.ComputeLAI((ActiveSite)site);
@@ -80,47 +84,45 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.Log.WriteLine("MELISSA:  Yr {0} of {1}, Month={2}, MineralN={3:0.00}.", y, years, i + 1, SiteVars.MineralN[site]);
                     
 
-                    double monthlyNdeposition = EcoregionData.AnnualWeather[PlugIn.ModelCore.Ecoregion[site]].MonthlyNdeposition[month];
+                    double monthlyNdeposition = EcoregionData.AnnualWeather[PlugIn.ModelCore.Ecoregion[site]].MonthlyNdeposition[Century.Month];
                     SiteVars.MineralN[site] += monthlyNdeposition;
                     //PlugIn.ModelCore.Log.WriteLine("Month={0}, Ndeposition={1}.", i+1, monthlyNdeposition);
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     double baseFlow, stormFlow;
-                    SoilWater.Run(y, month, liveBiomass, site, out baseFlow, out stormFlow);
+                    SoilWater.Run(y, Month, liveBiomass, site, out baseFlow, out stormFlow);
 
 
                     // Reset N resorption if it is September
-                    if (month == 8)
+                    if (Month == 8)
                     {
                         AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
-                        ComputeResorbedN(siteCohorts, site, month);
+                        ComputeResorbedN(siteCohorts, site, Month);
                     }
 
                     // Calculate mineral N fractions based on fine root biomass (leaf biomass) in July 
-                    if (month == 6)
+                    if (Month == 6)
                     {
                         AvailableN.CalculateMineralNfraction(site);
                     }
 
                     // Calculate N allocation for each cohort
-                    AvailableN.CalculateMineralNallocation(site);
+                    AvailableN.SetMineralNallocation(site);
 
-                    if (i==11)
+                    if (MonthCnt==11)
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), true);
                     else
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), false);
 
                     WoodLayer.Decompose(site);
                     LitterLayer.Decompose(site);
-                    //PlugIn.ModelCore.Log.WriteLine("Start of SoilLayer.Decompose for month {0}.", month);
                     SoilLayer.Decompose(site);
+                    
                     //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1} - post Decompose.", SiteVars.MineralN[site], i);
                     //PlugIn.ModelCore.Log.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
                     //...Volatilization loss as a function of the mineral n which
                     //     remains after uptake by plants
-                    //double volatilize = (SiteVars.MineralN[site] * 0.02)/12; // monthly value
-
                     double volatilize = (monthlyNdeposition * EcoregionData.DenitifSlope[ecoregion]);
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
@@ -128,9 +130,9 @@ namespace Landis.Extension.Succession.Century
                     
                     SoilWater.Leach(site, baseFlow, stormFlow);
 
-                    SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyAGNPPcarbon[site][month];
-                    SiteVars.MonthlyNEE[site][month] -= SiteVars.MonthlyBGNPPcarbon[site][month];
-                    SiteVars.MonthlyNEE[site][month] += SiteVars.SourceSink[site].Carbon;
+                    SiteVars.MonthlyNEE[site][Month] -= SiteVars.MonthlyAGNPPcarbon[site][Month];
+                    SiteVars.MonthlyNEE[site][Month] -= SiteVars.MonthlyBGNPPcarbon[site][Month];
+                    SiteVars.MonthlyNEE[site][Month] += SiteVars.SourceSink[site].Carbon;
 
                 }
             }

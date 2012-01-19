@@ -510,7 +510,7 @@ namespace Landis.Extension.Succession.Century
             //PlugIn.ModelCore.Log.WriteLine("  Source/Sink AFTER = {0:0.00}, TRANSFER = {1:0.00}.", SiteVars.SourceSink[site].Carbon, co2loss);
 
             //Add lost CO2 to monthly heterotrophic respiration
-            SiteVars.MonthlyResp[site][CohortBiomass.month] += co2loss;
+            SiteVars.MonthlyResp[site][Century.Month] += co2loss;
 
             this.Nitrogen -= mineralNFlow;
             SiteVars.MineralN[site] += mineralNFlow;
