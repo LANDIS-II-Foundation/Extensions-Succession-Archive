@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.Century
             //int currentYear = PlugIn.ModelCore.CurrentTime;
             //int successionTime = PlugIn.SuccessionTimeStep;
             int cohortAddYear = GetAddYear(cohort); //currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
-            PlugIn.ModelCore.Log.WriteLine("GETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
+            //PlugIn.ModelCore.Log.WriteLine("GETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
             double resorbedNallocation = 0.0;
             Dictionary<int, double> cohortDict;
             
@@ -114,7 +114,7 @@ namespace Landis.Extension.Succession.Century
                 foreach (ICohort cohort in speciesCohorts)
                 {
                     int cohortAddYear = GetAddYear(cohort); 
-                    PlugIn.ModelCore.Log.WriteLine("CALCMineralNfraction: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
+                    //PlugIn.ModelCore.Log.WriteLine("CALCMineralNfraction: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
                     //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
 
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
@@ -148,7 +148,7 @@ namespace Landis.Extension.Succession.Century
                 foreach (ICohort cohort in speciesCohorts)
                 {
                     int cohortAddYear = GetAddYear(cohort); 
-                    PlugIn.ModelCore.Log.WriteLine("CALC2MineralNfraction: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
+                    //PlugIn.ModelCore.Log.WriteLine("CALC2MineralNfraction: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
                     double Nallocation = CohortMineralNfraction[cohort.Species.Index][cohortAddYear];
                     double relativeNallocation = Nallocation / NAllocTotal;
                     CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = relativeNallocation;
@@ -181,7 +181,7 @@ namespace Landis.Extension.Succession.Century
                     int cohortAddYear = GetAddYear(cohort); 
                     if (Century.MonthCnt == 11) 
                         cohortAddYear--;
-                    PlugIn.ModelCore.Log.WriteLine("SETMineralNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
+                    //PlugIn.ModelCore.Log.WriteLine("SETMineralNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
 
                     double Nfraction = 0.05;  //even a new cohort gets a little love
                     Dictionary<int, double> cohortDict = new Dictionary<int,double>();
@@ -231,7 +231,7 @@ namespace Landis.Extension.Succession.Century
             //int successionTime = PlugIn.SuccessionTimeStep;
             int cohortAddYear = GetAddYear(cohort); 
             //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
-            PlugIn.ModelCore.Log.WriteLine("GETMineralNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
+            //PlugIn.ModelCore.Log.WriteLine("GETMineralNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
             //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.month == 11 ? 1 : 0);
             double mineralNallocation = 0.0;
             Dictionary<int, double> cohortDict;
