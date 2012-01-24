@@ -502,6 +502,7 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> ans = new InputVar<double>("Atmospheric N Slope");
             InputVar<double> ani = new InputVar<double>("Atmospheric N Intercept");
             InputVar<double> lat = new InputVar<double>("Latitude");
+            InputVar<double> drsoms = new InputVar<double>("Decay Rate Surf"); 
             InputVar<double> drsom1 = new InputVar<double>("Decay Rate SOM1"); 
             InputVar<double> drsom2 = new InputVar<double>("Decay Rate SOM2");
             InputVar<double> drsom3 = new InputVar<double>("Decay Rate SOM3");
@@ -549,6 +550,9 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(lat, currentLine);
                 parameters.SetLatitude(ecoregion, lat.Value);
+
+                ReadValue(drsoms, currentLine);
+                parameters.SetDecayRateSurf(ecoregion, drsoms.Value);
 
                 ReadValue(drsom1, currentLine);
                 parameters.SetDecayRateSOM1(ecoregion, drsom1.Value);

@@ -28,6 +28,7 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double> AtmosNslope;
         public static Ecoregions.AuxParm<double> AtmosNintercept;
         public static Ecoregions.AuxParm<double> Latitude;
+        public static Ecoregions.AuxParm<double> DecayRateSurf; 
         public static Ecoregions.AuxParm<double> DecayRateSOM1;
         public static Ecoregions.AuxParm<double> DecayRateSOM2;
         public static Ecoregions.AuxParm<double> DecayRateSOM3;
@@ -58,6 +59,7 @@ namespace Landis.Extension.Succession.Century
             AtmosNslope         = parameters.AtmosNslope;
             AtmosNintercept     = parameters.AtmosNintercept;
             Latitude            = parameters.Latitude;
+            DecayRateSurf       = parameters.DecayRateSurf;
             DecayRateSOM1       = parameters.DecayRateSOM1;
             DecayRateSOM2       = parameters.DecayRateSOM2;
             DecayRateSOM3       = parameters.DecayRateSOM3;

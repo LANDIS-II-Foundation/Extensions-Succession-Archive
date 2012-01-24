@@ -93,8 +93,8 @@ namespace Landis.Extension.Succession.Century
         public const double PS1S3_Intercept = 0.003;
         public const double PS1S3_Slope = 0.032;
 
-        public const double PS2S3_Intercept = 0.003;
-        public const double PS2S3_Slope = 0.009;
+        public const double PS2S3_Intercept = 0.009;
+        public const double PS2S3_Slope = 0.027;
 
         // OMLECH(1 & 2) Parameters for the effect of sand on leaching of organic compounds. Values from ffix.100 file and
         // OMLECH(3) - The amount of water in centimeters (cm) that needs to flow
@@ -234,7 +234,7 @@ namespace Landis.Extension.Succession.Century
 
             // Decomposition rate of organic matter with active turnover, the fraction of the pool
             // that turns over each year (SOM1)
-            litterParmsSurface.DecayRateMicrobes = 1.8; //DEC3(1)  // Modified to be a fraction
+            //litterParmsSurface.DecayRateMicrobes = 2.5; //DEC3(1)  // Modified to be a fraction
             //litterParmsSoil.DecayRateMicrobes = 0.3; //DEC3(2)  // Modified to be fraction
 
             LitterParameters[0] = litterParmsSurface;

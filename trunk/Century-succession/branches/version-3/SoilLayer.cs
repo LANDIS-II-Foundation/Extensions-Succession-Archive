@@ -39,7 +39,8 @@ namespace Landis.Extension.Succession.Century
                     //SiteVars.DecayFactor[site], OtherData.LitterParameters[(int)LayerType.Surface].DecayRateMicrobes);
                 double totalCflow = som1c_surface
                     * SiteVars.DecayFactor[site] 
-                    * OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
+                    //* OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
+                    * EcoregionData.DecayRateSurf[ecoregion] 
                     * OtherData.MonthAdjust;
                     
                 // If decomposition can occur, schedule flows associated with respiration
