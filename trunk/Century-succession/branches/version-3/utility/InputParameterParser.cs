@@ -116,7 +116,12 @@ namespace Landis.Extension.Succession.Century
             InputVar<string> wt = new InputVar<string>("WaterDecayFunction");
             ReadVar(wt);
             parameters.WType = WParse(wt.Value);
-            
+
+            InputVar<double> pea = new InputVar<double>("ProbEstablishAdjust");
+            if (ReadOptionalVar(pea))
+                parameters.ProbEstablishAdjustment = pea.Value;
+            else
+                parameters.ProbEstablishAdjustment = 1.0;
 
             InputVar<string> soilCarbonMaps = new InputVar<string>("SoilCarbonMapNames");
             if (ReadOptionalVar(soilCarbonMaps)) 

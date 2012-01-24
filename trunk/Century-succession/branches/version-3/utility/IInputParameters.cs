@@ -21,6 +21,7 @@ namespace Landis.Extension.Succession.Century
         double SpinupMortalityFraction { get; set; }
         bool CalibrateMode { get; set; }
         WaterType WType {get;set;}
+        double ProbEstablishAdjustment { get; set; }
 
         //---------------------------------------------------------------------
         /// <summary>

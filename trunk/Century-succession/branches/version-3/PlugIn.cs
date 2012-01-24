@@ -34,6 +34,7 @@ namespace Landis.Extension.Succession.Century
         public static string ANEEMapNames = null;
         public static int ANEEMapFrequency;
         public static int SuccessionTimeStep;
+        public static double ProbEstablishAdjust;
 
         //---------------------------------------------------------------------
 

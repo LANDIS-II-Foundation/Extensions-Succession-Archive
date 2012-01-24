@@ -92,7 +92,7 @@ namespace Landis.Extension.Succession.Century
             {
                 foreach(ISpecies species in PlugIn.ModelCore.Species)
                 {
-                    EstablishProbability[species][ecoregion] /= (double) years;
+                    EstablishProbability[species][ecoregion] *= PlugIn.ProbEstablishAdjust;
                     
                     if(PlugIn.ModelCore.CurrentTime > 0 && EcoregionData.ActiveSiteCount[ecoregion] > 0)
                     {

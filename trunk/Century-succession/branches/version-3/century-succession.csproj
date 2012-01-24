@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>century_succession</RootNamespace>
-    <AssemblyName>Landis.Extension.Succession.Centuryv3</AssemblyName>
+    <AssemblyName>Landis.Extension.Succession.Century</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

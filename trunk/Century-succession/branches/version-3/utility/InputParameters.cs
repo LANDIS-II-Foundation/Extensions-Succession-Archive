@@ -24,6 +24,7 @@ namespace Landis.Extension.Succession.Century
         private string communitiesMap;
         private double spinupMortalityFraction;
         public WaterType wtype;
+        public double probEstablishAdjust;
         
         private FunctionalTypeTable functionalTypes;
         private FireReductions[] fireReductionsTable;
@@ -212,6 +213,21 @@ namespace Landis.Extension.Succession.Century
             }
             set {
                 wtype = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Adjust probability of establishment due to variable time step.  A multiplier.
+        /// </summary>
+        public double ProbEstablishAdjustment
+        {
+            get
+            {
+                return probEstablishAdjust;
+            }
+            set
+            {
+                probEstablishAdjust = value;
             }
         }
         //---------------------------------------------------------------------
