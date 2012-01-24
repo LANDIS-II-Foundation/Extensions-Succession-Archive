@@ -93,7 +93,7 @@ namespace Landis.Extension.Succession.Century
         Ecoregions.AuxParm<double> DecayRateSOM1 { get; }
         Ecoregions.AuxParm<double> DecayRateSOM2 { get; }
         Ecoregions.AuxParm<double> DecayRateSOM3 { get; }
-        Ecoregions.AuxParm<double> DenitrifSlope { get; }
+        Ecoregions.AuxParm<double> Denitrif { get; }
         
         Ecoregions.AuxParm<double> InitialSOM1surfC {get;}
         Ecoregions.AuxParm<double> InitialSOM1surfN {get;}

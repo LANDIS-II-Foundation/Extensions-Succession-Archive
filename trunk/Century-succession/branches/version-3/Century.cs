@@ -126,7 +126,7 @@ namespace Landis.Extension.Succession.Century
                     //based on a review paper by Seitziner 2006.
                     //double volatilize = (SiteVars.MineralN[site] * 0.02) / 12; // monthly value
                     
-                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.DenitifSlope[ecoregion]) / 12; // monthly value
+                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]) / 12; // monthly value
                     
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;

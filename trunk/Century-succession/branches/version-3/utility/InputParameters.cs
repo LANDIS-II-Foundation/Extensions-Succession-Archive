@@ -64,7 +64,7 @@ namespace Landis.Extension.Succession.Century
         private Ecoregions.AuxParm<double> decayRateSOM1;
         private Ecoregions.AuxParm<double> decayRateSOM2;
         private Ecoregions.AuxParm<double> decayRateSOM3;
-        private Ecoregions.AuxParm<double> denitSlope;
+        private Ecoregions.AuxParm<double> denitrif;
         
 
         private Ecoregions.AuxParm<double> initSOM1surfC;
@@ -468,11 +468,11 @@ namespace Landis.Extension.Succession.Century
             }
         }
         //-----------------------------------------------
-        public Ecoregions.AuxParm<double> DenitrifSlope
+        public Ecoregions.AuxParm<double> Denitrif
         {
             get
             {
-                return denitSlope;
+                return denitrif;
             }
         }
 
@@ -757,10 +757,10 @@ namespace Landis.Extension.Succession.Century
             decayRateSOM3[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
         //---------------------------------------------------------------------
-        public void SetDenitifSlope(IEcoregion ecoregion, InputValue<double> newValue)
+        public void SetDenitrif(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            denitSlope[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
+            denitrif[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
        
@@ -872,7 +872,7 @@ namespace Landis.Extension.Succession.Century
             decayRateSOM1           = new Ecoregions.AuxParm<double>(ecoregionDataset);
             decayRateSOM2           = new Ecoregions.AuxParm<double>(ecoregionDataset);
             decayRateSOM3           = new Ecoregions.AuxParm<double>(ecoregionDataset);
-            denitSlope              = new Ecoregions.AuxParm<double>(ecoregionDataset);
+            denitrif              = new Ecoregions.AuxParm<double>(ecoregionDataset);
             initSOM1surfC           = new Ecoregions.AuxParm<double>(ecoregionDataset);
             initSOM1surfN           = new Ecoregions.AuxParm<double>(ecoregionDataset);
             initSOM1soilC           = new Ecoregions.AuxParm<double>(ecoregionDataset);

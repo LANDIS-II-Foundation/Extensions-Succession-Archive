@@ -32,7 +32,7 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double> DecayRateSOM1;
         public static Ecoregions.AuxParm<double> DecayRateSOM2;
         public static Ecoregions.AuxParm<double> DecayRateSOM3;
-        public static Ecoregions.AuxParm<double> DenitifSlope;
+        public static Ecoregions.AuxParm<double> Denitrif;
         public static Ecoregions.AuxParm<double> ActiveSiteCount;
         public static Ecoregions.AuxParm<Percentage>[] ShadeBiomass;
         public static Ecoregions.AuxParm<int> B_MAX;
@@ -63,7 +63,7 @@ namespace Landis.Extension.Succession.Century
             DecayRateSOM1       = parameters.DecayRateSOM1;
             DecayRateSOM2       = parameters.DecayRateSOM2;
             DecayRateSOM3       = parameters.DecayRateSOM3;
-            DenitifSlope        = parameters.DenitrifSlope;
+            Denitrif             = parameters.Denitrif;
             
             ShadeBiomass = parameters.MinRelativeBiomass;
     
