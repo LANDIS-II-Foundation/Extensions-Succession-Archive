@@ -227,6 +227,8 @@ namespace Landis.Extension.Succession.Century
             }
             set
             {
+                if (value < 0.0 || value > 1)
+                    throw new InputValueException(value.ToString(), "Probability of adjustment factor must be > 0.0 and < 1");
                 probEstablishAdjust = value;
             }
         }

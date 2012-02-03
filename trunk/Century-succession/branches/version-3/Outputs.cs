@@ -589,7 +589,7 @@ namespace Landis.Extension.Succession.Century
             double soilNuptake =
 
                     SiteVars.TotalNuptake[site]
-                    - SiteVars.ResorbedN[site]
+                    
                     
                     ;
 
