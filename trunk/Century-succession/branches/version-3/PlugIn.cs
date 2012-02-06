@@ -72,8 +72,9 @@ namespace Landis.Extension.Succession.Century
         {
             PlugIn.ModelCore.Log.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
-            SuccessionTimeStep = Timestep;
+            SuccessionTimeStep    = Timestep;
             sufficientLight       = parameters.LightClassProbabilities;
+            ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
 
             //  Initialize climate.
