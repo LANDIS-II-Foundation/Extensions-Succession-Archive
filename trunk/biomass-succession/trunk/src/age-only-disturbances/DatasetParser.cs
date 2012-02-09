@@ -12,7 +12,7 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
     /// disturbances from text input.
     /// </summary>
     public class DatasetParser
-        : Edu.Wisc.Forest.Flel.Util.TextParser<IParameterDataset>//TextParser<IParameterDataset>
+        : Edu.Wisc.Forest.Flel.Util.TextParser<IParameterDataset>
     {
         private Dictionary<string, int> lineNums;
 

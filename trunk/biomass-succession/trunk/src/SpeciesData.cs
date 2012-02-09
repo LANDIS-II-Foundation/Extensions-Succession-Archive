@@ -62,6 +62,9 @@ namespace Landis.Extension.Succession.Biomass
                     {
                         if (!ecoregion.Active)
                             continue;
+
+                        if (DynamicInputs.TimestepData[species.Index, ecoregion.Index] == null)
+                            continue;
                         
                         EstablishProbability[species][ecoregion] = DynamicInputs.TimestepData[species.Index, ecoregion.Index].ProbEst;
                         EstablishModifier[species][ecoregion] = 1.0;
