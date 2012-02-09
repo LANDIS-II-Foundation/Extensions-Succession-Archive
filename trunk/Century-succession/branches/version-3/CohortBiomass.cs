@@ -177,14 +177,14 @@ namespace Landis.Extension.Succession.Century
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 5.0) / Math.Exp(5.0));
             
-            //double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
+            double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
 
-            double limitN = calculateN_Limit(site, cohort, maxNPP, leafFractionNPP);
+            double limitN = calculateN_Limit(site, cohort, potentialNPP, leafFractionNPP);
 
-            //potentialNPP *= limitN;
+            potentialNPP *= limitN;
 
             //double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
-            double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
+            //double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
 
             //if (Double.IsNaN(limitT) || Double.IsNaN(limitH20) || Double.IsNaN(limitLAI) || Double.IsNaN(limitCapacity) || Double.IsNaN(limitN))
             //{
@@ -498,11 +498,11 @@ namespace Landis.Extension.Succession.Century
                 // Divide allocation N by N demand here:
                 //PlugIn.ModelCore.Log.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
                 
-                double maximumNdemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); //, FineRootNPP, CoarseRootNPP }));
+                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); //, FineRootNPP, CoarseRootNPP }));
                 
-                if (maximumNdemand > 0.0)
+                if (Ndemand > 0.0)
                 {
-                    limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / maximumNdemand);
+                    limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);
                     //PlugIn.ModelCore.Log.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, maximumNdemand);
 
                 }
