@@ -1,6 +1,6 @@
 LandisData  Scenario
 
-Duration  20
+Duration  50
 
 Species   species.txt
 
