@@ -25,8 +25,6 @@ namespace Landis.Extension.Succession.Century
 
         //  Ecoregion where the cohort's site is located
         private IEcoregion ecoregion;
-        //public static int month;
-        //public static int centuryMonth;
         public static double SpinupMortalityFraction;
 
         //---------------------------------------------------------------------
@@ -208,8 +206,6 @@ namespace Landis.Extension.Succession.Century
             if (growthReduction > 0.0)
             {
                 actualANPP *= (1.0 - growthReduction);
-                //PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
-                //PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
             }
 
 

@@ -243,7 +243,7 @@ namespace Landis.Extension.Succession.Century
 
             CalibrateMode       = parameters.CalibrateMode;
             WType = parameters.WType;
-            ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
+            //ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
             //FractionSOM2toCO2   = parameters.FractionSOM2toCO2;
             //FractionSOM3toCO2   = parameters.FractionSOM3toCO2;
             //DecayRateSOM2       = parameters.DecayRateSOM2;
