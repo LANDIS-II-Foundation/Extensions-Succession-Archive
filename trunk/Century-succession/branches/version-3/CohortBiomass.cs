@@ -503,7 +503,7 @@ namespace Landis.Extension.Succession.Century
                 if (Ndemand > 0.0)
                 {
                     limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);
-                    PlugIn.ModelCore.Log.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, Ndemand);
+                    //PlugIn.ModelCore.Log.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, Ndemand);
 
                 }
                 else
