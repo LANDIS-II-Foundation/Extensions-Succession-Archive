@@ -46,7 +46,7 @@ namespace Landis.Extension.Succession.Century
             log.Write("SurfStrucNetMin, SurfMetaNetMin, SoilStrucNetMin, SoilMetaNetMin, ");
             log.Write("SOM1surfNetMin, SOM1soilNetMin, SOM2NetMin, SOM3NetMin, ");
             log.Write("StreamC, StreamN, FireCEfflux, FireNEfflux, ");
-            log.Write("Nuptake, Nresorbed, TotalSoilN, Nvol, avgfrassC");
+            log.Write("Nuptake, Nresorbed, TotalSoilN, Nvol, avgfrassC,");
             log.WriteLine("");
 
 
