@@ -556,14 +556,12 @@ namespace Landis.Extension.Succession.Century
             //                 the Pacific Northwest.  Ecology 63:469-481.
 
             //...Local variables
+
             double lai = 0.0;
             double laitop = -0.47;  // This is the value given for all biomes in the tree.100 file.
             double btolai = FunctionalType.Table[SpeciesData.FuncType[species]].BTOLAI;
             double klai   = FunctionalType.Table[SpeciesData.FuncType[species]].KLAI;
             double maxlai = FunctionalType.Table[SpeciesData.FuncType[species]].MAXLAI;
-
-            //if (SpeciesData.LeafLongevity[species] <= 1.0 && month > FunctionalType.Table[SpeciesData.FuncType[species]].LeafNeedleDrop)
-            //    return 0.0;
 
             double rlai = (leafC * 2.5) * btolai;
 
@@ -590,6 +588,10 @@ namespace Landis.Extension.Succession.Century
             //               Production at Different Canopy Leaf Densities
             //               by Waring, Newman, and Bell
             //               Forestry, Vol. 54, No. 2, 1981
+
+            //totalLAI += lai;
+            // if (totalLAI > EcoregionData.MaxLAI)
+            // lai = 0.1;
 
             // The minimum LAI to calculate effect is 0.2.
             //if (lai < 0.5) lai = 0.5;
