@@ -609,6 +609,49 @@ namespace Landis.Extension.Succession.Century
                 
                 GetNextLine();
             }
+            //--------- Read In Harvest Reductions Table ---------------------------
+            InputVar<string> hreds = new InputVar<string>("HarvestReductions");
+            if (ReadOptionalVar(hreds))
+            {
+                InputVar<int> fti = new InputVar<int>("Fuel Index");
+                InputVar<int> maxAgeS = new InputVar<int>("Max Age");
+                InputVar<string> prescriptionName = new InputVar<string>("Prescription");
+
+                lineNumbers.Clear();
+                Dictionary<int, int> DisturbanceTypeLineNumbers = new Dictionary<int, int>();
+
+                while (!AtEndOfInput && CurrentName != Names.MonthlyMaxNPP)
+                {
+                    StringReader currentLine = new StringReader(CurrentLine);
+
+                    ReadValue(fti, currentLine);
+
+                    //IDisturbanceType currentDisturbanceType = new DisturbanceType();
+                    //parameters.DisturbanceTypes.Add(currentDisturbanceType);
+
+                    //currentDisturbanceType.FuelIndex = fti.Value;
+
+                    ReadValue(maxAgeS, currentLine);
+                    //currentDisturbanceType.MaxAge = maxAgeS.Value;
+
+                    List<string> prescriptionNames = new List<string>();
+
+                    TextReader.SkipWhitespace(currentLine);
+                    while (currentLine.Peek() != -1)
+                    {
+                        ReadValue(prescriptionName, currentLine);
+                        prescriptionNames.Add(prescriptionName.Value);
+
+                        TextReader.SkipWhitespace(currentLine);
+                    }
+                    if (prescriptionNames.Count == 0)
+                        throw NewParseException("At least one prescription is required.");
+
+                    //currentDisturbanceType.PrescriptionNames = prescriptionNames;
+
+                    GetNextLine();
+                }
+            }
 
             //---------------------------------------------------------------------
 

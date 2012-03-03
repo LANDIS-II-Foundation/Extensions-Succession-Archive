@@ -28,6 +28,7 @@ namespace Landis.Extension.Succession.Century
         
         private FunctionalTypeTable functionalTypes;
         private FireReductions[] fireReductionsTable;
+        private List<HarvestReductions> harvestReductionsTable;
         
         private Species.AuxParm<int> sppFunctionalType;
         private Species.AuxParm<bool> nFixer;
@@ -256,6 +257,21 @@ namespace Landis.Extension.Succession.Century
             }
             set {
                 fireReductionsTable = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Harvest reduction of leaf and wood litter parameters.
+        /// </summary>
+        public List<HarvestReductions> HarvestReductionsTable
+        {
+            get
+            {
+                return harvestReductionsTable;
+            }
+            set
+            {
+                harvestReductionsTable = value;
             }
         }
         //---------------------------------------------------------------------

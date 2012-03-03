@@ -39,6 +39,16 @@ namespace Landis.Extension.Succession.Century
         {
             get;set;
         }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Parameters for harvest or fuel treatment effects on wood and leaf litter
+        /// </summary>
+        List<HarvestReductions> HarvestReductionsTable
+        {
+            get;
+            set;
+        }
         //---------------------------------------------------------------------
         /// <summary>
         /// The maximum relative biomass for each shade class.

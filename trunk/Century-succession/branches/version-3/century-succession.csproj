@@ -76,6 +76,7 @@
     <Compile Include="dynamic-change\BiomassParametersParser.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HarvestEffects.cs" />
     <Compile Include="utility\BaseCohortsSiteVar.cs" />
     <Compile Include="Century.cs" />
     <Compile Include="CohortBiomass.cs" />
