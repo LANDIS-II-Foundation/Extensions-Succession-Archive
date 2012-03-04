@@ -26,6 +26,7 @@ namespace Landis.Extension.Succession.Century
             public const string FunctionalGroupParameters = "FunctionalGroupParameters";
             public const string EcoregionParameters = "EcoregionParameters";
             public const string FireReductionParameters = "FireReductionParameters";
+            public const string HarvestReductionParameters = "HarvestReductionParameters";
             public const string AgeOnlyDisturbanceParms = "AgeOnlyDisturbances:BiomassParameters";
             public const string DynamicChange = "DynamicChange";
             public const string MonthlyMaxNPP = "MonthlyMaxNPP";
@@ -584,7 +585,9 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> wred = new InputVar<double>("Wood Reduction");
             InputVar<double> lred = new InputVar<double>("Litter Reduction");
 
-            while (! AtEndOfInput && CurrentName != Names.MonthlyMaxNPP ) {
+            while (! AtEndOfInput && CurrentName != Names.MonthlyMaxNPP
+                && CurrentName != Names.HarvestReductionParameters)
+            {
                 StringReader currentLine = new StringReader(CurrentLine);
                 
                 ReadValue(frindex , currentLine);
@@ -611,28 +614,31 @@ namespace Landis.Extension.Succession.Century
             }
             //--------- Read In Harvest Reductions Table ---------------------------
             InputVar<string> hreds = new InputVar<string>("HarvestReductions");
-            if (ReadOptionalVar(hreds))
+            ReadOptionalName(Names.HarvestReductionParameters);
             {
-                InputVar<int> fti = new InputVar<int>("Fuel Index");
-                InputVar<int> maxAgeS = new InputVar<int>("Max Age");
+                PlugIn.ModelCore.Log.WriteLine("   Begin reading HARVEST REDUCTION parameters.");
                 InputVar<string> prescriptionName = new InputVar<string>("Prescription");
+                InputVar<double> wred_pr = new InputVar<double>("Wood Reduction");
+                InputVar<double> lred_pr = new InputVar<double>("Litter Reduction");
 
                 lineNumbers.Clear();
                 Dictionary<int, int> DisturbanceTypeLineNumbers = new Dictionary<int, int>();
 
                 while (!AtEndOfInput && CurrentName != Names.MonthlyMaxNPP)
                 {
+                    HarvestReductions harvReduction = new HarvestReductions();
+                    parameters.HarvestReductionsTable.Add(harvReduction);
+                    
                     StringReader currentLine = new StringReader(CurrentLine);
 
-                    ReadValue(fti, currentLine);
+                    ReadValue(prescriptionName, currentLine);
+                    harvReduction.PrescriptionName = prescriptionName.Value;
 
-                    //IDisturbanceType currentDisturbanceType = new DisturbanceType();
-                    //parameters.DisturbanceTypes.Add(currentDisturbanceType);
+                    ReadValue(wred_pr, currentLine);
+                    harvReduction.WoodReduction = wred.Value;
 
-                    //currentDisturbanceType.FuelIndex = fti.Value;
-
-                    ReadValue(maxAgeS, currentLine);
-                    //currentDisturbanceType.MaxAge = maxAgeS.Value;
+                    ReadValue(lred_pr, currentLine);
+                    harvReduction.LitterReduction = lred.Value;
 
                     List<string> prescriptionNames = new List<string>();
 

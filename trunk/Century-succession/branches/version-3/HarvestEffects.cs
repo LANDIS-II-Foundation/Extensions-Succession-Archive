@@ -21,7 +21,7 @@ namespace Landis.Extension.Succession.Century
         private double woodReduction;
         private double litterReduction;
 
-        public string Prescription
+        public string PrescriptionName
         {
             get
             {
@@ -95,11 +95,25 @@ namespace Landis.Extension.Succession.Century
         /// Computes fire effects on litter, coarse woody debris, mineral soil, and charcoal.
         ///   No effects on soil organic matter (negligible according to Johnson et al. 2001).
         /// </summary>
-        public static void ReduceLayers(byte severity, Site site)
+        public static void ReduceLayers(string prescriptionName, Site site)
         {
-            //PlugIn.ModelCore.Log.WriteLine("   Calculating fire induced layer reductions...");
+            PlugIn.ModelCore.Log.WriteLine("   Calculating harvest induced layer reductions...");
 
-            double litterLossMultiplier = ReductionsTable[severity].LitterReduction;
+            double litterLossMultiplier = 0.0;
+            double woodLossMultiplier = 0.0;
+
+            bool found = false;
+            foreach (HarvestReductions prescription in ReductionsTable)
+            {
+                if (SiteVars.HarvestPrescriptionName != null && SiteVars.HarvestPrescriptionName[site].Trim() == prescription.PrescriptionName.Trim())
+                {
+                    litterLossMultiplier = prescription.LitterReduction;
+                    woodLossMultiplier = prescription.WoodReduction;
+                    found = true;
+                }
+            }
+            if (!found) return;
+
 
             // Structural litter first
 
@@ -131,7 +145,7 @@ namespace Landis.Extension.Succession.Century
 
             // Surface dead wood
 
-            double woodLossMultiplier = ReductionsTable[severity].WoodReduction;
+            //double woodLossMultiplier = ReductionsTable[severity].WoodReduction;
 
             carbonLoss   = SiteVars.SurfaceDeadWood[site].Carbon * woodLossMultiplier;
             nitrogenLoss = SiteVars.SurfaceDeadWood[site].Nitrogen * woodLossMultiplier;

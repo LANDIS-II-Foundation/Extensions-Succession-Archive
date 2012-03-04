@@ -78,7 +78,8 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<int> PrevYearMortality;
         public static ISiteVar<byte> FireSeverity;
         public static ISiteVar<double> AgeMortality;
-        
+        public static ISiteVar<string> HarvestPrescriptionName;
+
         
         //---------------------------------------------------------------------
 
@@ -147,6 +148,7 @@ namespace Landis.Extension.Succession.Century
             monthlymineralN     = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             frassC              = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             lai                 = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
             
                        
 
@@ -194,6 +196,7 @@ namespace Landis.Extension.Succession.Century
         public static void InitializeDisturbances()
         {
             FireSeverity        = PlugIn.ModelCore.GetSiteVar<byte>("Fire.Severity");
+            HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
 
             //if(FireSeverity == null)
             //    throw new System.ApplicationException("TEST Error: Fire Severity NOT Initialized.");
