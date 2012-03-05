@@ -281,7 +281,7 @@ namespace Landis.Extension.Succession.Century
 
             InitialBiomass initialBiomass = InitialBiomass.Compute(site, initialCommunity);
             SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts);
-            IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+            //IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             SiteVars.SurfaceDeadWood[site]       = initialBiomass.SurfaceDeadWood.Clone();
             SiteVars.SurfaceStructural[site]     = initialBiomass.SurfaceStructural.Clone();
@@ -302,17 +302,17 @@ namespace Landis.Extension.Succession.Century
             SiteVars.CohortWoodC[site]           = initialBiomass.CohortWoodC;
             SiteVars.CohortWoodN[site]           = initialBiomass.CohortWoodN;
             
-            // Override the spin-up soil C and N values with the contemporary data 
-            // provided in the intialization file.
-            SiteVars.SOM1surface[site].Carbon       = parameters.InitialSOM1surfC[ecoregion];
-            SiteVars.SOM1surface[site].Nitrogen     = parameters.InitialSOM1surfN[ecoregion];
-            SiteVars.SOM1soil[site].Carbon          = parameters.InitialSOM1soilC[ecoregion];
-            SiteVars.SOM1soil[site].Nitrogen        = parameters.InitialSOM1soilN[ecoregion];
-            SiteVars.SOM2[site].Carbon              = parameters.InitialSOM2C[ecoregion];
-            SiteVars.SOM2[site].Nitrogen            = parameters.InitialSOM2N[ecoregion];
-            SiteVars.SOM3[site].Carbon              = parameters.InitialSOM3C[ecoregion];
-            SiteVars.SOM3[site].Nitrogen            = parameters.InitialSOM3N[ecoregion];
-            SiteVars.MineralN[site]                 = parameters.InitialMineralN[ecoregion];
+            //// Override the spin-up soil C and N values with the contemporary data 
+            //// provided in the intialization file.
+            //SiteVars.SOM1surface[site].Carbon       = parameters.InitialSOM1surfC[ecoregion];
+            //SiteVars.SOM1surface[site].Nitrogen     = parameters.InitialSOM1surfN[ecoregion];
+            //SiteVars.SOM1soil[site].Carbon          = parameters.InitialSOM1soilC[ecoregion];
+            //SiteVars.SOM1soil[site].Nitrogen        = parameters.InitialSOM1soilN[ecoregion];
+            //SiteVars.SOM2[site].Carbon              = parameters.InitialSOM2C[ecoregion];
+            //SiteVars.SOM2[site].Nitrogen            = parameters.InitialSOM2N[ecoregion];
+            //SiteVars.SOM3[site].Carbon              = parameters.InitialSOM3C[ecoregion];
+            //SiteVars.SOM3[site].Nitrogen            = parameters.InitialSOM3N[ecoregion];
+            //SiteVars.MineralN[site]                 = parameters.InitialMineralN[ecoregion];
         }
 
 
