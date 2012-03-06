@@ -621,8 +621,9 @@ namespace Landis.Extension.Succession.Century
                 InputVar<double> wred_pr = new InputVar<double>("Wood Reduction");
                 InputVar<double> lred_pr = new InputVar<double>("Litter Reduction");
 
-                lineNumbers.Clear();
-                Dictionary<int, int> DisturbanceTypeLineNumbers = new Dictionary<int, int>();
+                //lineNumbers.Clear();
+                List<string> prescriptionNames = new List<string>();
+                //Dictionary<int, int> DisturbanceTypeLineNumbers = new Dictionary<int, int>();
 
                 while (!AtEndOfInput && CurrentName != Names.MonthlyMaxNPP)
                 {
@@ -640,20 +641,15 @@ namespace Landis.Extension.Succession.Century
                     ReadValue(lred_pr, currentLine);
                     harvReduction.LitterReduction = lred.Value;
 
-                    List<string> prescriptionNames = new List<string>();
-
-                    TextReader.SkipWhitespace(currentLine);
+                    //TextReader.SkipWhitespace(currentLine);
                     while (currentLine.Peek() != -1)
                     {
-                        ReadValue(prescriptionName, currentLine);
                         prescriptionNames.Add(prescriptionName.Value);
 
-                        TextReader.SkipWhitespace(currentLine);
+                    //    TextReader.SkipWhitespace(currentLine);
                     }
                     if (prescriptionNames.Count == 0)
                         throw NewParseException("At least one prescription is required.");
-
-                    //currentDisturbanceType.PrescriptionNames = prescriptionNames;
 
                     GetNextLine();
                 }

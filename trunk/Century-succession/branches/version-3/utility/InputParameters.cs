@@ -866,6 +866,7 @@ namespace Landis.Extension.Succession.Century
 
             functionalTypes = new FunctionalTypeTable(functionalCnt);
             fireReductionsTable = new FireReductions[6];
+            harvestReductionsTable = new List<HarvestReductions>();
 
             sppFunctionalType       = new Species.AuxParm<int>(speciesDataset);
             nFixer                  = new Species.AuxParm<bool>(speciesDataset);
@@ -889,7 +890,7 @@ namespace Landis.Extension.Succession.Century
             for (byte shadeClass = 1; shadeClass <= 5; shadeClass++) {
                 minRelativeBiomass[shadeClass] = new Ecoregions.AuxParm<Percentage>(ecoregionDataset);
             }
-            sufficientLight         = new List<ISufficientLight>();//[5];//ListOfEditable<IEditableSufficientLight, ISufficientLight>();
+            sufficientLight         = new List<ISufficientLight>();
 
             percentClay             = new Ecoregions.AuxParm<double>(ecoregionDataset);
             percentSand             = new Ecoregions.AuxParm<double>(ecoregionDataset);
