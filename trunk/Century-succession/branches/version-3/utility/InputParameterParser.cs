@@ -640,17 +640,7 @@ namespace Landis.Extension.Succession.Century
 
                     ReadValue(lred_pr, currentLine);
                     harvReduction.LitterReduction = lred.Value;
-
-                    //TextReader.SkipWhitespace(currentLine);
-                    while (currentLine.Peek() != -1)
-                    {
-                        prescriptionNames.Add(prescriptionName.Value);
-
-                    //    TextReader.SkipWhitespace(currentLine);
-                    }
-                    if (prescriptionNames.Count == 0)
-                        throw NewParseException("At least one prescription is required.");
-
+  
                     GetNextLine();
                 }
             }

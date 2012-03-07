@@ -36,10 +36,10 @@ namespace Landis.Extension.Succession.Century
         
                 //Compute total C flow out of surface microbes.
                 double totalCflow = som1c_surface
-                    * SiteVars.DecayFactor[site] 
-                    * EcoregionData.DecayRateSurf[ecoregion] 
-                    * OtherData.MonthAdjust;
-                //* OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
+                    * SiteVars.DecayFactor[site]
+                    * EcoregionData.DecayRateSurf[ecoregion]
+                    * OtherData.MonthAdjust
+                    * OtherData.LitterParameters[(int)LayerType.Surface].DecayRateMicrobes;
                     
                 // If decomposition can occur, schedule flows associated with respiration
                 // and decomposition
@@ -83,10 +83,9 @@ namespace Landis.Extension.Succession.Century
                 double anerb = SiteVars.AnaerobicEffect[site];
 
                 //PlugIn.ModelCore.Log.WriteLine("SiteVars.DecayFactor = {0:0.00}, SoilDecayRateMicrobes = {1:0.00}, texture = {2:0.00}, anerb = {3:0.00}, MonthAdjust = {4:0.00}.",
-                    //SiteVars.DecayFactor[site], OtherData.LitterParameters[(int)LayerType.Soil].DecayRateMicrobes, textureEffect, anerb, OtherData.MonthAdjust);
                 double totalCflow = som1c_soil 
                             * SiteVars.DecayFactor[site]
-                            //* OtherData.LitterParameters[(int) LayerType.Soil].DecayRateMicrobes
+                            * OtherData.LitterParameters[(int) LayerType.Soil].DecayRateMicrobes
                             * EcoregionData.DecayRateSOM1[ecoregion] 
                             * textureEffect  
                             * anerb
