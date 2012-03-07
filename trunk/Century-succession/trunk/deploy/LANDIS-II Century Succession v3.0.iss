@@ -20,7 +20,7 @@ Source: {#BuildDir}\Landis.Library.Climate.dll; DestDir: {app}\bin; Flags: unins
 
 ; Century Succession
 Source: {#BuildDir}\Landis.Extension.Succession.Century.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: docs\LANDIS-II Century Succession v2.0 User Guide.pdf; DestDir: {app}\docs
+Source: docs\LANDIS-II Century Succession v3.0 User Guide.pdf; DestDir: {app}\docs
 Source: docs\Century-succession-log-metadata.xlsx; DestDir: {app}\docs
 Source: examples\*; DestDir: {app}\examples\century-succession
 
