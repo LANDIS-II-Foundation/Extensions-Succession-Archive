@@ -20,7 +20,7 @@ namespace Landis.Extension.Succession.Century
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             
             //---------------------------------------------------------------------
-            // Surface SOM1 decomposes to SOM2 with CO2 loss 
+            // Surface SOM1 decomposes to SOM2 with CO2 lost to respiration.
             
             double som1c_surface = SiteVars.SOM1surface[site].Carbon;  
                                 
@@ -35,13 +35,11 @@ namespace Landis.Extension.Succession.Century
                 ratioCNtoSOM2 = System.Math.Max(ratioCNtoSOM2, OtherData.SurfaceActivePoolCNMinimum);
         
                 //Compute total C flow out of surface microbes.
-                //PlugIn.ModelCore.Log.WriteLine("SiteVars.DecayFactor = {0:0.00}, SurfaceDecayRateMicrobes = {1:0.00}",
-                //SiteVars.DecayFactor[site], OtherData.LitterParameters[(int)LayerType.Surface].DecayRateMicrobes);
                 double totalCflow = som1c_surface
                     * SiteVars.DecayFactor[site] 
-                    //* OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
                     * EcoregionData.DecayRateSurf[ecoregion] 
                     * OtherData.MonthAdjust;
+                //* OtherData.LitterParameters[(int) LayerType.Surface].DecayRateMicrobes
                     
                 // If decomposition can occur, schedule flows associated with respiration
                 // and decomposition
@@ -50,13 +48,10 @@ namespace Landis.Extension.Succession.Century
                     
                     //CO2 loss - Compute and schedule respiration flows.
                     double co2loss = totalCflow * OtherData.P1CO2_Surface;
-
+                    double netCFlow = totalCflow - co2loss;
                     SiteVars.SOM1surface[site].Respiration(co2loss, site);
 
                     // Decompose Surface SOM1 to SOM2
-                    double netCFlow = totalCflow - co2loss;
-
-                    //Partition and schedule C and N flows 
                     SiteVars.SOM1surface[site].TransferCarbon(SiteVars.SOM2[site], netCFlow);
                     SiteVars.SOM1surface[site].TransferNitrogen(SiteVars.SOM2[site], netCFlow, som1c_surface, ratioCNtoSOM2, site);
 
@@ -128,7 +123,6 @@ namespace Landis.Extension.Succession.Century
                                             OtherData.MinContentN_SOM3);
                      
                     //Partition and schedule C and N flows 
-                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - before SOM1 step1.", SiteVars.MineralN[site]);
                     SiteVars.SOM1soil[site].TransferCarbon(SiteVars.SOM3[site], cFlowS1S3);
                     SiteVars.SOM1soil[site].TransferNitrogen(SiteVars.SOM3[site], cFlowS1S3, som1c_soil, ratioCNto3, site);
                      
@@ -217,8 +211,7 @@ namespace Landis.Extension.Succession.Century
                     double clayEffect = OtherData.PS2S3_Intercept + OtherData.PS2S3_Slope * EcoregionData.PercentClay[ecoregion];
                     double cFlowS2S3 = netCFlow * clayEffect * (1.0 + OtherData.AnaerobicImpactSlope * (1.0 - anerb));
 
-                    //Compute and schedule N, P, and S flows and update mineralization
-                    //accumulators
+                    //Compute and schedule C and N flows and update mineralization accumulators
                     double ratioCNto3 = Layer.BelowgroundDecompositionRatio(site,
                                             OtherData.MinCNenterSOM3, 
                                             OtherData.MaxCNenterSOM3,
@@ -227,14 +220,13 @@ namespace Landis.Extension.Succession.Century
                     //Partition and schedule C and N flows 
                     SiteVars.SOM2[site].TransferCarbon(SiteVars.SOM3[site], cFlowS2S3);
                     SiteVars.SOM2[site].TransferNitrogen(SiteVars.SOM3[site], cFlowS2S3, som2c, ratioCNto3, site);
-                    //PlugIn.ModelCore.Log.WriteLine("cFlowS2S3 C={0:0.00}. som2c={1:0.00}, ratioCNto3={2:0.00}", cFlowS2S3, som2c, ratioCNto3);
                    
                     // -----------------------------------------------
                     // Decompose SOM2 to SOM1
                     // Added impact of soil anaerobic conditions
                     double cFlowS2S1 = netCFlow - cFlowS2S3;
 
-                    // Compute and schedule N, P, and S flows and update mineralization accumulators
+                    // Compute and schedule N and C flows and update mineralization accumulators
                     ratioCNto1 = Layer.BelowgroundDecompositionRatio(site,
                                         OtherData.MinCNenterSOM1, 
                                         OtherData.MaxCNenterSOM1,
@@ -250,8 +242,6 @@ namespace Landis.Extension.Succession.Century
 
             //---------------------------------------------------------------------
             // SOM3 decomposes to soil SOM1 with CO2 loss
-            // PlugIn.ModelCore.Log.WriteLine("    Decompose SOM3...");
-            //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00} - pre SOM3.", SiteVars.MineralN[site]);
            
             double som3c = SiteVars.SOM3[site].Carbon; 
             
