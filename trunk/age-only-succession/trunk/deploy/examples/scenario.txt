@@ -10,10 +10,6 @@ EcoregionsMap   ./ecoregions.gis
 CellLength  100 << meters, 100 x 100 m = 1 ha
 
 
->> NOTE:  This example assumes that you have downloaded and installed 
->> the correpsonding extensions.  These extensions are currently packaged
->> together as a package.
-
 >> Succession Extension     Initialization File
 >> --------------------     -------------------
    "Age-only Succession"    age-only-succession.txt
