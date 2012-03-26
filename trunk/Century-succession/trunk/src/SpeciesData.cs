@@ -17,7 +17,7 @@ namespace Landis.Extension.Succession.Century
     {
 
         public static Species.AuxParm<int> FuncType;
-        public static Species.AuxParm<int> NTolerance;
+        public static Species.AuxParm<bool> NFixer;
         public static Species.AuxParm<int> GDDmin;
         public static Species.AuxParm<int> GDDmax;
         public static Species.AuxParm<int> MinJanTemp;
@@ -32,7 +32,7 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<double> WoodCN;
         public static Species.AuxParm<double> CoarseRootCN;
         public static Species.AuxParm<double> LeafLitterCN;
-        public static Species.AuxParm<double> FineRootLitterCN;
+        public static Species.AuxParm<double> FineRootCN;
         //public static Species.AuxParm<double> NLimits;
 
         public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbability;
@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.Century
         public static void Initialize(IInputParameters parameters)
         {
             FuncType            = parameters.SppFunctionalType;
-            NTolerance          = parameters.NTolerance;
+            NFixer              = parameters.NFixer;
             GDDmin              = parameters.GDDmin;
             GDDmax              = parameters.GDDmax;
             MinJanTemp          = parameters.MinJanTemp;
@@ -60,7 +60,7 @@ namespace Landis.Extension.Succession.Century
             WoodCN              = parameters.WoodCN;
             CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;
-            FineRootLitterCN    = parameters.FineRootLitterCN;
+            FineRootCN          = parameters.FineRootCN;
             //NLimits = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             
             Establishment.Initialize();

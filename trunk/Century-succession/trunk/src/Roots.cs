@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Melissa Lucash
 
 using Landis.Core;
 using Landis.SpatialModeling;
@@ -54,10 +54,9 @@ namespace Landis.Extension.Succession.Century
             LitterLayer.PartitionResidue(
                             fineRootBiomass,
                             inputDecayValue,
-                            SpeciesData.FineRootLitterCN[species],
+                            SpeciesData.FineRootCN[species],
                             SpeciesData.FineRootLignin[species],
                             OtherData.StructuralCN,
-
                             LayerName.FineRoot,
                             LayerType.Soil,
                             site);
@@ -66,16 +65,17 @@ namespace Landis.Extension.Succession.Century
         
         /// <summary>
         /// Calculate coarse and fine roots based on aboveground wood and leaf biomass.
-        /// Coarse root:Aboveground Wood and Fine root:Foliar fom White et al. 2000/Niklas & Enquist 2002
-        /// Averages of deciduous and conifer species
+        /// Coarse root:stem mass of loblolly pine from Albaugh et al 2006 based on multiple sites with loblolly pine.
+        /// Fine root:foliar biomass estimated from Park et al. 2008 at HBEF and Sleepers River.
+        /// Fine root production used an average of deciduous and conifer species since they didn't differ in Park et al. 2008.
         /// </summary>
         public static double CalculateCoarseRoot(double wood)
         {
-            return (wood * 0.25);
+            return (wood * 0.5);
         }
         public static double CalculateFineRoot(double foliarBiomass)
         {
-            return (foliarBiomass * 0.7);
+            return (foliarBiomass * 0.76);
         }
     }
 }

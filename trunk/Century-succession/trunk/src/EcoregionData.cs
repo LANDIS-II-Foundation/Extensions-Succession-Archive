@@ -25,10 +25,14 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double> StormFlowFraction;
         public static Ecoregions.AuxParm<double> BaseFlowFraction;
         public static Ecoregions.AuxParm<double> Drain;
-        //public static Ecoregions.AuxParm<double> MonthlyNDeposition;
         public static Ecoregions.AuxParm<double> AtmosNslope;
         public static Ecoregions.AuxParm<double> AtmosNintercept;
         public static Ecoregions.AuxParm<double> Latitude;
+        public static Ecoregions.AuxParm<double> DecayRateSurf; 
+        public static Ecoregions.AuxParm<double> DecayRateSOM1;
+        public static Ecoregions.AuxParm<double> DecayRateSOM2;
+        public static Ecoregions.AuxParm<double> DecayRateSOM3;
+        public static Ecoregions.AuxParm<double> Denitrif;
         public static Ecoregions.AuxParm<double> ActiveSiteCount;
         public static Ecoregions.AuxParm<Percentage>[] ShadeBiomass;
         public static Ecoregions.AuxParm<int> B_MAX;
@@ -55,7 +59,13 @@ namespace Landis.Extension.Succession.Century
             AtmosNslope         = parameters.AtmosNslope;
             AtmosNintercept     = parameters.AtmosNintercept;
             Latitude            = parameters.Latitude;
-            ShadeBiomass        = parameters.MinRelativeBiomass;
+            DecayRateSurf       = parameters.DecayRateSurf;
+            DecayRateSOM1       = parameters.DecayRateSOM1;
+            DecayRateSOM2       = parameters.DecayRateSOM2;
+            DecayRateSOM3       = parameters.DecayRateSOM3;
+            Denitrif             = parameters.Denitrif;
+            
+            ShadeBiomass = parameters.MinRelativeBiomass;
     
             ActiveSiteCount = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
             ClimateUpdates  = new Ecoregions.AuxParm<bool[]>(PlugIn.ModelCore.Ecoregions);

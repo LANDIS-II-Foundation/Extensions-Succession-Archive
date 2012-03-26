@@ -169,6 +169,7 @@ namespace Landis.Extension.Succession.Century
             }
         }
 
+        // --------------------------------------------------
         public Layer Clone()
         {
             Layer newLayer = new Layer(this.Name, this.Type);
@@ -186,12 +187,34 @@ namespace Landis.Extension.Succession.Century
         }
 
         // --------------------------------------------------
+        public void DecomposeStructural(ActiveSite site)
+        {
+            if (this.Carbon > 0.0000001)
+            {
+
+                double anerb = SiteVars.AnaerobicEffect[site];
+
+                if (this.Type == LayerType.Surface) anerb = 1.0; // No anaerobic effect on surface material
+
+                //Compute total C flow out of structural in layer
+                double totalCFlow = System.Math.Min(this.Carbon, OtherData.MaxStructuralC)
+                                * SiteVars.DecayFactor[site]
+                                * OtherData.LitterParameters[(int)this.Type].DecayRateStrucC
+                                * anerb
+                                * System.Math.Exp(-1.0 * OtherData.LigninDecayEffect * this.FractionLignin)
+                                * OtherData.MonthAdjust;
+
+                //Decompose structural into som1 and som2 with CO2 loss.
+                this.DecomposeLignin(totalCFlow, site);
+            }
+        }
+        // --------------------------------------------------
         public void DecomposeLignin(double totalCFlow, ActiveSite site)
         // Originally from declig.f for decomposition of compartment lignin
         {
             double carbonToSOM1;    //Net C flow to SOM1
             double carbonToSOM2;    //Net C flow to SOM2
-            double litterC = this.Carbon; //this.UnlabeledC + this.LabeledC;
+            double litterC = this.Carbon; 
             double ratioCN = litterC / this.Nitrogen;
 
 
@@ -210,19 +233,14 @@ namespace Landis.Extension.Succession.Century
                 //MicrobialRespiration associated with decomposition to som2
                 double co2loss = carbonToSOM2 * OtherData.LigninRespirationRate;
 
-                //respir(co2loss,nlr,llyr,tcstva,cstatv,csrsnk,resp,
-                //elstva,minerl,gromin,netmnr);
                 this.Respiration(co2loss, site);
 
                 //Net C flow to SOM2
-                carbonToSOM2 -= co2loss;
+                double netCFlow = carbonToSOM2 = co2loss;
 
-                // Partition and schedule C flows by isotope
-                // Compute and schedule N, P, and S flows.
-                // Update mineralization accumulators.
-                this.TransferCarbon(SiteVars.SOM2[site], carbonToSOM2);
-
-                this.TransferNitrogen(SiteVars.SOM2[site], carbonToSOM2, litterC, ratioCN, site);
+                // Partition and schedule C flows 
+                this.TransferCarbon(SiteVars.SOM2[site], netCFlow);
+                this.TransferNitrogen(SiteVars.SOM2[site], netCFlow, litterC, ratioCN, site);
 
                 // ----------------------------------------------
                 // Decompose Wood Object to SOM1
@@ -232,9 +250,9 @@ namespace Landis.Extension.Succession.Century
 
                 //MicrobialRespiration associated with decomposition to som1
                 if(this.Type == LayerType.Surface)
-                    co2loss = carbonToSOM1 * OtherData.StructuralToCO2Surface; //ps1co2[llyr];
+                    co2loss = carbonToSOM1 * OtherData.StructuralToCO2Surface; 
                 else
-                    co2loss = carbonToSOM1 * OtherData.StructuralToCO2Soil; //ps1co2[llyr];
+                    co2loss = carbonToSOM1 * OtherData.StructuralToCO2Soil; 
 
                 this.Respiration(co2loss, site);
 
@@ -251,49 +269,21 @@ namespace Landis.Extension.Succession.Century
                     this.TransferCarbon(SiteVars.SOM1soil[site], carbonToSOM1);
                     this.TransferNitrogen(SiteVars.SOM1soil[site], carbonToSOM1, litterC, ratioCN, site);
                 }
-
-
             }
 
             return;
         }
 
-        public void DecomposeStructural(ActiveSite site)
-        {
-            if(this.Carbon > 0.0000001)
-            {
-
-                double anerb = SiteVars.AnaerobicEffect[site];
-
-                if (this.Type == LayerType.Surface) anerb = 1.0; // No anaerobic effect on surface material
-
-                //Compute total C flow out of structural in layer
-                double totalCFlow = System.Math.Min(this.Carbon, OtherData.MaxStructuralC)
-                                * SiteVars.DecayFactor[site]
-                                * OtherData.LitterParameters[(int) this.Type].DecayRateStrucC //dec1[SRFC]
-                                * anerb
-                                * System.Math.Exp(-1.0 * OtherData.LigninDecayEffect * this.FractionLignin) //strlig[SRFC]);
-                                * OtherData.MonthAdjust;
-
-
-               //Decompose structural into som1 and som2 with CO2 loss.
-               this.DecomposeLignin(totalCFlow, site);
-            }
-        }
         //---------------------------------------------------------------------
         public void DecomposeMetabolic(ActiveSite site)
         {
-        //lock(site){
             double litterC = this.Carbon;
             double anerb = SiteVars.AnaerobicEffect[site];
 
             if (litterC > 0.0000001)
             {
               // Determine C/N ratios for flows to SOM1
-              // Assuming ONLY NITROGEN for starters
-
                 double ratioCNtoSOM1 = 0.0;
-                //double mineralNFlow = 0.0;
                 double co2loss = 0.0;
 
                 // Compute ratios for surface  metabolic residue
@@ -387,15 +377,15 @@ namespace Landis.Extension.Succession.Century
                 return;
             }
 
-            if((NFlow - this.Nitrogen) > 0.01)
+            if ((NFlow - this.Nitrogen) > 0.01)
             {
-                PlugIn.ModelCore.Log.WriteLine("  Transfer N:  N flow > source N.");
-                PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
-                PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
-                PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
-                PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
-                PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
-            }
+                //PlugIn.ModelCore.Log.WriteLine("  Transfer N:  N flow > source N.");
+                //PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
+                //PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+                //PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
+                //PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
+                //PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
+           }
 
             //...If C/N of Box A > C/N of new material entering Box B
             if ((CFlow / NFlow) > ratioCNtoDestination)
@@ -405,6 +395,9 @@ namespace Landis.Extension.Succession.Century
                //     since  ratioCNtoDestination = netCFlow / (Nflow + immobileN),
                //     where immobileN is the extra N needed from the mineral pool
                 double immobileN = (CFlow / ratioCNtoDestination) - NFlow;
+                
+                //PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+                //PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
 
                 //...Schedule flow from Box A to Box B (outofa)
                 //flow(anps,bnps,time,outofa);
@@ -427,7 +420,9 @@ namespace Landis.Extension.Succession.Century
                 //...MINERALIZATION occurs
                 //...Schedule flow from Box A to Box B
             {
+                //PlugIn.ModelCore.Log.WriteLine("  Transfer Nitrogen Min.");
                 double mineralizedN = (CFlow / ratioCNtoDestination);
+                
 
                 this.Nitrogen -= mineralizedN;
                 destination.Nitrogen += mineralizedN;
@@ -436,10 +431,10 @@ namespace Landis.Extension.Succession.Century
 
                 mineralNFlow = NFlow - mineralizedN;
 
-                if((mineralNFlow - this.Nitrogen) > 0.01)
+                if ((mineralNFlow - this.Nitrogen) > 0.01) 
                 {
                     PlugIn.ModelCore.Log.WriteLine("  Transfer N mineralization:  mineralN > source N.");
-                    PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);
+                    //PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);
                     PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
                     PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
                     PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
@@ -450,14 +445,17 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.MineralN[site] += mineralNFlow;
 
-                //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, mineralNFlow = {1:0.000}, mineralizedN={2:0.000}", NFlow, mineralNFlow, mineralizedN);
-             }
+                //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, mineralizedN = {1:0.000}, N mineralalization = {1:0.000}", NFlow, mineralizedN, mineralNFlow);
+                //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+            }
 
             if (mineralNFlow > 0)
                 SiteVars.GrossMineralization[site] += mineralNFlow;
 
             //...Net mineralization
             this.NetMineralization += mineralNFlow;
+
+            //PlugIn.ModelCore.Log.WriteLine("     this.Nitrogen={0:0.000}.", this.Nitrogen);
 
             return;
         }
@@ -479,7 +477,7 @@ namespace Landis.Extension.Succession.Century
         //c         netMineralization = net mineralization for layer N
 
             //c...Mineralization associated with respiration is proportional to the N fraction.
-            double mineralNFlow = co2loss * this.Nitrogen / this.Carbon; //(this.LabeledC + this.UnlabeledC);
+            double mineralNFlow = co2loss * this.Nitrogen / this.Carbon; 
 
             if(mineralNFlow > this.Nitrogen)
             {
@@ -494,17 +492,17 @@ namespace Landis.Extension.Succession.Century
                 co2loss = this.Carbon;
             }
 
-            //c...C flow from cstatv to CO2
-
-            //PlugIn.ModelCore.Log.WriteLine("  Source/Sink BEFORE = {0:0.00}, TRANSFER = {1:0.00}.", SiteVars.SourceSink[site].Carbon, co2loss);
             this.TransferCarbon(SiteVars.SourceSink[site], co2loss);
-            //PlugIn.ModelCore.Log.WriteLine("  Source/Sink AFTER = {0:0.00}, TRANSFER = {1:0.00}.", SiteVars.SourceSink[site].Carbon, co2loss);
 
             //Add lost CO2 to monthly heterotrophic respiration
-            SiteVars.MonthlyResp[site][CohortBiomass.month] += co2loss;
+            SiteVars.MonthlyResp[site][Century.Month] += co2loss;
 
             this.Nitrogen -= mineralNFlow;
             SiteVars.MineralN[site] += mineralNFlow;
+
+            //PlugIn.ModelCore.Log.WriteLine("  Respiration mineralNFlow = {0:0.000}", mineralNFlow);
+            //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+
 
             //c...Update gross mineralization
             // this.GrossMineralization += mineralNFlow;
@@ -548,11 +546,6 @@ namespace Landis.Extension.Succession.Century
 
             return canDecompose;
 
-            //if (cando(N) .and. cando(P) .and. cando(S)) then
-            //candec = .true.
-            //else
-            //candec = .false.
-        //}
         }
 
         public void AdjustLignin(double inputC, double inputFracLignin)
@@ -578,7 +571,6 @@ namespace Landis.Extension.Succession.Century
             double newlig = inputFracLignin * inputC;
 
             //c...Compute lignin fraction in combined residue
-            //double newFraction = (oldlig + newlig) / (totalC + cAddToStructural);
             double newFraction = (oldlig + newlig) / (this.Carbon + inputC);
 
             this.FractionLignin = newFraction;
@@ -607,15 +599,8 @@ namespace Landis.Extension.Succession.Century
             //BelowGround Decomposition RATio computation.
             double bgdrat = 0.0;
 
-            //aminrl[3]:Mineral N in layer 1~3 before uptake by plants.
-            //varat : varat(1,iel) = maximum C/E ratio for material
-            //                       entering 'Box B'
-            //        varat(2,iel) = minimum C/E ratio for material
-            //        varat(3,iel) = amount of E present when minimum
-            //                       ratio applies
-
-            //Determine ratio of C/E of new material entering 'Box B'.
-            //Ratio depends on available E
+            //Determine ratio of C/N of new material entering 'Box B'.
+            //Ratio depends on available N
 
             double mineralN = SiteVars.MineralN[site];
 
@@ -627,9 +612,6 @@ namespace Landis.Extension.Succession.Century
                 bgdrat = (1.0 - (mineralN / minContentN)) * (maxCNenter - minCNenter)
                     + minCNenter;
 
-            //Output: bgdrat = C/E ratio of new material where E is N, P, or S
-            //           depending on the value of iel
-
             return bgdrat;
         }
 
@@ -638,7 +620,7 @@ namespace Landis.Extension.Succession.Century
 
             double Ncontent, agdrat;
             double biomassConversion = 2.0;
-            // cemicb = slope of the regression line for C/E of som1
+            // cemicb = slope of the regression line for C/N of som1
 
             double cemicb = (OtherData.MinCNSurfMicrobes - OtherData.MaxCNSurfMicrobes) / OtherData.MinNContentCNSurfMicrobes;
 

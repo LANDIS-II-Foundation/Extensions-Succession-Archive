@@ -17,7 +17,6 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------------
         public static void Decompose(ActiveSite site)
         {
-        //lock(site){
 
             double wood2c = SiteVars.SurfaceDeadWood[site].Carbon;
 
@@ -36,7 +35,7 @@ namespace Landis.Extension.Succession.Century
                 //Compute total C flow out of large wood
                 double totalCFlow = wood2c * decayRate;
 
-                //PlugIn.ModelCore.Log.WriteLine("Decompose wood.  C={0:0.00}, Cflow={1:0.00}, DF={2:0.00}, DV={3:0.00}, LigninF={4:0.000}.", wood2c, totalCFlow, SiteVars.DecayFactor[site], SiteVars.SurfaceDeadWood[site].DecayValue, ligninFactor);
+                //PlugIn.ModelCore.Log.WriteLine("Decompose wood.  C={0:0.00}, Cflow={1:0.00}, DecayRate={2:0.000}.", wood2c, totalCFlow, decayRate);
 
                 // Decompose large wood into SOM1 and SOM2 with CO2 loss.
                 SiteVars.SurfaceDeadWood[site].DecomposeLignin(totalCFlow, site);
@@ -78,7 +77,7 @@ namespace Landis.Extension.Succession.Century
             double ratioCNtotal = 0.0;
             double totalNitrogen = 0.0;
 
-            // from dry matter to C, 0.5 ratio
+            // from dry matter to C, 0.47 ratio
             double totalC = inputMass * 0.47;
 
             if (totalC < 0.0000001)
@@ -88,7 +87,7 @@ namespace Landis.Extension.Succession.Century
             // ...Compute amount of element in residue.
             double Npart = totalC / inputCNratio;
 
-            //PlugIn.ModelCore.Log.WriteLine("tC={0}, inputCNratio={1}, name={2}, type={3}.", totalC, inputCNratio, name, type);
+            //PlugIn.ModelCore.Log.WriteLine("                totalCadded={0:0.00}, inputCNratio={1}, name={2}, type={3}.", totalC, inputCNratio, name, type);
 
             // ...Direct absorption of mineral element by residue
             //      (mineral will be transferred to donor compartment
@@ -124,23 +123,27 @@ namespace Landis.Extension.Succession.Century
 
             totalNitrogen = directAbsorb + Npart;
 
-            Layer layer;
+            //PlugIn.ModelCore.Log.WriteLine("                totalNadded={0:0.00}, totalC={1:0.0}, inputCNratio={2}, name={3}, type={4}.", totalNitrogen, totalC, inputCNratio, name, type);
 
-            if((int) name == (int) LayerName.Wood)
-                layer = SiteVars.SurfaceDeadWood[site];
-            else
-                layer = SiteVars.SoilDeadWood[site];
 
-            layer.Carbon += totalC;
-            layer.Nitrogen += totalNitrogen;
+            if ((int)name == (int)LayerName.Wood)
+            {
+                SiteVars.SurfaceDeadWood[site].Carbon += totalC;
+                SiteVars.SurfaceDeadWood[site].Nitrogen += totalNitrogen;
+                SiteVars.SurfaceDeadWood[site].AdjustLignin(totalC, fracLignin);
+                SiteVars.SurfaceDeadWood[site].AdjustDecayRate(totalC, inputDecayValue);
+            }
+            else  // Dead Coarse Roots
+            {
+                SiteVars.SoilDeadWood[site].Carbon += totalC;
+                SiteVars.SoilDeadWood[site].Nitrogen += totalNitrogen;
+                SiteVars.SoilDeadWood[site].AdjustLignin(totalC, fracLignin);
+                SiteVars.SoilDeadWood[site].AdjustDecayRate(totalC, inputDecayValue);
+            }
 
-            // ...Adjust lignin and decay rates in Structural Layers
-            layer.AdjustLignin(totalC, fracLignin);
-            layer.AdjustDecayRate(totalC,  inputDecayValue);
 
             return;
 
-        //}
         }
 
     }
