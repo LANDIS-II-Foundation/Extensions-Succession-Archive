@@ -31,7 +31,7 @@ namespace Landis.Extension.Succession.Century
             }
             
             log.AutoFlush = true;
-            log.WriteLine("Time, Ecoregion, Species, TempMult, MinJanTempMult, SoilMoistureMult, ProbEst");
+            log.WriteLine("Time, Ecoregion, Species, TempMult, MinJanTempMult, SoilMoistureMult, Adjust, ProbEst");
         }
 
 
@@ -93,6 +93,7 @@ namespace Landis.Extension.Succession.Century
                 foreach(ISpecies species in PlugIn.ModelCore.Species)
                 {
                     EstablishProbability[species][ecoregion] /= (double) years;
+                    EstablishProbability[species][ecoregion] *= PlugIn.ProbEstablishAdjust;
                     
                     if(PlugIn.ModelCore.CurrentTime > 0 && EcoregionData.ActiveSiteCount[ecoregion] > 0)
                     {
@@ -104,6 +105,7 @@ namespace Landis.Extension.Succession.Century
                         log.Write("{0:0.00},", avgTempMultiplier[species.Index, ecoregion.Index]);
                         log.Write("{0:0.00},", avgMinJanTempMultiplier[species.Index, ecoregion.Index]);
                         log.Write("{0:0.00},", avgSoilMultiplier[species.Index, ecoregion.Index]);
+                        log.Write("{0:0.00},", PlugIn.ProbEstablishAdjust);
                         log.WriteLine("{0:0.00}", EstablishProbability[species][ecoregion]);
                     }
                 }

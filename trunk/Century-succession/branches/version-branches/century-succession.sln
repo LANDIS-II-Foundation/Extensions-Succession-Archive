@@ -1,9 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C# Express 2010
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "century-succession", "century-succession.csproj", "{651E102F-6FC1-4DB8-B384-3178E409AF2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LANDIS-II Debug Console", "..\LANDIS-II Debug Console\LANDIS-II Debug Console.csproj", "{742214C0-CBC9-4E06-8205-297A3EAE61B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LANDIS-II Debug Console", "..\..\Landisv6\debug_console\LANDIS-II Debug Console.csproj", "{742214C0-CBC9-4E06-8205-297A3EAE61B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

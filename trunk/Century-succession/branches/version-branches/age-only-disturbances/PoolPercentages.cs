@@ -99,7 +99,6 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         /// </summary>
         public PoolPercentages()
         {
-        
         }
     }
 }

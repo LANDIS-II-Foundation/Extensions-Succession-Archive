@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Fugui Wang
 
 using Landis.Core;
 using Landis.SpatialModeling;
@@ -44,23 +44,20 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
            
            
 
-
+            /*
             if ((float)cohortReductions.Branch == 1.0 | (float)cohortReductions.Branch == 0.0)
             ForestFloor.AddBranchLitter(branchInput, cohort.Species, site);
             else
-            ForestFloor.AddBranchHLitter(branchInput, cohort.Species, site);
-            
+           */
 
-
-            
-             //PlugIn.ModelCore.Log.WriteLine("       InputB/TotalB:  Foliar={0:0.00}/{1:0.00}, Wood={2:0.0}/{3:0.0}.", foliarInput, foliar, woodInput, wood);
+            ForestFloor.AddBranchRLitter(branchInput, cohort.Species, site);
+                       
+            //PlugIn.ModelCore.Log.WriteLine("       InputB/TotalB:  Foliar={0:0.00}/{1:0.00}, Wood={2:0.0}/{3:0.0}.", foliarInput, foliar, woodInput, wood);
             
             ForestFloor.AddWoodLitter(woodInput, cohort.Species, site);
-            Roots.AddCoarseRootLitter(wood, cohort.Species, site);  //wang?
-            // All of cohorts roots are killed.//wang
-            
-
             ForestFloor.AddFoliageLitter(foliarInput, cohort.Species, site);
+            
+            Roots.AddCoarseRootLitter(wood, cohort.Species, site);  // All of cohorts roots are killed.
             Roots.AddFineRootLitter(foliar, cohort.Species, site);
             
         }

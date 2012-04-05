@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{651E102F-6FC1-4DB8-B384-3178E409AF2D}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -86,6 +86,7 @@
     <Compile Include="dynamic-change\BiomassParametersParser.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HarvestEffects.cs" />
     <Compile Include="utility\BaseCohortsSiteVar.cs" />
     <Compile Include="Century.cs" />
     <Compile Include="CohortBiomass.cs" />
@@ -118,7 +119,9 @@
     <Compile Include="utility\IInputParameters.cs" />
     <Compile Include="utility\InputParameterParser.cs" />
     <Compile Include="utility\InputParameters.cs" />
+    <Compile Include="utility\IntPixel.cs" />
     <Compile Include="utility\MapNames.cs" />
+    <Compile Include="utility\ShortPixel.cs" />
     <Compile Include="utility\Species_AuxParm.cs" />
     <Compile Include="utility\UShortPixel.cs" />
     <Compile Include="utility\Util.cs" />

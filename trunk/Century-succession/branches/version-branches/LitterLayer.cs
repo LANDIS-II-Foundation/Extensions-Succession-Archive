@@ -14,7 +14,7 @@ namespace Landis.Extension.Succession.Century
     {
 
         /// <summary>
-        /// Decomposes Sturctural Litter
+        /// Decomposes Structural Litter
         /// </summary>
         public static void Decompose(ActiveSite site)
         {
@@ -32,12 +32,11 @@ namespace Landis.Extension.Succession.Century
                             double inputCNratio,
                             double fracLignin,
                             double ratioCNstructural,
+                            //double CNratiofrass,
                             LayerName name,
                             LayerType type,
                             ActiveSite site)
         {
-        //lock(site){
-
             double cAddToMetabolic, cAddToStructural, directAbsorb;
             double NAddToMetabolic, NAddToStructural, Npart;
             double fracStructuralLignin, fracMetabolic, fracN, ratioCNtotal, ratioLigninN;
@@ -91,7 +90,7 @@ namespace Landis.Extension.Succession.Century
 
             // ...Partition carbon into structural and metabolic fraction of
             //      residue (including direct absorption) which is nitrogen
-            fracN =  totalNitrogen / (totalC * 2.0);
+            fracN = totalNitrogen / inputMass; // (totalC * 2.0);
 
             // ...Lignin/nitrogen ratio of residue
             ratioLigninN = fracLignin / fracN;

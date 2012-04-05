@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Fugui Wang
 
 using Landis.Core;
 using Landis.SpatialModeling;
@@ -17,7 +17,7 @@ namespace Landis.Extension.Succession.Century
     {
 
         public static Species.AuxParm<int> FuncType;
-        public static Species.AuxParm<int> NTolerance;
+        public static Species.AuxParm<bool> NFixer;
         public static Species.AuxParm<int> GDDmin;
         public static Species.AuxParm<int> GDDmax;
         public static Species.AuxParm<int> MinJanTemp;
@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<double> WoodLignin;
         //wang
         public static Species.AuxParm<double> BranchLignin;
-        public static Species.AuxParm<double> BranchHLignin;
+        public static Species.AuxParm<double> BranchRLignin;
 
         public static Species.AuxParm<double> CoarseRootLignin;
         public static Species.AuxParm<double> FineRootLignin;
@@ -36,11 +36,11 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<double> WoodCN;
         //wang 
         public static Species.AuxParm<double> BranchCN;
-        public static Species.AuxParm<double> BranchHCN;
+        public static Species.AuxParm<double> BranchRCN;
 
         public static Species.AuxParm<double> CoarseRootCN;
         public static Species.AuxParm<double> LeafLitterCN;
-        public static Species.AuxParm<double> FineRootLitterCN;
+        public static Species.AuxParm<double> FineRootCN;
         //public static Species.AuxParm<double> NLimits;
 
         public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbability;
@@ -53,7 +53,7 @@ namespace Landis.Extension.Succession.Century
         public static void Initialize(IInputParameters parameters)
         {
             FuncType            = parameters.SppFunctionalType;
-            NTolerance          = parameters.NTolerance;
+            NFixer              = parameters.NFixer;
             GDDmin              = parameters.GDDmin;
             GDDmax              = parameters.GDDmax;
             MinJanTemp          = parameters.MinJanTemp;
@@ -64,7 +64,7 @@ namespace Landis.Extension.Succession.Century
             WoodLignin          = parameters.WoodLignin ;
             //wang
             BranchLignin        = parameters.BranchLignin;
-            BranchHLignin = parameters.BranchHLignin;
+            BranchRLignin = parameters.BranchRLignin;
 
             CoarseRootLignin    = parameters.CoarseRootLignin ;
             FineRootLignin      = parameters.FineRootLignin ;
@@ -72,11 +72,11 @@ namespace Landis.Extension.Succession.Century
             WoodCN              = parameters.WoodCN;
             //wang
             BranchCN            = parameters.BranchCN;
-            BranchHCN           = parameters.BranchHCN;
+            BranchRCN           = parameters.BranchRCN;
 
             CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;
-            FineRootLitterCN    = parameters.FineRootLitterCN;
+            FineRootCN          = parameters.FineRootCN;
             //NLimits = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             
             Establishment.Initialize();

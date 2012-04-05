@@ -1,9 +1,10 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Fugui Wang
 
 using Landis.Core;
 using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
+
 using Landis.Library.InitialCommunities;
 using Landis.Library.Succession;
 using Landis.Library.LeafBiomassCohorts;
@@ -32,6 +33,8 @@ namespace Landis.Extension.Succession.Century
         public static int ANPPMapFrequency;
         public static string ANEEMapNames = null;
         public static int ANEEMapFrequency;
+        public static int SuccessionTimeStep;
+        public static double ProbEstablishAdjust;
 
         //---------------------------------------------------------------------
 
@@ -69,7 +72,9 @@ namespace Landis.Extension.Succession.Century
         {
             PlugIn.ModelCore.Log.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
+            SuccessionTimeStep    = Timestep;
             sufficientLight       = parameters.LightClassProbabilities;
+            ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
 
             //  Initialize climate.
@@ -105,7 +110,8 @@ namespace Landis.Extension.Succession.Century
             EcoregionData.Initialize(parameters);
             FireEffects.Initialize(parameters);
             InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
-
+            if (parameters.CalibrateMode)
+                Outputs.CreateCalibrateLogFile();
 
         }
 
@@ -134,7 +140,7 @@ namespace Landis.Extension.Succession.Century
             int[] months = new int[12]{6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5};
 
             if(OtherData.CalibrateMode)
-            months = new int[12]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+                months = new int[12]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
             for (int i = 0; i < 12; i++)
             {
@@ -146,13 +152,13 @@ namespace Landis.Extension.Succession.Century
             if(SoilCarbonMapNames != null && (PlugIn.ModelCore.CurrentTime % SoilCarbonMapFrequency) == 0)
             {
                 string path = MapNames.ReplaceTemplateVars(SoilCarbonMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    IntPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort) ((SiteVars.SOM1surface[site].Carbon + SiteVars.SOM1soil[site].Carbon + SiteVars.SOM2[site].Carbon + SiteVars.SOM3[site].Carbon) / 100.0);
+                            pixel.MapCode.Value = (int) ((SiteVars.SOM1surface[site].Carbon + SiteVars.SOM1soil[site].Carbon + SiteVars.SOM2[site].Carbon + SiteVars.SOM3[site].Carbon));
                         }
                         else {
                             //  Inactive site
@@ -167,12 +173,12 @@ namespace Landis.Extension.Succession.Century
             if(SoilNitrogenMapNames != null && (PlugIn.ModelCore.CurrentTime % SoilNitrogenMapFrequency) == 0)
             {
                 string path2 = MapNames.ReplaceTemplateVars(SoilNitrogenMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path2, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites) {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort) (SiteVars.MineralN[site]);
+                            pixel.MapCode.Value = (short) (SiteVars.MineralN[site]);
                         }
                         else {
                             //  Inactive site
@@ -186,14 +192,13 @@ namespace Landis.Extension.Succession.Century
             if(ANPPMapNames != null && (PlugIn.ModelCore.CurrentTime % ANPPMapFrequency) == 0)
             {
                 string path3 = MapNames.ReplaceTemplateVars(ANPPMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path3, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path3, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort) SiteVars.AGNPPcarbon[site];
-                            
+                            pixel.MapCode.Value = (short) SiteVars.AGNPPcarbon[site];
                         }
                         else {
                             //  Inactive site
@@ -207,13 +212,13 @@ namespace Landis.Extension.Succession.Century
             {
 
                 string path4 = MapNames.ReplaceTemplateVars(ANEEMapNames, PlugIn.ModelCore.CurrentTime);
-                using (IOutputRaster<UShortPixel> outputRaster = modelCore.CreateRaster<UShortPixel>(path4, modelCore.Landscape.Dimensions))
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path4, modelCore.Landscape.Dimensions))
                 {
-                    UShortPixel pixel = outputRaster.BufferPixel;
+                    ShortPixel pixel = outputRaster.BufferPixel;
                     foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
                         if (site.IsActive) {
-                            pixel.MapCode.Value = (ushort)(SiteVars.AnnualNEE[site]+1000);
+                            pixel.MapCode.Value = (short)(SiteVars.AnnualNEE[site]+1000);
                         }
                         else {
                             //  Inactive site
@@ -232,6 +237,8 @@ namespace Landis.Extension.Succession.Century
         {
 
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+
+            byte finalShade = 0;
 
             if (!ecoregion.Active)
                 return 0;
@@ -257,13 +264,14 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.Log.WriteLine("Shade Calculation:  lastMort={0:0.0}, B_MAX={1}, oldB={2}, B_ACT={3}, shade={4}.", lastMortality, B_MAX,oldBiomass,B_ACT,shade);
                 if (B_AM >= EcoregionData.ShadeBiomass[shade][ecoregion])
                 {
-                    return shade;
+                    finalShade = shade;
+                    break;
                 }
             }
 
-            //PlugIn.ModelCore.Log.WriteLine("Shade Calculation:  lastMort={0:0.0}, B_MAX={1}, oldB={2}, B_ACT={3}, shade=0.", lastMortality, B_MAX,oldBiomass,B_ACT);
+            //PlugIn.ModelCore.Log.WriteLine("Yr={0},      Shade Calculation:  B_MAX={1}, B_ACT={2}, Shade={3}.", PlugIn.ModelCore.CurrentTime, B_MAX, B_ACT, finalShade);
 
-            return 0;
+            return finalShade;
         }
         //---------------------------------------------------------------------
 
@@ -272,10 +280,11 @@ namespace Landis.Extension.Succession.Century
         {
 
             InitialBiomass initialBiomass = InitialBiomass.Compute(site, initialCommunity);
-            SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts); //.Clone();
+            SiteVars.Cohorts[site] = InitialBiomass.Clone(initialBiomass.Cohorts);
+            //IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             SiteVars.SurfaceDeadWood[site]       = initialBiomass.SurfaceDeadWood.Clone();
-            //wang
+            
             SiteVars.SurfaceDeadBranch[site] = initialBiomass.SurfaceDeadBranch.Clone();
             
            
@@ -298,7 +307,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.CohortLeafN[site]           = initialBiomass.CohortLeafN;
             SiteVars.CohortWoodC[site]           = initialBiomass.CohortWoodC;
             SiteVars.CohortWoodN[site]           = initialBiomass.CohortWoodN;
-            //wang
+            
 
             SiteVars.CohortBranchC[site] = initialBiomass.CohortBranchC;
             SiteVars.CohortBranchN[site] = initialBiomass.CohortBranchN;
@@ -318,22 +327,19 @@ namespace Landis.Extension.Succession.Century
 
             ICohort cohort = eventArgs.Cohort;
             double foliar = (double) cohort.LeafBiomass;
-
             double wood = (double) cohort.WoodBiomass;
-            //wang
             double branch = (double)cohort.BranchBiomass;
 
-            PlugIn.ModelCore.Log.WriteLine("Cohort Died: species={0}, age={1}, biomass={2}, foliage={3}.", cohort.Species.Name, cohort.Age, cohort.Biomass, foliar);
+            //PlugIn.ModelCore.Log.WriteLine("Cohort Died: species={0}, age={1}, biomass={2}, foliage={3}.", cohort.Species.Name, cohort.Age, cohort.Biomass, foliar);
 
             if (disturbanceType == null) {
                 //PlugIn.ModelCore.Log.WriteLine("NO EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
 
                 ForestFloor.AddWoodLitter(wood, cohort.Species, eventArgs.Site);
-                ForestFloor.AddBranchLitter(branch, cohort.Species, eventArgs.Site); //wang
+                ForestFloor.AddBranchLitter(branch, cohort.Species, eventArgs.Site); 
                 ForestFloor.AddFoliageLitter(foliar, cohort.Species, eventArgs.Site);
-                Roots.AddCoarseRootLitter(Roots.CalculateCoarseRoot(wood), cohort.Species, eventArgs.Site); 
-                Roots.AddFineRootLitter(Roots.CalculateFineRoot(foliar), cohort.Species, eventArgs.Site); 
- 
+                Roots.AddCoarseRootLitter(wood, cohort.Species, eventArgs.Site);
+                Roots.AddFineRootLitter(foliar, cohort.Species, eventArgs.Site);
             }
 
             if (disturbanceType != null) {

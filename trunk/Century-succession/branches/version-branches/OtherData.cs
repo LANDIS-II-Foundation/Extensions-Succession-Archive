@@ -13,6 +13,7 @@ namespace Landis.Extension.Succession.Century
         // USER INPUTS ------------------------------------------------------------
         public static LitterType[] LitterParameters;
         public static bool CalibrateMode;
+        public static double ProbEstablishAdjust;
         public static WaterType WType;
 
         // NOTE: *****************************************************************
@@ -105,6 +106,15 @@ namespace Landis.Extension.Succession.Century
         public const double OMLeachIntercept   = 0.03;                  // Century:  OMLECH(1)
         public const double OMLeachWater   = 1.9;                      // Century:  OMLECH(3)
 
+        // FLEACH(1 & 2) Parameters for the effect of sand on leaching of mineral N compounds. 
+        // FLEACH(3) - The amount of water in centimeters (cm) that needs to flow
+        // out of water layer 2 to produce leaching of organics.
+       // website:  http://nrel.colostate.edu/projects/century5/reference/html/Century/param-fixed.htm
+        public const double MineralLeachSlope = 0.4;                  // Century:  FLEACH(2)
+        public const double MineralLeachIntercept = 0.6;                  // Century:  FLEACH(1)
+        public const double NfracLeachWater = 0.95;                      // Century:  FLEACH(3)
+        public const double NO3frac = 0.1;                      // Relative fraction of NO3 since NH4 isn't leached, based on Dighton at al 2004 in NJPB
+               
         // SPL:  Parameter for metabolic (vs. structural) split.
         public const double MetaStructSplitIntercept   = 0.85;         // Century:  SPL(1)
         public const double MetaStructSplitSlope   = 0.013;            // Century:  SPL(2)
@@ -153,11 +163,19 @@ namespace Landis.Extension.Succession.Century
         // PCEMIC(2,1) - Minimum C / N ratio for surface microbial pool.
         // PCEMIC(3,1) - Minimum N content of decomposing aboveground material,
         // above which the C / N ratio of the surface microbes equals PCEMIC(2,*).
-        // Values from the ffix.100 file.
+        // Values from the ffix.100 file.  
+        
         public const double MaxCNSurfMicrobes          = 16.0;
         public const double MinCNSurfMicrobes          = 10.0;
         public const double MinNContentCNSurfMicrobes  = 0.02;
 
+        //Constants needed to calculate frass deposition and C/N ratio of frass.
+        //Frass amount calculated as a function of %defoliation using correspondence with Jane Foster citing Phil Townsends in press paper
+        public const double frassdepk=0.86;
+                
+        //CNratiofrass- C/N ratio of frass as calculated by Lovett and Ruesink 1995 (Oecologia 104:133).
+        public const double CNratiofrass = 23.0;
+        
         // TMELT(1) - Minimum temperature above which at least some snow will melt.
         // TMELT(2) - Ratio between degrees above the minimum and centimeters of snow that will melt.
         // Values from the ffix.100 file.
@@ -196,25 +214,23 @@ namespace Landis.Extension.Succession.Century
         //public const double MinDeadWoodCN = 50.0;
 
         // dtm
-        //wang
         public const double MonthAdjust = 1.0;
-       
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
         {
-            //LitterParameters        = parameters.LitterParameters;
             LitterParameters = new LitterType[2];
 
             LitterType litterParmsSurface = new LitterType();
             LitterType litterParmsSoil = new LitterType();
 
             // Structural decomposition rate, the fraction of the pool that turns over each year.
-            litterParmsSurface.DecayRateStrucC = 3.9;//DEC1(1)
-            litterParmsSoil.DecayRateStrucC = 4.9; //DEC1(2)
+            litterParmsSurface.DecayRateStrucC = 3.9;//DEC1(1)  
+            litterParmsSoil.DecayRateStrucC = 4.9; //DEC1(2)  
 
             // Metabolic decomposition rate, the fraction of the pool that turns over each year.
-            litterParmsSurface.DecayRateMetabolicC = 14.8; //DEC2(1)
+            //wangM. in V3 they used 1.48 and 1.85
+			litterParmsSurface.DecayRateMetabolicC = 14.8; //DEC2(1)
             litterParmsSoil.DecayRateMetabolicC = 18.5; //DEC2(2)
 
             // Decomposition rate of organic matter with active turnover, the fraction of the pool
@@ -222,11 +238,18 @@ namespace Landis.Extension.Succession.Century
             litterParmsSurface.DecayRateMicrobes = 3.84; //DEC3(1)
             litterParmsSoil.DecayRateMicrobes = 4.672; //DEC3(2)
 
+//wangM. new version 3 code
+/*
+            litterParmsSurface.DecayRateMicrobes = 1.0; // 6.0; //DEC3(1)  set to 1.0 until meaning of 'fraction' is determined.
+            litterParmsSoil.DecayRateMicrobes = 1.0; // 7.3; //DEC3(2)  
+*/
+
             LitterParameters[0] = litterParmsSurface;
             LitterParameters[1] = litterParmsSoil;
 
             CalibrateMode       = parameters.CalibrateMode;
             WType = parameters.WType;
+            //ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
             //FractionSOM2toCO2   = parameters.FractionSOM2toCO2;
             //FractionSOM3toCO2   = parameters.FractionSOM3toCO2;
             //DecayRateSOM2       = parameters.DecayRateSOM2;

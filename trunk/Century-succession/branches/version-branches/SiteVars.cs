@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Fugui Wang
 
 using Landis.Core;
 using Landis.SpatialModeling;
@@ -28,26 +28,27 @@ namespace Landis.Extension.Succession.Century
 
         //wang
         private static ISiteVar<Layer> surfaceDeadBranch;
-        private static ISiteVar<Layer> surfaceDeadBranchH;
+        private static ISiteVar<Layer> surfaceDeadBranchR;
         private static ISiteVar<Layer> soilDeadWood;
         
         private static ISiteVar<Layer> surfaceStructural;
         private static ISiteVar<Layer> surfaceMetabolic;
         private static ISiteVar<Layer> soilStructural;
         private static ISiteVar<Layer> soilMetabolic;
-        
+                       
         // Soil layers
         private static ISiteVar<Layer> som1surface;
         private static ISiteVar<Layer> som1soil;
         private static ISiteVar<Layer> som2;
         private static ISiteVar<Layer> som3;
         
-        // Similar to soil layers in respect to their pools:
+        // Similar to soil layers with respect to their pools:
         private static ISiteVar<Layer> stream;
         private static ISiteVar<Layer> sourceSink;
         
         // Other variables:
-        private static ISiteVar<double> mineralN;  //top layer only
+        private static ISiteVar<double> mineralN;
+        private static ISiteVar<double> resorbedN;
         private static ISiteVar<double> waterMovement;  
         private static ISiteVar<double> availableWater;  
         private static ISiteVar<double> soilWaterContent;  
@@ -77,9 +78,15 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyBGNPPC;
         private static ISiteVar<double[]> monthlyNEE;
         public static ISiteVar<double> AnnualNEE;
-        public static ISiteVar<double> FireEfflux;
+        public static ISiteVar<double> FireCEfflux;
+        public static ISiteVar<double> FireNEfflux;
+        public static ISiteVar<double> Nvol;
         private static ISiteVar<double[]> monthlyResp;
-        
+        private static ISiteVar<double> totalNuptake;
+        private static ISiteVar<double[]> monthlymineralN;
+        private static ISiteVar<double> frassC;
+        private static ISiteVar<double> lai;
+                
         public static ISiteVar<double> TotalWoodBiomass;
         //wang
         public static ISiteVar<double> TotalBranchBiomass;
@@ -87,10 +94,10 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<int> PrevYearMortality;
         public static ISiteVar<byte> FireSeverity;
         public static ISiteVar<double> AgeMortality;
-        //wang
-    
-          public static ISiteVar<double> nuptake;
-        //---------------------------------------------------------------------
+        public static ISiteVar<string> HarvestPrescriptionName;
+
+        
+//---------------------------------------------------------------------
 
         /// <summary>
         /// Initializes the module.
@@ -106,7 +113,7 @@ namespace Landis.Extension.Succession.Century
             surfaceDeadWood     = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
             //wang
             surfaceDeadBranch   = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
-            surfaceDeadBranchH = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
+            surfaceDeadBranchR = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
             soilDeadWood        = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
             
             surfaceStructural   = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
@@ -123,10 +130,10 @@ namespace Landis.Extension.Succession.Century
             // Other Layers
             stream              = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
             sourceSink          = PlugIn.ModelCore.Landscape.NewSiteVar<Layer>();
-
-           
+            
             // Other variables
             mineralN            = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            resorbedN           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             waterMovement       = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             availableWater      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             soilWaterContent    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -143,29 +150,34 @@ namespace Landis.Extension.Succession.Century
             monthlyBGNPPC       = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             monthlyNEE          = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             AnnualNEE           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            FireEfflux          = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            FireCEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            FireNEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             monthlyResp         = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
 
             cohortLeafN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortLeafC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+                        
             TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            //wang
+			AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            
+//wang
 
             cohortBranchN = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortBranchC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             TotalBranchBiomass = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
 
            
-
-
-            AgeMortality =      PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            PrevYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
-
-            //wang
+            Nvol                = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            totalNuptake        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            monthlymineralN     = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
+            frassC              = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            lai                 = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
             
-            Nuptake=PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+                       
 
             PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
@@ -179,7 +191,7 @@ namespace Landis.Extension.Succession.Century
                 surfaceDeadWood[site]       = new Layer(LayerName.Wood, LayerType.Surface);
                 //wang
                 surfaceDeadBranch[site] = new Layer(LayerName.Branch, LayerType.Surface);
-                surfaceDeadBranchH[site] = new Layer(LayerName.BranchH, LayerType.Surface);
+                surfaceDeadBranchR[site] = new Layer(LayerName.BranchR, LayerType.Surface);
                 soilDeadWood[site]          = new Layer(LayerName.CoarseRoot, LayerType.Soil);
                 
                 surfaceStructural[site]     = new Layer(LayerName.Structural, LayerType.Surface);
@@ -195,13 +207,14 @@ namespace Landis.Extension.Succession.Century
                 
                 stream[site]                = new Layer(LayerName.Other, LayerType.Other);
                 sourceSink[site]            = new Layer(LayerName.Other, LayerType.Other);
-                            
-
+                
                 monthlyAGNPPC[site]           = new double[12];
                 monthlyBGNPPC[site]           = new double[12];
                 monthlyNEE[site]            = new double[12];
                 monthlyResp[site]           = new double[12];
+                //monthlymineralN[site]       = new double[12];
 
+                AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
             }
             
         }
@@ -213,6 +226,7 @@ namespace Landis.Extension.Succession.Century
         public static void InitializeDisturbances()
         {
             FireSeverity        = PlugIn.ModelCore.GetSiteVar<byte>("Fire.Severity");
+            HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
 
             //if(FireSeverity == null)
             //    throw new System.ApplicationException("TEST Error: Fire Severity NOT Initialized.");
@@ -286,7 +300,7 @@ namespace Landis.Extension.Succession.Century
             
             //wang
             SiteVars.SurfaceDeadBranch[site].NetMineralization = 0.0;
-            SiteVars.SurfaceDeadBranchH[site].NetMineralization = 0.0;
+            SiteVars.SurfaceDeadBranchR[site].NetMineralization = 0.0;
             SiteVars.SurfaceStructural[site].NetMineralization = 0.0;
             SiteVars.SurfaceMetabolic[site].NetMineralization = 0.0;
             
@@ -298,19 +312,19 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SOM1soil[site].NetMineralization = 0.0;
             SiteVars.SOM2[site].NetMineralization = 0.0;
             SiteVars.SOM3[site].NetMineralization = 0.0;
-            
-            
             SiteVars.AnnualNEE[site] = 0.0;
-            //SiteVars.FireEfflux[site] = 0.0;
-                 
-            //immobilization
-
-           
-
-            //wang
+            SiteVars.Nvol[site] = 0.0;
+            SiteVars.AnnualNEE[site] = 0.0;
+            SiteVars.TotalNuptake[site] = 0.0;
+            SiteVars.ResorbedN[site] = 0.0;
+            SiteVars.FrassC[site] = 0.0;
+            SiteVars.LAI[site] = 0.0;
+            SiteVars.AgeMortality[site] = 0.0;
+            //wangM.
+            /*
             SiteVars.SurfaceDeadWood[site].ImmobilNW = 0.0;
             SiteVars.SurfaceDeadBranch[site].ImmobilNW = 0.0;
-            SiteVars.SurfaceDeadBranchH[site].ImmobilNW = 0.0;
+            SiteVars.SurfaceDeadBranchR[site].ImmobilNW = 0.0;
             SiteVars.SurfaceStructural[site].ImmobilNW = 0.0;
             SiteVars.SurfaceMetabolic[site].ImmobilNW = 0.0;
 
@@ -323,11 +337,10 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SOM2[site].ImmobilNW = 0.0;
             SiteVars.SOM3[site].ImmobilNW = 0.0;
 
+            */
 
-
-
-
-            SiteVars.Nuptake[site] = 0.0;
+            //SiteVars.FireEfflux[site] = 0.0;
+                        
 
         }
 
@@ -371,11 +384,11 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// The intact dead branch pools for the landscape's sites.
         /// </summary>
-        public static ISiteVar<Layer> SurfaceDeadBranchH
+        public static ISiteVar<Layer> SurfaceDeadBranchR
         {
             get
             {
-                return surfaceDeadBranchH;
+                return surfaceDeadBranchR;
             }
         }
 
@@ -552,6 +565,22 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         /// <summary>
+        /// The amount of N resorbed before leaf fall
+        /// </summary>
+        public static ISiteVar<double> ResorbedN
+        {
+            get
+            {
+                return resorbedN;
+            }
+            set
+            {
+                resorbedN = value;
+            }
+        }
+        //---------------------------------------------------------------------
+
+        /// <summary>
         /// A generic decay factor determined by soil water and soil temperature.
         /// </summary>
         public static ISiteVar<double> DecayFactor
@@ -619,13 +648,6 @@ namespace Landis.Extension.Succession.Century
                 cohortLeafC = value;
             }
         }
-
-
-
-        
-
-
-
         //---------------------------------------------------------------------
 
         /// <summary>
@@ -751,7 +773,6 @@ namespace Landis.Extension.Succession.Century
                 monthlyAGNPPC = value;
             }
         }
-        
         //---------------------------------------------------------------------
         /// <summary>
         /// A summary of Belowground Net Primary Productivity (g C/m2)
@@ -807,21 +828,57 @@ namespace Landis.Extension.Succession.Century
                 sourceSink = value;
             }
         }
-
-
-        public static ISiteVar<double> Nuptake
+        //---------------------------------------------------------------------
+               /// <summary>
+        /// A summary of N uptake (g N/m2)
+        /// </summary>
+        public static ISiteVar<double> TotalNuptake
         {
             get
             {
-                return nuptake;
+                return totalNuptake;
+            }
+            set 
+            {
+                totalNuptake = value;
+            }
+                
+            
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of frass deposition (g C/m2)
+        /// </summary>
+        public static ISiteVar<double> FrassC
+        {
+            get
+            {
+                return frassC;
             }
             set
             {
-                nuptake = value;
+                frassC = value;
             }
+
+
         }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of LAI (m2/m2)
+        /// </summary>
+        public static ISiteVar<double> LAI
+        {
+            get
+            {
+                return lai;
+            }
+            set
+            {
+                lai = value;
+            }
 
 
-
+        }
     }
 }
+ 

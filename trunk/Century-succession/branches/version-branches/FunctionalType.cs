@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Fugui Wang
 
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.SpatialModeling;
@@ -25,10 +25,9 @@ namespace Landis.Extension.Succession.Century
         double PPRPTS3 {get;set;}
         double MonthlyWoodMortality{get;set;}
         double WoodDecayRate{get;set;}
-        //wang
         double MonthlyBranchMortality { get; set; }
         double BranchDecayRate { get; set; }
-        double BranchHDecayRate { get; set; }
+        double BranchRDecayRate { get; set; }
 
         double MortCurveShape{get;set;}
         int LeafNeedleDrop{get;set;}
@@ -52,10 +51,9 @@ namespace Landis.Extension.Succession.Century
         private double pprpts3;
         private double monthlyWoodMortality;
         private double woodDecayRate;
-        //wang
         private double monthlyBranchMortality;
         private double branchDecayRate;
-        private double branchHDecayRate;
+        private double branchRDecayRate;
 
         private double mortCurveShape;
         private int leafNeedleDrop;
@@ -204,9 +202,9 @@ namespace Landis.Extension.Succession.Century
                 return klai;
             }
             set {
-                    if (value  < 1.0 || value  > 5000.0)
+                    if (value  < 1.0 || value  > 10000.0)
                         throw new InputValueException(value.ToString(),
-                            "K LAI must be between 1 and 5000");
+                            "K LAI must be between 1 and 10000");
                 klai = value;
             }
         }
@@ -326,18 +324,18 @@ namespace Landis.Extension.Succession.Century
         }
 
         //-----------------------------------------------------------------
-        public double BranchHDecayRate
+        public double BranchRDecayRate
         {
             get
             {
-                return branchHDecayRate;
+                return branchRDecayRate;
             }
             set
             {
                 if (value <= 0.0 || value > 2.0)
                     throw new InputValueException(value.ToString(),
                         "Decay rate must be between 0.0 and 2.0");
-                branchHDecayRate = value;
+                branchRDecayRate = value;
             }
         }
 

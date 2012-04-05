@@ -1,5 +1,6 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Fugui Wang
+
 
 using Landis.Core;
 using Landis.SpatialModeling;
@@ -16,60 +17,10 @@ namespace Landis.Extension.Succession.Century
     /// A helper class.
     /// </summary>
     public class FireReductions
-    //: IDisturbance
     {
         private double woodReduction;
-        //wang
         private double branchReduction;
         private double litterReduction;
-        //private static ActiveSite currentSite;
-        //private static FireReductions singleton;
-        /*
-        //---------------------------------------------------------------------
-
-        ActiveSite IDisturbance.CurrentSite
-        {
-            get {
-                return currentSite;
-            }
-        }
-        //---------------------------------------------------------------------
-
-        ExtensionType IDisturbance.Type
-        {
-            get {
-                return new ExtensionType("disturbance:fire");
-            }
-        }
-        //---------------------------------------------------------------------
-
-        static FireReductions()
-        {
-            singleton = new FireReductions();
-        }
-
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Reduces the biomass of cohorts that have been marked for partial
-        /// reduction.
-        //  Original stand is the originating stand in cases where there is stand spreading.
-        /// </summary>
-        public static void ReduceCohortBiomass(ActiveSite site)
-        {
-            currentSite = site;            
-            SiteVars.Cohorts[site].RemoveCohorts(singleton);
-            
-        }
-        //---------------------------------------------------------------------
-
-        public float[] RemoveMarkedCohort(ICohort cohort)
-        {
-            float[] fireReductionLiveBiomass = new float[2]{5.0f,5.0f};
-        
-            return fireReductionLiveBiomass;  // percent reduction
-        }*/
-
         
         public double WoodReduction
         {
@@ -84,7 +35,7 @@ namespace Landis.Extension.Succession.Century
                
         }
 
-        //wang
+        
         public double BranchReduction
         {
             get
@@ -94,7 +45,7 @@ namespace Landis.Extension.Succession.Century
             set
             {
                 if (value < 0.0 || value > 1.0)
-                    throw new InputValueException(value.ToString(), "Wood reduction due to fire must be between 0 and 1.0");
+                    throw new InputValueException(value.ToString(), "Branch reduction due to fire must be between 0 and 1.0");
                 branchReduction = value;
             }
 
@@ -118,7 +69,6 @@ namespace Landis.Extension.Succession.Century
         public FireReductions()
         {
             this.WoodReduction = 0.0; 
-            //wang
             this.BranchReduction = 0.0; 
             this.LitterReduction = 0.0;
         }
@@ -166,10 +116,11 @@ namespace Landis.Extension.Succession.Century
             
             SiteVars.SurfaceStructural[site].Carbon -= carbonLoss;
             SiteVars.SourceSink[site].Carbon        += carbonLoss;
-            SiteVars.FireEfflux[site]               += carbonLoss;
+            SiteVars.FireCEfflux[site]               += carbonLoss;
             
             SiteVars.SurfaceStructural[site].Nitrogen -= nitrogenLoss;
-            SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
+            SiteVars.SourceSink[site].Nitrogen += nitrogenLoss;
+            SiteVars.FireNEfflux[site] += nitrogenLoss;
             
             // Metabolic litter
 
@@ -179,41 +130,49 @@ namespace Landis.Extension.Succession.Century
             
             SiteVars.SurfaceMetabolic[site].Carbon  -= carbonLoss;
             SiteVars.SourceSink[site].Carbon        += carbonLoss;
-            SiteVars.FireEfflux[site]               += carbonLoss;
+            SiteVars.FireCEfflux[site]               += carbonLoss;
             
             SiteVars.SurfaceMetabolic[site].Nitrogen -= nitrogenLoss;
             SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
+            SiteVars.FireNEfflux[site] += nitrogenLoss;
             
             // Surface dead wood
 
             double woodLossMultiplier = ReductionsTable[severity].WoodReduction;
-            //wang
-            double branchLossMultiplier = ReductionsTable[severity].BranchReduction;
 
             carbonLoss = SiteVars.SurfaceDeadWood[site].Carbon * woodLossMultiplier;
-            nitrogenLoss = SiteVars.SurfaceDeadWood[site].Nitrogen * woodLossMultiplier;   
-           
-            //wang?
-           carbonLoss = SiteVars.SurfaceDeadBranch[site].Carbon * branchLossMultiplier;
-           nitrogenLoss = SiteVars.SurfaceDeadBranch[site].Nitrogen * branchLossMultiplier;
-            
+            nitrogenLoss = SiteVars.SurfaceDeadWood[site].Nitrogen * woodLossMultiplier;
             summaryNLoss += nitrogenLoss;
-            
-            SiteVars.SurfaceDeadWood[site].Carbon   -= carbonLoss;
-            //wang
-            SiteVars.SurfaceDeadBranch[site].Carbon -= carbonLoss;
-            SiteVars.SourceSink[site].Carbon        += carbonLoss;
-            SiteVars.FireEfflux[site]               += carbonLoss;
-            
+
+            SiteVars.SurfaceDeadWood[site].Carbon -= carbonLoss;
+            SiteVars.SourceSink[site].Carbon += carbonLoss;
+            SiteVars.FireCEfflux[site] += carbonLoss;
+
             SiteVars.SurfaceDeadWood[site].Nitrogen -= nitrogenLoss;
-            //wang
+            SiteVars.SourceSink[site].Nitrogen += nitrogenLoss;
+            SiteVars.FireNEfflux[site] += nitrogenLoss;
+
+            
+            //surface natural dead branch
+
+            double branchLossMultiplier = ReductionsTable[severity].BranchReduction;
+            carbonLoss = SiteVars.SurfaceDeadBranch[site].Carbon * branchLossMultiplier;
+            nitrogenLoss = SiteVars.SurfaceDeadBranch[site].Nitrogen * branchLossMultiplier;
+
+            summaryNLoss += nitrogenLoss;
+
+            SiteVars.SurfaceDeadBranch[site].Carbon -= carbonLoss;
+            SiteVars.SourceSink[site].Carbon += carbonLoss;
+            SiteVars.FireCEfflux[site] += carbonLoss;
+
             SiteVars.SurfaceDeadBranch[site].Nitrogen -= nitrogenLoss;
+            SiteVars.SourceSink[site].Nitrogen += nitrogenLoss;
+            SiteVars.FireNEfflux[site] += nitrogenLoss;
 
 
-            SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
 
             SiteVars.MineralN[site] += summaryNLoss * 0.01;
-            
+
         }
         //---------------------------------------------------------------------
         

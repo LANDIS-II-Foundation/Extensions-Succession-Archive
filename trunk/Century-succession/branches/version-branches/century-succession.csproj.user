@@ -1,0 +1,6 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartWorkingDirectory>D:\UW\LandisV3\aspenv3\branch_cell1\</StartWorkingDirectory>
+    <StartArguments>Scenario_cell1_debug.txt</StartArguments>
+  </PropertyGroup>
+</Project>
