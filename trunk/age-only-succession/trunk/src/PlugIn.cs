@@ -69,6 +69,7 @@ namespace Landis.Extension.Succession.AgeOnly
             Reproduction.Establish = Establish;
             Reproduction.AddNewCohort = AddNewCohort;
             Reproduction.MaturePresent = MaturePresent;
+            Reproduction.PlantingEstablish = PlantingEstablish;
             base.Initialize(modelCore, parameters.SeedAlgorithm);
             
             InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
@@ -159,6 +160,20 @@ namespace Landis.Extension.Succession.AgeOnly
         public bool MaturePresent(ISpecies species, ActiveSite site)
         {
             return SiteVars.Cohorts[site].IsMaturePresent(species);
+        }
+
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Determines if a species can establish on a site.
+        /// This is a Delegate method to base succession.
+        /// </summary>
+        public bool PlantingEstablish(ISpecies species, ActiveSite site)
+        {
+            IEcoregion ecoregion = modelCore.Ecoregion[site];
+            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+
+            return establishProbability > 0.0;
         }
     }
 }
