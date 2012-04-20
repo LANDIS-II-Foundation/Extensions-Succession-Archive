@@ -138,33 +138,6 @@ namespace Landis.Extension.Succession.Biomass
         }
 
 
-        //---------------------------------------------------------------------
-        // Revised 10/5/09 - BRM
-
-        /*public override byte ComputeShade(ActiveSite site)
-        {
-            // Use correlation from Scheller and Mladenoff (Figure 4b)
-            // to assign a shade class depending on percent transmittance.
-
-
-            SiteVars.PercentShade[site] = 1.0 - SiteVars.LightTrans[site];
-
-            double percentSun = System.Math.Max(1.0 - SiteVars.PercentShade[site], 0.0);
-            percentSun = System.Math.Min(1.0, percentSun);
-
-            percentSun = percentSun * 100.0;
-
-            byte shadeClass = 0;
-
-            if (percentSun < pctSun1) shadeClass = 1;
-            if (percentSun < pctSun2) shadeClass = 2;
-            if (percentSun < pctSun3) shadeClass = 3;
-            if (percentSun < pctSun4) shadeClass = 4;
-            if (percentSun < pctSun5) shadeClass = 5;
-
-            return shadeClass;
-
-        }*/
         public override byte ComputeShade(ActiveSite site)
         {
             //return LivingBiomass.ComputeShade(site);
