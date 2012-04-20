@@ -12,7 +12,6 @@ using Landis.Library.Climate;
 
 using System;
 using System.Collections.Generic;
-//using System.Threading;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -33,6 +32,8 @@ namespace Landis.Extension.Succession.Century
         public static int ANPPMapFrequency;
         public static string ANEEMapNames = null;
         public static int ANEEMapFrequency;
+        public static string TotalCMapNames = null;
+        public static int TotalCMapFrequency;
         public static int SuccessionTimeStep;
         public static double ProbEstablishAdjust;
 
@@ -99,7 +100,7 @@ namespace Landis.Extension.Succession.Century
             Reproduction.Establish = Establish;
             Reproduction.AddNewCohort = AddNewCohort;
             Reproduction.MaturePresent = MaturePresent;
-            base.Initialize(modelCore, parameters.SeedAlgorithm); 
+            base.Initialize(modelCore, parameters.SeedAlgorithm);
 
             InitialBiomass.Initialize(Timestep);
 
@@ -120,12 +121,8 @@ namespace Landis.Extension.Succession.Century
         public override void Run()
         {
 
-            //if(PlugIn.ModelCore.CurrentTime == Timestep)
-            //    Outputs.WriteLogFile(0);
-
             if(PlugIn.ModelCore.CurrentTime > 0)
                 SiteVars.InitializeDisturbances();
-
 
             Dynamic.Module.CheckForUpdate();
             EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep);
@@ -228,6 +225,32 @@ namespace Landis.Extension.Succession.Century
                     }
                 }
             }
+            if (TotalCMapNames != null && (PlugIn.ModelCore.CurrentTime % TotalCMapFrequency) == 0)
+            {
+
+                string path5 = MapNames.ReplaceTemplateVars(TotalCMapNames, PlugIn.ModelCore.CurrentTime);
+                using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path5, modelCore.Landscape.Dimensions))
+                {
+                    IntPixel pixel = outputRaster.BufferPixel;
+                    foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                    {
+                        if (site.IsActive)
+                        {
+                            pixel.MapCode.Value = (int)(Outputs.GetOrganicCarbon(site) +
+                                SiteVars.CohortLeafC[site] +
+                                SiteVars.CohortWoodC[site] +
+                                SiteVars.SurfaceDeadWood[site].Carbon +
+                                SiteVars.SoilDeadWood[site].Carbon);
+                        }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.MapCode.Value = 0;
+                        }
+                        outputRaster.WriteBufferPixel();
+                    }
+                }
+            }
         }
 
 
@@ -301,8 +324,8 @@ namespace Landis.Extension.Succession.Century
             SiteVars.CohortLeafN[site]           = initialBiomass.CohortLeafN;
             SiteVars.CohortWoodC[site]           = initialBiomass.CohortWoodC;
             SiteVars.CohortWoodN[site]           = initialBiomass.CohortWoodN;
-            
-            //// Override the spin-up soil C and N values with the contemporary data 
+
+            //// Override the spin-up soil C and N values with the contemporary data
             //// provided in the intialization file.
             //SiteVars.SOM1surface[site].Carbon       = parameters.InitialSOM1surfC[ecoregion];
             //SiteVars.SOM1surface[site].Nitrogen     = parameters.InitialSOM1surfN[ecoregion];
@@ -429,7 +452,21 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// Determines if there is a mature cohort at a site.  
+        /// Determines if a species can establish on a site.
+        /// This is a Delegate method to base succession.
+        /// </summary>
+        public bool PlantingEstablish(ISpecies species, ActiveSite site)
+        {
+            IEcoregion ecoregion = modelCore.Ecoregion[site];
+            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+
+            return establishProbability > 0.0;
+        }
+
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// Determines if there is a mature cohort at a site.
         /// This is a Delegate method to base succession.
         /// </summary>
         public bool MaturePresent(ISpecies species, ActiveSite site)

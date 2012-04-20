@@ -402,25 +402,17 @@ namespace Landis.Extension.Succession.Century
             double[] avgNEE = new double[PlugIn.ModelCore.Ecoregions.Count];
 
             double[] Ndep = new double[PlugIn.ModelCore.Ecoregions.Count];
-            //double[] Nvol = new double[PlugIn.ModelCore.Ecoregions.Count];
-
-
-
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 ppt[ecoregion.Index] = 0.0;
                 airtemp[ecoregion.Index] = 0.0;
-                //soiltemp[ecoregion.Index] = 0.0;
 
                 avgNPPtc[ecoregion.Index] = 0.0;
                 avgResp[ecoregion.Index] = 0.0;
                 avgNEE[ecoregion.Index] = 0.0;
 
                 Ndep[ecoregion.Index] = 0.0;
-                //Nvol[ecoregion.Index] = 0.0;
-
-
             }
 
 
@@ -431,7 +423,6 @@ namespace Landis.Extension.Succession.Century
 
                 ppt[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
                 airtemp[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
-                //soiltemp[ecoregion.Index]   += SiteVars.SoilTemperature[site][month];
 
                 avgNPPtc[ecoregion.Index] += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
                 avgResp[ecoregion.Index] += SiteVars.MonthlyResp[site][month];
@@ -440,10 +431,6 @@ namespace Landis.Extension.Succession.Century
                 SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
 
                 Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
-                //Nvol[ecoregion.Index] += SiteVars.MineralN[site] * 0.02; //same calc as in Century.cs
-
-
-
             }
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
@@ -505,15 +492,6 @@ namespace Landis.Extension.Succession.Century
         
         
         //---------------------------------------------------------------------
-        /*
-        private IOutputRaster<ShortPixel> CreateMap(string path)
-        {
-            PlugIn.ModelCore.Log.WriteLine("Writing output map to {0} ...", path);
-            return PlugIn.ModelCore.CreateRaster<ShortPixel>(path,
-                                                        PlugIn.ModelCore.Landscape.Dimensions,
-                                                        PlugIn.ModelCore.LandscapeMapMetadata);
-        }*/
-        //---------------------------------------------------------------------
         private static double GetTotalNitrogen(ActiveSite site)
         {
         
@@ -566,7 +544,7 @@ namespace Landis.Extension.Succession.Century
             return totalsoilN;
         }
         //---------------------------------------------------------------------
-        private static double GetOrganicCarbon(ActiveSite site)
+        public static double GetOrganicCarbon(Site site)
         {
             double totalC = 
                     

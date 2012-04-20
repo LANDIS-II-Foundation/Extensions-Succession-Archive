@@ -51,11 +51,6 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         public InputParametersParser()
-            //IEcoregionDataset ecoregionDataset,
-            //                    ISpeciesDataset    speciesDataset,
-            //                    int                 startYear,
-            //                    int                 endYear)
-            //: base(ecoregionDataset,speciesDataset)
         {
             this.ecoregionDataset = PlugIn.ModelCore.Ecoregions;
             this.speciesDataset = PlugIn.ModelCore.Species;
@@ -168,6 +163,16 @@ namespace Landis.Extension.Succession.Century
             
             }
 
+            InputVar<string> totalCMaps = new InputVar<string>("TotalCMapNames");
+            if (ReadOptionalVar(totalCMaps))
+            {
+                PlugIn.TotalCMapNames = totalCMaps.Value;
+
+                InputVar<int> totalCMapFreq = new InputVar<int>("TotalCMapFrequency");
+                ReadVar(totalCMapFreq);
+                PlugIn.TotalCMapFrequency = totalCMapFreq.Value;
+
+            }
             //--------------------------
             //  MinRelativeBiomass table
 
