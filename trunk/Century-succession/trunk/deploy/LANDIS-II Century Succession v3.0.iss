@@ -1,6 +1,6 @@
 #define PackageName      "Century Succession"
 #define PackageNameLong  "Century Succession Extension"
-#define Version          "3.0"
+#define Version          "3.0.2"
 #define ReleaseType      "official"
 #define ReleaseNumber    "2"
 
