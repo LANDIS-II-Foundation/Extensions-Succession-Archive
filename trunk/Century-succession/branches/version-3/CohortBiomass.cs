@@ -26,6 +26,7 @@ namespace Landis.Extension.Succession.Century
         //  Ecoregion where the cohort's site is located
         private IEcoregion ecoregion;
         public static double SpinupMortalityFraction;
+        private double defoliation;
 
         //---------------------------------------------------------------------
 
@@ -85,12 +86,15 @@ namespace Landis.Extension.Succession.Century
             if(Century.Month == 6)  //July = 6
             {
                 // Defoliation ranges from 1.0 (total) to none (0.0).
-                double defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
+                defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
 
                 if(defoliation > 1.0) defoliation = 1.0;
-                
-                defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
+                    defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
+
                 ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
+
+                if (defoliation > 0)
+                    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
 
                 if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     scorch = FireEffects.CrownScorching(cohort, SiteVars.FireSeverity[site]);
@@ -173,7 +177,12 @@ namespace Landis.Extension.Succession.Century
 
             double limitH20 = calculateWater_Limit(site, ecoregion, cohort.Species);
 
-            double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
+            //Adding defoliation function here so defoliation has an effect on leaf biomass in July.
+            double leafBiomass = cohort.LeafBiomass;
+            if (Century.Month == 6 && defoliation > 0.0)
+                leafBiomass *= defoliation;
+            
+            double limitLAI = calculateLAI_Limit(((double) leafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 5.0) / Math.Exp(5.0));
             
@@ -200,13 +209,13 @@ namespace Landis.Extension.Succession.Century
 
             // Growth can be reduced by another extension via this method.
             // To date, no extension has been written to utilize this hook.
-            double growthReduction = 0.0;
-            growthReduction = CohortGrowthReduction.Compute(cohort, site);
+            //double growthReduction = 0.0;
+            //growthReduction = CohortGrowthReduction.Compute(cohort, site);
 
-            if (growthReduction > 0.0)
-            {
-                actualANPP *= (1.0 - growthReduction);
-            }
+            // if (growthReduction > 0.0)
+            //{
+            //    actualANPP *= (1.0 - growthReduction);
+            //}
 
 
             double leafNPP  = actualANPP * leafFractionNPP;
