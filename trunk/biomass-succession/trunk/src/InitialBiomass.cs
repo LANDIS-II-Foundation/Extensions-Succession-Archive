@@ -80,8 +80,8 @@ namespace Landis.Extension.Succession.Biomass
 
         private static IDictionary<uint, InitialBiomass> initialSites;
         //  Initial site biomass for each unique pair of initial
-        //  community and ecoregion; Key = 32-bit unsigned integer where
-        //  high 16-bits is the map code of the initial community and the
+        //  community and ecoregion; Key = 64-bit unsigned integer where
+        //  high 64-bits is the map code of the initial community and the
         //  low 16-bits is the ecoregion's map code
 
         private static IDictionary<uint, List<Landis.Library.AgeOnlyCohorts.ICohort>> sortedCohorts;
