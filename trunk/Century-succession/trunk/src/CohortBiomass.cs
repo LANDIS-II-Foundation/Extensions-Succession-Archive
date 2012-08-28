@@ -43,11 +43,11 @@ namespace Landis.Extension.Succession.Century
         public float[] ComputeChange(ICohort cohort, ActiveSite site)
         {
             ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            
+
             // First call to the Calibrate Log:
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 Outputs.CalibrateLog.Write("{0}, {1}, {2}, {3}, {4}, {5:0.0}, {6:0.0}, ", PlugIn.ModelCore.CurrentTime, Century.Month + 1, ecoregion.Index, cohort.Species.Name, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);
-            
+
             double siteBiomass = Century.ComputeLivingBiomass(SiteVars.Cohorts[site]);
 
             if(siteBiomass < 0)
@@ -68,35 +68,35 @@ namespace Landis.Extension.Succession.Century
             if(totalMortality[1] <= 0.0 || cohort.LeafBiomass <= 0.0)
                 totalMortality[1] = 0.0;
 
-           
+
             if((totalMortality[0] + totalMortality[1]) > (cohort.WoodBiomass + cohort.LeafBiomass))
             {
                 PlugIn.ModelCore.Log.WriteLine("Warning: Mortality exceeds cohort biomass. M={0:0.0}, B={1:0.0}", (totalMortality[0] + totalMortality[1]), (cohort.WoodBiomass + cohort.LeafBiomass));
                 PlugIn.ModelCore.Log.WriteLine("Warning: If M>B, then list mortality. Mage0={0:0.0}, Mgrow0={1:0.0}, Mage1={2:0.0}, Mgrow1={3:0.0},", mortalityAge[0], mortalityGrowth[0], mortalityAge[1] + mortalityGrowth[1]);
                 throw new ApplicationException("Error: Mortality exceeds cohort biomass");
-                              
+
             }
 
             // ****** Growth *******
             double[] actualANPP = ComputeActualANPP(cohort, site, siteBiomass, mortalityAge);
             double defoliatedLeafBiomass = 0.0;
             double scorch = 0.0;
-            
+
             if(Century.Month == 6)  //July = 6
             {
                 // Defoliation ranges from 1.0 (total) to none (0.0).
                 double defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
 
                 if(defoliation > 1.0) defoliation = 1.0;
-                
+
                 defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
                 ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
 
                 if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     scorch = FireEffects.CrownScorching(cohort, SiteVars.FireSeverity[site]);
-                
+
                 if (scorch > 0.0)  // NEED TO DOUBLE CHECK WHAT CROWN SCORCHING RETURNS
-                    totalMortality[1] = Math.Min(cohort.LeafBiomass, scorch + totalMortality[1]);  
+                    totalMortality[1] = Math.Min(cohort.LeafBiomass, scorch + totalMortality[1]);
             }
 
             double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
@@ -105,12 +105,12 @@ namespace Landis.Extension.Succession.Century
             double mineralNused = 0.0;
 
             // Treat Resorbed N first and only if it is spring time.
-            if (Century.Month > 2 && Century.Month < 6)  
+            if (Century.Month > 2 && Century.Month < 6)
             {
                 double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
 
                 resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
-                
+
                 AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
 
                 adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
@@ -176,7 +176,7 @@ namespace Landis.Extension.Succession.Century
             double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
             double limitCapacity = 1.0 - Math.Min(1.0, Math.Exp(siteBiomass / maxBiomass * 5.0) / Math.Exp(5.0));
-            
+
             double potentialNPP = maxNPP * limitLAI * limitH20 * limitT * limitCapacity;
 
             double limitN = calculateN_Limit(site, cohort, potentialNPP, leafFractionNPP);
@@ -468,7 +468,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.BGNPPcarbon[site] += NPPcoarseRoot + NPPfineRoot;
             SiteVars.MonthlyAGNPPcarbon[site][Century.Month] += NPPwood + NPPleaf;
             SiteVars.MonthlyBGNPPcarbon[site][Century.Month] += NPPcoarseRoot + NPPfineRoot;
-            
+
 
         }
 
@@ -477,7 +477,7 @@ namespace Landis.Extension.Succession.Century
         private double calculateN_Limit(ActiveSite site, ICohort cohort, double NPP, double leafFractionNPP)
         {
 
-            //Get Cohort Mineral and Resorbed N allocation.  
+            //Get Cohort Mineral and Resorbed N allocation.
             double mineralNallocation = AvailableN.GetMineralNallocation(cohort);
             double resorbedNallocation = 0.0;
 
@@ -486,10 +486,10 @@ namespace Landis.Extension.Succession.Century
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double WoodNPP = NPP * (1.0 - leafFractionNPP);
-            
+
             //double FineRootNPP = LeafNPP * 0.75;
             //double CoarseRootNPP = WoodNPP * 0.75;
-            
+
             double limitN = 0.0;
             if (SpeciesData.NFixer[cohort.Species])
                 limitN = 1.0;  // No limit for N-fixing shrubs
@@ -497,9 +497,9 @@ namespace Landis.Extension.Succession.Century
             {
                 // Divide allocation N by N demand here:
                 //PlugIn.ModelCore.Log.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
-                
+
                 double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); //, FineRootNPP, CoarseRootNPP }));
-                
+
                 if (Ndemand > 0.0)
                 {
                     limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);
@@ -596,9 +596,9 @@ namespace Landis.Extension.Succession.Century
             // The minimum LAI to calculate effect is 0.2.
             //if (lai < 0.5) lai = 0.5;
             if (lai < 0.1) lai = 0.1;
-        
+
             //SiteVars.LAI[site] += lai; Tracking LAI.
-            
+
             double LAI_limit = Math.Max(0.0, 1.0 - Math.Exp(laitop * lai));
 
 
