@@ -13,6 +13,19 @@ CalibrateMode 	no
 
 WaterDecayFunction Ratio <<Linear or Ratio
 
+ProbEstablishAdjust 1
+
+ANPPMapNames		century/ag_npp-{timestep}.gis
+ANPPMapFrequency	5
+ANEEMapNames		century/nee-{timestep}.gis
+ANEEMapFrequency	5
+SoilCarbonMapNames	century/soilC-{timestep}.gis
+SoilCarbonMapFrequency	5
+SoilNitrogenMapNames	century/soilN-{timestep}.gis
+SoilNitrogenMapFrequency	5
+TotalCMapNames		century/totalC-{timestep}.gis
+TotalCMapFrequency	5
+
 AvailableLightBiomass
 
 >> Shade	Percent Max Biomass

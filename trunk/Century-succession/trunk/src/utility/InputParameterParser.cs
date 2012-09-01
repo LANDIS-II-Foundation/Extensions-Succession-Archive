@@ -119,28 +119,6 @@ namespace Landis.Extension.Succession.Century
             else
                 parameters.ProbEstablishAdjustment = 1.0;
 
-            InputVar<string> soilCarbonMaps = new InputVar<string>("SoilCarbonMapNames");
-            if (ReadOptionalVar(soilCarbonMaps)) 
-            {
-                PlugIn.SoilCarbonMapNames = soilCarbonMaps.Value;
-                
-                InputVar<int> soilCarbonMapFreq = new InputVar<int>("SoilCarbonMapFrequency");
-                ReadVar(soilCarbonMapFreq);
-                PlugIn.SoilCarbonMapFrequency = soilCarbonMapFreq.Value;
-            
-            }
-            
-            InputVar<string> soilNitrogenMaps = new InputVar<string>("SoilNitrogenMapNames");
-            if (ReadOptionalVar(soilNitrogenMaps)) 
-            {
-                PlugIn.SoilNitrogenMapNames = soilNitrogenMaps.Value;
-                
-                InputVar<int> soilNitrogenMapFreq = new InputVar<int>("SoilNitrogenMapFrequency");
-                ReadVar(soilNitrogenMapFreq);
-                PlugIn.SoilNitrogenMapFrequency = soilNitrogenMapFreq.Value;
-            
-            }
-
             InputVar<string> anppMaps = new InputVar<string>("ANPPMapNames");
             if (ReadOptionalVar(anppMaps)) 
             {
@@ -161,6 +139,28 @@ namespace Landis.Extension.Succession.Century
                 ReadVar(aneeMapFreq);
                 PlugIn.ANEEMapFrequency = aneeMapFreq.Value;
             
+            }
+
+            InputVar<string> soilCarbonMaps = new InputVar<string>("SoilCarbonMapNames");
+            if (ReadOptionalVar(soilCarbonMaps))
+            {
+                PlugIn.SoilCarbonMapNames = soilCarbonMaps.Value;
+
+                InputVar<int> soilCarbonMapFreq = new InputVar<int>("SoilCarbonMapFrequency");
+                ReadVar(soilCarbonMapFreq);
+                PlugIn.SoilCarbonMapFrequency = soilCarbonMapFreq.Value;
+
+            }
+
+            InputVar<string> soilNitrogenMaps = new InputVar<string>("SoilNitrogenMapNames");
+            if (ReadOptionalVar(soilNitrogenMaps))
+            {
+                PlugIn.SoilNitrogenMapNames = soilNitrogenMaps.Value;
+
+                InputVar<int> soilNitrogenMapFreq = new InputVar<int>("SoilNitrogenMapFrequency");
+                ReadVar(soilNitrogenMapFreq);
+                PlugIn.SoilNitrogenMapFrequency = soilNitrogenMapFreq.Value;
+
             }
 
             InputVar<string> totalCMaps = new InputVar<string>("TotalCMapNames");
