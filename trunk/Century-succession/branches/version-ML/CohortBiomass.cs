@@ -88,13 +88,13 @@ namespace Landis.Extension.Succession.Century
                 // Defoliation ranges from 1.0 (total) to none (0.0).
                 defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
 
-                if(defoliation > 1.0) defoliation = 1.0;
+                if (defoliation > 1.0) defoliation = 1.0;
                     defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
 
                 ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
 
-                //if (defoliation > 0)
-                //    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
+                if (defoliation > 0)
+                    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
                 //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, LeafBiomass={2}, defoliatedLeafBiomass={3}, totalleafmortality={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass, totalMortality[1]);
 
                 if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
@@ -210,15 +210,15 @@ namespace Landis.Extension.Succession.Century
 
             // Growth can be reduced by another extension via this method.
             // To date, no extension has been written to utilize this hook.
-            //double growthReduction = CohortGrowthReduction.Compute(cohort, site);
+            double growthReduction = CohortGrowthReduction.Compute(cohort, site);
 
-            // if (growthReduction > 0.0)
-            //{
-            //    actualANPP *= (1.0 - growthReduction);
-            //}
+            if (growthReduction > 0.0)
+            {
+                actualANPP *= (1.0 - growthReduction);
+            }
 
             //Calling insect extension.
-            CohortGrowthReduction.Compute(cohort, site);
+            //CohortGrowthReduction.Compute(cohort, site);
 
             double leafNPP  = actualANPP * leafFractionNPP;
             double woodNPP  = actualANPP * (1.0 - leafFractionNPP);
