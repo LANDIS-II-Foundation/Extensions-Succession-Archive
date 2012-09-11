@@ -135,11 +135,8 @@ namespace Landis.Extension.Succession.Century
                     double NdemandAdjusted = SiteVars.MineralN[site];
                     mineralNused = SiteVars.MineralN[site];
                     SiteVars.MineralN[site] = 0.0;
-                    //actualANPP[0] = NdemandAdjusted / adjNdemand;
-                    //actualANPP[1] = NdemandAdjusted / adjNdemand;
 
-                    Nuptake = SiteVars.MineralN[site]; // *NdemandAdjusted / adjNdemand;
-                    //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}.     Adjusted ANPP:  ANPPleaf={2:0.0}, ANPPwood={3:0.0}.", PlugIn.ModelCore.CurrentTime, month + 1, actualANPP[1], actualANPP[0]);
+                    Nuptake = SiteVars.MineralN[site];
             }
             SiteVars.TotalNuptake[site] += Nuptake;
 
@@ -179,9 +176,9 @@ namespace Landis.Extension.Succession.Century
             double limitH20 = calculateWater_Limit(site, ecoregion, cohort.Species);
 
             //Adding defoliation function here so defoliation has an effect on leaf biomass in July.
-            double leafBiomass = cohort.LeafBiomass;
-            if (Century.Month == 6 && defoliation > 0.0)
-                leafBiomass *= defoliation;
+            //double leafBiomass = cohort.LeafBiomass;
+            //if (Century.Month == 6 && defoliation > 0.0)
+            //    leafBiomass *= defoliation;
 
             double limitLAI = calculateLAI_Limit(((double) cohort.LeafBiomass * 0.47), ((double) cohort.WoodBiomass * 0.47), cohort.Species);
 
@@ -192,9 +189,6 @@ namespace Landis.Extension.Succession.Century
             double limitN = calculateN_Limit(site, cohort, potentialNPP, leafFractionNPP);
 
             potentialNPP *= limitN;
-
-            //double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
-            //double potentialNPP = maxNPP * Math.Min(limitLAI, limitCapacity) * limitH20 * limitT * limitN;
 
             //if (Double.IsNaN(limitT) || Double.IsNaN(limitH20) || Double.IsNaN(limitLAI) || Double.IsNaN(limitCapacity) || Double.IsNaN(limitN))
             //{
@@ -217,9 +211,6 @@ namespace Landis.Extension.Succession.Century
                 actualANPP *= (1.0 - growthReduction);
             }
 
-            //Calling insect extension.
-            //CohortGrowthReduction.Compute(cohort, site);
-
             double leafNPP  = actualANPP * leafFractionNPP;
             double woodNPP  = actualANPP * (1.0 - leafFractionNPP);
 
@@ -234,7 +225,6 @@ namespace Landis.Extension.Succession.Century
                 leafFractionNPP = 0.0;
 
             leafFractionNPP = Math.Min(1.0, leafFractionNPP);
-
 
             leafNPP  = actualANPP * leafFractionNPP;
             woodNPP  = actualANPP * (1.0 - leafFractionNPP);
@@ -276,7 +266,6 @@ namespace Landis.Extension.Succession.Century
 
             double monthAdjust = 1.0 / 12.0;
             double totalBiomass = (double) (cohort.WoodBiomass + cohort.LeafBiomass);
-            //double fractionLeaf = (double) cohort.LeafBiomass / totalBiomass;
             double max_age      = (double) cohort.Species.Longevity;
             double d            = FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].MortCurveShape;
 
