@@ -215,8 +215,6 @@ namespace Landis.Extension.Succession.Century
             double leafC = cohort.LeafBiomass * 0.47;
             double woodC = cohort.WoodBiomass * 0.47;
 
-            //PlugIn.ModelCore.Log.WriteLine("month={0}, leafC={1:0.00}, woodC={2:0.000}", month, leafC, woodC);
-
             double fRootC = Roots.CalculateFineRoot(leafC);
             double cRootC = Roots.CalculateCoarseRoot(woodC);
 
@@ -227,7 +225,9 @@ namespace Landis.Extension.Succession.Century
             double cRootN = cRootC / (double) SpeciesData.CoarseRootCN[species];
             double fRootN = fRootC / (double) SpeciesData.FineRootCN[species];
 
-            double totalN = woodN + cRootN + leafN + fRootN;
+            //double totalN = woodN + cRootN + leafN + fRootN;
+
+            //PlugIn.ModelCore.Log.WriteLine("month={0}, species={1}, leafB={2:0.0}, leafC={3:0.00}, leafN={4:0.0}, woodB={5:0.0}, woodC={6:0.000}, woodN={7:0.0}", Month, cohort.Species.Name, cohort.LeafBiomass, leafC, leafN, cohort.WoodBiomass, woodC, woodN);
 
             SiteVars.CohortLeafC[site] += leafC + fRootC;
             SiteVars.CohortLeafN[site] += leafN + fRootN;

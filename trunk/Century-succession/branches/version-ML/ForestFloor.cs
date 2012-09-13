@@ -121,7 +121,6 @@ namespace Landis.Extension.Succession.Century
                             OtherData.CNratiofrass,
                             1.0,
                             1.0,
-                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);

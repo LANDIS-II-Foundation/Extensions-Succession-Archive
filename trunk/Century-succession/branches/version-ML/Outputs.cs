@@ -527,8 +527,8 @@ namespace Landis.Extension.Succession.Century
 
                     +SiteVars.MineralN[site]
 
-                   + SiteVars.SurfaceDeadWood[site].Nitrogen
-                   + SiteVars.SoilDeadWood[site].Nitrogen
+                   //+ SiteVars.SurfaceDeadWood[site].Nitrogen
+                   //+ SiteVars.SoilDeadWood[site].Nitrogen
 
                     + SiteVars.SurfaceStructural[site].Nitrogen
                     + SiteVars.SoilStructural[site].Nitrogen
