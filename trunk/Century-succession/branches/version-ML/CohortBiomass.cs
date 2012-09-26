@@ -90,11 +90,11 @@ namespace Landis.Extension.Succession.Century
 
                 if (defoliation > 1.0) defoliation = 1.0;
                     defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
-                     
+
                 ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
 
-                if (defoliation > 0)
-                    totalMortality[1] = Math.Min(cohort.LeafBiomass, defoliatedLeafBiomass + totalMortality[1]);
+                if (defoliation > 0 && (totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)
+                    totalMortality[1] = cohort.LeafBiomass - defoliatedLeafBiomass;
                 //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, LeafBiomass={2}, defoliatedLeafBiomass={3}, totalleafmortality={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass, totalMortality[1]);
 
                 if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
