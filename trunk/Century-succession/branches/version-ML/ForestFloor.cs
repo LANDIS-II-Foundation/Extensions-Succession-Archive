@@ -117,7 +117,7 @@ namespace Landis.Extension.Succession.Century
                 frassBiomass = frassBiomassC * 2.128;
                 if (defoliatedLeafBiomass > 0)
                 {
-                    PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, frassC={2}.", PlugIn.ModelCore.CurrentTime, Century.Month, frassBiomassC);
+                    //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, frassC={2}.", PlugIn.ModelCore.CurrentTime, Century.Month, frassBiomassC);
                 }             
                 SiteVars.FrassC[site] += frassBiomassC;
 
