@@ -94,9 +94,10 @@ namespace Landis.Extension.Succession.Century
                 ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
 
                 if (defoliation > 0 && (totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)
+                {
                     totalMortality[1] = cohort.LeafBiomass - defoliatedLeafBiomass;
-                //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, LeafBiomass={2}, defoliatedLeafBiomass={3}, totalleafmortality={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass, totalMortality[1]);
-
+                    //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, LeafBiomass={2}, defoliatedLeafBiomass={3}, totalleafmortality={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass, totalMortality[1]);
+                }
                 if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     scorch = FireEffects.CrownScorching(cohort, SiteVars.FireSeverity[site]);
 
