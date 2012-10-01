@@ -27,6 +27,7 @@ namespace Landis.Extension.Succession.Century
         private IEcoregion ecoregion;
         public static double SpinupMortalityFraction;
         private double defoliation;
+        private double defoliatedLeafBiomass;
 
         //---------------------------------------------------------------------
 
@@ -80,29 +81,38 @@ namespace Landis.Extension.Succession.Century
 
             // ****** Growth *******
             double[] actualANPP = ComputeActualANPP(cohort, site, siteBiomass, mortalityAge);
-            double defoliatedLeafBiomass = 0.0;
+            
             double scorch = 0.0;
 
             if(Century.Month == 6)  //July = 6
             {
-                // Defoliation ranges from 1.0 (total) to none (0.0).
-                defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
-
-                if (defoliation > 1.0) defoliation = 1.0;
-                    defoliatedLeafBiomass = cohort.LeafBiomass * defoliation;
-
-                ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
-
-                if (defoliation > 0 && (totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)
-                {
-                    totalMortality[1] = cohort.LeafBiomass - defoliatedLeafBiomass;
-                    //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, LeafBiomass={2}, defoliatedLeafBiomass={3}, totalleafmortality={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass, totalMortality[1]);
-                }
                 if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     scorch = FireEffects.CrownScorching(cohort, SiteVars.FireSeverity[site]);
 
                 if (scorch > 0.0)  // NEED TO DOUBLE CHECK WHAT CROWN SCORCHING RETURNS
-                    totalMortality[1] = Math.Min(cohort.LeafBiomass, scorch + totalMortality[1]);
+                    totalMortality[1] = Math.Min(cohort.LeafBiomass, scorch + totalMortality[1]);                
+                
+                // Defoliation ranges from 1.0 (total) to none (0.0).
+                defoliation = CohortDefoliation.Compute(cohort, site, (int) siteBiomass);
+
+                if (defoliation > 1.0) 
+                    defoliation = 1.0;
+                
+                defoliatedLeafBiomass = (cohort.LeafBiomass - totalMortality[1]) * defoliation;
+
+
+                //if (defoliation > 0 && (totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)
+                //{
+
+                //    //totalMortality[1] = cohort.LeafBiomass;
+                //    defoliatedLeafBiomass -= (totalMortality[1] + defoliatedLeafBiomass) - cohort.LeafBiomass;
+                    
+                //    //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, LeafBiomass={2}, defoliatedLeafBiomass={3}, totalleafmortality={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass, totalMortality[1]);
+                //}
+
+                ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
+
+
             }
 
             double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
@@ -354,7 +364,7 @@ namespace Landis.Extension.Succession.Century
 
 
             double mortality_wood    = (double) totalMortality[0];
-            double mortality_nonwood = (double) totalMortality[1];
+            double mortality_nonwood = (double) totalMortality[1] - defoliatedLeafBiomass;
 
             //  Add mortality to dead biomass pools.
             //  Coarse root mortality is assumed proportional to aboveground woody mortality
