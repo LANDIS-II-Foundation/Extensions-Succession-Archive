@@ -83,6 +83,7 @@ namespace Landis.Extension.Succession.Century
             double[] actualANPP = ComputeActualANPP(cohort, site, siteBiomass, mortalityAge);
             
             double scorch = 0.0;
+            defoliatedLeafBiomass = 0.0;
             
             if(Century.Month == 6)  //July = 6
             {
@@ -152,7 +153,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.TotalNuptake[site] += Nuptake;
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
-            float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]- defoliatedLeafBiomass);
+            float deltaLeaf = (float)(actualANPP[1] - totalMortality[1] - defoliatedLeafBiomass);
 
             float[] deltas  = new float[2]{deltaWood, deltaLeaf};
 
@@ -364,8 +365,8 @@ namespace Landis.Extension.Succession.Century
 
 
             double mortality_wood    = (double) totalMortality[0];
-            //double mortality_nonwood = (double) totalMortality[1] + defoliatedLeafBiomass;
-            double mortality_nonwood = (double)totalMortality[1];
+            double mortality_nonwood = (double) totalMortality[1] - defoliatedLeafBiomass;
+            //double mortality_nonwood = (double)totalMortality[1];
 
             //  Add mortality to dead biomass pools.
             //  Coarse root mortality is assumed proportional to aboveground woody mortality

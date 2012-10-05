@@ -492,7 +492,7 @@ namespace Landis.Extension.Succession.Century
         
         
         //---------------------------------------------------------------------
-        private static double GetTotalNitrogen(ActiveSite site)
+        private static double GetTotalNitrogen(Site site)
         {
         
             
@@ -519,7 +519,7 @@ namespace Landis.Extension.Succession.Century
             return totalN;
         }
 
-        private static double GetTotalSoilNitrogen(ActiveSite site)
+        private static double GetTotalSoilNitrogen(Site site)
         {
 
 
