@@ -123,7 +123,7 @@ namespace Landis.Extension.Succession.Century
                 //SiteVars.LitterfallC[site] += ((defoliatedLeafBiomass * 0.47)- frassBiomassC);
 
                 LitterLayer.PartitionResidue(
-                            frassBiomass/0.47,
+                            frassBiomassC/0.47,
                             inputDecayValue,
                             OtherData.CNratiofrass,
                             1.0,
