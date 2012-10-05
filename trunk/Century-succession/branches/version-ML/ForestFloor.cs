@@ -120,12 +120,10 @@ namespace Landis.Extension.Succession.Century
                         
                 SiteVars.FrassC[site] += frassBiomassC;
 
-                SiteVars.LitterfallC[site] += ((defoliatedLeafBiomass * 0.47)- frassBiomassC);
-
-                frassBiomass = frassBiomassC * 2;
+                //SiteVars.LitterfallC[site] += ((defoliatedLeafBiomass * 0.47)- frassBiomassC);
 
                 LitterLayer.PartitionResidue(
-                            frassBiomass,
+                            frassBiomass/0.47,
                             inputDecayValue,
                             OtherData.CNratiofrass,
                             1.0,

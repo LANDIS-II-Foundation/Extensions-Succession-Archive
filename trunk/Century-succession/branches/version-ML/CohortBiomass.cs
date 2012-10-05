@@ -98,9 +98,9 @@ namespace Landis.Extension.Succession.Century
                 if (defoliation > 1.0) 
                     defoliation = 1.0;
 
-               defoliatedLeafBiomass = (cohort.LeafBiomass - totalMortality[1]) * defoliation;
-
-
+               //defoliatedLeafBiomass = (cohort.LeafBiomass - totalMortality[1]) * defoliation;
+               defoliatedLeafBiomass = (cohort.LeafBiomass) * defoliation;
+               
                 //if (defoliation > 0 && (totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)
                 //{
 
@@ -152,7 +152,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.TotalNuptake[site] += Nuptake;
 
             float deltaWood = (float) (actualANPP[0] - totalMortality[0]);
-            float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]);
+            float deltaLeaf = (float)(actualANPP[1] - totalMortality[1]- defoliatedLeafBiomass);
 
             float[] deltas  = new float[2]{deltaWood, deltaLeaf};
 
@@ -364,7 +364,8 @@ namespace Landis.Extension.Succession.Century
 
 
             double mortality_wood    = (double) totalMortality[0];
-            double mortality_nonwood = (double) totalMortality[1] - defoliatedLeafBiomass;
+            //double mortality_nonwood = (double) totalMortality[1] + defoliatedLeafBiomass;
+            double mortality_nonwood = (double)totalMortality[1];
 
             //  Add mortality to dead biomass pools.
             //  Coarse root mortality is assumed proportional to aboveground woody mortality
