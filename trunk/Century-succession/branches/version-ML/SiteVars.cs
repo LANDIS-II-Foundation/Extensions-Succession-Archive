@@ -278,7 +278,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.AnnualNEE[site] = 0.0;
             SiteVars.TotalNuptake[site] = 0.0;
             SiteVars.ResorbedN[site] = 0.0;
-            SiteVars.FrassC[site] = 0.0;
+            //SiteVars.FrassC[site] = 0.0;
             SiteVars.LAI[site] = 0.0;
             SiteVars.AgeMortality[site] = 0.0;
 
