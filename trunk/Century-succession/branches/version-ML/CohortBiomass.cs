@@ -83,7 +83,7 @@ namespace Landis.Extension.Succession.Century
             double[] actualANPP = ComputeActualANPP(cohort, site, siteBiomass, mortalityAge);
             
             double scorch = 0.0;
-
+            
             if(Century.Month == 6)  //July = 6
             {
                 if (SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
@@ -97,8 +97,8 @@ namespace Landis.Extension.Succession.Century
 
                 if (defoliation > 1.0) 
                     defoliation = 1.0;
-                
-                defoliatedLeafBiomass = (cohort.LeafBiomass - totalMortality[1]) * defoliation;
+
+               defoliatedLeafBiomass = (cohort.LeafBiomass - totalMortality[1]) * defoliation;
 
 
                 //if (defoliation > 0 && (totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)

@@ -108,18 +108,21 @@ namespace Landis.Extension.Succession.Century
             
             if (defoliatedLeafBiomass > 0)
             {
-                SiteVars.LitterfallC[site] += defoliatedLeafBiomass * 0.47;
+                //SiteVars.LitterfallC[site] += defoliatedLeafBiomass * 0.47;
 
                 double frassBiomass = Math.Max(0.0, defoliatedLeafBiomass);
+                //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, defoliatedbiomass={2}.", PlugIn.ModelCore.CurrentTime, Century.Month, defoliatedLeafBiomass);
                 
                 //Frass C added is a function of defoliated leaf biomass, but adjusted for the CN of litter and frass
                 double frassBiomassC = frassBiomass * 0.47 * (1/SpeciesData.LeafLitterCN[species]) * OtherData.CNratiofrass;
-                frassBiomass = frassBiomassC * 2.128;
-                if (defoliatedLeafBiomass > 0)
-                {
-                    //PlugIn.ModelCore.Log.WriteLine("Yr={0}, Month={1}, frassC={2}.", PlugIn.ModelCore.CurrentTime, Century.Month, frassBiomassC);
-                }             
+
+                //PlugIn.ModelCore.Log.WriteLine("After convert to frass. Yr={0}, Month={1}, frassC={2}.", PlugIn.ModelCore.CurrentTime, Century.Month, frassBiomassC);
+                        
                 SiteVars.FrassC[site] += frassBiomassC;
+
+                SiteVars.LitterfallC[site] += ((defoliatedLeafBiomass * 0.47)- frassBiomassC);
+
+                frassBiomass = frassBiomassC * 2;
 
                 LitterLayer.PartitionResidue(
                             frassBiomass,
@@ -130,6 +133,9 @@ namespace Landis.Extension.Succession.Century
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
+
+                
+
             }
         } 
 
