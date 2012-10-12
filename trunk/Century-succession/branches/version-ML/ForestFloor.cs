@@ -58,7 +58,6 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
-                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -87,7 +86,6 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafLitterCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
-                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -114,8 +112,8 @@ namespace Landis.Extension.Succession.Century
                 // Frass C added is a function of defoliated leaf biomass, but adjusted for the CN of litter and frass
                 // Any C lost is due to insect metabolism
                 double inputFrassC = inputFrassBiomass * 0.47;
-                double inputFrassN = inputFrassC / SpeciesData.LeafLitterCN[species];
-                double actualFrassC = inputFrassN * OtherData.CNratiofrass;  // the difference between input and actual is C lost to insect metabolism
+                double inputFrassN = inputFrassC / (double) SpeciesData.LeafLitterCN[species];
+                double actualFrassC = inputFrassN * (double) OtherData.CNratiofrass;  // the difference between input and actual is C lost to insect metabolism
                 double actualFrassBiomass = actualFrassC / 0.47;
                              
                 SiteVars.FrassC[site] += actualFrassC;
