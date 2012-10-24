@@ -13,8 +13,17 @@ namespace Landis.Extension.Succession.Century
     /// A parser that reads biomass succession parameters from text input.
     /// </summary>
     public class InputParametersParser
-        : Dynamic.BiomassParametersParser<IInputParameters>
+        //: Dynamic.BiomassParametersParser<IInputParameters>
+        :Landis.TextParser<IInputParameters>
     {
+        public override string LandisDataValue
+        {
+            get
+            {
+                return "InputParameters"; // expected value for LandisData variable
+            }
+        }
+
         public static class Names
         {
             public const string Timestep = "Timestep";
@@ -64,11 +73,13 @@ namespace Landis.Extension.Succession.Century
 
         protected override IInputParameters Parse()
         {
-            InputVar<string> landisData = new InputVar<string>("LandisData");
-            ReadVar(landisData);
-            if (landisData.Value.Actual != PlugIn.ExtensionName)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
-            
+            //InputVar<string> landisData = new InputVar<string>("LandisData");
+            //ReadVar(landisData);
+            //if (landisData.Value.Actual != PlugIn.ExtensionName)
+            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
+
+            ReadLandisDataVar();
+
             int numLitterTypes = 4;
             int numFunctionalTypes = 25;
 

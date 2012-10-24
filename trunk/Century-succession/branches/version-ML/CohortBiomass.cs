@@ -156,7 +156,7 @@ namespace Landis.Extension.Succession.Century
             }
             if ((totalMortality[1] + defoliatedLeafBiomass - cohort.LeafBiomass) > 0.01)
             {
-                PlugIn.ModelCore.Log.WriteLine("Warning: LEAF Mortality exceeds cohort biomass. M={0:0.000}, B={1:0.000}", (totalMortality[1] + defoliatedLeafBiomass), cohort.LeafBiomass);
+                PlugIn.ModelCore.Log.WriteLine("Warning: LEAF Mortality exceeds cohort biomass. Mortality={0:0.000}, B={1:0.000}", (totalMortality[1] + defoliatedLeafBiomass), cohort.LeafBiomass);
                 PlugIn.ModelCore.Log.WriteLine("Warning: If M>B, then list mortality. Mage={0:0.00}, Mgrow={1:0.00}, Mdefo={2:0.000},", mortalityAge[1], mortalityGrowth[1], defoliatedLeafBiomass);
                 throw new ApplicationException("Error: LEAF Mortality exceeds cohort biomass");
 
@@ -164,7 +164,7 @@ namespace Landis.Extension.Succession.Century
             float deltaWood = (float)(actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float)(actualANPP[1] - totalMortality[1] - defoliatedLeafBiomass);
 
-            float[] deltas  = new float[2]{deltaWood, deltaLeaf};
+            float[] deltas = new float[2] { deltaWood, deltaLeaf };
 
             //if(totalMortality[1] + defoliatedLeafBiomass > cohort.LeafBiomass)
             //    PlugIn.ModelCore.Log.WriteLine("Warning: Leaf Mortality exceeds cohort leaf biomass. M={0:0.0}, B={1:0.0}", (totalMortality[0] + totalMortality[1]), (cohort.WoodBiomass + cohort.LeafBiomass));

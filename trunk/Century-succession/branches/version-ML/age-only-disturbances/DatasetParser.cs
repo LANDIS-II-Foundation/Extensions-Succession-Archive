@@ -13,10 +13,18 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
     /// disturbances from text input.
     /// </summary>
     public class DatasetParser
-        : TextParser<IParameterDataset>
+        : Landis.TextParser<IParameterDataset>
     {
+        public override string LandisDataValue
+        {
+            get {
+                return "ParameterDataset";
+            }
+        }
+
+
         private Dictionary<string, int> lineNums;
-        private string LandisDataValue = "Age-only Disturbances - Biomass Parameters";
+        //private string LandisDataValue = "Age-only Disturbances - Biomass Parameters";
 
         //---------------------------------------------------------------------
 
@@ -30,10 +38,10 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
 
         protected override IParameterDataset Parse()
         {
-            InputVar<string> landisData = new InputVar<string>("LandisData");
-            ReadVar(landisData);
-            if (landisData.Value.Actual != LandisDataValue)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
+            //InputVar<string> landisData = new InputVar<string>("LandisData");
+            //ReadVar(landisData);
+            //if (landisData.Value.Actual != LandisDataValue)
+            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
 
             ParameterDataset dataset = new ParameterDataset();
             const string DeadBiomassReductions = "DeadBiomassReductions";
