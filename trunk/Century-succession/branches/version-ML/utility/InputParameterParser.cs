@@ -13,8 +13,8 @@ namespace Landis.Extension.Succession.Century
     /// A parser that reads biomass succession parameters from text input.
     /// </summary>
     public class InputParametersParser
-        //: Dynamic.BiomassParametersParser<IInputParameters>
-        :Landis.TextParser<IInputParameters>
+        : Dynamic.BiomassParametersParser<IInputParameters>
+        
     {
         public override string LandisDataValue
         {
