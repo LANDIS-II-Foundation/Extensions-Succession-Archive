@@ -12,22 +12,20 @@ namespace Landis.Extension.Succession.Century.Dynamic
     /// text input.
     /// </summary>
     public class ParametersParser
-        //: BiomassParametersParser<IParameters>
-        :Landis.TextParser<IParameters>
-        {
-        public override string LandisDataValue
-        {
-            get {
-                return "IParameters";
-            }
-        }
-    
+        : BiomassParametersParser<IParameters>
+    {
         private IEcoregionDataset ecoregionDataset;
         private ISpeciesDataset speciesDataset;
 
         //---------------------------------------------------------------------
 
-        //public string LandisDataValue = "Biomass Succession - Climate Change";
+        public override string LandisDataValue
+        {
+            get
+            {
+                return "Biomass Succession - Climate Change";
+            }
+        }
 
         //---------------------------------------------------------------------
 
@@ -56,7 +54,7 @@ namespace Landis.Extension.Succession.Century.Dynamic
             ReadLandisDataVar();
 
             Parameters parameters = new Parameters(ecoregionDataset, speciesDataset);
-            //ParseBiomassParameters(parameters);
+            ParseBiomassParameters(parameters);
             return parameters; //.GetComplete();
         }
     }
