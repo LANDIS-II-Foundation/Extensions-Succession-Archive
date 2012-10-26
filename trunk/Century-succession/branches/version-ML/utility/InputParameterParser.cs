@@ -14,13 +14,13 @@ namespace Landis.Extension.Succession.Century
     /// </summary>
     public class InputParametersParser
         : Dynamic.BiomassParametersParser<IInputParameters>
-        
+
     {
         public override string LandisDataValue
         {
             get
             {
-                return "InputParameters"; // expected value for LandisData variable
+                return "Century Succession";
             }
         }
 
@@ -83,7 +83,7 @@ namespace Landis.Extension.Succession.Century
             int numLitterTypes = 4;
             int numFunctionalTypes = 25;
 
-            Parameters parameters = new Parameters(ecoregionDataset, speciesDataset, numLitterTypes, numFunctionalTypes);  
+            Parameters parameters = new Parameters(ecoregionDataset, speciesDataset, numLitterTypes, numFunctionalTypes);
 
             InputVar<int> timestep = new InputVar<int>(Names.Timestep);
             ReadVar(timestep);
@@ -107,7 +107,7 @@ namespace Landis.Extension.Succession.Century
             InputVar<string> climateFile = new InputVar<string>(Names.ClimateFile);
             ReadVar(climateFile);
             parameters.ClimateFile = climateFile.Value;
-            
+
             InputVar<bool> calimode = new InputVar<bool>(Names.CalibrateMode);
             if (ReadOptionalVar(calimode))
                 parameters.CalibrateMode = calimode.Value;
@@ -131,47 +131,47 @@ namespace Landis.Extension.Succession.Century
                 parameters.ProbEstablishAdjustment = 1.0;
 
             InputVar<string> soilCarbonMaps = new InputVar<string>("SoilCarbonMapNames");
-            if (ReadOptionalVar(soilCarbonMaps)) 
+            if (ReadOptionalVar(soilCarbonMaps))
             {
                 PlugIn.SoilCarbonMapNames = soilCarbonMaps.Value;
-                
+
                 InputVar<int> soilCarbonMapFreq = new InputVar<int>("SoilCarbonMapFrequency");
                 ReadVar(soilCarbonMapFreq);
                 PlugIn.SoilCarbonMapFrequency = soilCarbonMapFreq.Value;
-            
+
             }
-            
+
             InputVar<string> soilNitrogenMaps = new InputVar<string>("SoilNitrogenMapNames");
-            if (ReadOptionalVar(soilNitrogenMaps)) 
+            if (ReadOptionalVar(soilNitrogenMaps))
             {
                 PlugIn.SoilNitrogenMapNames = soilNitrogenMaps.Value;
-                
+
                 InputVar<int> soilNitrogenMapFreq = new InputVar<int>("SoilNitrogenMapFrequency");
                 ReadVar(soilNitrogenMapFreq);
                 PlugIn.SoilNitrogenMapFrequency = soilNitrogenMapFreq.Value;
-            
+
             }
 
             InputVar<string> anppMaps = new InputVar<string>("ANPPMapNames");
-            if (ReadOptionalVar(anppMaps)) 
+            if (ReadOptionalVar(anppMaps))
             {
                 PlugIn.ANPPMapNames = anppMaps.Value;
-                
+
                 InputVar<int> anppMapFreq = new InputVar<int>("ANPPMapFrequency");
                 ReadVar(anppMapFreq);
                 PlugIn.ANPPMapFrequency = anppMapFreq.Value;
-            
+
             }
 
             InputVar<string> aneeMaps = new InputVar<string>("ANEEMapNames");
-            if (ReadOptionalVar(aneeMaps)) 
+            if (ReadOptionalVar(aneeMaps))
             {
                 PlugIn.ANEEMapNames = aneeMaps.Value;
-                
+
                 InputVar<int> aneeMapFreq = new InputVar<int>("ANEEMapFrequency");
                 ReadVar(aneeMapFreq);
                 PlugIn.ANEEMapFrequency = aneeMapFreq.Value;
-            
+
             }
 
             InputVar<string> totalCMaps = new InputVar<string>("TotalCMapNames");
@@ -203,7 +203,7 @@ namespace Landis.Extension.Succession.Century
                     throw new InputValueException(shadeClassVar.Value.String,
                                                   "Expected the available light class {0}", shadeClass);
 
-                foreach (IEcoregion ecoregion in ecoregions) 
+                foreach (IEcoregion ecoregion in ecoregions)
                 {
                     InputVar<Percentage> MinRelativeBiomass = new InputVar<Percentage>("Ecoregion " + ecoregion.Name);
                     ReadValue(MinRelativeBiomass, currentLine);
@@ -227,7 +227,7 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> pl3 = new InputVar<double>("Probability of Germination - Light Level 3");
             InputVar<double> pl4 = new InputVar<double>("Probability of Germination - Light Level 4");
             InputVar<double> pl5 = new InputVar<double>("Probability of Germination - Light Level 5");
-            
+
             int previousNumber = 0;
 
             while (! AtEndOfInput && CurrentName != Names.SpeciesParameters
@@ -235,7 +235,7 @@ namespace Landis.Extension.Succession.Century
                 StringReader currentLine = new StringReader(CurrentLine);
 
                 ISufficientLight suffLight = new SufficientLight();
-                
+
                 ReadValue(sc, currentLine);
                 suffLight.ShadeClass = sc.Value;
 
@@ -311,19 +311,19 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(nt, currentLine);
                 parameters.NFixer[species] = nt.Value;
-                
+
                 ReadValue(gddmn, currentLine);
                 parameters.SetGDDmin(species, gddmn.Value);
-                
+
                 ReadValue(gddmx, currentLine);
                 parameters.SetGDDmax(species, gddmx.Value);
-                
+
                 ReadValue(mjt, currentLine);
                 parameters.SetMinJanTemp(species, mjt.Value);
-                
+
                 ReadValue(maxd, currentLine);
                 parameters.SetMaxDrought(species, maxd.Value);
-                
+
                 ReadValue(leafLongevity, currentLine);
                 parameters.SetLeafLongevity(species, leafLongevity.Value);
 
@@ -381,10 +381,10 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> wdr = new InputVar<double>("Wood Decay Rate");
             InputVar<double> mortCurveShapeParm = new InputVar<double>("Mortality Curve Shape Parameter");
             InputVar<int> leafNeedleDrop = new InputVar<int>("Leaf or Needle Drop Month");
-            
+
             InputVar<double> ppr2 = new InputVar<double>("PPRPTS2");
             InputVar<double> ppr3 = new InputVar<double>("PPRPTS3");
-            
+
             while (! AtEndOfInput && CurrentName != InitialEcoregionParameters) {
                 StringReader currentLine = new StringReader(CurrentLine);
 
@@ -392,12 +392,12 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(ftindex , currentLine);
                 int ln = (int) ftindex.Value.Actual;
-                
+
                 if(ln >= numFunctionalTypes)
                     throw new InputValueException(ftindex.Value.String,
                                               "The index:  {0} exceeds the allowable number of functional groups, {1}",
                                               ftindex.Value.String, numFunctionalTypes-1);
-                
+
 
                 //IEditableFunctionalType funcTParms = new EditableFunctionalType();
                 FunctionalType funcTParms = new FunctionalType();
@@ -408,10 +408,10 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(ppdf2, currentLine);
                 funcTParms.PPDF2 = ppdf2.Value;
-                
+
                 ReadValue(ppdf3, currentLine);
                 funcTParms.PPDF3 = ppdf3.Value;
-                
+
                 ReadValue(ppdf4, currentLine);
                 funcTParms.PPDF4 = ppdf4.Value;
 
@@ -429,7 +429,7 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(ppr2, currentLine);
                 funcTParms.PPRPTS2 = ppr2.Value;
-            
+
                 ReadValue(ppr3, currentLine);
                 funcTParms.PPRPTS3 = ppr3.Value;
 
@@ -438,10 +438,10 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(mwm, currentLine);
                 funcTParms.MonthlyWoodMortality = mwm.Value;
-                
+
                 ReadValue(mortCurveShapeParm, currentLine);
                 funcTParms.MortCurveShape = mortCurveShapeParm.Value;
-                
+
                 ReadValue(leafNeedleDrop, currentLine);
                 funcTParms.LeafNeedleDrop = leafNeedleDrop.Value;
 
@@ -451,7 +451,7 @@ namespace Landis.Extension.Succession.Century
                 GetNextLine();
             }
 
-            
+
             //--------- Read In FIRST Ecoregion Table ---------------------------
             PlugIn.ModelCore.Log.WriteLine("   Begin reading INITIAL ECOREGION parameters.");
             ReadName(InitialEcoregionParameters);
@@ -487,7 +487,7 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(iS1soilN, currentLine);
                 parameters.SetInitSOM1soilN(ecoregion, iS1soilN.Value);
-                
+
                 ReadValue(iS2C, currentLine);
                 parameters.SetInitSOM2C(ecoregion, iS2C.Value);
 
@@ -504,7 +504,7 @@ namespace Landis.Extension.Succession.Century
                 parameters.SetInitMineralN(ecoregion, iMN.Value);
 
                 CheckNoDataAfter("the " + iMN.Name + " column", currentLine);
-                
+
                 GetNextLine();
             }
 
@@ -524,12 +524,12 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> ans = new InputVar<double>("Atmospheric N Slope");
             InputVar<double> ani = new InputVar<double>("Atmospheric N Intercept");
             InputVar<double> lat = new InputVar<double>("Latitude");
-            InputVar<double> drsoms = new InputVar<double>("Decay Rate Surf"); 
-            InputVar<double> drsom1 = new InputVar<double>("Decay Rate SOM1"); 
+            InputVar<double> drsoms = new InputVar<double>("Decay Rate Surf");
+            InputVar<double> drsom1 = new InputVar<double>("Decay Rate SOM1");
             InputVar<double> drsom2 = new InputVar<double>("Decay Rate SOM2");
             InputVar<double> drsom3 = new InputVar<double>("Decay Rate SOM3");
             InputVar<double> denits = new InputVar<double>("Denitrification");
-            
+
             Dictionary<string, int> lineNumbers = new Dictionary<string, int>();
 
             while (! AtEndOfInput && CurrentName != Names.FireReductionParameters ) {
@@ -548,22 +548,22 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(psand, currentLine);
                 parameters.SetPercentSand(ecoregion, psand.Value);
-                
+
                 ReadValue(fc, currentLine);
                 parameters.SetFieldCapacity(ecoregion, fc.Value);
-                
+
                 ReadValue(wp, currentLine);
                 parameters.SetWiltingPoint(ecoregion, wp.Value);
-                
+
                 ReadValue(sff, currentLine);
                 parameters.SetStormFlowFraction(ecoregion, sff.Value);
-                
+
                 ReadValue(bff, currentLine);
                 parameters.SetBaseFlowFraction(ecoregion, bff.Value);
-                
+
                 ReadValue(drain, currentLine);
                 parameters.SetDrain(ecoregion, drain.Value);
-                
+
                 ReadValue(ans, currentLine);
                 parameters.SetAtmosNslope(ecoregion, ans.Value);
 
@@ -578,7 +578,7 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(drsom1, currentLine);
                 parameters.SetDecayRateSOM1(ecoregion, drsom1.Value);
-                
+
                 ReadValue(drsom2, currentLine);
                 parameters.SetDecayRateSOM2(ecoregion, drsom2.Value);
 
@@ -588,9 +588,9 @@ namespace Landis.Extension.Succession.Century
                 ReadValue(denits, currentLine);
                 parameters.SetDenitrif(ecoregion, denits.Value);
 
-                
+
                 CheckNoDataAfter("the " + drsom3.Name + " column", currentLine);
-                
+
                 GetNextLine();
             }
             //--------- Read In Fire Reductions Table ---------------------------
@@ -605,15 +605,15 @@ namespace Landis.Extension.Succession.Century
                 && CurrentName != Names.HarvestReductionParameters)
             {
                 StringReader currentLine = new StringReader(CurrentLine);
-                
+
                 ReadValue(frindex , currentLine);
                 int ln = (int) frindex.Value.Actual;
-                
+
                 if(ln < 1 || ln > 5)
                     throw new InputValueException(ftindex.Value.String,
                                               "The fire severity index:  {0} must be 1-5,",
                                               frindex.Value.String);
-                
+
 
                 FireReductions inputFireReduction = new FireReductions();  // ignoring severity = zero
                 parameters.FireReductionsTable[ln] = inputFireReduction;
@@ -623,9 +623,9 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(lred, currentLine);
                 inputFireReduction.LitterReduction = lred.Value;
-                
+
                 CheckNoDataAfter("the " + lred.Name + " column", currentLine);
-                
+
                 GetNextLine();
             }
             //--------- Read In Harvest Reductions Table ---------------------------
@@ -645,7 +645,7 @@ namespace Landis.Extension.Succession.Century
                 {
                     HarvestReductions harvReduction = new HarvestReductions();
                     parameters.HarvestReductionsTable.Add(harvReduction);
-                    
+
                     StringReader currentLine = new StringReader(CurrentLine);
 
                     ReadValue(prescriptionName, currentLine);
@@ -656,7 +656,7 @@ namespace Landis.Extension.Succession.Century
 
                     ReadValue(lred_pr, currentLine);
                     harvReduction.LitterReduction = lred.Value;
-  
+
                     GetNextLine();
                 }
             }
