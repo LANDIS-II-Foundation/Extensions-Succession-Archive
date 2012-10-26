@@ -18,7 +18,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         public override string LandisDataValue
         {
             get {
-                return "ParameterDataset";
+                return "Age-only Disturbances - Biomass Parameters";
             }
         }
 
