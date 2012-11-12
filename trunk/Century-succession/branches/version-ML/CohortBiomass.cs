@@ -63,11 +63,16 @@ namespace Landis.Extension.Succession.Century
             double[] mortalityGrowth = ComputeGrowthMortality(cohort, site);
 
             double[] totalMortality = new double[2]{Math.Min(cohort.WoodBiomass, mortalityAge[0] + mortalityGrowth[0]), Math.Min(cohort.LeafBiomass, mortalityAge[1] + mortalityGrowth[1])};
-
-
+            //if (PlugIn.ModelCore.CurrentTime > 3)
+            //{
+            //    PlugIn.ModelCore.Log.WriteLine("Mortality.Month={0:0.0}, Leafbiomass={1:0.000}, MortAge={2:0.00}, MortGrow={3:0.00}", Century.Month, cohort.LeafBiomass, mortalityAge[1], mortalityGrowth[1]);
+            //}
             // ****** Growth *******
             double[] actualANPP = ComputeActualANPP(cohort, site, siteBiomass, mortalityAge);
-            
+            //if (PlugIn.ModelCore.CurrentTime > 3)
+            //{
+            //    PlugIn.ModelCore.Log.WriteLine("ActualANPP.Month={0:0.0}, SiteBiomass={1:0.00}, MortLeafAge={2:0.00}", Century.Month, siteBiomass, mortalityAge[1]);
+            //}
             double scorch = 0.0;
             defoliatedLeafBiomass = 0.0;
 
@@ -91,8 +96,10 @@ namespace Landis.Extension.Succession.Century
                     //defoliatedLeafBiomass = (cohort.LeafBiomass + actualANPP[1] - totalMortality[1]) * defoliation;  //TESTING
                     if (totalMortality[1] + defoliatedLeafBiomass - cohort.LeafBiomass > 0.001)
                         defoliatedLeafBiomass = cohort.LeafBiomass - totalMortality[1];
+                    PlugIn.ModelCore.Log.WriteLine("Defoliation.Month={0:0.0}, LeafBiomass={1:0.00}, DefoliatedLeafBiomass={2:0.00}, TotalLeafMort={2:0.00}", Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass , mortalityAge[1]);
 
                     ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
+
                 }
 
 
@@ -164,10 +171,14 @@ namespace Landis.Extension.Succession.Century
             float deltaWood = (float)(actualANPP[0] - totalMortality[0]);
             float deltaLeaf = (float)(actualANPP[1] - totalMortality[1] - defoliatedLeafBiomass);
 
+            //if (PlugIn.ModelCore.CurrentTime > 3)
+            //{
+            //    PlugIn.ModelCore.Log.WriteLine("ChangeANPP.month={0:0.0}, deltaLeaf={1:0.000}, actualANPP={2:0.000}, defoliatedleafbiomass={3:0.000},totalLeafMortality={4:0.00}", Century.Month, deltaLeaf, actualANPP[1], defoliatedLeafBiomass, totalMortality[1]);
+            //}
             float[] deltas = new float[2] { deltaWood, deltaLeaf };
 
-            //if(totalMortality[1] + defoliatedLeafBiomass > cohort.LeafBiomass)
-            //    PlugIn.ModelCore.Log.WriteLine("Warning: Leaf Mortality exceeds cohort leaf biomass. M={0:0.0}, B={1:0.0}", (totalMortality[0] + totalMortality[1]), (cohort.WoodBiomass + cohort.LeafBiomass));
+            if(totalMortality[1] + defoliatedLeafBiomass > cohort.LeafBiomass)
+               PlugIn.ModelCore.Log.WriteLine("Warning: Leaf Mortality exceeds cohort leaf biomass. M={0:0.0}, B={1:0.0}", (totalMortality[0] + totalMortality[1]), (cohort.WoodBiomass + cohort.LeafBiomass));
 
 
             UpdateDeadBiomass(cohort.Species, site, totalMortality);
