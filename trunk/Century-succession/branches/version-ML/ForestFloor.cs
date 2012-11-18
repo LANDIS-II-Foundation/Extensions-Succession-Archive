@@ -76,10 +76,6 @@ namespace Landis.Extension.Succession.Century
             double inputDecayValue = 1.0;   // Decay value is calculated for surface/soil layers (leaf/fine root), 
             // therefore, this is just a dummy value.
 
-            if (PlugIn.ModelCore.CurrentTime > 3)
-            {
-                PlugIn.ModelCore.Log.WriteLine("AddResorbLitt.Year={0:0}, Month={1:0.0}, leafbiomass={2:0.000} ", Century.Year, Century.Month, foliarBiomass);
-            }
             if (foliarBiomass > 0)
             {
                 SiteVars.LitterfallC[site] += foliarBiomass * 0.47;
@@ -123,14 +119,13 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.Log.WriteLine("AddFrass.Month={0:0}, inputfrassN={1:0.000}, inputfrassbiomass={2:0.00}, actualfrassbiomass={3:0.00} ", Century.Month, inputFrassN, inputFrassBiomass, actualFrassBiomass);
 
                 SiteVars.FrassC[site] += actualFrassC;
-                //SiteVars.LitterfallC[site] -= actualFrassC;
-
+ 
                 LitterLayer.PartitionResidue(
                             actualFrassBiomass,
                             inputDecayValue,
                             OtherData.CNratiofrass,
-                            1.0,
-                            1.0,
+                            0.01,
+                            OtherData.StructuralCN,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
