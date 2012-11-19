@@ -381,8 +381,8 @@ namespace Landis.Extension.Succession.Century
 
 
             double mortality_wood    = (double) totalMortality[0];
-            double mortality_nonwood = (double) totalMortality[1] - defoliatedLeafBiomass;
-            //double mortality_nonwood = (double)totalMortality[1];
+            //double mortality_nonwood = (double) totalMortality[1] - defoliatedLeafBiomass;
+            double mortality_nonwood = (double)totalMortality[1];
 
             //  Add mortality to dead biomass pools.
             //  Coarse root mortality is assumed proportional to aboveground woody mortality
