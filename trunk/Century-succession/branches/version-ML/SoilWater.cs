@@ -546,6 +546,8 @@ namespace Landis.Extension.Succession.Century
             double waterMove = SiteVars.WaterMovement[site];
 
             double amtNLeached = 0.0;
+
+            PlugIn.ModelCore.Log.WriteLine("WaterMove={0:0}, ", waterMove);         
            
          //...waterMove > 0. indicates a saturated water flow out of layer lyr
             if (waterMove > 0.0 && SiteVars.MineralN[site] > 0.0)
@@ -554,12 +556,15 @@ namespace Landis.Extension.Succession.Century
                 //double leachIntensity = (1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater);
                 amtNLeached = textureEffect * SiteVars.MineralN[site] * OtherData.NfracLeachWater * OtherData.NO3frac;
 
-                //PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, waterMove={2:0.0}.", amtNLeached, textureEffect, waterMove);                              
-            }
+                PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, waterMove={2:0.0}, MineralN={3.00}", amtNLeached, textureEffect, waterMove, SiteVars.MineralN[site]);      
+            }        
+            
 
             double totalNleached = (baseFlow * amtNLeached) + (stormFlow * amtNLeached);
-
+            
             SiteVars.MineralN[site] -= totalNleached;
+            PlugIn.ModelCore.Log.WriteLine("AfterLeach.totalNLeach={0:0.0}, MineralN={1:0.00}", totalNleached, SiteVars.MineralN[site]);         
+
             SiteVars.Stream[site].Nitrogen += totalNleached;
 
             return;

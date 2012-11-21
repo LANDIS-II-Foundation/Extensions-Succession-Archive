@@ -130,8 +130,9 @@ namespace Landis.Extension.Succession.Century
             SiteVars.SourceSink[site].Nitrogen        += nitrogenLoss;
             SiteVars.FireNEfflux[site] += nitrogenLoss;
 
-            SiteVars.MineralN[site] += summaryNLoss * 0.01;
-            
+            //SiteVars.MineralN[site] += summaryNLoss * 0.01;  Need to substract N loss from Mineral N pool. -ML
+            SiteVars.MineralN[site] -= summaryNLoss * 0.01;
+
         }
         //---------------------------------------------------------------------
         

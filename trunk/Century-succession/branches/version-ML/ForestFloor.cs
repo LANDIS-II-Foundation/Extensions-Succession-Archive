@@ -124,7 +124,7 @@ namespace Landis.Extension.Succession.Century
                             actualFrassBiomass,
                             inputDecayValue,
                             OtherData.CNratiofrass,
-                            0.01,
+                            0.1,
                             OtherData.StructuralCN,
                             LayerName.Leaf,
                             LayerType.Surface,

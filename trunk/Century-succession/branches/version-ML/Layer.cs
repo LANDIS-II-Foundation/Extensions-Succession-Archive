@@ -241,6 +241,7 @@ namespace Landis.Extension.Succession.Century
                 // Partition and schedule C flows 
                 this.TransferCarbon(SiteVars.SOM2[site], netCFlow);
                 this.TransferNitrogen(SiteVars.SOM2[site], netCFlow, litterC, ratioCN, site);
+                PlugIn.ModelCore.Log.WriteLine("Decompose1.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                 // ----------------------------------------------
                 // Decompose Wood Object to SOM1
@@ -270,7 +271,7 @@ namespace Landis.Extension.Succession.Century
                     this.TransferNitrogen(SiteVars.SOM1soil[site], carbonToSOM1, litterC, ratioCN, site);
                 }
             }
-
+            PlugIn.ModelCore.Log.WriteLine("Decompose2.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
             return;
         }
 
@@ -303,7 +304,7 @@ namespace Landis.Extension.Succession.Century
                                 * OtherData.LitterParameters[(int) this.Type].DecayRateMetabolicC
                                 * OtherData.MonthAdjust;
 
-
+                PlugIn.ModelCore.Log.WriteLine("DecomposeMeta1.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 //Added impact of soil anerobic conditions
                 if (this.Type == LayerType.Soil) totalCFlow *= anerb;
 
@@ -320,7 +321,9 @@ namespace Landis.Extension.Succession.Century
                     else
                         co2loss = totalCFlow * OtherData.MetabolicToCO2Soil;
 
+                    PlugIn.ModelCore.Log.WriteLine("BeforeResp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                     this.Respiration(co2loss, site);
+                    PlugIn.ModelCore.Log.WriteLine("AfterResp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                     //Decompose metabolic into som1
                     double netCFlow = totalCFlow - co2loss;
@@ -335,6 +338,7 @@ namespace Landis.Extension.Succession.Century
                     {
                         this.TransferCarbon(SiteVars.SOM1surface[site], netCFlow);
                         this.TransferNitrogen(SiteVars.SOM1surface[site], netCFlow, litterC, ratioCNtoSOM1, site);
+                        PlugIn.ModelCore.Log.WriteLine("DecomposeMetabolic.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                     }
                     else
                     {
@@ -396,24 +400,35 @@ namespace Landis.Extension.Succession.Century
                //     where immobileN is the extra N needed from the mineral pool
                 double immobileN = (CFlow / ratioCNtoDestination) - NFlow;
                 
-                //PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
-                //PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000}", NFlow, this.Nitrogen);
+                PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+               
+                PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
+                PlugIn.ModelCore.Log.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000},CNdestination={2:0}", NFlow, this.Nitrogen,ratioCNtoDestination);
 
+                PlugIn.ModelCore.Log.WriteLine("CalculatingImmobil.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 //...Schedule flow from Box A to Box B (outofa)
                 //flow(anps,bnps,time,outofa);
                 this.Nitrogen -= NFlow;
                 destination.Nitrogen += NFlow;
 
+                PlugIn.ModelCore.Log.WriteLine("NFlow.  MineralN={0:0.00}, ImmobileN={1:0.000}.", SiteVars.MineralN[site],immobileN);
+
                 // Schedule flow from mineral pool to Box B (immobileN)
                 // flow(labile,bnps,time,immflo);
+                //Don't allow mineral N to go to zero or negative.- ML
+                
                 SiteVars.MineralN[site] -= immobileN;
+                
+                PlugIn.ModelCore.Log.WriteLine("AfterImmobil.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 destination.Nitrogen += immobileN;
 
+                //PlugIn.ModelCore.Log.WriteLine("AdjustImmobil.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 //PlugIn.ModelCore.Log.WriteLine("   TransferN immobileN={0:0.000}, C={1:0.000}, N={2:0.000}, ratioCN={3:0.000}.", immobileN, CFlow, NFlow, ratioCNtoDestination);
                 //PlugIn.ModelCore.Log.WriteLine("     source={0}-{1}, destination={2}-{3}.", this.Name, this.Type, destination.Name, destination.Type);
 
                 //...Return mineralization value.
                 mineralNFlow = -1 * immobileN;
+                //PlugIn.ModelCore.Log.WriteLine("MineralNflow.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
             }
             else
 
@@ -444,6 +459,8 @@ namespace Landis.Extension.Succession.Century
                 this.Nitrogen -= mineralNFlow;
 
                 SiteVars.MineralN[site] += mineralNFlow;
+                PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
+                PlugIn.ModelCore.Log.WriteLine("IfMinOccurs.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                 //PlugIn.ModelCore.Log.WriteLine("  TransferN NFlow={0:0.000}, mineralizedN = {1:0.000}, N mineralalization = {1:0.000}", NFlow, mineralizedN, mineralNFlow);
                 //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
@@ -457,6 +474,7 @@ namespace Landis.Extension.Succession.Century
 
             //PlugIn.ModelCore.Log.WriteLine("     this.Nitrogen={0:0.000}.", this.Nitrogen);
 
+            PlugIn.ModelCore.Log.WriteLine("AfterMinOccurs.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
             return;
         }
 
@@ -500,8 +518,9 @@ namespace Landis.Extension.Succession.Century
             this.Nitrogen -= mineralNFlow;
             SiteVars.MineralN[site] += mineralNFlow;
 
-            //PlugIn.ModelCore.Log.WriteLine("  Respiration mineralNFlow = {0:0.000}", mineralNFlow);
-            //PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+            PlugIn.ModelCore.Log.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+            PlugIn.ModelCore.Log.WriteLine("  Respiration.mineralN= {0:0.000}, co2loss={1:00}", mineralNFlow, co2loss);
+           
 
 
             //c...Update gross mineralization

@@ -141,8 +141,7 @@ namespace Landis.Extension.Succession.Century
                 SiteVars.SoilDeadWood[site].AdjustDecayRate(totalC, inputDecayValue);
             }
 
-
-            return;
+                        return;
 
         }
 
