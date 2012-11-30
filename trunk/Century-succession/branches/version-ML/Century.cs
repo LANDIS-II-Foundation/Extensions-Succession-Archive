@@ -115,11 +115,11 @@ namespace Landis.Extension.Succession.Century
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), false);
 
                     WoodLayer.Decompose(site);
-                    PlugIn.ModelCore.Log.WriteLine("AfterWoodDecomp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("AfterWoodDecomp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                     LitterLayer.Decompose(site);
-                    PlugIn.ModelCore.Log.WriteLine("AfterLitterDecomp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("AfterLitterDecomp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                     SoilLayer.Decompose(site);
-                    PlugIn.ModelCore.Log.WriteLine("AfterSoilDecom.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("AfterSoilDecom.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                     //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1} - post Decompose.", SiteVars.MineralN[site], i);
                     //PlugIn.ModelCore.Log.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
@@ -130,7 +130,7 @@ namespace Landis.Extension.Succession.Century
 
                     double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]) / 12; // monthly value
 
-                    PlugIn.ModelCore.Log.WriteLine("BeforeVol.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("BeforeVol.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;

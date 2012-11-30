@@ -54,7 +54,7 @@ namespace Landis.Extension.Succession.Century
                     // Decompose Surface SOM1 to SOM2
                     SiteVars.SOM1surface[site].TransferCarbon(SiteVars.SOM2[site], netCFlow);
                     SiteVars.SOM1surface[site].TransferNitrogen(SiteVars.SOM2[site], netCFlow, som1c_surface, ratioCNtoSOM2, site);
-                    PlugIn.ModelCore.Log.WriteLine(".  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine(".  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                 }
             }
@@ -118,7 +118,7 @@ namespace Landis.Extension.Succession.Century
                     //Partition and schedule C and N flows 
                     SiteVars.SOM1soil[site].TransferCarbon(SiteVars.SOM3[site], cFlowS1S3);
                     SiteVars.SOM1soil[site].TransferNitrogen(SiteVars.SOM3[site], cFlowS1S3, som1c_soil, ratioCNto3, site);
-                    PlugIn.ModelCore.Log.WriteLine("AfterSOM1.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("AfterSOM1.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                      
                     // Leaching of Organics
                     // This only occurs when the water flow out of water layer 2
@@ -143,7 +143,7 @@ namespace Landis.Extension.Succession.Century
                         
                         SiteVars.SOM1soil[site].Nitrogen -= orgflow; 
                         SiteVars.Stream[site].Nitrogen += orgflow;
-                        PlugIn.ModelCore.Log.WriteLine("IfWaterMoves.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                        //PlugIn.ModelCore.Log.WriteLine("IfWaterMoves.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                     }
 
@@ -154,7 +154,7 @@ namespace Landis.Extension.Succession.Century
                     //Partition and schedule C and N flows 
                     SiteVars.SOM1soil[site].TransferCarbon(SiteVars.SOM2[site], cFlowS1S2);
                     SiteVars.SOM1soil[site].TransferNitrogen(SiteVars.SOM2[site], cFlowS1S2, som1c_soil, ratioCNtoSOM2, site);
-                    PlugIn.ModelCore.Log.WriteLine("PartitionCN.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("PartitionCN.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                 }  
             } 
@@ -181,20 +181,20 @@ namespace Landis.Extension.Succession.Century
                                 * EcoregionData.DecayRateSOM2[ecoregion]
                                 * anerb //impact of soil anaerobic conditions
                                 * OtherData.MonthAdjust;
-                PlugIn.ModelCore.Log.WriteLine("som2c={0:0.00}, decayFactor={1:0.00}, decayRateSOM2={2:0.00}, anerb={3:0.00}, monthAdj={4:0.00}", som2c, SiteVars.DecayFactor[site], EcoregionData.DecayRateSOM2[ecoregion], anerb, OtherData.MonthAdjust);
+                //PlugIn.ModelCore.Log.WriteLine("som2c={0:0.00}, decayFactor={1:0.00}, decayRateSOM2={2:0.00}, anerb={3:0.00}, monthAdj={4:0.00}", som2c, SiteVars.DecayFactor[site], EcoregionData.DecayRateSOM2[ecoregion], anerb, OtherData.MonthAdjust);
 
                 // If SOM2 can decompose to SOM1, it will also go to SOM3.
                 // If it can't go to SOM1, it can't decompose at all.
 
                 if (SiteVars.SOM2[site].DecomposePossible(ratioCNto1, SiteVars.MineralN[site]))
-                    PlugIn.ModelCore.Log.WriteLine("DecomposePoss.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("DecomposePoss.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 {
                 
                     //CO2 loss - Compute and schedule respiration flows
                     double co2loss = totalCflow * OtherData.FractionSOM2toCO2;
                     double netCFlow = totalCflow - co2loss;
                     SiteVars.SOM2[site].Respiration(co2loss, site);
-                    PlugIn.ModelCore.Log.WriteLine("AfterTransferto.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("AfterTransferto.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                     // -----------------------------------------------
                     // Decompose SOM2 to SOM3, SOM3 gets what's left of totalCflow.
@@ -206,7 +206,7 @@ namespace Landis.Extension.Succession.Century
                                             OtherData.MinCNenterSOM3, 
                                             OtherData.MaxCNenterSOM3,
                                             OtherData.MinContentN_SOM3);
-                    PlugIn.ModelCore.Log.WriteLine("TransferSOM2.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("TransferSOM2.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                     
                     //Partition and schedule C and N flows 
                     SiteVars.SOM2[site].TransferCarbon(SiteVars.SOM3[site], cFlowS2S3);
@@ -225,7 +225,7 @@ namespace Landis.Extension.Succession.Century
                     //Partition and schedule C and N flows 
                     SiteVars.SOM2[site].TransferCarbon(SiteVars.SOM1soil[site], cFlowS2S1);
                     SiteVars.SOM2[site].TransferNitrogen(SiteVars.SOM1soil[site], cFlowS2S1, som2c, ratioCNto1, site);
-                    PlugIn.ModelCore.Log.WriteLine("AfterSOM2.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("AfterSOM2.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 }
                 
             }
@@ -267,7 +267,7 @@ namespace Landis.Extension.Succession.Century
                     // Partition and schedule C and N flows 
                     SiteVars.SOM3[site].TransferCarbon(SiteVars.SOM1soil[site], cFlowS3S1);
                     SiteVars.SOM3[site].TransferNitrogen(SiteVars.SOM1soil[site], cFlowS3S1, som3c, ratioCNto1, site);
-                    PlugIn.ModelCore.Log.WriteLine("AfterSOM3.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.Log.WriteLine("AfterSOM3.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 }
             }
         }
