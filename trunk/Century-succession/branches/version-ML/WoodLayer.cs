@@ -35,7 +35,7 @@ namespace Landis.Extension.Succession.Century
                 //Compute total C flow out of large wood
                 double totalCFlow = wood2c * decayRate;
 
-                //PlugIn.ModelCore.Log.WriteLine("Decompose wood.  C={0:0.00}, Cflow={1:0.00}, DecayRate={2:0.000}.", wood2c, totalCFlow, decayRate);
+                //PlugIn.ModelCore.UI.WriteLine("Decompose wood.  C={0:0.00}, Cflow={1:0.00}, DecayRate={2:0.000}.", wood2c, totalCFlow, decayRate);
 
                 // Decompose large wood into SOM1 and SOM2 with CO2 loss.
                 SiteVars.SurfaceDeadWood[site].DecomposeLignin(totalCFlow, site);
@@ -58,7 +58,7 @@ namespace Landis.Extension.Succession.Century
 
 
 
-                //PlugIn.ModelCore.Log.WriteLine("  Coarse Root={0:0.0}, CFlow={1:0.00}, DecayFactor={2:0.00}, DecayValue={3:0.0}, ligninEffect={4:0.00}, anerb={5:0.00}.", wood3c, totalCFlow, SiteVars.DecayFactor[site], SiteVars.SoilDeadWood[site].DecayValue, ligninEffect, anerb);
+                //PlugIn.ModelCore.UI.WriteLine("  Coarse Root={0:0.0}, CFlow={1:0.00}, DecayFactor={2:0.00}, DecayValue={3:0.0}, ligninEffect={4:0.00}, anerb={5:0.00}.", wood3c, totalCFlow, SiteVars.DecayFactor[site], SiteVars.SoilDeadWood[site].DecayValue, ligninEffect, anerb);
 
                 SiteVars.SoilDeadWood[site].DecomposeLignin(totalCFlow, site);
             }
@@ -87,7 +87,7 @@ namespace Landis.Extension.Succession.Century
             // ...Compute amount of element in residue.
             double Npart = totalC / inputCNratio;
 
-            //PlugIn.ModelCore.Log.WriteLine("                totalCadded={0:0.00}, inputCNratio={1}, name={2}, type={3}.", totalC, inputCNratio, name, type);
+            //PlugIn.ModelCore.UI.WriteLine("                totalCadded={0:0.00}, inputCNratio={1}, name={2}, type={3}.", totalC, inputCNratio, name, type);
 
             // ...Direct absorption of mineral element by residue
             //      (mineral will be transferred to donor compartment
@@ -123,7 +123,7 @@ namespace Landis.Extension.Succession.Century
 
             totalNitrogen = directAbsorb + Npart;
 
-            //PlugIn.ModelCore.Log.WriteLine("                totalNadded={0:0.00}, totalC={1:0.0}, inputCNratio={2}, name={3}, type={4}.", totalNitrogen, totalC, inputCNratio, name, type);
+            //PlugIn.ModelCore.UI.WriteLine("                totalNadded={0:0.00}, totalC={1:0.0}, inputCNratio={2}, name={3}, type={4}.", totalNitrogen, totalC, inputCNratio, name, type);
 
 
             if ((int)name == (int)LayerName.Wood)

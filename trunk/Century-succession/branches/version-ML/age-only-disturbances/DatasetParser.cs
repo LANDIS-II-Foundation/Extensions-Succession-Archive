@@ -67,7 +67,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         {
             ReadName(tableName);
             
-            PlugIn.ModelCore.Log.WriteLine("      Reading {0}.", tableName);
+            PlugIn.ModelCore.UI.WriteLine("      Reading {0}.", tableName);
 
             InputVar<string> disturbance = new InputVar<string>("Disturbance");
             InputVar<Percentage> woodPercentage = new InputVar<Percentage>("Woody");
@@ -106,7 +106,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
                     //percentages = table[disturbanceType];
                     table[disturbanceType] = new PoolPercentages();
                     percentages = table[disturbanceType];
-                    PlugIn.ModelCore.Log.WriteLine("         Adding {0}...", disturbanceType);
+                    PlugIn.ModelCore.UI.WriteLine("         Adding {0}...", disturbanceType);
                 }
 
                 ReadValue(woodPercentage, currentLine);

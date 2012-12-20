@@ -362,7 +362,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             //--------- Read In Functional Group Table -------------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin parsing FUNCTIONAL GROUP table.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin parsing FUNCTIONAL GROUP table.");
 
             ReadName(Names.FunctionalGroupParameters);
             string InitialEcoregionParameters = "InitialEcoregionParameters";
@@ -445,7 +445,7 @@ namespace Landis.Extension.Succession.Century
                 ReadValue(leafNeedleDrop, currentLine);
                 funcTParms.LeafNeedleDrop = leafNeedleDrop.Value;
 
-                //PlugIn.ModelCore.Log.WriteLine("PPRPTS2={0}.", parameters.FunctionalTypeTable[ln].PPRPTS2);
+                //PlugIn.ModelCore.UI.WriteLine("PPRPTS2={0}.", parameters.FunctionalTypeTable[ln].PPRPTS2);
 
                 CheckNoDataAfter("the " + leafNeedleDrop.Name + " column", currentLine);
                 GetNextLine();
@@ -453,7 +453,7 @@ namespace Landis.Extension.Succession.Century
 
 
             //--------- Read In FIRST Ecoregion Table ---------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin reading INITIAL ECOREGION parameters.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin reading INITIAL ECOREGION parameters.");
             ReadName(InitialEcoregionParameters);
 
             InputVar<string> ecoregionName = new InputVar<string>("Ecoregion");
@@ -510,7 +510,7 @@ namespace Landis.Extension.Succession.Century
 
             //--------- Read In SECOND Ecoregion Table ---------------------------
             // First, read table of additional parameters for ecoregions
-            PlugIn.ModelCore.Log.WriteLine("   Begin reading FIXED ECOREGION parameters.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin reading FIXED ECOREGION parameters.");
             ReadName(Names.EcoregionParameters);
 
             InputVar<double> pclay = new InputVar<double>("Percent Clay");
@@ -594,7 +594,7 @@ namespace Landis.Extension.Succession.Century
                 GetNextLine();
             }
             //--------- Read In Fire Reductions Table ---------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin reading FIRE REDUCTION parameters.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin reading FIRE REDUCTION parameters.");
             ReadName(Names.FireReductionParameters);
 
             InputVar<int> frindex = new InputVar<int>("Fire Severity Index MUST = 1-5");
@@ -632,7 +632,7 @@ namespace Landis.Extension.Succession.Century
             InputVar<string> hreds = new InputVar<string>("HarvestReductions");
             ReadOptionalName(Names.HarvestReductionParameters);
             {
-                PlugIn.ModelCore.Log.WriteLine("   Begin reading HARVEST REDUCTION parameters.");
+                PlugIn.ModelCore.UI.WriteLine("   Begin reading HARVEST REDUCTION parameters.");
                 InputVar<string> prescriptionName = new InputVar<string>("Prescription");
                 InputVar<double> wred_pr = new InputVar<double>("Wood Reduction");
                 InputVar<double> lred_pr = new InputVar<double>("Litter Reduction");

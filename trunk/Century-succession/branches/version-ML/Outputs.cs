@@ -23,7 +23,7 @@ namespace Landis.Extension.Succession.Century
         {
         
             string logFileName   = "Century-succession-log.csv";
-            PlugIn.ModelCore.Log.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
+            PlugIn.ModelCore.UI.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
             try {
                 log = new StreamWriter(logFileName);
             }
@@ -57,7 +57,7 @@ namespace Landis.Extension.Succession.Century
         {
         
             string logFileName   = "Century-succession-monthly-log.csv"; 
-            PlugIn.ModelCore.Log.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
+            PlugIn.ModelCore.UI.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
             try {
                 logMonthly = new StreamWriter(logFileName);
             }
@@ -464,7 +464,7 @@ namespace Landis.Extension.Succession.Century
         public static void CreateCalibrateLogFile()
         {
             string logFileName = "Century-calibrate-log.csv";
-            PlugIn.ModelCore.Log.WriteLine("   Opening Century calibrate log file \"{0}\" ...", logFileName);
+            PlugIn.ModelCore.UI.WriteLine("   Opening Century calibrate log file \"{0}\" ...", logFileName);
             try
             {
                 CalibrateLog = new StreamWriter(logFileName);

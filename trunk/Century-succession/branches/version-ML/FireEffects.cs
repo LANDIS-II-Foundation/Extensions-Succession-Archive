@@ -82,7 +82,7 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         public static void ReduceLayers(byte severity, Site site)
         {
-            //PlugIn.ModelCore.Log.WriteLine("   Calculating fire induced layer reductions...");
+            //PlugIn.ModelCore.UI.WriteLine("   Calculating fire induced layer reductions...");
         
             double litterLossMultiplier = ReductionsTable[severity].LitterReduction;
             

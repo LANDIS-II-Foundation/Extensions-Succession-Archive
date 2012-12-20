@@ -46,7 +46,7 @@ namespace Landis.Extension.Succession.Century
 
             if (totalC < 0.0000001)
             {
-                //PlugIn.ModelCore.Log.WriteLine("C inputs to litter layer below threshold");
+                //PlugIn.ModelCore.UI.WriteLine("C inputs to litter layer below threshold");
                 return;
             }
 
@@ -134,7 +134,7 @@ namespace Landis.Extension.Succession.Century
             fracStructuralLignin = fracLignin / (cAddToStructural / totalC);
 
             if((int) type == (int) LayerType.Surface && cAddToMetabolic <= 0.0)
-                //PlugIn.ModelCore.Log.WriteLine("   SURFACE cAddToMetabolic={0}.", cAddToMetabolic);
+                //PlugIn.ModelCore.UI.WriteLine("   SURFACE cAddToMetabolic={0}.", cAddToMetabolic);
 
             // ...Changed allowable maximum fraction from .6 to 1.0  -lh 1/93
             if (fracStructuralLignin > 1.0)
@@ -180,7 +180,7 @@ namespace Landis.Extension.Succession.Century
             {
                 SiteVars.SoilStructural[site].Nitrogen += NAddToStructural;
                 SiteVars.SoilMetabolic[site].Nitrogen += NAddToMetabolic;
-                //PlugIn.ModelCore.Log.WriteLine("  N added to Structural Soil: {0}.", NAddToStructural);
+                //PlugIn.ModelCore.UI.WriteLine("  N added to Structural Soil: {0}.", NAddToStructural);
             }
 
             return;

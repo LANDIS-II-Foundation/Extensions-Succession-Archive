@@ -18,7 +18,7 @@ namespace Landis.Extension.Succession.Century
         public static void Run(int year, int month, double liveBiomass, Site site, out double baseFlow, out double stormFlow)
         {
 
-            //PlugIn.ModelCore.Log.WriteLine("year = {0}, month = {1}", year, month);
+            //PlugIn.ModelCore.UI.WriteLine("year = {0}, month = {1}", year, month);
 
 
             //Originally from h2olos.f of CENTURY model
@@ -186,7 +186,7 @@ namespace Landis.Extension.Succession.Century
 
                 //...Bare soil evaporation, fraction of precip (bareSoilEvap):
                 bareSoilEvap = 0.5 * System.Math.Exp((-0.002 * litterBiomass) - (0.004 * standingBiomass)) * OtherData.WaterLossFactor2;
-                //PlugIn.ModelCore.Log.WriteLine("bareSoilEvap={0}, litterBiomass={1}, standingBiomass={2}.", bareSoilEvap, litterBiomass, standingBiomass);
+                //PlugIn.ModelCore.UI.WriteLine("bareSoilEvap={0}, litterBiomass={1}, standingBiomass={2}.", bareSoilEvap, litterBiomass, standingBiomass);
 
                 //...Calculate total surface evaporation losses, maximum
                 //     allowable is 0.4 * pet. -rm 6/94
@@ -197,7 +197,7 @@ namespace Landis.Extension.Succession.Century
                 //     transpiration as remaining pet:
                 addToSoil = H2Oinputs - evaporativeLoss;
                 transpiration = remainingPET - evaporativeLoss;
-                //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, evaporativeLoss={2:0.0}, addToSoil={3:0.0}, remainingPET={4:0.0}", year, month, evaporativeLoss, addToSoil, remainingPET);
+                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, evaporativeLoss={2:0.0}, addToSoil={3:0.0}, remainingPET={4:0.0}", year, month, evaporativeLoss, addToSoil, remainingPET);
 
             }
 
@@ -221,7 +221,7 @@ namespace Landis.Extension.Succession.Century
             //     transpiration losses
             double potentialEvapTop = remainingPET - transpiration - evaporativeLoss;
 
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, PotentialEvapTop={2:0.0}, remainingPET={3:0.0}, transpiration={4:0.0}, evaporativeLoss={5:0.0}.", year, month, potentialEvapTop, remainingPET, transpiration, evaporativeLoss);
+            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, PotentialEvapTop={2:0.0}, remainingPET={3:0.0}, transpiration={4:0.0}, evaporativeLoss={5:0.0}.", year, month, potentialEvapTop, remainingPET, transpiration, evaporativeLoss);
             if (potentialEvapTop < 0.0) potentialEvapTop = 0.0;
 
             // **************************************************************************
@@ -231,7 +231,7 @@ namespace Landis.Extension.Succession.Century
             //     transpiration. -rm 6/94, Pulliam 9/94
             tran = System.Math.Min((transpiration - 0.01), addToSoil);
             transpiration = transpiration - tran;
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, tran={2:0.0}, transpiration={3:0.0}, addToSoil={4:0.00}.", year, month, tran, transpiration, addToSoil);
+            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, tran={2:0.0}, transpiration={3:0.0}, addToSoil={4:0.00}.", year, month, tran, transpiration, addToSoil);
             addToSoil = addToSoil - tran;
 
             //...Add water to the soil
@@ -240,7 +240,7 @@ namespace Landis.Extension.Succession.Century
             //...addToSoil water to layer:
 
             soilWaterContent += addToSoil;
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, soilWaterContent={2:0.0}, addToSoil={3:0.0}.", year, month, soilWaterContent,addToSoil);
+            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilWaterContent={2:0.0}, addToSoil={3:0.0}.", year, month, soilWaterContent,addToSoil);
 
             //...Calculate field capacity of soil, drain soil, pass excess
             //     on to waterMovement:
@@ -249,7 +249,7 @@ namespace Landis.Extension.Succession.Century
 
             if (soilWaterContent > waterFull)
             {
-                //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, soilWaterContent > waterFull", year, month); 
+                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilWaterContent > waterFull", year, month); 
                 waterMovement = (soilWaterContent - waterFull) / soilWaterContent;
                 soilWaterContent = waterFull;
 
@@ -279,7 +279,7 @@ namespace Landis.Extension.Succession.Century
 
             //...Calculate available water in layer, soilWaterContent minus wilting point:
             double availableWater = soilWaterContent - wiltingPoint * soilDepth;
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, availableWater={2:0.0}, soilWaterContent={3:0.0}.", year, month, availableWater, soilWaterContent);
+            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, availableWater={2:0.0}, soilWaterContent={3:0.0}.", year, month, availableWater, soilWaterContent);
 
             if (availableWater < 0.0)
                 availableWater = 0.0;
@@ -300,7 +300,7 @@ namespace Landis.Extension.Succession.Century
                 //...Calculate available water in layer j:
                 //for( j = 0; j < nlayer; j++)
                 availableWater = soilWaterContent - wiltingPoint * soilDepth;
-                //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, availableWater={2:0.0}, SWC={3:0.0}", year, month, availableWater, soilWaterContent);
+                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, availableWater={2:0.0}, SWC={3:0.0}", year, month, availableWater, soilWaterContent);
 
                 if (availableWater < 0.0) availableWater = 0.0;
 
@@ -316,7 +316,7 @@ namespace Landis.Extension.Succession.Century
                 //tran = tran + transpirationLoss;  // ????
                 relativeWaterContent = ((soilWaterContent / soilDepth) - wiltingPoint) / (fieldCapacity - wiltingPoint);
 
-                //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, TranspirationLoss={2:0.0}, availableWater={3:0.0}, soilwaterContent={4:0.00}, relativeWaterContent={5:0.00}.", year, month, transpirationLoss, availableWater, soilWaterContent, relativeWaterContent);
+                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, TranspirationLoss={2:0.0}, availableWater={3:0.0}, soilwaterContent={4:0.00}, relativeWaterContent={5:0.00}.", year, month, transpirationLoss, availableWater, soilWaterContent, relativeWaterContent);
                 //...Sum up water available to plants for GROWTH:
                 //if (j <= nlaypg) 
                 // avh2o[1] = avh2o[1] + avinj;
@@ -338,7 +338,7 @@ namespace Landis.Extension.Succession.Century
 
             //...Fraction of water content between fwlos and field capacity:
             double evmt = (relativeWaterContent - fwlos) / (1.0 - fwlos);
-            //PlugIn.ModelCore.Log.WriteLine("evmt={0:0.0}, relativeWaterContent={1:0.00}, fwlos={2}.", evmt,relativeWaterContent,fwlos);
+            //PlugIn.ModelCore.UI.WriteLine("evmt={0:0.0}, relativeWaterContent={1:0.00}, fwlos={2}.", evmt,relativeWaterContent,fwlos);
 
             if (evmt <= 0.01) evmt = 0.01;
 
@@ -353,20 +353,20 @@ namespace Landis.Extension.Succession.Century
             availableWater -= evapLossTop;
             soilWaterContent -= evapLossTop;
 
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, evapLossTop={2:0.00}, SWC={3:0.00}", year, month, evapLossTop, soilWaterContent);
+            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, evapLossTop={2:0.00}, SWC={3:0.00}", year, month, evapLossTop, soilWaterContent);
             //totalEvaporated += evapLossTop;
 
             //...Recalculate relative Water Content to estimate mid-month water content
             double avhsm = (soilWaterContent + relativeWaterContent * asimx) / (1.0 + relativeWaterContent);
             relativeWaterContent = ((avhsm / soilDepth) - wiltingPoint) / (fieldCapacity - wiltingPoint);
 
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, soilwaterContent={2:0.00}, relativeWaterContent={3:0.00}.", year, month,soilWaterContent, relativeWaterContent);
+            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilwaterContent={2:0.00}, relativeWaterContent={3:0.00}.", year, month,soilWaterContent, relativeWaterContent);
 
             // Compute the ratio of precipitation to PET
             double ratioPrecipPET = 0.0;
             if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet;
 
-            //PlugIn.ModelCore.Log.WriteLine("ratioPrecipPET={0}, totalAvailableH20={1}, H2Oinputs={2}, pet={3}.", ratioPrecipPET, totalAvailableWater, H2Oinputs, pet);
+            //PlugIn.ModelCore.UI.WriteLine("ratioPrecipPET={0}, totalAvailableH20={1}, H2Oinputs={2}, pet={3}.", ratioPrecipPET, totalAvailableWater, H2Oinputs, pet);
 
             SiteVars.WaterMovement[site] = waterMovement;
             SiteVars.AvailableWater[site] = availableWater;  //available to plants for growth
@@ -377,8 +377,8 @@ namespace Landis.Extension.Succession.Century
 
             //SoilWater.Leach(site, baseFlow, stormFlow);
 
-            //PlugIn.ModelCore.Log.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}, waterMovement={4}", availableWater, soilWaterContent, wiltingPoint, soilDepth, waterMovement);
-            //PlugIn.ModelCore.Log.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
+            //PlugIn.ModelCore.UI.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}, waterMovement={4}", availableWater, soilWaterContent, wiltingPoint, soilDepth, waterMovement);
+            //PlugIn.ModelCore.UI.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
 
             return;
         }
@@ -431,7 +431,7 @@ namespace Landis.Extension.Succession.Century
             //defac must >= 0.0
             if (decayFactor < 0.0) decayFactor = 0.0;
 
-            //RMS: PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}, DecayFactor={2:0.00}, tempFactor={3:0.00}, waterFactor={4:0.00}, ratioPrecipPET={5:0.000}, soilT={6:0.0}.", 99, month, decayFactor, tempModifier, W_Decomp, ratioPrecipPET, soilTemp);
+            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, DecayFactor={2:0.00}, tempFactor={3:0.00}, waterFactor={4:0.00}, ratioPrecipPET={5:0.000}, soilT={6:0.0}.", 99, month, decayFactor, tempModifier, W_Decomp, ratioPrecipPET, soilTemp);
 
 
             return decayFactor;   //Combination of water and temperature effects on decomposition
@@ -497,7 +497,7 @@ namespace Landis.Extension.Succession.Century
                     anerob = aneref3;
             }
 
-            //PlugIn.ModelCore.Log.WriteLine("Anaerobic Effect = {1}.", anerob);
+            //PlugIn.ModelCore.UI.WriteLine("Anaerobic Effect = {1}.", anerob);
             return anerob;
         }
         //---------------------------------------------------------------------------
@@ -518,7 +518,7 @@ namespace Landis.Extension.Succession.Century
             //         take into account the effect of snow (AKM)
             double soilTemp = (maxSoilTemp + minSoilTemp) / 2.0;
 
-            //PlugIn.ModelCore.Log.WriteLine("Month={0}, Soil Temperature = {1}.", month+1, soilTemp);
+            //PlugIn.ModelCore.UI.WriteLine("Month={0}, Soil Temperature = {1}.", month+1, soilTemp);
 
             return soilTemp;
         }
@@ -547,7 +547,7 @@ namespace Landis.Extension.Succession.Century
 
             double amtNLeached = 0.0;
 
-            //PlugIn.ModelCore.Log.WriteLine("WaterMove={0:0}, ", waterMove);         
+            //PlugIn.ModelCore.UI.WriteLine("WaterMove={0:0}, ", waterMove);         
            
          //...waterMove > 0. indicates a saturated water flow out of layer lyr
             if (waterMove > 0.0 && SiteVars.MineralN[site] > 0.0)
@@ -556,14 +556,14 @@ namespace Landis.Extension.Succession.Century
                 //double leachIntensity = (1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater);
                 amtNLeached = textureEffect * SiteVars.MineralN[site] * OtherData.NfracLeachWater * OtherData.NO3frac;
 
-                //PlugIn.ModelCore.Log.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, waterMove={2:0.0}, MineralN={3.00}", amtNLeached, textureEffect, waterMove, SiteVars.MineralN[site]);      
+                //PlugIn.ModelCore.UI.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, waterMove={2:0.0}, MineralN={3.00}", amtNLeached, textureEffect, waterMove, SiteVars.MineralN[site]);      
             }        
             
 
             double totalNleached = (baseFlow * amtNLeached) + (stormFlow * amtNLeached);
             
             SiteVars.MineralN[site] -= totalNleached;
-            //PlugIn.ModelCore.Log.WriteLine("AfterLeach.totalNLeach={0:0.0}, MineralN={1:0.00}", totalNleached, SiteVars.MineralN[site]);         
+            //PlugIn.ModelCore.UI.WriteLine("AfterLeach.totalNLeach={0:0.0}, MineralN={1:0.00}", totalNleached, SiteVars.MineralN[site]);         
 
             SiteVars.Stream[site].Nitrogen += totalNleached;
 
