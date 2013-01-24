@@ -1,5 +1,5 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Melissa Lucash
 
 using Edu.Wisc.Forest.Flel.Util;
 using System;
@@ -12,7 +12,7 @@ namespace Landis.Extension.Succession.Century
 {
 
     public enum LayerName {Leaf, FineRoot, Wood, CoarseRoot, Metabolic, Structural, SOM1, SOM2, SOM3, Other};
-    public enum LayerType {Surface, Soil, Other}
+    public enum LayerType {Surface, Soil, Other} 
 
     /// <summary>
     /// A Century soil model carbon and nitrogen pool.
