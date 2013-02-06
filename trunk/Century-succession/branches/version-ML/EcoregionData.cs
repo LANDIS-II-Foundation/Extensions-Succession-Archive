@@ -138,6 +138,7 @@ namespace Landis.Extension.Succession.Century
             if(actualYear == 0 || actualYear != AnnualWeather[ecoregion].Year)
             {
                 //PlugIn.ModelCore.UI.WriteLine("  SETTING ANNAUL CLIMATE:  Yr={0}, SimYr={1}, Eco={2}.", year, actualYear, ecoregion.Name);
+                
                 AnnualWeather[ecoregion] = AnnualClimateArray[ecoregion][year];
                 AnnualWeather[ecoregion].SetAnnualN(EcoregionData.AtmosNslope[ecoregion], EcoregionData.AtmosNintercept[ecoregion]);
 
@@ -184,7 +185,8 @@ namespace Landis.Extension.Succession.Century
                             //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  AllData  Jan Ppt = {0:0.00}.", Climate.AllData[actualYear][ecoregion.Index,0].AvgPpt);
                             //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
                         }
-                    
+
+                        AnnualClimate.AnnualClimateInitialize();
                         tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]); 
                     
                     }
