@@ -139,7 +139,7 @@ namespace Landis.Extension.Succession.Century
             ISiteCohorts clone = new SiteCohorts();
             foreach (ISpeciesCohorts speciesCohorts in site_cohorts)
                 foreach (ICohort cohort in speciesCohorts)
-                    clone.AddNewCohort(cohort.Species, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);  //species.cohorts.Add(speciesCohorts.Clone());
+                    clone.AddNewCohort(cohort.Species, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);  
             return clone;
         }
         //---------------------------------------------------------------------
@@ -200,6 +200,13 @@ namespace Landis.Extension.Succession.Century
                                              ICommunity initialCommunity)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+
+            if (!ecoregion.Active)
+            {
+                string mesg = string.Format("Initial community {0} is located on a non-active ecoregion {1}", initialCommunity.MapCode, ecoregion.Name);
+                throw new System.ApplicationException(mesg);
+            }
+
             uint key = ComputeKey(initialCommunity.MapCode, ecoregion.MapCode);
             InitialBiomass initialBiomass;
             if (initialSites.TryGetValue(key, out initialBiomass))
