@@ -422,8 +422,7 @@ namespace Landis.Extension.Succession.Century
 
             //  Initial biomass exponentially declines in response to
             //  competition.
-            double initialBiomass = 0.002 * B_MAX *
-                                    Math.Exp(-1.6 * B_ACT / B_MAX);
+            double initialBiomass = 0.002 * B_MAX * Math.Exp(-1.6 * B_ACT / B_MAX);
 
 
             //Initial biomass is limited by nitrogen availability.

@@ -1,28 +1,29 @@
 #define PackageName      "Century Succession"
 #define PackageNameLong  "Century Succession Extension"
-#define Version          "3.0.3"
+#define Version          "3.0.4"
 #define ReleaseType      "official"
 #define ReleaseNumber    "3"
 
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
 
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section) v6.0.iss"
+#include "J:\Scheller\LANDIS-II\deploy\package (Setup section) v6.0.iss"
+#define BuildDir "C:\Program Files\LANDIS-II\v6\bin\extensions"
+#define AppDir "C:\Program Files\LANDIS-II\v6"
 
 [Files]
 ; Auxiliary libs
-#define BuildDir "C:\Program Files\LANDIS-II\6.0\bin"
-Source: {#BuildDir}\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: {#BuildDir}\Landis.Library.Cohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: {#BuildDir}\Landis.Library.LeafBiomassCohorts.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: {#BuildDir}\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
-Source: {#BuildDir}\Landis.Library.Climate.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
+Source: {#BuildDir}\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#AppDir}\bin; Flags: replacesameversion
+Source: {#BuildDir}\Landis.Library.Cohorts.dll; DestDir: {#AppDir}\bin; Flags: replacesameversion
+Source: {#BuildDir}\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#AppDir}\bin; Flags: replacesameversion
+Source: {#BuildDir}\Landis.Library.Succession.dll; DestDir: {#AppDir}\bin; Flags: uninsneveruninstall replacesameversion
+Source: {#BuildDir}\Landis.Library.Climate.dll; DestDir: {#AppDir}\bin; Flags: uninsneveruninstall replacesameversion
 
 ; Century Succession
-Source: {#BuildDir}\Landis.Extension.Succession.Century.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: docs\LANDIS-II Century Succession v3.0 User Guide.pdf; DestDir: {app}\docs
-Source: docs\Century-succession-log-metadata.xlsx; DestDir: {app}\docs
-Source: examples\*; DestDir: {app}\examples\century-succession
+Source: {#BuildDir}\Landis.Extension.Succession.Century.dll; DestDir: {#AppDir}\bin\extensions; Flags: replacesameversion
+Source: docs\LANDIS-II Century Succession v3.0 User Guide.pdf; DestDir: {#AppDir}\docs
+Source: docs\Century-succession-log-metadata.xlsx; DestDir: {#AppDir}\docs
+Source: examples\*; DestDir: {#AppDir}\examples\century-succession
 
 #define CenturySucc "Century Succession 3.0.txt"
 Source: {#CenturySucc}; DestDir: {#LandisPlugInDir}
@@ -37,7 +38,7 @@ Filename: {#PlugInAdminTool}; Parameters: "add ""{#CenturySucc}"" "; WorkingDir:
 [UninstallRun]
 
 [Code]
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Code section) v3.iss"
+#include "J:\Scheller\LANDIS-II\deploy\package (Code section) v3.iss"
 
 //-----------------------------------------------------------------------------
 
