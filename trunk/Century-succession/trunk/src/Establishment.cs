@@ -21,9 +21,9 @@ namespace Landis.Extension.Succession.Century
         public static void Initialize()
         {
             string logFileName   = "Century-prob-establish-log.csv"; 
-            PlugIn.ModelCore.Log.WriteLine("   Opening a Century log file \"{0}\" ...", logFileName);
+            PlugIn.ModelCore.UI.WriteLine("   Opening a Century log file \"{0}\" ...", logFileName);
             try {
-                log = PlugIn.ModelCore.CreateTextFile(logFileName);
+                log = Landis.Data.CreateTextFile(logFileName);
             }
             catch (Exception err) {
                 string mesg = string.Format("{0}", err.Message);
@@ -132,13 +132,13 @@ namespace Landis.Extension.Succession.Century
             growDays = weather.EndGrowing - weather.BeginGrowing + 1.0;
             if (growDays < 2.0)
             {
-                PlugIn.ModelCore.Log.WriteLine("Begin Grow = {0}, End Grow = {1}", weather.BeginGrowing, weather.EndGrowing);
+                PlugIn.ModelCore.UI.WriteLine("Begin Grow = {0}, End Grow = {1}", weather.BeginGrowing, weather.EndGrowing);
                 throw new System.ApplicationException("Error: Too few growing days.");
             }
             //Calc species soil moisture multipliers
             maxDrought = sppAllowableDrought * growDays;
             
-            //PlugIn.ModelCore.Log.WriteLine("SppMaxDr={0:0.00}, growDays={1:0.0}, dryDays={2:0.0}.", sppAllowableDrought, growDays, dryDays);
+            //PlugIn.ModelCore.UI.WriteLine("SppMaxDr={0:0.00}, growDays={1:0.0}, dryDays={2:0.0}.", sppAllowableDrought, growDays, dryDays);
             if (maxDrought < dryDays) 
             {
                 Soil_Moist_GF = 0.0;

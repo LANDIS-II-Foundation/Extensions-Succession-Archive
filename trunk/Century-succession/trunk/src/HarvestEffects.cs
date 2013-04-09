@@ -97,7 +97,7 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         public static void ReduceLayers(string prescriptionName, Site site)
         {
-            PlugIn.ModelCore.Log.WriteLine("   Calculating harvest induced layer reductions...");
+            PlugIn.ModelCore.UI.WriteLine("   Calculating harvest induced layer reductions...");
 
             double litterLossMultiplier = 0.0;
             double woodLossMultiplier = 0.0;

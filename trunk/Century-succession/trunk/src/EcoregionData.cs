@@ -73,7 +73,7 @@ namespace Landis.Extension.Succession.Century
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
                 IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-                //PlugIn.ModelCore.Log.WriteLine("Latitude for {0} = {1}.", ecoregion.Name, parameters.Latitude[ecoregion]);
+                //PlugIn.ModelCore.UI.WriteLine("Latitude for {0} = {1}.", ecoregion.Name, parameters.Latitude[ecoregion]);
                 
                 SiteVars.SOM1surface[site].Carbon     = parameters.InitialSOM1surfC[ecoregion];
                 SiteVars.SOM1surface[site].Nitrogen   = parameters.InitialSOM1surfN[ecoregion];
@@ -119,7 +119,7 @@ namespace Landis.Extension.Succession.Century
                     foreach (ISpecies species in PlugIn.ModelCore.Species) 
                     {
                         largest_B_MAX_Spp = Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species][ecoregion]);
-                        //PlugIn.ModelCore.Log.WriteLine("B_MAX={0}. species={1}, ecoregion={2}", largest_B_MAX_Spp, species.Name, ecoregion.Name);
+                        //PlugIn.ModelCore.UI.WriteLine("B_MAX={0}. species={1}, ecoregion={2}", largest_B_MAX_Spp, species.Name, ecoregion.Name);
                     }
                     B_MAX[ecoregion] = largest_B_MAX_Spp;
                 }
@@ -137,12 +137,13 @@ namespace Landis.Extension.Succession.Century
             
             if(actualYear == 0 || actualYear != AnnualWeather[ecoregion].Year)
             {
-                //PlugIn.ModelCore.Log.WriteLine("  SETTING ANNAUL CLIMATE:  Yr={0}, SimYr={1}, Eco={2}.", year, actualYear, ecoregion.Name);
+                //PlugIn.ModelCore.UI.WriteLine("  SETTING ANNAUL CLIMATE:  Yr={0}, SimYr={1}, Eco={2}.", year, actualYear, ecoregion.Name);
+                
                 AnnualWeather[ecoregion] = AnnualClimateArray[ecoregion][year];
                 AnnualWeather[ecoregion].SetAnnualN(EcoregionData.AtmosNslope[ecoregion], EcoregionData.AtmosNintercept[ecoregion]);
 
                 string weatherWrite = AnnualWeather[ecoregion].Write();
-                //PlugIn.ModelCore.Log.WriteLine("{0}", weatherWrite);
+                //PlugIn.ModelCore.UI.WriteLine("{0}", weatherWrite);
             }
         }
 
@@ -154,7 +155,7 @@ namespace Landis.Extension.Succession.Century
         public static void GenerateNewClimate(int year, int years)
         {
         
-            //PlugIn.ModelCore.Log.WriteLine("   Generating new climate for simulation year {0}.", year);
+            //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
             AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
             
@@ -180,11 +181,12 @@ namespace Landis.Extension.Succession.Century
                         if(Climate.AllData.ContainsKey(actualYear))
                         {
                             Climate.TimestepData = Climate.AllData[actualYear];
-                            //PlugIn.ModelCore.Log.WriteLine("  Changing TimestepData:  Yr={0}, Eco={1}.", actualYear, ecoregion.Name);
-                            //PlugIn.ModelCore.Log.WriteLine("  Changing TimestepData:  AllData  Jan Ppt = {0:0.00}.", Climate.AllData[actualYear][ecoregion.Index,0].AvgPpt);
-                            //PlugIn.ModelCore.Log.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
+                            //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Yr={0}, Eco={1}.", actualYear, ecoregion.Name);
+                            //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  AllData  Jan Ppt = {0:0.00}.", Climate.AllData[actualYear][ecoregion.Index,0].AvgPpt);
+                            //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
                         }
-                    
+
+                        AnnualClimate.AnnualClimateInitialize();
                         tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]); 
                     
                     }

@@ -58,7 +58,6 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
-                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -87,7 +86,6 @@ namespace Landis.Extension.Succession.Century
                             SpeciesData.LeafLitterCN[species],
                             SpeciesData.LeafLignin[species],
                             OtherData.StructuralCN,
-                            //OtherData.CNratiofrass,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
@@ -99,34 +97,41 @@ namespace Landis.Extension.Succession.Century
         /// Adds frass for a species to the foliar LITTER pools at a site.
         /// Assumes that some of the N has been resorbed.
         /// </summary>
-        public static void AddFrassLitter(double defoliatedLeafBiomass, ISpecies species, ActiveSite site)
+        public static void AddFrassLitter(double inputFrassBiomass, ISpecies species, ActiveSite site)
         {
 
             double inputDecayValue = 1.0;   // Decay value is calculated for surface/soil layers (leaf/fine root), 
             // therefore, this is just a dummy value.
 
             
-            if (defoliatedLeafBiomass > 0)
+            if (inputFrassBiomass > 0)
             {
-                SiteVars.LitterfallC[site] += defoliatedLeafBiomass * 0.47;
+                //SiteVars.LitterfallC[site] += defoliatedLeafBiomass * 0.47;
 
-                double frassBiomass = Math.Max(0.0, OtherData.frassdepk * defoliatedLeafBiomass);
-                double frassBiomassC = frassBiomass * 0.47;
-                
-                SiteVars.FrassC[site] += frassBiomassC;
+                //double frassBiomass = Math.Max(0.0, OtherData.frassdepk * defoliatedLeafBiomass);
+                // Frass C added is a function of defoliated leaf biomass, but adjusted for the CN of litter and frass
+                // Any C lost is due to insect metabolism
+                double inputFrassC = inputFrassBiomass * 0.47;
+                double inputFrassN = inputFrassC / (double) SpeciesData.LeafLitterCN[species];
+                double actualFrassC = inputFrassN * (double) OtherData.CNratiofrass;  // the difference between input and actual is C lost to insect metabolism
+                double actualFrassBiomass = actualFrassC / 0.47;
 
+                //PlugIn.ModelCore.UI.WriteLine("AddFrass.Month={0:0}, inputfrassN={1:0.000}, inputfrassbiomass={2:0.00}, actualfrassbiomass={3:0.00} ", Century.Month, inputFrassN, inputFrassBiomass, actualFrassBiomass);
+
+                SiteVars.FrassC[site] += actualFrassC;
+ 
                 LitterLayer.PartitionResidue(
-                            frassBiomass,
+                            actualFrassBiomass,
                             inputDecayValue,
                             OtherData.CNratiofrass,
-                            1.0,
-                            1.0,
-                            //OtherData.CNratiofrass,
+                            0.1,
+                            OtherData.StructuralCN,
                             LayerName.Leaf,
                             LayerType.Surface,
                             site);
             }
         } 
+         
 
     }
 }

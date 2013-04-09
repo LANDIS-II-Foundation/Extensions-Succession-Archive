@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.Century
 
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            //PlugIn.ModelCore.Log.WriteLine("SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
+            //PlugIn.ModelCore.UI.WriteLine("SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
             // If in spin-up mode and calibration mode, then this needs to happen first.
             if (PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
@@ -67,7 +67,7 @@ namespace Landis.Extension.Succession.Century
 
                 for (MonthCnt = 0; MonthCnt < 12; MonthCnt++)
                 {
-                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1}.", SiteVars.MineralN[site], i);
+                    //PlugIn.ModelCore.UI.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1}.", SiteVars.MineralN[site], i);
 
                     Month = months[MonthCnt];
                     //CohortBiomass.month = month;
@@ -81,12 +81,12 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.TotalWoodBiomass[site] = Century.ComputeWoodBiomass((ActiveSite) site);
                     //SiteVars.LAI[site] = Century.ComputeLAI((ActiveSite)site);
 
-                    //PlugIn.ModelCore.Log.WriteLine("MELISSA:  Yr {0} of {1}, Month={2}, MineralN={3:0.00}.", y, years, i + 1, SiteVars.MineralN[site]);
+                    //PlugIn.ModelCore.UI.WriteLine("MELISSA:  Yr {0} of {1}, Month={2}, MineralN={3:0.00}.", y, years, i + 1, SiteVars.MineralN[site]);
 
 
                     double monthlyNdeposition = EcoregionData.AnnualWeather[PlugIn.ModelCore.Ecoregion[site]].MonthlyNdeposition[Century.Month];
                     SiteVars.MineralN[site] += monthlyNdeposition;
-                    //PlugIn.ModelCore.Log.WriteLine("Month={0}, Ndeposition={1}.", i+1, monthlyNdeposition);
+                    //PlugIn.ModelCore.UI.WriteLine("Ndeposition={0},MineralN={1:0.00}.", monthlyNdeposition, SiteVars.MineralN[site]);
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     double baseFlow, stormFlow;
@@ -115,17 +115,22 @@ namespace Landis.Extension.Succession.Century
                         siteCohorts.Grow(site, (y == years && isSuccessionTimeStep), false);
 
                     WoodLayer.Decompose(site);
+                    //PlugIn.ModelCore.UI.WriteLine("AfterWoodDecomp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                     LitterLayer.Decompose(site);
+                    //PlugIn.ModelCore.UI.WriteLine("AfterLitterDecomp.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                     SoilLayer.Decompose(site);
+                    //PlugIn.ModelCore.UI.WriteLine("AfterSoilDecom.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
-                    //PlugIn.ModelCore.Log.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1} - post Decompose.", SiteVars.MineralN[site], i);
-                    //PlugIn.ModelCore.Log.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
+                    //PlugIn.ModelCore.UI.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1} - post Decompose.", SiteVars.MineralN[site], i);
+                    //PlugIn.ModelCore.UI.WriteLine("After decomposition, SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
                     //...Volatilization loss as a function of the mineral n which
                     //     remains after uptake by plants.  ML added a correction factor for wetlands since their denitrification rate is double that of wetlands
                     //based on a review paper by Seitziner 2006.
 
                     double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]) / 12; // monthly value
+
+                    //PlugIn.ModelCore.UI.WriteLine("BeforeVol.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                     SiteVars.MineralN[site] -= volatilize;
                     SiteVars.SourceSink[site].Nitrogen += volatilize;
@@ -215,19 +220,19 @@ namespace Landis.Extension.Succession.Century
             double leafC = cohort.LeafBiomass * 0.47;
             double woodC = cohort.WoodBiomass * 0.47;
 
-            //PlugIn.ModelCore.Log.WriteLine("month={0}, leafC={1:0.00}, woodC={2:0.000}", month, leafC, woodC);
-
             double fRootC = Roots.CalculateFineRoot(leafC);
             double cRootC = Roots.CalculateCoarseRoot(woodC);
 
             double totalC = leafC + woodC + fRootC + cRootC;
 
-            double leafN  = leafC /       SpeciesData.LeafCN[species];
-            double woodN  = woodC /       SpeciesData.WoodCN[species];
-            double cRootN = cRootC /      SpeciesData.CoarseRootCN[species];
-            double fRootN = fRootC /      SpeciesData.FineRootCN[species];
+            double leafN  = leafC /  (double) SpeciesData.LeafCN[species];
+            double woodN = woodC / (double) SpeciesData.WoodCN[species];
+            double cRootN = cRootC / (double) SpeciesData.CoarseRootCN[species];
+            double fRootN = fRootC / (double) SpeciesData.FineRootCN[species];
 
-            double totalN = woodN + cRootN + leafN + fRootN;
+            //double totalN = woodN + cRootN + leafN + fRootN;
+
+            //PlugIn.ModelCore.UI.WriteLine("month={0}, species={1}, leafB={2:0.0}, leafC={3:0.00}, leafN={4:0.0}, woodB={5:0.0}, woodC={6:0.000}, woodN={7:0.0}", Month, cohort.Species.Name, cohort.LeafBiomass, leafC, leafN, cohort.WoodBiomass, woodC, woodN);
 
             SiteVars.CohortLeafC[site] += leafC + fRootC;
             SiteVars.CohortLeafN[site] += leafN + fRootN;

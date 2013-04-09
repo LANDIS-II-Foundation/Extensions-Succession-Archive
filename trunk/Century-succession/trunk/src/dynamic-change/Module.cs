@@ -33,11 +33,11 @@ namespace Landis.Extension.Succession.Century.Dynamic
         {
             Module.parameterUpdates = parameterUpdates;
             if (parameterUpdates.Count > 0) {
-                PlugIn.ModelCore.Log.WriteLine("   Loading biomass parameters for climate change:");
+                PlugIn.ModelCore.UI.WriteLine("   Loading biomass parameters for climate change:");
                 ParametersParser parser = new ParametersParser();
                 foreach (ParametersUpdate update in parameterUpdates) {
                     update.LoadParameters(parser);
-                    PlugIn.ModelCore.Log.WriteLine("  Read parameters for year {0} from file \"{1}\"",
+                    PlugIn.ModelCore.UI.WriteLine("  Read parameters for year {0} from file \"{1}\"",
                                  update.Year, update.File);
                 }
 
@@ -65,7 +65,7 @@ namespace Landis.Extension.Succession.Century.Dynamic
                 SpeciesData.ChangeParameters(nextUpdate.Parameters);
                 EcoregionData.ChangeParameters(nextUpdate.Parameters);
 
-                PlugIn.ModelCore.Log.WriteLine("   Updated biomass parameters for climate change");
+                PlugIn.ModelCore.UI.WriteLine("   Updated biomass parameters for climate change");
 
                 indexOfNextUpdate++;
                 if (indexOfNextUpdate < parameterUpdates.Count)

@@ -139,7 +139,7 @@ namespace Landis.Extension.Succession.Century
             ISiteCohorts clone = new SiteCohorts();
             foreach (ISpeciesCohorts speciesCohorts in site_cohorts)
                 foreach (ICohort cohort in speciesCohorts)
-                    clone.AddNewCohort(cohort.Species, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);  //species.cohorts.Add(speciesCohorts.Clone());
+                    clone.AddNewCohort(cohort.Species, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);  
             return clone;
         }
         //---------------------------------------------------------------------
@@ -200,6 +200,13 @@ namespace Landis.Extension.Succession.Century
                                              ICommunity initialCommunity)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+
+            if (!ecoregion.Active)
+            {
+                string mesg = string.Format("Initial community {0} is located on a non-active ecoregion {1}", initialCommunity.MapCode, ecoregion.Name);
+                throw new System.ApplicationException(mesg);
+            }
+
             uint key = ComputeKey(initialCommunity.MapCode, ecoregion.MapCode);
             InitialBiomass initialBiomass;
             if (initialSites.TryGetValue(key, out initialBiomass))
@@ -255,7 +262,7 @@ namespace Landis.Extension.Succession.Century
                 foreach (Landis.Library.AgeOnlyCohorts.ICohort cohort in speciesCohorts)
                 {
                     cohorts.Add(cohort);
-                    //PlugIn.ModelCore.Log.WriteLine("ADDED:  {0} {1}.", cohort.Species.Name, cohort.Age);
+                    //PlugIn.ModelCore.UI.WriteLine("ADDED:  {0} {1}.", cohort.Species.Name, cohort.Age);
                 }
             }
             cohorts.Sort(Landis.Library.AgeOnlyCohorts.Util.WhichIsOlderCohort);
@@ -310,11 +317,11 @@ namespace Landis.Extension.Succession.Century
             //  Therefore, when timestep = 1, the ending time is -1.
             
             //int endTime = (successionTimestep == 1) ? -1 : -1;
-            //PlugIn.ModelCore.Log.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}, endTime={2}.", ageCohorts[0].Age, successionTimestep, endTime);
+            //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}, endTime={2}.", ageCohorts[0].Age, successionTimestep, endTime);
             //for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
             for (int time = -(ageCohorts[0].Age); time <= -1; time += successionTimestep)
             {
-                //PlugIn.ModelCore.Log.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
+                //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
                 EcoregionData.GenerateNewClimate(0, successionTimestep);
 
                 //  Add those cohorts that were born at the current year

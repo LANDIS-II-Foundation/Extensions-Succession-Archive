@@ -13,10 +13,18 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
     /// disturbances from text input.
     /// </summary>
     public class DatasetParser
-        : TextParser<IParameterDataset>
+        : Landis.TextParser<IParameterDataset>
     {
+        public override string LandisDataValue
+        {
+            get {
+                return "Age-only Disturbances - Biomass Parameters";
+            }
+        }
+
+
         private Dictionary<string, int> lineNums;
-        private string LandisDataValue = "Age-only Disturbances - Biomass Parameters";
+        //private string LandisDataValue = "Age-only Disturbances - Biomass Parameters";
 
         //---------------------------------------------------------------------
 
@@ -30,10 +38,12 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
 
         protected override IParameterDataset Parse()
         {
-            InputVar<string> landisData = new InputVar<string>("LandisData");
-            ReadVar(landisData);
-            if (landisData.Value.Actual != LandisDataValue)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
+            //InputVar<string> landisData = new InputVar<string>("LandisData");
+            //ReadVar(landisData);
+            //if (landisData.Value.Actual != LandisDataValue)
+            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
+
+            ReadLandisDataVar();
 
             ParameterDataset dataset = new ParameterDataset();
             const string DeadBiomassReductions = "DeadBiomassReductions";
@@ -57,7 +67,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         {
             ReadName(tableName);
             
-            PlugIn.ModelCore.Log.WriteLine("      Reading {0}.", tableName);
+            PlugIn.ModelCore.UI.WriteLine("      Reading {0}.", tableName);
 
             InputVar<string> disturbance = new InputVar<string>("Disturbance");
             InputVar<Percentage> woodPercentage = new InputVar<Percentage>("Woody");
@@ -96,7 +106,7 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
                     //percentages = table[disturbanceType];
                     table[disturbanceType] = new PoolPercentages();
                     percentages = table[disturbanceType];
-                    PlugIn.ModelCore.Log.WriteLine("         Adding {0}...", disturbanceType);
+                    PlugIn.ModelCore.UI.WriteLine("         Adding {0}...", disturbanceType);
                 }
 
                 ReadValue(woodPercentage, currentLine);

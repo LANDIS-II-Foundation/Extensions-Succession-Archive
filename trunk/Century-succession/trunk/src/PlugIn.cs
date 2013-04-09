@@ -52,7 +52,7 @@ namespace Landis.Extension.Succession.Century
             modelCore = mCore;
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
-            parameters = modelCore.Load<IInputParameters>(dataFile, parser);
+            parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
 
         }
 
@@ -71,7 +71,7 @@ namespace Landis.Extension.Succession.Century
 
         public override void Initialize()
         {
-            PlugIn.ModelCore.Log.WriteLine("Initializing {0} ...", ExtensionName);
+            PlugIn.ModelCore.UI.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
             SuccessionTimeStep    = Timestep;
             sufficientLight       = parameters.LightClassProbabilities;
@@ -284,7 +284,7 @@ namespace Landis.Extension.Succession.Century
                     string mesg = string.Format("Minimum relative biomass has not been defined for ecoregion {0}", ecoregion.Name);
                     throw new System.ApplicationException(mesg);
                 }
-                //PlugIn.ModelCore.Log.WriteLine("Shade Calculation:  lastMort={0:0.0}, B_MAX={1}, oldB={2}, B_ACT={3}, shade={4}.", lastMortality, B_MAX,oldBiomass,B_ACT,shade);
+                //PlugIn.ModelCore.UI.WriteLine("Shade Calculation:  lastMort={0:0.0}, B_MAX={1}, oldB={2}, B_ACT={3}, shade={4}.", lastMortality, B_MAX,oldBiomass,B_ACT,shade);
                 if (B_AM >= EcoregionData.ShadeBiomass[shade][ecoregion])
                 {
                     finalShade = shade;
@@ -292,7 +292,7 @@ namespace Landis.Extension.Succession.Century
                 }
             }
 
-            //PlugIn.ModelCore.Log.WriteLine("Yr={0},      Shade Calculation:  B_MAX={1}, B_ACT={2}, Shade={3}.", PlugIn.ModelCore.CurrentTime, B_MAX, B_ACT, finalShade);
+            //PlugIn.ModelCore.UI.WriteLine("Yr={0},      Shade Calculation:  B_MAX={1}, B_ACT={2}, Shade={3}.", PlugIn.ModelCore.CurrentTime, B_MAX, B_ACT, finalShade);
 
             return finalShade;
         }
@@ -345,7 +345,7 @@ namespace Landis.Extension.Succession.Century
                                DeathEventArgs eventArgs)
         {
 
-            //PlugIn.ModelCore.Log.WriteLine("Cohort Died! :-(");
+            //PlugIn.ModelCore.UI.WriteLine("Cohort Died! :-(");
 
             ExtensionType disturbanceType = eventArgs.DisturbanceType;
             ActiveSite site = eventArgs.Site;
@@ -355,10 +355,10 @@ namespace Landis.Extension.Succession.Century
 
             double wood = (double) cohort.WoodBiomass;
 
-            //PlugIn.ModelCore.Log.WriteLine("Cohort Died: species={0}, age={1}, biomass={2}, foliage={3}.", cohort.Species.Name, cohort.Age, cohort.Biomass, foliar);
+            //PlugIn.ModelCore.UI.WriteLine("Cohort Died: species={0}, age={1}, biomass={2}, foliage={3}.", cohort.Species.Name, cohort.Age, cohort.Biomass, foliar);
 
             if (disturbanceType == null) {
-                //PlugIn.ModelCore.Log.WriteLine("NO EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
+                //PlugIn.ModelCore.UI.WriteLine("NO EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
 
                 ForestFloor.AddWoodLitter(wood, cohort.Species, eventArgs.Site);
                 ForestFloor.AddFoliageLitter(foliar, cohort.Species, eventArgs.Site);
@@ -368,7 +368,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (disturbanceType != null) {
-                //PlugIn.ModelCore.Log.WriteLine("DISTURBANCE EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
+                //PlugIn.ModelCore.UI.WriteLine("DISTURBANCE EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
 
                 Disturbed[site] = true;
                 if (disturbanceType.IsMemberOf("disturbance:fire"))
@@ -396,7 +396,7 @@ namespace Landis.Extension.Succession.Century
         public bool SufficientLight(ISpecies species, ActiveSite site)
         {
 
-            //PlugIn.ModelCore.Log.WriteLine("  Calculating Sufficient Light from Succession.");
+            //PlugIn.ModelCore.UI.WriteLine("  Calculating Sufficient Light from Succession.");
             byte siteShade = PlugIn.ModelCore.GetSiteVar<byte>("Shade")[site];
 
             double lightProbability = 0.0;
@@ -405,7 +405,7 @@ namespace Landis.Extension.Succession.Century
             foreach (ISufficientLight lights in sufficientLight)
             {
 
-                //PlugIn.ModelCore.Log.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
+                //PlugIn.ModelCore.UI.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
                 if (lights.ShadeClass == species.ShadeTolerance)
                 {
                     if (siteShade == 0) lightProbability = lights.ProbabilityLight0;
@@ -419,7 +419,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (!found)
-                PlugIn.ModelCore.Log.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
+                PlugIn.ModelCore.UI.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
 
             return modelCore.GenerateUniform() < lightProbability;
 

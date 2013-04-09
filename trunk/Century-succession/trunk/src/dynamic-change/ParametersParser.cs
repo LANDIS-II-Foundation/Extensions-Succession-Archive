@@ -19,7 +19,13 @@ namespace Landis.Extension.Succession.Century.Dynamic
 
         //---------------------------------------------------------------------
 
-        public string LandisDataValue = "Biomass Succession - Climate Change";
+        public override string LandisDataValue
+        {
+            get
+            {
+                return "Biomass Succession - Climate Change";
+            }
+        }
 
         //---------------------------------------------------------------------
 
@@ -41,10 +47,11 @@ namespace Landis.Extension.Succession.Century.Dynamic
 
         protected override IParameters Parse()
         {
-            InputVar<string> landisData = new InputVar<string>("LandisData");
-            ReadVar(landisData);
-            if (landisData.Value.Actual != LandisDataValue)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
+            //InputVar<string> landisData = new InputVar<string>("LandisData");
+            //ReadVar(landisData);
+            //if (landisData.Value.Actual != LandisDataValue)
+            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", LandisDataValue);
+            ReadLandisDataVar();
 
             Parameters parameters = new Parameters(ecoregionDataset, speciesDataset);
             ParseBiomassParameters(parameters);
