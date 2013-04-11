@@ -159,13 +159,6 @@ namespace Landis.Extension.Succession.Century
 
             AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
             
-            // Issues with this approach:  Each ecoregion will have unique variability associated with 
-            // temperature and precipitation.  In reality, we expect some regional synchronicity.  An 
-            // easy-ish solution would be to use the same random number in combination with standard 
-            // deviations for all ecoregions.  The converse problem is over synchronization of climate, but
-            // that would certainly be preferrable over smaller regions.
-            
-            
             
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
             {
@@ -186,7 +179,7 @@ namespace Landis.Extension.Succession.Century
                             //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
                         }
 
-                        AnnualClimate.AnnualClimateInitialize();
+                        AnnualClimate.AnnualClimateInitialize();  // Synchronizes temperature and precipitation deviation across ecoregions.
                         tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]); 
                     
                     }
