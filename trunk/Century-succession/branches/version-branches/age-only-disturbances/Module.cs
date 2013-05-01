@@ -36,9 +36,9 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
         public static void Initialize(string filename)
         {
             if (filename != null) {
-                PlugIn.ModelCore.Log.WriteLine("   Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
+                PlugIn.ModelCore.UI.WriteLine("   Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
                 DatasetParser parser = new DatasetParser();
-                parameters = PlugIn.ModelCore.Load<IParameterDataset>(filename, parser);
+                parameters = Landis.Data.Load<IParameterDataset>(filename, parser);
 
                 Cohort.AgeOnlyDeathEvent += Events.CohortDied;
                 SiteCohorts.AgeOnlyDisturbanceEvent += Events.SiteDisturbed;

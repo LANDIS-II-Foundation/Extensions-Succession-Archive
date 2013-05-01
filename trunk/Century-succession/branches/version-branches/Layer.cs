@@ -347,7 +347,7 @@ namespace Landis.Extension.Succession.Century
                     double netCFlow = totalCFlow - co2loss;
 
                     if (netCFlow > litterC)
-                        PlugIn.ModelCore.Log.WriteLine("   ERROR:  Decompose Metabolic:  netCFlow={0:0.000} > layer.Carbon={0:0.000}.", netCFlow, this.Carbon);
+                        PlugIn.ModelCore.UI.WriteLine("   ERROR:  Decompose Metabolic:  netCFlow={0:0.000} > layer.Carbon={0:0.000}.", netCFlow, this.Carbon);
 
                     // -- CARBON AND NITROGEN ---------------------------
                     // Partition and schedule C flows by isotope
@@ -372,7 +372,7 @@ namespace Landis.Extension.Succession.Century
         {
 
             if(netCFlow < 0)
-                PlugIn.ModelCore.Log.WriteLine("NEGATIVE C FLOW!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
+                PlugIn.ModelCore.UI.WriteLine("NEGATIVE C FLOW!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
 
             if (netCFlow > this.Carbon)
                 netCFlow = this.Carbon;
@@ -458,12 +458,12 @@ namespace Landis.Extension.Succession.Century
 
                 if ((mineralNFlow - this.Nitrogen) > 0.01) 
                 {
-                    PlugIn.ModelCore.Log.WriteLine("  Transfer N mineralization:  mineralN > source N.");
+                    PlugIn.ModelCore.UI.WriteLine("  Transfer N mineralization:  mineralN > source N.");
                     //PlugIn.ModelCore.Log.WriteLine("     MineralNFlow={0:0.000}, SourceN={1:0.000}", mineralNFlow, this.Nitrogen);
-                    PlugIn.ModelCore.Log.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
-                    PlugIn.ModelCore.Log.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
-                    PlugIn.ModelCore.Log.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
-                    PlugIn.ModelCore.Log.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
+                    PlugIn.ModelCore.UI.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+                    PlugIn.ModelCore.UI.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
+                    PlugIn.ModelCore.UI.WriteLine("     dest.Name  ={0}, dest.Type  ={1}", destination.Name, destination.Type);
+                    PlugIn.ModelCore.UI.WriteLine("     ratio CN to dest={0}", ratioCNtoDestination);
                 }
 
                 this.Nitrogen -= mineralNFlow;

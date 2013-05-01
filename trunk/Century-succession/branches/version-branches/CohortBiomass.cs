@@ -73,8 +73,8 @@ namespace Landis.Extension.Succession.Century
             
             if ((totalMortality[0] + totalMortality[1]+ totalMortality[2]) > (cohort.WoodBiomass + cohort.BranchBiomass + cohort.LeafBiomass)) 
             {
-                PlugIn.ModelCore.Log.WriteLine("Warning: Mortality exceeds cohort biomass. M={0:0.0}, B={1:0.0}", (totalMortality[0] + totalMortality[1] + totalMortality[2]), (cohort.WoodBiomass + cohort.BranchBiomass + cohort.LeafBiomass));
-                PlugIn.ModelCore.Log.WriteLine("Warning: If M>B, then list mortality. Mage0={0:0.0}, Mgrow0={1:0.0}, Mage1={2:0.0}, Mgrow1={3:0.0}, Mage2={4:0.0}, Mgrow2={5:0.0},", mortalityAge[0], mortalityGrowth[0], mortalityAge[1], mortalityGrowth[1], mortalityAge[2], mortalityGrowth[2]);
+                PlugIn.ModelCore.UI.WriteLine("Warning: Mortality exceeds cohort biomass. M={0:0.0}, B={1:0.0}", (totalMortality[0] + totalMortality[1] + totalMortality[2]), (cohort.WoodBiomass + cohort.BranchBiomass + cohort.LeafBiomass));
+                PlugIn.ModelCore.UI.WriteLine("Warning: If M>B, then list mortality. Mage0={0:0.0}, Mgrow0={1:0.0}, Mage1={2:0.0}, Mgrow1={3:0.0}, Mage2={4:0.0}, Mgrow2={5:0.0},", mortalityAge[0], mortalityGrowth[0], mortalityAge[1], mortalityGrowth[1], mortalityAge[2], mortalityGrowth[2]);
                 throw new ApplicationException("Error: Mortality exceeds cohort biomass");
             }
 
@@ -241,10 +241,9 @@ namespace Landis.Extension.Succession.Century
 
             if (Double.IsNaN(leafNPP) || Double.IsNaN(woodNPP) || Double.IsNaN(branchNPP))
             {
-                PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
-                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, Century.Month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
-                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, Century.Month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.BranchBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
-                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}.     WoodNPP={2:0.00}, BranchNPP={3:0.00}, LeafNPP={4:0.00}.", PlugIn.ModelCore.CurrentTime, Century.Month + 1, woodNPP, branchNPP, leafNPP);
+                PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, Century.Month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
+                PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, Century.Month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.BranchBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
+                PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}.     WoodNPP={2:0.00}, BranchNPP={3:0.00}, LeafNPP={4:0.00}.", PlugIn.ModelCore.CurrentTime, Century.Month + 1, woodNPP, branchNPP, leafNPP);
                 if (Double.IsNaN(leafNPP))
                     leafNPP = 0.0;
                 if (Double.IsNaN(woodNPP))
@@ -310,7 +309,7 @@ namespace Landis.Extension.Succession.Century
 
             if (M_AGE_wood < 0.0 || M_AGE_branch < 0.0 || M_AGE_leaf < 0.0) 
             {
-                PlugIn.ModelCore.Log.WriteLine("Mwood={0}, Mbranch={1}, Mleaf={2}.", M_AGE_wood, M_AGE_branch, M_AGE_leaf);
+                PlugIn.ModelCore.UI.WriteLine("Mwood={0}, Mbranch={1}, Mleaf={2}.", M_AGE_wood, M_AGE_branch, M_AGE_leaf);
                 throw new ApplicationException("Error: Woody or Leaf Age Mortality is < 0");
             }
 
@@ -356,7 +355,7 @@ namespace Landis.Extension.Succession.Century
 
             if((M_wood) < 0.0||(M_branch) < 0.0 || M_leaf < 0.0) 
             {
-                PlugIn.ModelCore.Log.WriteLine("Mwood={0},Mbranch={1},, Mleaf={2}.", M_wood, M_branch, M_leaf); //wang
+                PlugIn.ModelCore.UI.WriteLine("Mwood={0},Mbranch={1},, Mleaf={2}.", M_wood, M_branch, M_leaf); //wang
                 throw new ApplicationException("Error: Wood, branch, or Leaf Growth Mortality is < 0");
             }
 
@@ -458,8 +457,8 @@ namespace Landis.Extension.Succession.Century
 
             if (Double.IsNaN(NPPwood) || Double.IsNaN(NPPbranch) || Double.IsNaN(NPPleaf) || Double.IsNaN(NPPcoarseRoot) || Double.IsNaN(NPPfineRoot))
             {
-                PlugIn.ModelCore.Log.WriteLine("  EITHER WOOD or BRANCH or LEAF NPP or COARSE ROOT or FINE ROOT = NaN!  Will set to zero.");
-                PlugIn.ModelCore.Log.WriteLine("  Yr={0},Mo={1}. WoodNPP={0}, BranchNPP={1},LeafNPP={2}, CRootNPP={3}, FRootNPP={4}.", NPPwood, NPPbranch, NPPleaf, NPPcoarseRoot, NPPfineRoot);
+                PlugIn.ModelCore.UI.WriteLine("  EITHER WOOD or BRANCH or LEAF NPP or COARSE ROOT or FINE ROOT = NaN!  Will set to zero.");
+                PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}. WoodNPP={0}, BranchNPP={1},LeafNPP={2}, CRootNPP={3}, FRootNPP={4}.", NPPwood, NPPbranch, NPPleaf, NPPcoarseRoot, NPPfineRoot);
                 if (Double.IsNaN(NPPleaf))
                     NPPleaf = 0.0;
                 if (Double.IsNaN(NPPwood))

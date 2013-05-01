@@ -51,7 +51,7 @@ namespace Landis.Extension.Succession.Century
             modelCore = mCore;
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
-            parameters = modelCore.Load<IInputParameters>(dataFile, parser);
+            parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
 
         }
 
@@ -70,7 +70,7 @@ namespace Landis.Extension.Succession.Century
 
         public override void Initialize()
         {
-            PlugIn.ModelCore.Log.WriteLine("Initializing {0} ...", ExtensionName);
+            PlugIn.ModelCore.UI.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
             SuccessionTimeStep    = Timestep;
             sufficientLight       = parameters.LightClassProbabilities;
@@ -394,7 +394,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (!found)
-                PlugIn.ModelCore.Log.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
+                PlugIn.ModelCore.UI.WriteLine("A Sufficient Light value was not found for {0}.", species.Name);
 
             return modelCore.GenerateUniform() < lightProbability;
 

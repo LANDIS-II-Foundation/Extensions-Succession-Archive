@@ -21,6 +21,7 @@ namespace Landis.Extension.Succession.Century
         double SpinupMortalityFraction { get; set; }
         bool CalibrateMode { get; set; }
         WaterType WType {get;set;}
+        double ProbEstablishAdjustment { get; set; }
 
         //---------------------------------------------------------------------
         /// <summary>
@@ -37,6 +38,15 @@ namespace Landis.Extension.Succession.Century
         FireReductions[] FireReductionsTable
         {
             get;set;
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Parameters for harvest or fuel treatment effects on wood and leaf litter
+        /// </summary>
+        List<HarvestReductions> HarvestReductionsTable
+        {
+            get;
+            set;
         }
         //---------------------------------------------------------------------
         /// <summary>
@@ -60,7 +70,8 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         Species.AuxParm<int> SppFunctionalType{get;}
-        Species.AuxParm<int> NTolerance{get;}
+        //Species.AuxParm<int> NTolerance{get;}
+        Species.AuxParm<bool> NFixer { get; }
         Species.AuxParm<int> GDDmin{get;}
         Species.AuxParm<int> GDDmax{get;}
         Species.AuxParm<int> MinJanTemp{get;}
@@ -84,7 +95,7 @@ namespace Landis.Extension.Succession.Century
 
         Species.AuxParm<double> CoarseRootCN {get;}
         Species.AuxParm<double> FoliageLitterCN {get;}
-        Species.AuxParm<double> FineRootLitterCN {get;}
+        Species.AuxParm<double> FineRootCN {get;}
 
         Ecoregions.AuxParm<double> PercentClay {get;}
         Ecoregions.AuxParm<double> PercentSand {get;}
@@ -98,8 +109,11 @@ namespace Landis.Extension.Succession.Century
         Ecoregions.AuxParm<double> AtmosNslope {get;}
         Ecoregions.AuxParm<double> AtmosNintercept {get;}
         Ecoregions.AuxParm<double> Latitude {get;}
+        Ecoregions.AuxParm<double> DecayRateSurf { get; }
+        Ecoregions.AuxParm<double> DecayRateSOM1 { get; }
         Ecoregions.AuxParm<double> DecayRateSOM2 { get; }
         Ecoregions.AuxParm<double> DecayRateSOM3 { get; }
+        Ecoregions.AuxParm<double> Denitrif { get; }
 
         Ecoregions.AuxParm<double> InitialSOM1surfC {get;}
         Ecoregions.AuxParm<double> InitialSOM1surfN {get;}
@@ -133,5 +147,7 @@ namespace Landis.Extension.Succession.Century
         {
             get;
         }
+
+        //Species.AuxParm<double> FineRootCN { get; set; }
     }
 }

@@ -24,12 +24,15 @@ namespace Landis.Extension.Succession.Century
         private string communitiesMap;
         private double spinupMortalityFraction;
         public WaterType wtype;
+        public double probEstablishAdjust;
         
         private FunctionalTypeTable functionalTypes;
         private FireReductions[] fireReductionsTable;
+        private List<HarvestReductions> harvestReductionsTable;
         
         private Species.AuxParm<int> sppFunctionalType;
-        private Species.AuxParm<int> nTolerance;
+        //private Species.AuxParm<int> nTolerance;
+        private Species.AuxParm<bool> nFixer;
         private Species.AuxParm<int> gddMin;
         private Species.AuxParm<int> gddMax;
         private Species.AuxParm<int> minJanTemp;
@@ -52,7 +55,7 @@ namespace Landis.Extension.Succession.Century
 
         private Species.AuxParm<double> coarseRootCN;
         private Species.AuxParm<double> foliageLitterCN;
-        private Species.AuxParm<double> fineRootLitterCN;
+        private Species.AuxParm<double> fineRootCN;
         
         private Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
         private List<ISufficientLight> sufficientLight;
@@ -68,8 +71,11 @@ namespace Landis.Extension.Succession.Century
         private Ecoregions.AuxParm<double> atmosNslope;
         private Ecoregions.AuxParm<double> atmosNintercept;
         private Ecoregions.AuxParm<double> latitude;
+        private Ecoregions.AuxParm<double> decayRateSurf;
+        private Ecoregions.AuxParm<double> decayRateSOM1;
         private Ecoregions.AuxParm<double> decayRateSOM2;
         private Ecoregions.AuxParm<double> decayRateSOM3;
+        private Ecoregions.AuxParm<double> denitrif;
 
         private Ecoregions.AuxParm<double> initSOM1surfC;
         private Ecoregions.AuxParm<double> initSOM1surfN;
@@ -220,6 +226,23 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
         /// <summary>
+        /// Adjust probability of establishment due to variable time step.  A multiplier.
+        /// </summary>
+        public double ProbEstablishAdjustment
+        {
+            get
+            {
+                return probEstablishAdjust;
+            }
+            set
+            {
+                if (value < 0.0 || value > 1.0)
+                    throw new InputValueException(value.ToString(), "Probability of adjustment factor must be > 0.0 and < 1");
+                probEstablishAdjust = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
         /// Functional type parameters.
         /// </summary>
         public FunctionalTypeTable FunctionalTypes
@@ -244,6 +267,22 @@ namespace Landis.Extension.Succession.Century
                 fireReductionsTable = value;
             }
         }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Harvest reduction of leaf and wood litter parameters.
+        /// </summary>
+        public List<HarvestReductions> HarvestReductionsTable
+        {
+            get
+            {
+                return harvestReductionsTable;
+            }
+            set
+            {
+                harvestReductionsTable = value;
+            }
+        }
         //---------------------------------------------------------------------
 
         public Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass
@@ -256,7 +295,8 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         public Species.AuxParm<int>     SppFunctionalType {get {return sppFunctionalType;}}
-        public Species.AuxParm<int>     NTolerance { get {return nTolerance;}}
+        //public Species.AuxParm<int>     NTolerance { get {return nTolerance;}}
+        public Species.AuxParm<bool> NFixer { get { return nFixer; } }
         public Species.AuxParm<int>     GDDmin     { get { return gddMin; }}
         public Species.AuxParm<int>     GDDmax     { get { return gddMax; }}
         public Species.AuxParm<int>     MinJanTemp { get { return minJanTemp; }}
@@ -379,10 +419,10 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        public Species.AuxParm<double> FineRootLitterCN
+        public Species.AuxParm<double> FineRootCN
         {
             get {
-                return fineRootLitterCN;
+                return fineRootCN;
             }
         }
         //---------------------------------------------------------------------
@@ -481,7 +521,23 @@ namespace Landis.Extension.Succession.Century
                 return latitude;
             }
         }
-        //---------------------------------------------------------------------
+        //-----------------------------------------------
+        public Ecoregions.AuxParm<double> DecayRateSurf
+        {
+            get
+            {
+                return decayRateSurf;
+            }
+        }
+        //-----------------------------------------------
+        public Ecoregions.AuxParm<double> DecayRateSOM1
+        {
+            get
+            {
+                return decayRateSOM1;
+            }
+        }
+            //---------------------------------------------------------------------
         public Ecoregions.AuxParm<double> DecayRateSOM2
         {
             get
@@ -497,6 +553,15 @@ namespace Landis.Extension.Succession.Century
                 return decayRateSOM3;
             }
         }
+
+        public Ecoregions.AuxParm<double> Denitrif
+        {
+            get
+            {
+                return denitrif;
+            }
+        }
+
         //---------------------------------------------------------------------
         public Ecoregions.AuxParm<double> InitialSOM1surfC { get { return initSOM1surfC; } }
         public Ecoregions.AuxParm<double> InitialSOM1surfN { get { return initSOM1surfN; } }
@@ -556,12 +621,12 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        public void SetNTolerance(ISpecies           species,
-                                     InputValue<int> newValue)
-        {
-            Debug.Assert(species != null);
-            nTolerance[species] = CheckBiomassParm(newValue, 1, 4);
-        }
+        //public void SetNTolerance(ISpecies           species,
+        //                             InputValue<int> newValue)
+        //{
+        //    Debug.Assert(species != null);
+        //    nTolerance[species] = CheckBiomassParm(newValue, 1, 4);
+        //}
 
         //---------------------------------------------------------------------
 
@@ -710,11 +775,11 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        public void SetFineRootLitterCN(ISpecies           species,
+        public void SetFineRootCN(ISpecies           species,
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            fineRootLitterCN[species] = CheckBiomassParm(newValue, 5.0, 100.0);
+            fineRootCN[species] = CheckBiomassParm(newValue, 5.0, 100.0);
         }
         //---------------------------------------------------------------------
 
@@ -792,6 +857,19 @@ namespace Landis.Extension.Succession.Century
             latitude[ecoregion] = CheckBiomassParm(newValue, 0.0, 50.0);
         }
         //---------------------------------------------------------------------
+
+        public void SetDecayRateSurf(IEcoregion ecoregion, InputValue<double> newValue)
+        {
+            Debug.Assert(ecoregion != null);
+            decayRateSurf[ecoregion] = CheckBiomassParm(newValue, 0.0, 10.0);
+        }
+        //---------------------------------------------------------------------
+        public void SetDecayRateSOM1(IEcoregion ecoregion, InputValue<double> newValue)
+        {
+            Debug.Assert(ecoregion != null);
+            decayRateSOM1[ecoregion] = CheckBiomassParm(newValue, 0.0, 10.0);
+        }
+        //---------------------------------------------------------------------
         public void SetDecayRateSOM2(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
@@ -803,6 +881,15 @@ namespace Landis.Extension.Succession.Century
             Debug.Assert(ecoregion != null);
             decayRateSOM3[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
         }
+
+        //---------------------------------------------------------------------
+        public void SetDenitrif(IEcoregion ecoregion, InputValue<double> newValue)
+        {
+            Debug.Assert(ecoregion != null);
+            denitrif[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
+        }
+
+      
         //---------------------------------------------------------------------
         public void SetInitSOM1surfC(IEcoregion ecoregion, InputValue<double> newValue)
         {
@@ -873,7 +960,8 @@ namespace Landis.Extension.Succession.Century
             fireReductionsTable = new FireReductions[6];
 
             sppFunctionalType       = new Species.AuxParm<int>(speciesDataset);
-            nTolerance              = new Species.AuxParm<int>(speciesDataset);
+            //nTolerance              = new Species.AuxParm<int>(speciesDataset);
+            nFixer                  = new Species.AuxParm<bool>(speciesDataset);
             gddMin                  = new Species.AuxParm<int>(speciesDataset);
             gddMax                  = new Species.AuxParm<int>(speciesDataset);
             minJanTemp              = new Species.AuxParm<int>(speciesDataset);
@@ -895,7 +983,7 @@ namespace Landis.Extension.Succession.Century
             branchHCN               = new Species.AuxParm<double>(speciesDataset);
             coarseRootCN            = new Species.AuxParm<double>(speciesDataset);
             foliageLitterCN         = new Species.AuxParm<double>(speciesDataset);
-            fineRootLitterCN        = new Species.AuxParm<double>(speciesDataset);
+            fineRootCN        = new Species.AuxParm<double>(speciesDataset);
 
             minRelativeBiomass = new Ecoregions.AuxParm<Percentage>[6];
             for (byte shadeClass = 1; shadeClass <= 5; shadeClass++) {
@@ -914,8 +1002,11 @@ namespace Landis.Extension.Succession.Century
             atmosNslope             = new Ecoregions.AuxParm<double>(ecoregionDataset);
             atmosNintercept         = new Ecoregions.AuxParm<double>(ecoregionDataset);
             latitude                = new Ecoregions.AuxParm<double>(ecoregionDataset);
+            decayRateSurf           = new Ecoregions.AuxParm<double>(ecoregionDataset);
+            decayRateSOM1           = new Ecoregions.AuxParm<double>(ecoregionDataset);
             decayRateSOM2           = new Ecoregions.AuxParm<double>(ecoregionDataset);
             decayRateSOM3           = new Ecoregions.AuxParm<double>(ecoregionDataset);
+            denitrif                = new Ecoregions.AuxParm<double>(ecoregionDataset);
 
             initSOM1surfC           = new Ecoregions.AuxParm<double>(ecoregionDataset);
             initSOM1surfN           = new Ecoregions.AuxParm<double>(ecoregionDataset);
@@ -994,5 +1085,7 @@ namespace Landis.Extension.Succession.Century
                                               path);
         }
 
+
+        //public Ecoregions.AuxParm<double> decayRateSurf { get; set; }
     }
 }

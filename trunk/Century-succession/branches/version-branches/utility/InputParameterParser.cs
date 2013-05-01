@@ -15,6 +15,13 @@ namespace Landis.Extension.Succession.Century
     public class InputParametersParser
         : Dynamic.BiomassParametersParser<IInputParameters>
     {
+        public override string LandisDataValue
+        {
+            get
+            {
+                return "Century Succession";
+            }
+        }
         public static class Names
         {
             public const string Timestep = "Timestep";
@@ -29,6 +36,8 @@ namespace Landis.Extension.Succession.Century
             public const string AgeOnlyDisturbanceParms = "AgeOnlyDisturbances:BiomassParameters";
             public const string DynamicChange = "DynamicChange";
             public const string MonthlyMaxNPP = "MonthlyMaxNPP";
+
+            public static string HarvestReductionParameters { get; set; }
         }
 
         //---------------------------------------------------------------------
@@ -68,11 +77,12 @@ namespace Landis.Extension.Succession.Century
 
         protected override IInputParameters Parse()
         {
-            InputVar<string> landisData = new InputVar<string>("LandisData");
-            ReadVar(landisData);
-            if (landisData.Value.Actual != PlugIn.ExtensionName)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
-            
+            //InputVar<string> landisData = new InputVar<string>("LandisData");
+            //ReadVar(landisData);
+            //if (landisData.Value.Actual != PlugIn.ExtensionName)
+            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
+            ReadLandisDataVar();
+
             int numLitterTypes = 4;
             int numFunctionalTypes = 25;
 
@@ -116,29 +126,35 @@ namespace Landis.Extension.Succession.Century
             InputVar<string> wt = new InputVar<string>("WaterDecayFunction");
             ReadVar(wt);
             parameters.WType = WParse(wt.Value);
+
+            InputVar<double> pea = new InputVar<double>("ProbEstablishAdjust");
+            if (ReadOptionalVar(pea))
+                parameters.ProbEstablishAdjustment = pea.Value;
+            else
+                parameters.ProbEstablishAdjustment = 1.0;
             
 
-            InputVar<string> soilCarbonMaps = new InputVar<string>("SoilCarbonMapNames");
-            if (ReadOptionalVar(soilCarbonMaps)) 
-            {
-                PlugIn.SoilCarbonMapNames = soilCarbonMaps.Value;
+            //InputVar<string> soilCarbonMaps = new InputVar<string>("SoilCarbonMapNames");
+            //if (ReadOptionalVar(soilCarbonMaps)) 
+            //{
+            //    PlugIn.SoilCarbonMapNames = soilCarbonMaps.Value;
                 
-                InputVar<int> soilCarbonMapFreq = new InputVar<int>("SoilCarbonMapFrequency");
-                ReadVar(soilCarbonMapFreq);
-                PlugIn.SoilCarbonMapFrequency = soilCarbonMapFreq.Value;
+            //    InputVar<int> soilCarbonMapFreq = new InputVar<int>("SoilCarbonMapFrequency");
+            //    ReadVar(soilCarbonMapFreq);
+            //    PlugIn.SoilCarbonMapFrequency = soilCarbonMapFreq.Value;
             
-            }
+            //}
             
-            InputVar<string> soilNitrogenMaps = new InputVar<string>("SoilNitrogenMapNames");
-            if (ReadOptionalVar(soilNitrogenMaps)) 
-            {
-                PlugIn.SoilNitrogenMapNames = soilNitrogenMaps.Value;
+            //InputVar<string> soilNitrogenMaps = new InputVar<string>("SoilNitrogenMapNames");
+            //if (ReadOptionalVar(soilNitrogenMaps)) 
+            //{
+            //    PlugIn.SoilNitrogenMapNames = soilNitrogenMaps.Value;
                 
-                InputVar<int> soilNitrogenMapFreq = new InputVar<int>("SoilNitrogenMapFrequency");
-                ReadVar(soilNitrogenMapFreq);
-                PlugIn.SoilNitrogenMapFrequency = soilNitrogenMapFreq.Value;
+            //    InputVar<int> soilNitrogenMapFreq = new InputVar<int>("SoilNitrogenMapFrequency");
+            //    ReadVar(soilNitrogenMapFreq);
+            //    PlugIn.SoilNitrogenMapFrequency = soilNitrogenMapFreq.Value;
             
-            }
+            //}
 
             InputVar<string> anppMaps = new InputVar<string>("ANPPMapNames");
             if (ReadOptionalVar(anppMaps)) 
@@ -262,7 +278,7 @@ namespace Landis.Extension.Succession.Century
             speciesLineNums.Clear();  //  If parser re-used (i.e., for testing purposes)
 
             InputVar<int> ft = new InputVar<int>("Functional Type");
-            InputVar<int> nt = new InputVar<int>("Nitrogen Tolerance");
+            InputVar<bool> nt = new InputVar<bool>("Nitrogen Fixer");
             InputVar<int> gddmn = new InputVar<int>("Growing Degree Day Minimum");
             InputVar<int> gddmx = new InputVar<int>("Growing Degree Day Maximum");
             InputVar<int> mjt = new InputVar<int>("Minimum January Temperature");
@@ -297,7 +313,7 @@ namespace Landis.Extension.Succession.Century
                 parameters.SetFunctionalType(species, ft.Value);
 
                 ReadValue(nt, currentLine);
-                parameters.SetNTolerance(species, nt.Value);
+                parameters.NFixer[species] = nt.Value;
                 
                 ReadValue(gddmn, currentLine);
                 parameters.SetGDDmin(species, gddmn.Value);
@@ -329,9 +345,9 @@ namespace Landis.Extension.Succession.Century
                 //wang
                 ReadValue(bLignin, currentLine);
                 parameters.SetBranchLignin(species, bLignin.Value);
+                
                 ReadValue(bHLignin, currentLine);
                 parameters.SetBranchHLignin(species, bHLignin.Value);
-
 
                 ReadValue(crLignin, currentLine);
                 parameters.SetCoarseRootLignin(species, crLignin.Value);
@@ -340,7 +356,7 @@ namespace Landis.Extension.Succession.Century
                 parameters.SetLeafCN(species, leafCN.Value);
 
                 ReadValue(fRootCN, currentLine);
-                parameters.SetFineRootLitterCN(species, fRootCN.Value);
+                parameters.SetFineRootCN(species, fRootCN.Value);
 
                 ReadValue(woodCN, currentLine);
                 parameters.SetWoodCN(species, woodCN.Value);
@@ -365,7 +381,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             //--------- Read In Functional Group Table -------------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin parsing FUNCTIONAL GROUP table.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin parsing FUNCTIONAL GROUP table.");
 
             ReadName(Names.FunctionalGroupParameters);
             string InitialEcoregionParameters = "InitialEcoregionParameters";
@@ -460,8 +476,8 @@ namespace Landis.Extension.Succession.Century
                 ReadValue(bdr, currentLine);
                 funcTParms.BranchDecayRate = bdr.Value;
 
-                ReadValue(bHdr, currentLine);
-                funcTParms.BranchHDecayRate = bHdr.Value;
+                //ReadValue(bHdr, currentLine);
+                //funcTParms.BranchHDecayRate = bHdr.Value;
 
                 ReadValue(mwm, currentLine);
                 funcTParms.MonthlyWoodMortality = mwm.Value;
@@ -484,7 +500,7 @@ namespace Landis.Extension.Succession.Century
 
             
             //--------- Read In FIRST Ecoregion Table ---------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin reading INITIAL ECOREGION parameters.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin reading INITIAL ECOREGION parameters.");
             ReadName(InitialEcoregionParameters);
 
             InputVar<string> ecoregionName = new InputVar<string>("Ecoregion");
@@ -541,7 +557,7 @@ namespace Landis.Extension.Succession.Century
 
             //--------- Read In SECOND Ecoregion Table ---------------------------
             // First, read table of additional parameters for ecoregions
-            PlugIn.ModelCore.Log.WriteLine("   Begin reading FIXED ECOREGION parameters.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin reading FIXED ECOREGION parameters.");
             ReadName(Names.EcoregionParameters);
 
             InputVar<double> pclay = new InputVar<double>("Percent Clay");
@@ -611,7 +627,7 @@ namespace Landis.Extension.Succession.Century
                 GetNextLine();
             }
             //--------- Read In Fire Reductions Table ---------------------------
-            PlugIn.ModelCore.Log.WriteLine("   Begin reading FIRE REDUCTION parameters.");
+            PlugIn.ModelCore.UI.WriteLine("   Begin reading FIRE REDUCTION parameters.");
             ReadName(Names.FireReductionParameters);
 
             InputVar<int> frindex = new InputVar<int>("Fire Severity Index MUST = 1-5");
@@ -653,6 +669,40 @@ namespace Landis.Extension.Succession.Century
                 GetNextLine();
             }
 
+            //--------- Read In Harvest Reductions Table ---------------------------
+            InputVar<string> hreds = new InputVar<string>("HarvestReductions");
+            ReadOptionalName(Names.HarvestReductionParameters);
+            {
+                PlugIn.ModelCore.UI.WriteLine("   Begin reading HARVEST REDUCTION parameters.");
+                InputVar<string> prescriptionName = new InputVar<string>("Prescription");
+                InputVar<double> wred_pr = new InputVar<double>("Wood Reduction");
+                InputVar<double> lred_pr = new InputVar<double>("Litter Reduction");
+
+                //lineNumbers.Clear();
+                List<string> prescriptionNames = new List<string>();
+                //Dictionary<int, int> DisturbanceTypeLineNumbers = new Dictionary<int, int>();
+
+                while (!AtEndOfInput && CurrentName != Names.MonthlyMaxNPP)
+                {
+                    HarvestReductions harvReduction = new HarvestReductions();
+                    parameters.HarvestReductionsTable.Add(harvReduction);
+
+                    StringReader currentLine = new StringReader(CurrentLine);
+
+                    ReadValue(prescriptionName, currentLine);
+                    harvReduction.PrescriptionName = prescriptionName.Value;
+
+                    ReadValue(wred_pr, currentLine);
+                    harvReduction.WoodReduction = wred.Value;
+
+                    ReadValue(lred_pr, currentLine);
+                    harvReduction.LitterReduction = lred.Value;
+
+                    GetNextLine();
+                }
+            }
+
+            
             //---------------------------------------------------------------------
 
             ParseBiomassParameters(parameters, Names.AgeOnlyDisturbanceParms,

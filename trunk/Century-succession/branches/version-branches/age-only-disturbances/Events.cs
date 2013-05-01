@@ -38,8 +38,8 @@ namespace Landis.Extension.Succession.Century.AgeOnlyDisturbances
             float branchInput = ReduceInput(branch, cohortReductions.Branch, site);
             
             
-            PlugIn.ModelCore.Log.WriteLine("EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
-            PlugIn.ModelCore.Log.WriteLine(" Cohort Reductions:  branch_reduction%={0:0.00}.  branchdead={1:0.0000}. branchlive={2:0.0000}.", (float)cohortReductions.Branch, branchInput*0.47, branch*0.47);
+            PlugIn.ModelCore.UI.WriteLine("EVENT: Cohort Died: species={0}, age={1}, disturbance={2}.", cohort.Species.Name, cohort.Age, eventArgs.DisturbanceType);
+            PlugIn.ModelCore.UI.WriteLine(" Cohort Reductions:  branch_reduction%={0:0.00}.  branchdead={1:0.0000}. branchlive={2:0.0000}.", (float)cohortReductions.Branch, branchInput*0.47, branch*0.47);
            
            
            

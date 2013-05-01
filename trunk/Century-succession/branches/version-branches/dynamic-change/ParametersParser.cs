@@ -19,7 +19,13 @@ namespace Landis.Extension.Succession.Century.Dynamic
 
         //---------------------------------------------------------------------
 
-        public string LandisDataValue = "Biomass Succession - Climate Change";
+        public override string LandisDataValue
+        {
+            get
+            {
+                return "Biomass Succession - Climate Change";
+            }
+        }
 
         //---------------------------------------------------------------------
 

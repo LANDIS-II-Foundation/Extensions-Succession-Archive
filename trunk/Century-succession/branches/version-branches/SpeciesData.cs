@@ -64,7 +64,7 @@ namespace Landis.Extension.Succession.Century
             WoodLignin          = parameters.WoodLignin ;
             //wang
             BranchLignin        = parameters.BranchLignin;
-            BranchRLignin = parameters.BranchRLignin;
+            //BranchRLignin = parameters.BranchRLignin;
 
             CoarseRootLignin    = parameters.CoarseRootLignin ;
             FineRootLignin      = parameters.FineRootLignin ;
@@ -72,7 +72,7 @@ namespace Landis.Extension.Succession.Century
             WoodCN              = parameters.WoodCN;
             //wang
             BranchCN            = parameters.BranchCN;
-            BranchRCN           = parameters.BranchRCN;
+            //BranchRCN           = parameters.BranchRCN;
 
             CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;

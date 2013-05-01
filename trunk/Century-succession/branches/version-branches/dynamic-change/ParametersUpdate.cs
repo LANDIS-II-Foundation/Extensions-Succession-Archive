@@ -76,7 +76,7 @@ namespace Landis.Extension.Succession.Century.Dynamic
         {
             try
             {
-                parameters = PlugIn.ModelCore.Load<IParameters>(file, parameterParser);
+                parameters = Landis.Data.Load<IParameters>(file, parameterParser);
             }
             catch (FileNotFoundException)
             {

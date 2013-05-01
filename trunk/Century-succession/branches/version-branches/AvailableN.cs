@@ -157,9 +157,9 @@ namespace Landis.Extension.Succession.Century
 
                     if (Double.IsNaN(relativeNallocation) || Double.IsNaN(Nallocation) || Double.IsNaN(NAllocTotal))
                     {
-                        PlugIn.ModelCore.Log.WriteLine("  N ALLOCATION CALCULATION = NaN!  ");
-                        PlugIn.ModelCore.Log.WriteLine("  Nallocation={0:0.00}, NAllocTotal={1:0.00}, relativeNallocation={2:0.00}.", Nallocation, NAllocTotal, relativeNallocation);
-                        PlugIn.ModelCore.Log.WriteLine("  Wood={0:0.00}, Branch={1:0.00},Leaf={2:0.00}.", cohort.WoodBiomass, cohort.BranchBiomass, cohort.LeafBiomass);
+                        PlugIn.ModelCore.UI.WriteLine("  N ALLOCATION CALCULATION = NaN!  ");
+                        PlugIn.ModelCore.UI.WriteLine("  Nallocation={0:0.00}, NAllocTotal={1:0.00}, relativeNallocation={2:0.00}.", Nallocation, NAllocTotal, relativeNallocation);
+                        PlugIn.ModelCore.UI.WriteLine("  Wood={0:0.00}, Branch={1:0.00},Leaf={2:0.00}.", cohort.WoodBiomass, cohort.BranchBiomass, cohort.LeafBiomass);
                     }
                     //PlugIn.ModelCore.Log.WriteLine("Yr={0},Mo={1}. MineralNfraction={2:0.00}", PlugIn.ModelCore.CurrentTime, CohortBiomass.month, CohortMineralNfraction[cohort.Species.Index][cohortAddYear]);
                 }
@@ -194,8 +194,8 @@ namespace Landis.Extension.Succession.Century
                    
                     if (Double.IsNaN(Nallocation) || Double.IsNaN(Nfraction) || Double.IsNaN(availableN))
                     {
-                        PlugIn.ModelCore.Log.WriteLine("  LIMIT N CALCULATION = NaN!  ");
-                        PlugIn.ModelCore.Log.WriteLine("  Nallocation={0:0.00}, Nfraction={1:0.00}, availableN={2:0.00}.", Nallocation, Nfraction, availableN);
+                        PlugIn.ModelCore.UI.WriteLine("  LIMIT N CALCULATION = NaN!  ");
+                        PlugIn.ModelCore.UI.WriteLine("  Nallocation={0:0.00}, Nfraction={1:0.00}, availableN={2:0.00}.", Nallocation, Nfraction, availableN);
                     }
 
                     Dictionary<int, double> newEntry = new Dictionary<int, double>();
@@ -293,7 +293,7 @@ namespace Landis.Extension.Succession.Century
 
             if(Ndemand < 0.0)
             {
-                PlugIn.ModelCore.Log.WriteLine("   ERROR:  TotalANPP_C={0:0.00} Ndemand={1:0.00}.", totalANPP_C, Ndemand);
+                PlugIn.ModelCore.UI.WriteLine("   ERROR:  TotalANPP_C={0:0.00} Ndemand={1:0.00}.", totalANPP_C, Ndemand);
                 throw new ApplicationException("Error: N Demand < 0.  See AvailableN.cs");
             }
 
