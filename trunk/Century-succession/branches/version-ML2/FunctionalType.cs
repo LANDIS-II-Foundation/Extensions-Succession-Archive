@@ -21,6 +21,9 @@ namespace Landis.Extension.Succession.Century
         double MAXLAI{get;set;}
         double PPRPTS2 {get;set;}
         double PPRPTS3 {get;set;}
+        double CoarseRootLignin {get;set;}
+        double FineRootLignin {get;set;}
+        double CoarseRootCN {get;set;}
         double MonthlyWoodMortality{get;set;}
         double WoodDecayRate{get;set;}
         double MortCurveShape{get;set;}
@@ -41,6 +44,10 @@ namespace Landis.Extension.Succession.Century
         private double maxlai;
         private double pprpts2;
         private double pprpts3;
+        private double coarseRootLignin;
+        private double fineRootLignin;
+        private double coarseRootCN;
+        private double fineRootCN;
         private double monthlyWoodMortality;
         private double woodDecayRate;
         private double mortCurveShape;
@@ -209,6 +216,81 @@ namespace Landis.Extension.Succession.Century
             }
             set {
                 pprpts3 = value;
+            }
+        }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Coarse Root Lignin Percent.
+        /// </summary>
+        public double CoarseRootLignin
+        {
+            get
+            {
+                return coarseRootLignin;
+            }
+            set
+            {
+                if (value < 0.0 || value > 1.0)
+                    throw new InputValueException(value.ToString(),
+                        "Coarse Root Lignin Percentage must be between 0 and 1.0");
+                coarseRootLignin = value;
+            }
+        }
+        
+//---------------------------------------------------------------------
+        /// <summary>
+        /// Fine Root Lignin Percent.
+        /// </summary>
+        public double FineRootLignin
+        {
+            get
+            {
+                return fineRootLignin;
+            }
+            set
+            {
+                if (value < 0.0 || value > 1.0)
+                    throw new InputValueException(value.ToString(),
+                        "Fine Root lignin Percentage must be between 0 and 1.0");
+                fineRootLignin = value;
+            }
+        }
+
+//---------------------------------------------------------------------
+        /// <summary>
+        /// Coarse Root C:N ratio
+        /// </summary>
+        public double CoarseRootCN
+        {
+            get
+            {
+                return coarseRootCN;
+            }
+            set
+            {
+                if (value < 0.0 || value > 150.0)
+                    throw new InputValueException(value.ToString(),
+                        "Coarse Root CN ratio must be between 0 and 150.0");
+                coarseRootCN = value;
+            }
+        }
+
+//---------------------------------------------------------------------
+        /// <summary>
+        /// Coarse Root C:N ratio
+        /// </summary>
+        public double FineRootCN
+        {
+            get
+            {
+                return fineRootCN;
+            }
+            set
+            {
+                if (value < 0.0 || value > 150.0)
+                    throw new InputValueException(value.ToString(),
+                        "Fine Root CN ratio must be between 0 and 150.0");
+                fineRootCN = value;
             }
         }
         //---------------------------------------------------------------------

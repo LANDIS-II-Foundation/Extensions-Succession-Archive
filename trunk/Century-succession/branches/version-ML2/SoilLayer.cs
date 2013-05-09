@@ -130,7 +130,7 @@ namespace Landis.Extension.Succession.Century
                     {
                         //ML deleted the linten function which was poorly described in the Century manual.  DOC leaching is more related to clay content (DOC sorption
                         // on clay particles) than sand.  So I modified the leachTextureEffect to account for percent clay, rather than sand.  
-                        //DOC leaching is only slightly reduced by sortption (see Figure 3 in Neff and Asner Ecosystems 4:29 so I modified the slopes/intercepts to 
+                        //DOC leaching is only slightly reduced by sortption (see Figure 3 in Neff and Asner 2001 Ecosystems 4:29 so I modified the slopes/intercepts to 
                         //account for the slight decrease (~5%) decrease in DOC leaching with increasing clay content.  
                         //Now the magnitude of DOC leaching is correct (~1-10 g/m2/y), at least for single-cell sims with CNF+
                         //double leachTextureEffect = OtherData.OMLeachIntercept + OtherData.OMLeachSlope * EcoregionData.PercentSand[ecoregion];

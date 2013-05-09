@@ -40,13 +40,13 @@ namespace Landis.Extension.Succession.Century
         private Species.AuxParm<bool> epicormic;
         private Species.AuxParm<double> leafLignin;
         private Species.AuxParm<double> woodLignin;
-        private Species.AuxParm<double> coarseRootLignin;
-        private Species.AuxParm<double> fineRootLignin;
+        //private Species.AuxParm<double> coarseRootLignin;
+        //private Species.AuxParm<double> fineRootLignin;
         private Species.AuxParm<double> leafCN;
         private Species.AuxParm<double> woodCN;
-        private Species.AuxParm<double> coarseRootCN;
+        //private Species.AuxParm<double> coarseRootCN;
         private Species.AuxParm<double> foliageLitterCN;
-        private Species.AuxParm<double> fineRootCN;
+        //private Species.AuxParm<double> fineRootCN;
         
         private Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
         private List<ISufficientLight> sufficientLight;
@@ -320,20 +320,20 @@ namespace Landis.Extension.Succession.Century
                 return woodLignin;
             }
         }
-        //---------------------------------------------------------------------
-        public Species.AuxParm<double> CoarseRootLignin
-        {
-            get {
-                return coarseRootLignin;
-            }
-        }
-        //---------------------------------------------------------------------
-        public Species.AuxParm<double> FineRootLignin
-        {
-            get {
-                return fineRootLignin;
-            }
-        }
+        ////---------------------------------------------------------------------
+        //public Species.AuxParm<double> CoarseRootLignin
+        //{
+        //    get {
+        //        return coarseRootLignin;
+        //    }
+        //}
+        ////---------------------------------------------------------------------
+        //public Species.AuxParm<double> FineRootLignin
+        //{
+        //    get {
+        //        return fineRootLignin;
+        //    }
+        //}
         //---------------------------------------------------------------------
 
         public Species.AuxParm<double> LeafCN
@@ -350,14 +350,14 @@ namespace Landis.Extension.Succession.Century
                 return woodCN;
             }
         }
-        //---------------------------------------------------------------------
+        ////---------------------------------------------------------------------
 
-        public Species.AuxParm<double> CoarseRootCN
-        {
-            get {
-                return coarseRootCN;
-            }
-        }
+        //public Species.AuxParm<double> CoarseRootCN
+        //{
+        //    get {
+        //        return coarseRootCN;
+        //    }
+        //}
         //---------------------------------------------------------------------
 
         public Species.AuxParm<double> FoliageLitterCN
@@ -366,14 +366,14 @@ namespace Landis.Extension.Succession.Century
                 return foliageLitterCN;
             }
         }
-        //---------------------------------------------------------------------
+        ////---------------------------------------------------------------------
 
-        public Species.AuxParm<double> FineRootCN
-        {
-            get {
-                return fineRootCN;
-            }
-        }
+        //public Species.AuxParm<double> FineRootCN
+        //{
+        //    get {
+        //        return fineRootCN;
+        //    }
+        //}
         //---------------------------------------------------------------------
 
         /// <summary>
@@ -632,24 +632,24 @@ namespace Landis.Extension.Succession.Century
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            woodLignin[species] = CheckBiomassParm(newValue, 0.0, 0.4);
+            woodLignin[species] = CheckBiomassParm(newValue, 0.0, 0.5);
         }
         //---------------------------------------------------------------------
 
-        public void SetCoarseRootLignin(ISpecies           species,
-                                          InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            coarseRootLignin[species] = CheckBiomassParm(newValue, 0.0, 0.4);
-        }
+        //public void SetCoarseRootLignin(ISpecies           species,
+        //                                  InputValue<double> newValue)
+        //{
+        //    Debug.Assert(species != null);
+        //    coarseRootLignin[species] = CheckBiomassParm(newValue, 0.0, 0.4);
+        //}
         //---------------------------------------------------------------------
 
-        public void SetFineRootLignin(ISpecies           species,
-                                          InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            fineRootLignin[species] = CheckBiomassParm(newValue, 0.0, 0.4);
-        }
+        //public void SetFineRootLignin(ISpecies           species,
+        //                                  InputValue<double> newValue)
+        //{
+        //    Debug.Assert(species != null);
+        //    fineRootLignin[species] = CheckBiomassParm(newValue, 0.0, 0.4);
+        //}
         //---------------------------------------------------------------------
 
         public void SetLeafCN(ISpecies           species,
@@ -664,16 +664,16 @@ namespace Landis.Extension.Succession.Century
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            woodCN[species] = CheckBiomassParm(newValue, 5.0, 600.0);
+            woodCN[species] = CheckBiomassParm(newValue, 5.0, 900.0);
         }
         //---------------------------------------------------------------------
 
-        public void SetCoarseRootCN(ISpecies           species,
-                                          InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            coarseRootCN[species] = CheckBiomassParm(newValue, 5.0, 500.0);
-        }
+        //public void SetCoarseRootCN(ISpecies           species,
+        //                                  InputValue<double> newValue)
+        //{
+        //    Debug.Assert(species != null);
+        //    coarseRootCN[species] = CheckBiomassParm(newValue, 5.0, 500.0);
+        //}
         //---------------------------------------------------------------------
 
         public void SetFoliageLitterCN(ISpecies           species,
@@ -684,12 +684,12 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        public void SetFineRootCN(ISpecies           species,
-                                          InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            fineRootCN[species] = CheckBiomassParm(newValue, 5.0, 100.0);
-        }
+        //public void SetFineRootCN(ISpecies           species,
+        //                                  InputValue<double> newValue)
+        //{
+        //    Debug.Assert(species != null);
+        //    fineRootCN[species] = CheckBiomassParm(newValue, 5.0, 100.0);
+        //}
         //---------------------------------------------------------------------
 
         public void SetPercentClay(IEcoregion ecoregion, InputValue<double> newValue)
@@ -878,13 +878,13 @@ namespace Landis.Extension.Succession.Century
             epicormic               = new Species.AuxParm<bool>(speciesDataset);
             leafLignin              = new Species.AuxParm<double>(speciesDataset);
             woodLignin              = new Species.AuxParm<double>(speciesDataset);
-            coarseRootLignin        = new Species.AuxParm<double>(speciesDataset);
-            fineRootLignin          = new Species.AuxParm<double>(speciesDataset);
+            //coarseRootLignin        = new Species.AuxParm<double>(speciesDataset);
+            //fineRootLignin          = new Species.AuxParm<double>(speciesDataset);
             leafCN                  = new Species.AuxParm<double>(speciesDataset);
             woodCN                  = new Species.AuxParm<double>(speciesDataset);
-            coarseRootCN            = new Species.AuxParm<double>(speciesDataset);
+            //coarseRootCN            = new Species.AuxParm<double>(speciesDataset);
             foliageLitterCN         = new Species.AuxParm<double>(speciesDataset);
-            fineRootCN        = new Species.AuxParm<double>(speciesDataset);
+            //fineRootCN        = new Species.AuxParm<double>(speciesDataset);
 
             minRelativeBiomass = new Ecoregions.AuxParm<Percentage>[6];
             for (byte shadeClass = 1; shadeClass <= 5; shadeClass++) {

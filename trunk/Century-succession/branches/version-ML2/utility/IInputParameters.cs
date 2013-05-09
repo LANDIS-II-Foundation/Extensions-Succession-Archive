@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Landis.Extension.Succession.Century
 {
     /// <summary>
-    /// The parameters for biomass succession.
+    /// The parameters for biomass (and thus Century) succession.
     /// </summary>
     public interface IInputParameters
         : Dynamic.IParameters
@@ -80,13 +80,13 @@ namespace Landis.Extension.Succession.Century
         Species.AuxParm<bool> Epicormic {get;}
         Species.AuxParm<double> LeafLignin {get;}
         Species.AuxParm<double> WoodLignin {get;}
-        Species.AuxParm<double> CoarseRootLignin {get;}
-        Species.AuxParm<double> FineRootLignin {get;}
+        //Species.AuxParm<double> CoarseRootLignin {get;}
+        //Species.AuxParm<double> FineRootLignin {get;}
         Species.AuxParm<double> LeafCN {get;}
         Species.AuxParm<double> WoodCN {get;}
-        Species.AuxParm<double> CoarseRootCN {get;}
+        //Species.AuxParm<double> CoarseRootCN {get;}
         Species.AuxParm<double> FoliageLitterCN {get;}
-        Species.AuxParm<double> FineRootCN {get;}
+        //Species.AuxParm<double> FineRootCN {get;}
 
         Ecoregions.AuxParm<double> PercentClay {get;}
         Ecoregions.AuxParm<double> PercentSand {get;}

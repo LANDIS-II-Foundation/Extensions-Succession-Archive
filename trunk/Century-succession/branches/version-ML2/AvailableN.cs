@@ -280,7 +280,7 @@ namespace Landis.Extension.Succession.Century
                 //}
                 
                 woodN       = ANPPwood * 0.47  / SpeciesData.WoodCN[species];
-                coarseRootN = ANPPcoarseRoot * 0.47  / SpeciesData.CoarseRootCN[species];
+                coarseRootN = ANPPcoarseRoot * 0.47 / FunctionalType.Table[SpeciesData.FuncType[species]].CoarseRootCN;
             }
 
             if(ANPP[1] > 0.0)  // Leaf
@@ -296,7 +296,7 @@ namespace Landis.Extension.Succession.Century
                
                 //}
                 leafN       = ANPPleaf * 0.47 / SpeciesData.LeafCN[species];
-                fineRootN   = ANPPfineRoot * 0.47/ SpeciesData.FineRootCN[species];
+                fineRootN = ANPPfineRoot * 0.47 / FunctionalType.Table[SpeciesData.FuncType[species]].FineRootCN;
 
             }
 

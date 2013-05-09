@@ -227,8 +227,8 @@ namespace Landis.Extension.Succession.Century
 
             double leafN  = leafC /  (double) SpeciesData.LeafCN[species];
             double woodN = woodC / (double) SpeciesData.WoodCN[species];
-            double cRootN = cRootC / (double) SpeciesData.CoarseRootCN[species];
-            double fRootN = fRootC / (double) SpeciesData.FineRootCN[species];
+            double cRootN = cRootC / (double) FunctionalType.Table[SpeciesData.FuncType[species]].CoarseRootCN;
+            double fRootN = fRootC / (double) FunctionalType.Table[SpeciesData.FuncType[species]].FineRootCN;
 
             //double totalN = woodN + cRootN + leafN + fRootN;
 

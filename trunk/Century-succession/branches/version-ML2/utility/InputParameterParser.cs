@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace Landis.Extension.Succession.Century
 {
     /// <summary>
-    /// A parser that reads biomass succession parameters from text input.
+    /// A parser that reads biomass succession (and century) parameters from text input.
     /// </summary>
     public class InputParametersParser
         : Dynamic.BiomassParametersParser<IInputParameters>
@@ -315,14 +315,14 @@ namespace Landis.Extension.Succession.Century
             InputVar<bool> epicorm = new InputVar<bool>("Epicormic:  Y/N");
             InputVar<double> leafLignin = new InputVar<double>("Leaf Percent Lignin");
             InputVar<double> wLignin = new InputVar<double>("Wood Percent Lignin");
-            InputVar<double> crLignin = new InputVar<double>("Coarse Root Percent Lignin");
-            InputVar<double> frLignin = new InputVar<double>("Fine Root Percent Lignin");
+            //InputVar<double> crLignin = new InputVar<double>("Coarse Root Percent Lignin");
+            //InputVar<double> frLignin = new InputVar<double>("Fine Root Percent Lignin");
             InputVar<double> leafCN = new InputVar<double>("Leaf CN Ratio");
             InputVar<double> woodCN = new InputVar<double>("Wood CN Ratio");
-            InputVar<double> cRootCN = new InputVar<double>("Coarse Root CN Ratio");
+            //InputVar<double> cRootCN = new InputVar<double>("Coarse Root CN Ratio");
             InputVar<double> foliarCN = new InputVar<double>("Foliage CN Ratio");
-            InputVar<double> fRootCN = new InputVar<double>("Fine Root CN Ratio");
-            string lastColumn = "the " + fRootCN.Name + " column";
+            //InputVar<double> fRootCN = new InputVar<double>("Fine Root CN Ratio");
+            string lastColumn = "the " + foliarCN.Name + " column";
 
             while (! AtEndOfInput && CurrentName != Names.FunctionalGroupParameters) {
                 StringReader currentLine = new StringReader(CurrentLine);
@@ -355,26 +355,26 @@ namespace Landis.Extension.Succession.Century
                 ReadValue(leafLignin, currentLine);
                 parameters.SetLeafLignin(species, leafLignin.Value);
 
-                ReadValue(frLignin, currentLine);
-                parameters.SetFineRootLignin(species, frLignin.Value);
+                //ReadValue(frLignin, currentLine);
+                //parameters.SetFineRootLignin(species, frLignin.Value);
 
                 ReadValue(wLignin, currentLine);
                 parameters.SetWoodLignin(species, wLignin.Value);
 
-                ReadValue(crLignin, currentLine);
-                parameters.SetCoarseRootLignin(species, crLignin.Value);
+                //ReadValue(crLignin, currentLine);
+                //parameters.SetCoarseRootLignin(species, crLignin.Value);
 
                 ReadValue(leafCN, currentLine);
                 parameters.SetLeafCN(species, leafCN.Value);
 
-                ReadValue(fRootCN, currentLine);
-                parameters.SetFineRootCN(species, fRootCN.Value);
+                //ReadValue(fRootCN, currentLine);
+                //parameters.SetFineRootCN(species, fRootCN.Value);
 
                 ReadValue(woodCN, currentLine);
                 parameters.SetWoodCN(species, woodCN.Value);
 
-                ReadValue(cRootCN, currentLine);
-                parameters.SetCoarseRootCN(species, cRootCN.Value);
+                //ReadValue(cRootCN, currentLine);
+                //parameters.SetCoarseRootCN(species, cRootCN.Value);
 
                 ReadValue(foliarCN, currentLine);
                 parameters.SetFoliageLitterCN(species, foliarCN.Value);
@@ -399,6 +399,10 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> btolai = new InputVar<double>("BTOLAI");
             InputVar<double> klai = new InputVar<double>("KLAI");
             InputVar<double> maxlai = new InputVar<double>("MAXLAI");
+            InputVar<double> crl = new InputVar<double>("CRootLignPerc");
+            InputVar<double> frl = new InputVar<double>("FRootLignPerc");
+            InputVar<double> crcn = new InputVar<double>("CRootCN");
+            InputVar<double> frcn = new InputVar<double>("FRootCN");
             InputVar<double> mwm = new InputVar<double>("Monthly Wood Mortality");
             InputVar<double> wdr = new InputVar<double>("Wood Decay Rate");
             InputVar<double> mortCurveShapeParm = new InputVar<double>("Mortality Curve Shape Parameter");
@@ -454,6 +458,18 @@ namespace Landis.Extension.Succession.Century
 
                 ReadValue(ppr3, currentLine);
                 funcTParms.PPRPTS3 = ppr3.Value;
+
+                ReadValue(crl, currentLine);
+                funcTParms.CoarseRootLignin = crl.Value;
+
+                ReadValue(frl, currentLine);
+                funcTParms.FineRootLignin = frl.Value;
+
+                ReadValue(crcn, currentLine);
+                funcTParms.CoarseRootCN = crcn.Value;
+
+                ReadValue(frcn, currentLine);
+                funcTParms.FineRootCN = frcn.Value;
 
                 ReadValue(wdr, currentLine);
                 funcTParms.WoodDecayRate = wdr.Value;

@@ -30,8 +30,8 @@ namespace Landis.Extension.Succession.Century
             if(coarseRootBiomass > 0)
             WoodLayer.PartitionResidue(coarseRootBiomass,  
                             FunctionalType.Table[SpeciesData.FuncType[species]].WoodDecayRate,
-                            SpeciesData.CoarseRootCN[species], 
-                            SpeciesData.CoarseRootLignin[species], 
+                            FunctionalType.Table[SpeciesData.FuncType[species]].CoarseRootCN,
+                            FunctionalType.Table[SpeciesData.FuncType[species]].CoarseRootLignin, 
                             LayerName.CoarseRoot,
                             LayerType.Soil,
                             site);
@@ -54,8 +54,8 @@ namespace Landis.Extension.Succession.Century
             LitterLayer.PartitionResidue(
                             fineRootBiomass,
                             inputDecayValue,
-                            SpeciesData.FineRootCN[species],
-                            SpeciesData.FineRootLignin[species],
+                            FunctionalType.Table[SpeciesData.FuncType[species]].FineRootCN,
+                            FunctionalType.Table[SpeciesData.FuncType[species]].FineRootLignin,
                             OtherData.StructuralCN,
                             LayerName.FineRoot,
                             LayerType.Soil,

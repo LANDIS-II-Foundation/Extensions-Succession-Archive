@@ -26,13 +26,13 @@ namespace Landis.Extension.Succession.Century
         public static Species.AuxParm<bool> Epicormic;
         public static Species.AuxParm<double> LeafLignin;
         public static Species.AuxParm<double> WoodLignin;
-        public static Species.AuxParm<double> CoarseRootLignin;
-        public static Species.AuxParm<double> FineRootLignin;
+        //public static Species.AuxParm<double> CoarseRootLignin;
+        //public static Species.AuxParm<double> FineRootLignin;
         public static Species.AuxParm<double> LeafCN;
         public static Species.AuxParm<double> WoodCN;
-        public static Species.AuxParm<double> CoarseRootCN;
+        //public static Species.AuxParm<double> CoarseRootCN;
         public static Species.AuxParm<double> LeafLitterCN;
-        public static Species.AuxParm<double> FineRootCN;
+        //public static Species.AuxParm<double> FineRootCN;
         //public static Species.AuxParm<double> NLimits;
 
         public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbability;
@@ -54,13 +54,13 @@ namespace Landis.Extension.Succession.Century
             Epicormic           = parameters.Epicormic;
             LeafLignin          = parameters.LeafLignin;
             WoodLignin          = parameters.WoodLignin ;
-            CoarseRootLignin    = parameters.CoarseRootLignin ;
-            FineRootLignin      = parameters.FineRootLignin ;
+            //CoarseRootLignin    = parameters.CoarseRootLignin ;
+            //FineRootLignin      = parameters.FineRootLignin ;
             LeafCN              = parameters.LeafCN;
             WoodCN              = parameters.WoodCN;
-            CoarseRootCN        = parameters.CoarseRootCN;
+            //CoarseRootCN        = parameters.CoarseRootCN;
             LeafLitterCN        = parameters.FoliageLitterCN;
-            FineRootCN          = parameters.FineRootCN;
+            //FineRootCN          = parameters.FineRootCN;
             //NLimits = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             
             Establishment.Initialize();
