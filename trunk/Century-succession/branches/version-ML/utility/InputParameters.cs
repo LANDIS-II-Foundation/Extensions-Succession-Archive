@@ -81,7 +81,7 @@ namespace Landis.Extension.Succession.Century
 
         
         private string ageOnlyDisturbanceParms;
-        private List<Dynamic.ParametersUpdate> dynamicUpdates;
+        //private List<Dynamic.ParametersUpdate> dynamicUpdates;
 
         //---------------------------------------------------------------------
         /// <summary>
@@ -539,12 +539,12 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        public List<Dynamic.ParametersUpdate> DynamicUpdates
-        {
-            get {
-                return dynamicUpdates;
-            }
-        }
+        //public List<Dynamic.ParametersUpdate> DynamicUpdates
+        //{
+        //    get {
+        //        return dynamicUpdates;
+        //    }
+        //}
         //---------------------------------------------------------------------
 
         public void SetMinRelativeBiomass(byte                   shadeClass,
@@ -919,7 +919,7 @@ namespace Landis.Extension.Succession.Century
             initMineralN            = new Ecoregions.AuxParm<double>(ecoregionDataset);
 
             
-            this.dynamicUpdates = new List<Dynamic.ParametersUpdate>();
+            //this.dynamicUpdates = new List<Dynamic.ParametersUpdate>();
             
         }
 

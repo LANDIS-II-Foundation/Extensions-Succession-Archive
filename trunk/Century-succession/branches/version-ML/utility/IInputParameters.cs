@@ -130,13 +130,13 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        /// <summary>
-        /// A list of zero or more updates to the biomass parameters because of
-        /// climate change.
-        /// </summary>
-        List<Dynamic.ParametersUpdate> DynamicUpdates
-        {
-            get;
-        }
+        ///// <summary>
+        ///// A list of zero or more updates to the biomass parameters because of
+        ///// climate change.
+        ///// </summary>
+        //List<Dynamic.ParametersUpdate> DynamicUpdates
+        //{
+        //    get;
+        //}
     }
 }
