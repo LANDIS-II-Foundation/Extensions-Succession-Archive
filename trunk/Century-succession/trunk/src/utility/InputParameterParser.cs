@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.Century
             public const string FireReductionParameters = "FireReductionParameters";
             public const string HarvestReductionParameters = "HarvestReductionParameters";
             public const string AgeOnlyDisturbanceParms = "AgeOnlyDisturbances:BiomassParameters";
-            public const string DynamicChange = "DynamicChange";
+            //public const string DynamicChange = "DynamicChange";
             public const string MonthlyMaxNPP = "MonthlyMaxNPP";
         }
 
@@ -685,21 +685,24 @@ namespace Landis.Extension.Succession.Century
 
             //---------------------------------------------------------------------
 
-            ParseBiomassParameters(parameters, Names.AgeOnlyDisturbanceParms,
-                                               Names.DynamicChange);
+            ParseBiomassParameters(parameters, Names.AgeOnlyDisturbanceParms);
+            //ParseBiomassParameters(parameters, Names.AgeOnlyDisturbanceParms,
+            //                                   Names.DynamicChange);
+
 
             string lastParameter = null;
             InputVar<string> ageOnlyDisturbanceParms = new InputVar<string>(Names.AgeOnlyDisturbanceParms);
             ReadVar(ageOnlyDisturbanceParms);
             parameters.AgeOnlyDisturbanceParms = ageOnlyDisturbanceParms.Value;
+            CheckNoDataAfter(lastParameter);
 
 
             //  Climate Change table (optional)
-            if (ReadOptionalName(Names.DynamicChange)) {
-                ReadDynamicTable(parameters.DynamicUpdates);
-            }
-            else if (lastParameter != null)
-                CheckNoDataAfter(lastParameter);
+            //if (ReadOptionalName(Names.DynamicChange)) {
+            //    ReadDynamicTable(parameters.DynamicUpdates);
+            //}
+            //else if (lastParameter != null)
+            //    CheckNoDataAfter(lastParameter);
 
             return parameters; //.GetComplete();
         }
@@ -737,38 +740,38 @@ namespace Landis.Extension.Succession.Century
         }
         //---------------------------------------------------------------------
 
-        protected void ReadDynamicTable(List<Dynamic.ParametersUpdate> parameterUpdates)
-        {
-            int? prevYear = null;
-            int prevYearLineNum = 0;
-            InputVar<int> year = new InputVar<int>("Year", Dynamic.InputValidation.ReadYear);
-            InputVar<string> file = new InputVar<string>("Parameter File");
-            while (! AtEndOfInput) {
-                StringReader currentLine = new StringReader(CurrentLine);
+        //protected void ReadDynamicTable(List<Dynamic.ParametersUpdate> parameterUpdates)
+        //{
+        //    int? prevYear = null;
+        //    int prevYearLineNum = 0;
+        //    InputVar<int> year = new InputVar<int>("Year", Dynamic.InputValidation.ReadYear);
+        //    InputVar<string> file = new InputVar<string>("Parameter File");
+        //    while (! AtEndOfInput) {
+        //        StringReader currentLine = new StringReader(CurrentLine);
 
-                ReadValue(year, currentLine);
-                if (prevYear.HasValue) {
-                    if (year.Value.Actual < prevYear.Value)
-                        throw new InputValueException(year.Value.String,
-                                                      "Year {0} is before year {1} which was on line {2}",
-                                                      year.Value.Actual, prevYear.Value, prevYearLineNum);
-                    if (year.Value.Actual == prevYear.Value)
-                        throw new InputValueException(year.Value.String,
-                                                      "Year {0} was already used on line {1}",
-                                                      year.Value.Actual, prevYearLineNum);
-                }
-                prevYear = year.Value.Actual;
-                prevYearLineNum = LineNumber;
+        //        ReadValue(year, currentLine);
+        //        if (prevYear.HasValue) {
+        //            if (year.Value.Actual < prevYear.Value)
+        //                throw new InputValueException(year.Value.String,
+        //                                              "Year {0} is before year {1} which was on line {2}",
+        //                                              year.Value.Actual, prevYear.Value, prevYearLineNum);
+        //            if (year.Value.Actual == prevYear.Value)
+        //                throw new InputValueException(year.Value.String,
+        //                                              "Year {0} was already used on line {1}",
+        //                                              year.Value.Actual, prevYearLineNum);
+        //        }
+        //        prevYear = year.Value.Actual;
+        //        prevYearLineNum = LineNumber;
 
-                ReadValue(file, currentLine);
-                Dynamic.InputValidation.CheckPath(file.Value);
+        //        ReadValue(file, currentLine);
+        //        Dynamic.InputValidation.CheckPath(file.Value);
 
-                CheckNoDataAfter("the " + file + " column", currentLine);
-                parameterUpdates.Add(new Dynamic.ParametersUpdate(year.Value.Actual,
-                                                                        file.Value.Actual));
-                GetNextLine();
-            }
-        }
+        //        CheckNoDataAfter("the " + file + " column", currentLine);
+        //        parameterUpdates.Add(new Dynamic.ParametersUpdate(year.Value.Actual,
+        //                                                                file.Value.Actual));
+        //        GetNextLine();
+        //    }
+        //}
         //---------------------------------------------------------------------
 
         /// <summary>
