@@ -23,12 +23,12 @@ namespace Landis.Extension.Succession.Century
         double MAXLAI{get;set;}
         double PPRPTS2 {get;set;}
         double PPRPTS3 {get;set;}
-        double MonthlyWoodMortality{get;set;}
-        double WoodDecayRate{get;set;}
-        double MonthlyBranchMortality { get; set; }
+        double WoodDecayRate { get; set; }
         double BranchDecayRate { get; set; }
         double BranchRDecayRate { get; set; }
-
+        double MonthlyWoodMortality{get;set;}
+        double MonthlyBranchMortality { get; set; }
+        
         double MortCurveShape{get;set;}
         int LeafNeedleDrop{get;set;}
 
@@ -49,12 +49,12 @@ namespace Landis.Extension.Succession.Century
         private double maxlai;
         private double pprpts2;
         private double pprpts3;
-        private double monthlyWoodMortality;
         private double woodDecayRate;
-        private double monthlyBranchMortality;
         private double branchDecayRate;
         private double branchRDecayRate;
-
+        private double monthlyWoodMortality;
+        private double monthlyBranchMortality;
+        
         private double mortCurveShape;
         private int leafNeedleDrop;
 

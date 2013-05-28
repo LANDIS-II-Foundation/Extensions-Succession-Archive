@@ -398,18 +398,19 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> klai = new InputVar<double>("KLAI");
             InputVar<double> laitop = new InputVar<double>("LAITOP");
             InputVar<double> maxlai = new InputVar<double>("MAXLAI");
-            InputVar<double> mwm = new InputVar<double>("Monthly Wood Mortality");
-            //wang
-            InputVar<double> mbm = new InputVar<double>("Monthly Branch Mortality");
+            InputVar<double> ppr2 = new InputVar<double>("PPRPTS2");
+            InputVar<double> ppr3 = new InputVar<double>("PPRPTS3");
             InputVar<double> wdr = new InputVar<double>("Wood Decay Rate");
             //wang
             InputVar<double> bdr = new InputVar<double>("Branch Decay Rate");
-            InputVar<double> bHdr = new InputVar<double>("BranchH Decay Rate");
+            InputVar<double> bHdr = new InputVar<double>("BranchR Decay Rate");
+            InputVar<double> mwm = new InputVar<double>("Monthly Wood Mortality");
+            //wang
+            InputVar<double> mbm = new InputVar<double>("Monthly Branch Mortality");
+            
             InputVar<double> mortCurveShapeParm = new InputVar<double>("Mortality Curve Shape Parameter");
             InputVar<int> leafNeedleDrop = new InputVar<int>("Leaf or Needle Drop Month");
-            
-            InputVar<double> ppr2 = new InputVar<double>("PPRPTS2");
-            InputVar<double> ppr3 = new InputVar<double>("PPRPTS3");
+                        
             
             while (! AtEndOfInput && CurrentName != InitialEcoregionParameters) {
                 StringReader currentLine = new StringReader(CurrentLine);
@@ -476,8 +477,8 @@ namespace Landis.Extension.Succession.Century
                 ReadValue(bdr, currentLine);
                 funcTParms.BranchDecayRate = bdr.Value;
 
-                //ReadValue(bHdr, currentLine);
-                //funcTParms.BranchHDecayRate = bHdr.Value;
+                ReadValue(bHdr, currentLine);
+                funcTParms.BranchRDecayRate = bHdr.Value;
 
                 ReadValue(mwm, currentLine);
                 funcTParms.MonthlyWoodMortality = mwm.Value;
@@ -627,7 +628,7 @@ namespace Landis.Extension.Succession.Century
                 GetNextLine();
             }
             //--------- Read In Fire Reductions Table ---------------------------
-            PlugIn.ModelCore.UI.WriteLine("   Begin reading FIRE REDUCTION parameters.");
+            PlugIn.ModelCore.UI.WriteLine("   Now Begin reading FIRE REDUCTION parameters.");
             ReadName(Names.FireReductionParameters);
 
             InputVar<int> frindex = new InputVar<int>("Fire Severity Index MUST = 1-5");
@@ -636,7 +637,8 @@ namespace Landis.Extension.Succession.Century
             InputVar<double> bred = new InputVar<double>("Branch Reduction");
             InputVar<double> lred = new InputVar<double>("Litter Reduction");
 
-            while (! AtEndOfInput && CurrentName != Names.MonthlyMaxNPP ) {
+            while (!AtEndOfInput && CurrentName != Names.MonthlyMaxNPP && CurrentName != Names.HarvestReductionParameters)
+            {
                 StringReader currentLine = new StringReader(CurrentLine);
                 
                 ReadValue(frindex , currentLine);
@@ -670,7 +672,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             //--------- Read In Harvest Reductions Table ---------------------------
-            InputVar<string> hreds = new InputVar<string>("HarvestReductions");
+            //InputVar<string> hreds = new InputVar<string>("HarvestReductions");
             ReadOptionalName(Names.HarvestReductionParameters);
             {
                 PlugIn.ModelCore.UI.WriteLine("   Begin reading HARVEST REDUCTION parameters.");
