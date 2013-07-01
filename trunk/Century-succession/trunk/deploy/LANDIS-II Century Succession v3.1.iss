@@ -1,6 +1,6 @@
 #define PackageName      "Century Succession"
 #define PackageNameLong  "Century Succession Extension"
-#define Version          "3.1"
+#define Version          "3.1.1"
 #define ReleaseType      "official"
 #define ReleaseNumber    "3"
 
@@ -20,7 +20,7 @@ Source: {#BuildDir}\Landis.Library.Succession.dll; DestDir: {#AppDir}\bin; Flags
 Source: {#BuildDir}\Landis.Library.Climate.dll; DestDir: {#AppDir}\bin; Flags: uninsneveruninstall replacesameversion
 
 ; Century Succession
-Source: {#BuildDir}\Landis.Extension.Succession.Century.dll; DestDir: {#AppDir}\bin\extensions; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#AppDir}\bin\extensions; Flags: replacesameversion
 Source: docs\LANDIS-II Century Succession v3.1 User Guide.pdf; DestDir: {#AppDir}\docs
 Source: docs\Century-succession-log-metadata.xlsx; DestDir: {#AppDir}\docs
 Source: examples\*; DestDir: {#AppDir}\examples\century-succession
