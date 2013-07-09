@@ -41,8 +41,9 @@
     <Reference Include="Landis.Library.AgeOnlyCohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Climate">
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Climate.dll</HintPath>
+    <Reference Include="Landis.Library.Climate, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\LANDIS-II\v6\bin\Landis.Library.Climate.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Cohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Cohorts.dll</HintPath>
@@ -112,11 +113,12 @@
     <Compile Include="utility\Species_AuxParm.cs" />
     <Compile Include="utility\ShortPixel.cs" />
     <Compile Include="utility\Util.cs" />
+    <Compile Include="utility\VersioningVerifier.cs" />
     <Compile Include="WoodLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /C Landis.Extension.Succession.Century.dll "C:\Program Files\LANDIS-II\v6\bin\extensions\"</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\extensions\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

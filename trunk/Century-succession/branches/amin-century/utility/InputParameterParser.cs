@@ -29,7 +29,7 @@ namespace Landis.Extension.Succession.Century
             public const string Timestep = "Timestep";
             public const string SeedingAlgorithm = "SeedingAlgorithm";
 
-            public const string LandisData = "LandisData";
+//            public const string LandisData = "LandisData";
             public const string ClimateConfigFile = "ClimateConfigFile";
             //public const string ClimateFileFormat = "ClimateFileFormat";
             //public const string ClimateFile = "ClimateFile";
@@ -111,9 +111,10 @@ namespace Landis.Extension.Succession.Century
             parameters.InitialCommunitiesMap = communitiesMap.Value;
 
             //---------------------------------------------------------------------------------
+            //System.Console.WriteLine("LandisData removed!");
             //Read line LandisData "Climate Data"
-            InputVar<string> landisData = new InputVar<string>(Names.LandisData);
-            ReadVar(landisData);
+//            InputVar<string> landisData = new InputVar<string>(Names.LandisData);
+//            ReadVar(landisData);
 
             InputVar<string> climateConfigFile = new InputVar<string>(Names.ClimateConfigFile);
             ReadVar(climateConfigFile);

@@ -71,6 +71,9 @@ namespace Landis.Extension.Succession.Century
 
         public override void Initialize()
         {
+//            VersioningHelper.Verify(new string[] {"Landis.Library.Climate ; 2.0.0.0"});
+            //Console.Read();
+
             PlugIn.ModelCore.UI.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
             SuccessionTimeStep    = Timestep;
