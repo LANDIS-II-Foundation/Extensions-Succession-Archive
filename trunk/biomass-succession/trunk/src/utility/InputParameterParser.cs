@@ -14,6 +14,14 @@ namespace Landis.Extension.Succession.Biomass
     public class InputParametersParser
         : TextParser<IInputParameters>
     {
+        public override string LandisDataValue
+        {
+            get
+            {
+                return "Biomass Succession";
+            }
+        }
+
         public static class Names
         {
             public const string Timestep = "Timestep";

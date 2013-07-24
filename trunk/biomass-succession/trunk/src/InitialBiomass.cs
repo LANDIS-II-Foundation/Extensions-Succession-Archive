@@ -243,12 +243,12 @@ namespace Landis.Extension.Succession.Biomass
 
                     //foreach (ISpeciesCohorts spp in SiteVars.Cohorts[site])
                     //    foreach (ICohort co in spp)
-                    //        PlugIn.ModelCore.Log.WriteLine("I'm born!  My name is {0}.", co.Species.Name);
+                    //        PlugIn.ModelCore.UI.WriteLine("I'm born!  My name is {0}.", co.Species.Name);
                     indexNextAgeCohort++;
                 }
             }
 
-            //PlugIn.ModelCore.Log.WriteLine("Initial Community = {0}.", SiteVars.Cohorts[site].Write());
+            //PlugIn.ModelCore.UI.WriteLine("Initial Community = {0}.", SiteVars.Cohorts[site].Write());
             return SiteVars.Cohorts[site];
         }
 

@@ -37,7 +37,7 @@ namespace Landis.Extension.Succession.Biomass
             modelCore = mCore;
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
-            parameters = modelCore.Load<IInputParameters>(dataFile, parser);
+            parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
 
         }
 
@@ -209,7 +209,7 @@ namespace Landis.Extension.Succession.Biomass
                                        int years,
                                        bool isSuccessionTimestep)
         {
-            //PlugIn.ModelCore.Log.WriteLine("years = {0}, successionTS = {1}.", years, successionTimestep.Value);
+            //PlugIn.ModelCore.UI.WriteLine("years = {0}, successionTS = {1}.", years, successionTimestep.Value);
 
             for (int y = 1; y <= years; ++y)
             {
@@ -244,7 +244,7 @@ namespace Landis.Extension.Succession.Biomass
             foreach (ISufficientLight lights in sufficientLight)
             {
 
-                //PlugIn.ModelCore.Log.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
+                //PlugIn.ModelCore.UI.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
                 if (lights.ShadeClass == species.ShadeTolerance)
                 {
                     if (siteShade == 0) lightProbability = lights.ProbabilityLight0;
@@ -257,7 +257,7 @@ namespace Landis.Extension.Succession.Biomass
                 }
             }
 
-            if (!found) PlugIn.ModelCore.Log.WriteLine("Could not find sufficient light data for {0}.", species.Name);
+            if (!found) PlugIn.ModelCore.UI.WriteLine("Could not find sufficient light data for {0}.", species.Name);
 
             return PlugIn.ModelCore.GenerateUniform() < lightProbability;
         }

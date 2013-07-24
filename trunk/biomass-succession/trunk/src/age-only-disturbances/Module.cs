@@ -37,11 +37,11 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
         public static void Initialize(string filename)
         {
             if (filename != null) {
-                PlugIn.ModelCore.Log.WriteLine("   Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
+                PlugIn.ModelCore.UI.WriteLine("   Loading biomass parameters for age-only disturbances from file \"{0}\" ...", filename);
                 DatasetParser parser = new DatasetParser();
                 try
                 {
-                    parameters = PlugIn.ModelCore.Load<IParameterDataset>(filename, parser);
+                    parameters = Landis.Data.Load<IParameterDataset>(filename, parser);
                 }
                 catch (FileNotFoundException)
                 {
