@@ -90,15 +90,15 @@ namespace Landis.Extension.Succession.Biomass
                 }
             }
 
-            string path = MapNames.ReplaceTemplateVars("biomass-anpp", PlugIn.ModelCore.CurrentTime);
-            using (IOutputRaster<UIntPixel> outputRaster = PlugIn.ModelCore.CreateRaster<UIntPixel>(path, PlugIn.ModelCore.Landscape.Dimensions))
+            string path = MapNames.ReplaceTemplateVars("biomass-anpp-{timestep}.img", PlugIn.ModelCore.CurrentTime);
+            using (IOutputRaster<IntPixel> outputRaster = PlugIn.ModelCore.CreateRaster<IntPixel>(path, PlugIn.ModelCore.Landscape.Dimensions))
             {
-                UIntPixel pixel = outputRaster.BufferPixel;
+                IntPixel pixel = outputRaster.BufferPixel;
                 foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                 {
                     if (site.IsActive)
                     {
-                        pixel.MapCode.Value = (uint) SiteVars.AGNPP[site];
+                        pixel.MapCode.Value = (int) SiteVars.AGNPP[site];
                     }
                     else
                     {

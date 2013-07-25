@@ -5,11 +5,11 @@ using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.Biomass
 {
-    public class UIntPixel : Pixel
+    public class IntPixel : Pixel
     {
-        public Band<uint> MapCode  = "The numeric code for each ecoregion";
+        public Band<int> MapCode  = "The numeric code for each ecoregion";
 
-        public UIntPixel() 
+        public IntPixel() 
         {
             SetBands(MapCode);
         }
