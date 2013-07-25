@@ -15,7 +15,7 @@ namespace Landis.Extension.Succession.Biomass
         : TextParser<Dictionary<int, IDynamicInputRecord[,]>>
     {
 
-        private string FileName = "Dynamic Input Data";
+        //private string FileName = "Dynamic Input Data";
 
         public override string LandisDataValue
         {
@@ -36,10 +36,12 @@ namespace Landis.Extension.Succession.Biomass
         protected override Dictionary<int, IDynamicInputRecord[,]> Parse()
         {
 
-            InputVar<string> landisData = new InputVar<string>("LandisData");
-            ReadVar(landisData);
-            if (landisData.Value.Actual != FileName)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
+            //InputVar<string> landisData = new InputVar<string>("LandisData");
+            //ReadVar(landisData);
+            //if (landisData.Value.Actual != FileName)
+            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
+            ReadLandisDataVar();
+
             
             Dictionary<int, IDynamicInputRecord[,]> allData = new Dictionary<int, IDynamicInputRecord[,]>();
 
