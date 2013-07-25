@@ -24,6 +24,8 @@ Source: {#BioSucc3}; DestDir: {#LandisPlugInDir}
 ; Libraries
 Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
 Source: ..\src\bin\Debug\Landis.Library.BiomassCohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
+Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
+Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
 
 [Run]
 ;; Run plug-in admin tool to add an entry for the plug-in
