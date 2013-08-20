@@ -541,7 +541,7 @@ namespace Landis.Extension.Succession.Century
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", AvailableN.GetMineralNallocation(cohort), AvailableN.GetResorbedNallocation(cohort));
 
-            return limitN;
+            return Math.Max(limitN, 0.0);
         }
         //--------------------------------------------------------------------------
         // Originally from lacalc.f of CENTURY model

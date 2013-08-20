@@ -57,7 +57,7 @@ namespace Landis.Extension.Succession.Century
         {
         
             string logFileName   = "Century-succession-monthly-log.csv"; 
-            PlugIn.ModelCore.UI.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
+            PlugIn.ModelCore.UI.WriteLine("   Opening Century monthly log file \"{0}\" ...", logFileName);
             try {
                 logMonthly = new StreamWriter(logFileName);
             }
@@ -68,7 +68,7 @@ namespace Landis.Extension.Succession.Century
             
             logMonthly.AutoFlush = true;
             logMonthly.Write("Time, Month, Ecoregion, NumSites,");
-            logMonthly.Write("PPT, T, ");
+            logMonthly.Write("PPT, T, SoilW, ");
             logMonthly.Write("NPPC, Resp, NEE, ");
             logMonthly.Write("Ndeposition,");
             logMonthly.WriteLine("");
@@ -396,7 +396,7 @@ namespace Landis.Extension.Succession.Century
 
             double[] ppt = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] airtemp = new double[PlugIn.ModelCore.Ecoregions.Count];
-
+            double[] soilwater = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNPPtc = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgResp = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNEE = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -407,6 +407,7 @@ namespace Landis.Extension.Succession.Century
             {
                 ppt[ecoregion.Index] = 0.0;
                 airtemp[ecoregion.Index] = 0.0;
+                soilwater[ecoregion.Index] = 0.0;
 
                 avgNPPtc[ecoregion.Index] = 0.0;
                 avgResp[ecoregion.Index] = 0.0;
@@ -423,7 +424,8 @@ namespace Landis.Extension.Succession.Century
 
                 ppt[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
                 airtemp[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
-
+                
+                soilwater[ecoregion.Index] += SiteVars.MonthlySoilWaterContent[site][month];
                 avgNPPtc[ecoregion.Index] += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
                 avgResp[ecoregion.Index] += SiteVars.MonthlyResp[site][month];
                 avgNEE[ecoregion.Index] += SiteVars.MonthlyNEE[site][month];
@@ -437,15 +439,16 @@ namespace Landis.Extension.Succession.Century
             {
                 if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 {
-                    logMonthly.Write("{0}, {1}, {2}, {3},",
+                    logMonthly.Write("{0}, {1}, {2}, {3}, ",
                         PlugIn.ModelCore.CurrentTime,
                         month + 1,
                         ecoregion.Name,
                         EcoregionData.ActiveSiteCount[ecoregion]
                         );
-                    logMonthly.Write("{0:0.0}, {1:0.0}, ",
+                    logMonthly.Write("{0:0.0}, {1:0.0}, {2:0.000}, ",
                         ppt[ecoregion.Index],
-                        airtemp[ecoregion.Index]
+                        airtemp[ecoregion.Index],
+                        (soilwater[ecoregion.Index]/(double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     logMonthly.Write("{0:0.00}, {1:0.00}, {2:0.00}, ",
                         (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),

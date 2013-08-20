@@ -91,7 +91,7 @@ namespace Landis.Extension.Succession.Century
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     double baseFlow, stormFlow;
                     SoilWater.Run(y, Month, liveBiomass, site, out baseFlow, out stormFlow);
-
+                    SiteVars.MonthlySoilWaterContent[site][Month] = SiteVars.SoilWaterContent[site];
 
                     // Reset N resorption if it is September
                     if (Month == 8)
@@ -128,7 +128,7 @@ namespace Landis.Extension.Succession.Century
                     //     remains after uptake by plants.  ML added a correction factor for wetlands since their denitrification rate is double that of wetlands
                     //based on a review paper by Seitziner 2006.
 
-                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]) / 12; // monthly value
+                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]); // / 12; // monthly value WHY DIVIDE BY 12??
 
                     //PlugIn.ModelCore.UI.WriteLine("BeforeVol.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
