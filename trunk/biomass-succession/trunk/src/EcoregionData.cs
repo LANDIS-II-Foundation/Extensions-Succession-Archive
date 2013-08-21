@@ -24,7 +24,7 @@ namespace Landis.Extension.Succession.Biomass
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
         {
-             AET = parameters.AET;  //FINISH LATER
+             AET = parameters.AET;  
              MinRelativeBiomass = parameters.MinRelativeBiomass; 
 
             B_MAX               = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
@@ -35,6 +35,15 @@ namespace Landis.Extension.Succession.Biomass
                 IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
                 ActiveSiteCount[ecoregion]++;
             }
+            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+            {
+                if (EcoregionData.AET[ecoregion] <= 0.0 && ecoregion.Active)
+                {
+                    PlugIn.ModelCore.UI.WriteLine("   CAUTION: Ecoregion {0} has AET set to zero.", ecoregion.Name);
+                }
+
+            }
+
         }
         public static void UpdateB_MAX()
         {

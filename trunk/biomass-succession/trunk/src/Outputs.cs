@@ -73,7 +73,7 @@ namespace Landis.Extension.Succession.Biomass
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
+                if(ecoregion.Active)
                 {
                     log.Write("{0}, {1}, {2}, ",
                         CurrentTime,

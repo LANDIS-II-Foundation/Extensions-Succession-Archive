@@ -14,7 +14,6 @@ namespace Landis.Extension.Succession.Biomass
     public class PlugIn
         : Landis.Library.Succession.ExtensionBase
     {
-        //public static readonly string ExtensionName = "Biomass Succession";
         private static ICore modelCore;
         private IInputParameters parameters;
 
