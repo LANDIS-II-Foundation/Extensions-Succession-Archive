@@ -282,6 +282,7 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         /// <summary>
+        /// Grows the cohorts during spin-up
         /// Makes the set of biomass cohorts at a site based on the age cohorts
         /// at the site, using a specified method for computing a cohort's
         /// initial biomass.
@@ -295,10 +296,12 @@ namespace Landis.Extension.Succession.Century
         /// <param name="initialBiomassMethod">
         /// The method for computing the initial biomass for a new cohort.
         /// </param>
-        public static ISiteCohorts MakeBiomassCohorts(List<Landis.Library.AgeOnlyCohorts.ICohort> ageCohorts,
+        public static ISiteCohorts MakeBiomassCohorts(List<Landis.Library.AgeOnlyCohorts.ICohort> ageCohorts,   
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
+            PlugIn.ModelCore.UI.WriteLine("Making Biomass Cohorts using spin-up climate data");
+
             SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); 
             if (ageCohorts.Count == 0)
               return SiteVars.Cohorts[site];
@@ -322,7 +325,8 @@ namespace Landis.Extension.Succession.Century
             for (int time = -(ageCohorts[0].Age); time <= -1; time += successionTimestep)
             {
                 //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
-                EcoregionData.GenerateNewClimate(0, successionTimestep);
+                //EcoregionData.GenerateNewClimate(0, successionTimestep, ClimatePhase.SpinUp_Climate);
+                EcoregionData.GenerateNewClimate(time + ageCohorts[0].Age, successionTimestep, ClimatePhase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
 
                 //  Add those cohorts that were born at the current year
                 while (indexNextAgeCohort < ageCohorts.Count &&

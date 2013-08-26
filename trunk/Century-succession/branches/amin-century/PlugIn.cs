@@ -9,6 +9,7 @@ using Landis.Library.InitialCommunities;
 using Landis.Library.Succession;
 using Landis.Library.LeafBiomassCohorts;
 using Landis.Library.Climate;
+using Landis.Library.Metadata;
 
 using System;
 using System.Collections.Generic;
@@ -71,7 +72,8 @@ namespace Landis.Extension.Succession.Century
 
         public override void Initialize()
         {
-//            VersioningHelper.Verify(new string[] {"Landis.Library.Climate ; 2.0.0.0"});
+            MetadataHandler.InitializeMetadata();
+//          VersioningHelper.Verify(new string[] {"Landis.Library.Climate ; 2.0.0.0"});
             //Console.Read();
 
             PlugIn.ModelCore.UI.WriteLine("Initializing {0} ...", ExtensionName);
@@ -80,12 +82,18 @@ namespace Landis.Extension.Succession.Century
             sufficientLight       = parameters.LightClassProbabilities;
             ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
-
+            
 
             //Before initialization all climate data should be converted if is needed.
 
             //Climate.Convert_FileFormat(parameters.ClimateFileFormat, parameters.ClimateFile);			
             //Initialize climate.
+
+//            ExtensionMetadata ext ExtensionMetadata
+
+//            MetadataProvider metaProvider = new MetadataProvider();
+
+//            metaProvider.GetMetadataString();
             Climate.Initialize(parameters.ClimateConfigFile, false, modelCore);
             //Climate.Initialize(Climate.Convert_FileFormat(parameters.ClimateFileFormat, parameters.ClimateFile), Climate.Convert_FileFormat(parameters.SpinUpClimateFileFormat, parameters.SpinUpClimateFile), false, modelCore);
             //Climate.Initialize(parameters.ClimateFile, false, modelCore);
@@ -119,9 +127,13 @@ namespace Landis.Extension.Succession.Century
             Dynamic.Module.Initialize(parameters.DynamicUpdates);
             EcoregionData.Initialize(parameters);
             FireEffects.Initialize(parameters);
-            InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
+            InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore); //the spinup is heppend within this fucntion
             if (parameters.CalibrateMode)
                 Outputs.CreateCalibrateLogFile();
+
+            
+            
+            //UriBuilder metadata here;
 
         }
 
@@ -133,7 +145,7 @@ namespace Landis.Extension.Succession.Century
                 SiteVars.InitializeDisturbances();
 
             Dynamic.Module.CheckForUpdate();
-            EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep);
+            EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, ClimatePhase.Future_Climate);
 
             // Update Pest only once.
             SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);
@@ -387,7 +399,7 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
-
+        //Grows the cohorts for future climate
         protected override void AgeCohorts(ActiveSite site,
                                            ushort     years,
                                            int?       successionTimestep)

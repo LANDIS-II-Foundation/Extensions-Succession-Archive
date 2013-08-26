@@ -93,7 +93,7 @@ namespace Landis.Extension.Succession.Century
             }
 
 
-            GenerateNewClimate(0, parameters.Timestep);
+            GenerateNewClimate(0, parameters.Timestep, ClimatePhase.SpinUp_Climate);
             
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
@@ -146,15 +146,16 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.UI.WriteLine("{0}", weatherWrite);
             }
         }
-
         
-
+        //***Amin's NOTE:***
+        //this function has been preserved because of the extensive use of this function and specially EcoregionData.AnnualClimateArray which is filled out here in this function. However, 
+        //since the "new AnnualClimate(...)" can provide the required climate for each ecoregion-timestep, the EcoregionData.AnnualClimateArray is no longer required and the "new AnnualClimate(...)" can be used instead.
+        //The advantage of the "new AnnualClimate(...)" is that it does not requre to iterate in ecoregions and store their coresponding climates and it's running time is a constant time. Also, it is encapsulated in Climate library and is more maintainable and extendable.
         //---------------------------------------------------------------------
         // Generates new climate parameters at an annual time step.
         // 
-        public static void GenerateNewClimate(int year, int years)
+        public static void GenerateNewClimate(int startingTimestep, int timeStepCount, ClimatePhase spinuOrfuture) //Pass false for spin-up (historic)
         {
-        
             //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
             AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
@@ -165,20 +166,63 @@ namespace Landis.Extension.Succession.Century
             // deviations for all ecoregions.  The converse problem is over synchronization of climate, but
             // that would certainly be preferrable over smaller regions.
             
-            
+            Console.WriteLine("\n-------get {0}-------> {1}, {2} \n", spinuOrfuture.ToString(), startingTimestep, timeStepCount);
             
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
             {
                 if(ecoregion.Active)
                 {            
-                    AnnualClimate[] tempClimate = new AnnualClimate[years];
+                    AnnualClimate[] tempClimate = new AnnualClimate[timeStepCount];
             
+                    for (int y = 0; y < timeStepCount; y++)
+                    {
+                        int actualYear = startingTimestep + y;
+            
+                        //if(Climate.AllData.ContainsKey(actualYear))
+                        //{
+                        //    Climate.TimestepData = Climate.AllData[actualYear];
+                        //    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Yr={0}, Eco={1}.", actualYear, ecoregion.Name);
+                        //    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  AllData  Jan Ppt = {0:0.00}.", Climate.AllData[actualYear][ecoregion.Index,0].AvgPpt);
+                        //    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
+                        //}
+
+                        AnnualClimate.AnnualClimateInitialize();
+                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion], spinuOrfuture, actualYear); //actual year and timeStep here have been set to be identity
+                        
+                        //Console.WriteLine("---{0} , for eco:{1} actualYear/timeStep: {2}  ", spinuOrfuture.ToString(), ecoregion.Index, actualYear);
+                    }
+                    AnnualClimateArray[ecoregion] = tempClimate;
+                }
+            }
+        }
+
+        public static void GenerateNewClimate_OLD(int year, int years) //Pass false for spin-up (historic)
+        {
+
+            //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
+
+            AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
+
+            // Issues with this approach:  Each ecoregion will have unique variability associated with 
+            // temperature and precipitation.  In reality, we expect some regional synchronicity.  An 
+            // easy-ish solution would be to use the same random number in combination with standard 
+            // deviations for all ecoregions.  The converse problem is over synchronization of climate, but
+            // that would certainly be preferrable over smaller regions.
+
+
+
+            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+            {
+                if (ecoregion.Active)
+                {
+                    AnnualClimate[] tempClimate = new AnnualClimate[years];
+
                     for (int y = 0; y < years; y++)
                     {
-                
+
                         int actualYear = year + y;
-            
-                        if(Climate.AllData.ContainsKey(actualYear))
+
+                        if (Climate.AllData.ContainsKey(actualYear))
                         {
                             Climate.TimestepData = Climate.AllData[actualYear];
                             //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Yr={0}, Eco={1}.", actualYear, ecoregion.Name);
@@ -187,10 +231,10 @@ namespace Landis.Extension.Succession.Century
                         }
 
                         AnnualClimate.AnnualClimateInitialize();
-                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]); 
-                    
+                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]);
+
                     }
-                
+
                     AnnualClimateArray[ecoregion] = tempClimate;
                 }
             }

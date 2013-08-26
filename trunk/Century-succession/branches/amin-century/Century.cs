@@ -53,6 +53,8 @@ namespace Landis.Extension.Succession.Century
                     EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
                 }
 
+                
+
                 // if spin-up phase, allow each initial community to have a unique climate
                 if(PlugIn.ModelCore.CurrentTime == 0)
                 {
@@ -214,7 +216,6 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         private static void CalculateCohortCN(ActiveSite site, ICohort cohort)
         {
-
             ISpecies species = cohort.Species;
 
             double leafC = cohort.LeafBiomass * 0.47;
