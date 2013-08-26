@@ -22,7 +22,7 @@ namespace Landis.Extension.Succession.Century
         private static StreamWriter log;
         private static StreamWriter logMonthly;
         public static StreamWriter CalibrateLog;
-        public static MetadataTable<MonthlyLog> dtMonthly = new MetadataTable<MonthlyLog>("teeeeeeest.csv");
+        public static MetadataTable<MonthlyLog> dtMonthly = new MetadataTable<MonthlyLog>("Century-succession-monthly-TEST-log.csv");
 
 
         //---------------------------------------------------------------------
@@ -414,12 +414,12 @@ namespace Landis.Extension.Succession.Century
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 dtMonthly.AddObject(new MonthlyLog());
-                //ppt[ecoregion.Index] = 0.0;
-                //airtemp[ecoregion.Index] = 0.0;
-                //avgNPPtc[ecoregion.Index] = 0.0;
-                //avgResp[ecoregion.Index] = 0.0;
-                //avgNEE[ecoregion.Index] = 0.0;
-                //Ndep[ecoregion.Index] = 0.0;
+                ppt[ecoregion.Index] = 0.0;
+                airtemp[ecoregion.Index] = 0.0;
+                avgNPPtc[ecoregion.Index] = 0.0;
+                avgResp[ecoregion.Index] = 0.0;
+                avgNEE[ecoregion.Index] = 0.0;
+                Ndep[ecoregion.Index] = 0.0;
             }
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -433,29 +433,29 @@ namespace Landis.Extension.Succession.Century
                 //ml.EcoregionName = ecoregion.Name;
                 //ml.NumSites = Convert.ToInt32(EcoregionData.ActiveSiteCount[ecoregion]);
 
-                ml.ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
-                ml.airtemp = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
+                //ml.ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
+                //ml.airtemp = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
 
-                ml.avgNPPtc += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
-                ml.avgResp += SiteVars.MonthlyResp[site][month];
-                ml.avgNEE += SiteVars.MonthlyNEE[site][month];
-
-                SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
-
-                ml.Ndep = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
-
-
-
-                //ppt[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
-                //airtemp[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
-
-                //avgNPPtc[ecoregion.Index] += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
-                //avgResp[ecoregion.Index] += SiteVars.MonthlyResp[site][month];
-                //avgNEE[ecoregion.Index] += SiteVars.MonthlyNEE[site][month];
+                //ml.avgNPPtc += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
+                //ml.avgResp += SiteVars.MonthlyResp[site][month];
+                //ml.avgNEE += SiteVars.MonthlyNEE[site][month];
 
                 //SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
 
-                //Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
+                //ml.Ndep = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
+
+
+
+                ppt[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
+                airtemp[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
+
+                avgNPPtc[ecoregion.Index] += SiteVars.MonthlyAGNPPcarbon[site][month] + SiteVars.MonthlyBGNPPcarbon[site][month];
+                avgResp[ecoregion.Index] += SiteVars.MonthlyResp[site][month];
+                avgNEE[ecoregion.Index] += SiteVars.MonthlyNEE[site][month];
+
+                SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
+
+                Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
 
             }
             
@@ -470,9 +470,12 @@ namespace Landis.Extension.Succession.Century
                     ml.EcoregionName = ecoregion.Name;
                     ml.NumSites = Convert.ToInt32(EcoregionData.ActiveSiteCount[ecoregion]);
 
-                    ml.avgNPPtc /= (double)EcoregionData.ActiveSiteCount[ecoregion];
-                    ml.avgResp /= (double)EcoregionData.ActiveSiteCount[ecoregion];
-                    ml.avgNEE /= (double)EcoregionData.ActiveSiteCount[ecoregion];
+                    ml.ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
+                    ml.airtemp = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
+                    ml.avgNPPtc = (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    ml.avgResp = (avgResp[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    ml.avgNEE = (avgNEE[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    ml.Ndep = Ndep[ecoregion.Index];
 
                     //logMonthly.Write("{0}, {1}, {2}, {3},",
                     //    PlugIn.ModelCore.CurrentTime,

@@ -4,6 +4,7 @@ using System.Linq;
 //using System.Data;
 using System.Text;
 using Landis.Library.Metadata;
+using Edu.Wisc.Forest.Flel.Util;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -15,16 +16,17 @@ namespace Landis.Extension.Succession.Century
         public static void InitializeMetadata()
         {
             ScenarioReplicationMetadata scenRep = new ScenarioReplicationMetadata() {
+                //String outputFolder = OutputPath.ReplaceTemplateVars("", FINISH ME LATER);
                 FolderName = "Scen_?-rep_?", //we should probably add this to the extension/scenario input file or we might be leaving this out because the extensions do not need to know anything about the replication (the hirarchy of the scenario-replications and their extensions are defined by the convention of folder structures)
                 RasterOutCellArea = PlugIn.ModelCore.CellArea,
                 TimeMin = PlugIn.ModelCore.StartTime,
                 TimeMax = PlugIn.ModelCore.EndTime,
-                ProjectionFilePath = "Projection.?" //we should probably add this to the extension/scenario input file
+                ProjectionFilePath = "Projection.?" //How do we get projections???
             };
 
             Extension = new ExtensionMetadata(){
                 Name = "Century-Succession",
-                TimeInterval = PlugIn.ModelCore.TimeSinceStart, //TimeInterval?
+                TimeInterval = PlugIn.SuccessionTimeStep,  //ModelCore.TimeSinceStart, //TimeInterval?
                 ScenarioReplicationMetadata = scenRep
             };
 
@@ -51,14 +53,14 @@ namespace Landis.Extension.Succession.Century
             {
                 Type = OutputType.Map,
                 Name = "ag_npp",
-                FilePath = @"Century-Succession\ag_npp-1882.img"
+                FilePath = @"Century-Succession\ag_npp-[timeStep].img"
                 //MetadataFilePath = @"Century-Succession\ANPP.xml"
             };
             Extension.OutputMetadatas.Add(mapOut_ANPP);
 
             //---------------------------------------
             MetadataProvider mp = new MetadataProvider(Extension);
-            mp.WriteMetadataToXMLFile("Metadata", Extension.Name, Extension.Name);
+            mp.WriteMetadataToXMLFile(("Metadata", Extension.Name, Extension.Name);
 
 
 
