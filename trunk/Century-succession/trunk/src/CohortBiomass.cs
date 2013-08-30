@@ -177,7 +177,7 @@ namespace Landis.Extension.Succession.Century
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
-                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00}", resorbedNused, mineralNused, totalNdemand);
+                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00},", resorbedNused, mineralNused, totalNdemand);
             }
 
             return deltas;
@@ -273,6 +273,7 @@ namespace Landis.Extension.Succession.Century
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}, ", limitLAI, limitH20, limitT, limitCapacity, limitN);
                 Outputs.CalibrateLog.Write("{0}, {1}, {2}, {3:0.0}, {4:0.0}, ", maxNPP, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", woodNPP, leafNPP);
+                
             }
 
 
@@ -624,6 +625,7 @@ namespace Landis.Extension.Succession.Century
             // The minimum LAI to calculate effect is 0.2.
             //if (lai < 0.5) lai = 0.5;
             if (lai < 0.1) lai = 0.1;
+            
 
             //SiteVars.LAI[site] += lai; Tracking LAI.
 
@@ -633,7 +635,12 @@ namespace Landis.Extension.Succession.Century
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, leafC={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, leafC, largeWoodC);
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, lai={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, lai, largeWoodC);
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}.     LAI Limits:  lai={2:0.0}, woodLAI={3:0.0}, leafLAI={4:0.0}, LAIlimit={5:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, lai, woodLAI, leafLAI, LAI_limit);
-
+            if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
+            {
+                Outputs.CalibrateLog.Write("{0:0.00},", lai);
+            }
+                
+          
             return LAI_limit;
 
         }

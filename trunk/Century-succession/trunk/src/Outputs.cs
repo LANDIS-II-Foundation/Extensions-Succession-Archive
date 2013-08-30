@@ -483,6 +483,7 @@ namespace Landis.Extension.Succession.Century
             CalibrateLog.Write("Year, Month, EcoregionIndex, SpeciesName, CohortAge, CohortWoodB, CohortLeafB, ");  // from ComputeChange
             CalibrateLog.Write("MortalityAGEwood, MortalityAGEleaf, ");  // from ComputeAgeMortality
             CalibrateLog.Write("MortalityBIOwood, MortalityBIOleaf, ");  // from ComputeGrowthMortality
+            CalibrateLog.Write("LAI,");  // from ComputeActualANPP
             CalibrateLog.Write("mineralNalloc, resorbedNalloc, ");  // from calculateN_Limit
             CalibrateLog.Write("limitLAI, limitH20, limitT, limitCapacity, limitN, ");  //from ComputeActualANPP
             CalibrateLog.Write("maxNPP, Bmax, Bsite, Bcohort, soilTemp, ");  //from ComputeActualANPP
@@ -490,7 +491,9 @@ namespace Landis.Extension.Succession.Century
             CalibrateLog.Write("deltaWood, deltaLeaf, totalMortalityWood, totalMortalityLeaf, ");  // from ComputeChange
             CalibrateLog.WriteLine("resorbedNused, mineralNused, Ndemand,");  // from ComputeChange
             
-
+           
+           
+           
         }
         
         
