@@ -629,6 +629,8 @@ namespace Landis.Extension.Succession.Century
 
             double LAI_limit = Math.Max(0.0, 1.0 - Math.Exp(laitop * lai));
 
+            if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
+                Outputs.CalibrateLog.Write("{0:0.00}, ", lai);
 
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, leafC={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, leafC, largeWoodC);
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, lai={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, lai, largeWoodC);

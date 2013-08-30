@@ -485,7 +485,8 @@ namespace Landis.Extension.Succession.Century
             CalibrateLog.Write("maxNPP, Bmax, Bsite, Bcohort, soilTemp, ");  //from ComputeActualANPP
             CalibrateLog.Write("actualWoodNPP, actualLeafNPP, ");  //from ComputeActualANPP
             CalibrateLog.Write("deltaWood, deltaLeaf, totalMortalityWood, totalMortalityLeaf, ");  // from ComputeChange
-            CalibrateLog.WriteLine("resorbedNused, mineralNused, Ndemand,");  // from ComputeChange
+            CalibrateLog.Write("resorbedNused, mineralNused, Ndemand,");  // from ComputeChange
+            CalibrateLog.WriteLine("LAI,");  // from ComputeChange
             
 
         }
