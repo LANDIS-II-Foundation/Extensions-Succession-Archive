@@ -92,7 +92,7 @@ namespace Landis.Extension.Succession.Century
                 ActiveSiteCount[ecoregion]++;
             }
 
-
+            
             GenerateNewClimate(0, parameters.Timestep, ClimatePhase.SpinUp_Climate);
             
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);

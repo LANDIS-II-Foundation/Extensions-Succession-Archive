@@ -444,8 +444,6 @@ namespace Landis.Extension.Succession.Century
 
                 //ml.Ndep = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
 
-
-
                 ppt[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
                 airtemp[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
 
@@ -500,8 +498,6 @@ namespace Landis.Extension.Succession.Century
             }
 
             dtMonthly.WriteToFile();
-
-
         }
         
         //Write log file for growth and limits

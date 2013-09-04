@@ -7,6 +7,8 @@ using Edu.Wisc.Forest.Flel.Util;
 using Landis.Library.InitialCommunities;
 using System.Collections.Generic;
 using Landis.Library.LeafBiomassCohorts;
+using Landis.Library.Climate;
+using System;
 //using Landis.Cohorts;
 
 
@@ -300,51 +302,61 @@ namespace Landis.Extension.Succession.Century
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
-            PlugIn.ModelCore.UI.WriteLine("Making Biomass Cohorts using spin-up climate data");
+            if (Climate.Spinup_AllData.Count >= ageCohorts[0].Age)
+            try
+            {    
+                PlugIn.ModelCore.UI.WriteLine("Making Biomass Cohorts using spin-up climate data");
 
-            SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); 
-            if (ageCohorts.Count == 0)
-              return SiteVars.Cohorts[site];
+                SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); 
+                if (ageCohorts.Count == 0)
+                  return SiteVars.Cohorts[site];
 
-            int indexNextAgeCohort = 0;
-            //  The index in the list of sorted age cohorts of the next
-            //  cohort to be considered
+                int indexNextAgeCohort = 0;
+                //  The index in the list of sorted age cohorts of the next
+                //  cohort to be considered
 
-            //  Loop through time from -N to 0 where N is the oldest cohort.
-            //  So we're going from the time when the oldest cohort was "born"
-            //  to the present time (= 0).  Because the age of any age cohort
-            //  is a multiple of the succession timestep, we go from -N to 0
-            //  by that timestep.  NOTE: the case where timestep = 1 requires
-            //  special treatment because if we start at time = -N with a
-            //  cohort with age = 1, then at time = 0, its age will N+1 not N.
-            //  Therefore, when timestep = 1, the ending time is -1.
+                //  Loop through time from -N to 0 where N is the oldest cohort.
+                //  So we're going from the time when the oldest cohort was "born"
+                //  to the present time (= 0).  Because the age of any age cohort
+                //  is a multiple of the succession timestep, we go from -N to 0
+                //  by that timestep.  NOTE: the case where timestep = 1 requires
+                //  special treatment because if we start at time = -N with a
+                //  cohort with age = 1, then at time = 0, its age will N+1 not N.
+                //  Therefore, when timestep = 1, the ending time is -1.
             
-            //int endTime = (successionTimestep == 1) ? -1 : -1;
-            //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}, endTime={2}.", ageCohorts[0].Age, successionTimestep, endTime);
-            //for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
-            for (int time = -(ageCohorts[0].Age); time <= -1; time += successionTimestep)
-            {
-                //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
-                //EcoregionData.GenerateNewClimate(0, successionTimestep, ClimatePhase.SpinUp_Climate);
-                EcoregionData.GenerateNewClimate(time + ageCohorts[0].Age, successionTimestep, ClimatePhase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
+                //int endTime = (successionTimestep == 1) ? -1 : -1;
+                //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}, endTime={2}.", ageCohorts[0].Age, successionTimestep, endTime);
+                //for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
 
-                //  Add those cohorts that were born at the current year
-                while (indexNextAgeCohort < ageCohorts.Count &&
-                       ageCohorts[indexNextAgeCohort].Age == -time)
+                for (int time = -(ageCohorts[0].Age); time <= -1; time += successionTimestep)
                 {
-                    ISpecies species = ageCohorts[indexNextAgeCohort].Species;
+                    Console.WriteLine("here#################################\n");
+                        //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
+                        //EcoregionData.GenerateNewClimate(0, successionTimestep, ClimatePhase.SpinUp_Climate);
+                        EcoregionData.GenerateNewClimate(time + ageCohorts[0].Age, successionTimestep, ClimatePhase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
 
-                    float[] initialBiomass = initialBiomassMethod(species, SiteVars.Cohorts[site], site);
+                        //  Add those cohorts that were born at the current year
+                        while (indexNextAgeCohort < ageCohorts.Count &&
+                               ageCohorts[indexNextAgeCohort].Age == -time)
+                        {
+                            ISpecies species = ageCohorts[indexNextAgeCohort].Species;
 
-                    SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
-                                                initialBiomass[0], initialBiomass[1]);
-                    indexNextAgeCohort++;
+                            float[] initialBiomass = initialBiomassMethod(species, SiteVars.Cohorts[site], site);
+
+                            SiteVars.Cohorts[site].AddNewCohort(ageCohorts[indexNextAgeCohort].Species, 1,
+                                                        initialBiomass[0], initialBiomass[1]);
+                            indexNextAgeCohort++;
+                        }
+
+                        Century.Run(site, successionTimestep, true);
+                
+                
                 }
-                
-                Century.Run(site, successionTimestep, true);
-                
             }
-
+            catch (ClimateDataOutOfRangeException ex)
+            { 
+                    //do nothing
+            }
             return SiteVars.Cohorts[site];
         }
 

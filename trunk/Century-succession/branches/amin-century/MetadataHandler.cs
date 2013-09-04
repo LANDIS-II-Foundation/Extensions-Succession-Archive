@@ -53,14 +53,14 @@ namespace Landis.Extension.Succession.Century
             {
                 Type = OutputType.Map,
                 Name = "ag_npp",
-                FilePath = @"Century-Succession\ag_npp-{timeStep}.img",
+                FilePath = @"Century-Succession\ag_npp-[timeStep].img"
                 //MetadataFilePath = @"Century-Succession\ANPP.xml"
             };
             Extension.OutputMetadatas.Add(mapOut_ANPP);
 
             //---------------------------------------
             MetadataProvider mp = new MetadataProvider(Extension);
-            mp.WriteMetadataToXMLFile("Metadata", Extension.Name, Extension.Name);
+            mp.WriteMetadataToXMLFile(("Metadata", Extension.Name, Extension.Name);
 
 
 
