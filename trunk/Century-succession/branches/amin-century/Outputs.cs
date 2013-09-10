@@ -398,7 +398,6 @@ namespace Landis.Extension.Succession.Century
 
         public static void WriteMonthlyLogFile(int month)
         {
-
             double[] ppt = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] airtemp = new double[PlugIn.ModelCore.Ecoregions.Count];
 
@@ -409,7 +408,8 @@ namespace Landis.Extension.Succession.Century
             double[] Ndep = new double[PlugIn.ModelCore.Ecoregions.Count];
  
             
-            List<MonthlyLog> mlList = new List<MonthlyLog>();
+            //List<MonthlyLog> mlList = new List<MonthlyLog>();
+            dtMonthly.Clear();
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
@@ -426,7 +426,7 @@ namespace Landis.Extension.Succession.Century
             {
                 IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
                 //MonthlyLog ml = new MonthlyLog();
-                MonthlyLog ml = dtMonthly.GetObjectAt(ecoregion.Index);
+                //MonthlyLog ml = dtMonthly.GetObjectAt(ecoregion.Index);
 
                 //ml.Time = PlugIn.ModelCore.CurrentTime;
                 //ml.Month = month + 1;

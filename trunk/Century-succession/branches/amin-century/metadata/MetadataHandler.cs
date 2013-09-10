@@ -17,7 +17,7 @@ namespace Landis.Extension.Succession.Century
         {
             ScenarioReplicationMetadata scenRep = new ScenarioReplicationMetadata() {
                 //String outputFolder = OutputPath.ReplaceTemplateVars("", FINISH ME LATER);
-                FolderName = "Scen_?-rep_?", //we should probably add this to the extension/scenario input file or we might be leaving this out because the extensions do not need to know anything about the replication (the hirarchy of the scenario-replications and their extensions are defined by the convention of folder structures)
+                FolderName = System.IO.Directory.GetCurrentDirectory().Split("\\".ToCharArray()).Last(),//"Scen_?-rep_?", //we should probably add this to the extension/scenario input file or we might be leaving this out because the extensions do not need to know anything about the replication (the hirarchy of the scenario-replications and their extensions are defined by the convention of folder structures)
                 RasterOutCellArea = PlugIn.ModelCore.CellArea,
                 TimeMin = PlugIn.ModelCore.StartTime,
                 TimeMax = PlugIn.ModelCore.EndTime,
@@ -26,7 +26,7 @@ namespace Landis.Extension.Succession.Century
 
             Extension = new ExtensionMetadata(){
                 Name = "Century-Succession",
-                TimeInterval = PlugIn.SuccessionTimeStep,  //ModelCore.TimeSinceStart, //TimeInterval?
+                TimeInterval = PlugIn.SuccessionTimeStep, //change this to PlugIn.TimeStep for other extensions
                 ScenarioReplicationMetadata = scenRep
             };
 
@@ -54,6 +54,8 @@ namespace Landis.Extension.Succession.Century
                 Type = OutputType.Map,
                 Name = "ag_npp",
                 FilePath = @"Century-Succession\ag_npp-{timeStep}.img",
+                Map_DataType = MapDataType.Nominal,
+                Map_Unit = "unit?",
                 //MetadataFilePath = @"Century-Succession\ANPP.xml"
             };
             Extension.OutputMetadatas.Add(mapOut_ANPP);

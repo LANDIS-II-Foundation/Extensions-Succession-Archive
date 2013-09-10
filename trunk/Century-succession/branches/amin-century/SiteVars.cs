@@ -160,7 +160,7 @@ namespace Landis.Extension.Succession.Century
                 //  site cohorts are initialized by the PlugIn.InitializeSite method
                 
                 //leafBiomassCohorts[site]    = new SiteCohorts();
-                
+                //Console.Write("-");
                 surfaceDeadWood[site]       = new Layer(LayerName.Wood, LayerType.Surface);
                 soilDeadWood[site]          = new Layer(LayerName.CoarseRoot, LayerType.Soil);
                 
