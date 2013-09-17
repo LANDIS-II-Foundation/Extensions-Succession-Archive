@@ -154,7 +154,7 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         // Generates new climate parameters at an annual time step.
         // 
-        public static void GenerateNewClimate(int startingTimestep, int timeStepCount, ClimatePhase spinuOrfuture) //Pass false for spin-up (historic)
+        public static void GenerateNewClimate(int startingTimestep, int timeStepCount, ClimatePhase spinupOrfuture) //Pass false for spin-up (historic)
         {
             //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
@@ -166,7 +166,7 @@ namespace Landis.Extension.Succession.Century
             // deviations for all ecoregions.  The converse problem is over synchronization of climate, but
             // that would certainly be preferrable over smaller regions.
             
-            Console.WriteLine("\n-------get {0}-------> {1}, {2} \n", spinuOrfuture.ToString(), startingTimestep, timeStepCount);
+            Console.WriteLine("\n-------get {0}-------> {1}, {2} \n", spinupOrfuture.ToString(), startingTimestep, timeStepCount);
             
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
             {
@@ -187,7 +187,7 @@ namespace Landis.Extension.Succession.Century
                         //}
 
                         AnnualClimate.AnnualClimateInitialize();
-                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion], spinuOrfuture, actualYear); //actual year and timeStep here have been set to be identity
+                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion], spinupOrfuture, actualYear); //actual year and timeStep here have been set to be identity
                         
                         //Console.WriteLine("---{0} , for eco:{1} actualYear/timeStep: {2}  ", spinuOrfuture.ToString(), ecoregion.Index, actualYear);
                     }

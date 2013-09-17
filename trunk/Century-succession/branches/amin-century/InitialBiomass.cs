@@ -302,7 +302,7 @@ namespace Landis.Extension.Succession.Century
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
-            if (Climate.Spinup_AllData.Count >= ageCohorts[0].Age)
+            //if (Climate.Spinup_AllData.Count >= ageCohorts[0].Age)
             try
             {    
                 PlugIn.ModelCore.UI.WriteLine("Making Biomass Cohorts using spin-up climate data");
@@ -323,7 +323,7 @@ namespace Landis.Extension.Succession.Century
                 //  special treatment because if we start at time = -N with a
                 //  cohort with age = 1, then at time = 0, its age will N+1 not N.
                 //  Therefore, when timestep = 1, the ending time is -1.
-            
+                
                 //int endTime = (successionTimestep == 1) ? -1 : -1;
                 //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}, endTime={2}.", ageCohorts[0].Age, successionTimestep, endTime);
                 //for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
@@ -354,8 +354,8 @@ namespace Landis.Extension.Succession.Century
                 }
             }
             catch (ClimateDataOutOfRangeException ex)
-            { 
-                    //do nothing
+            {
+                throw ex;   //do nothing
             }
             return SiteVars.Cohorts[site];
         }

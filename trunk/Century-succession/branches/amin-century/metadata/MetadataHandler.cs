@@ -39,7 +39,7 @@ namespace Landis.Extension.Succession.Century
                 Type = OutputType.Table,
                 Name = "MonthlyLog",
                 FilePath = Outputs.dtMonthly.FilePath,
-                MetadataFilePath = @"Century-Succession\MonthlyLog.xml"
+                //MetadataFilePath = @"Century-Succession\MonthlyLog.xml" //this is set automatically and it's not required to be set
             };
             tblOut_monthly.RetriveFields(typeof(MonthlyLog));
             Extension.OutputMetadatas.Add(tblOut_monthly);

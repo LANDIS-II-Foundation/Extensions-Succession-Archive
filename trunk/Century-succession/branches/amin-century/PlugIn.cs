@@ -285,8 +285,9 @@ namespace Landis.Extension.Succession.Century
 
             }
             catch(ClimateDataOutOfRangeException ex)
-            { 
-                //do nothing
+            {
+                //ignore this run
+                PlugIn.ModelCore.UI.WriteLine("\n*** PlugIng.Run() was ignored at time step " + PlugIn.ModelCore.CurrentTime + " ***\nDetail: " + ex.InnerException.Message);
             }
         }
 
@@ -295,7 +296,6 @@ namespace Landis.Extension.Succession.Century
 
         public override byte ComputeShade(ActiveSite site)
         {
-
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             byte finalShade = 0;
