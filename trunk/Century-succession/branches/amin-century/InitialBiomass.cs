@@ -330,7 +330,7 @@ namespace Landis.Extension.Succession.Century
 
                 for (int time = -(ageCohorts[0].Age); time <= -1; time += successionTimestep)
                 {
-                    Console.WriteLine("here#################################\n");
+                    //Console.WriteLine("here#################################\n");
                         //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
                         //EcoregionData.GenerateNewClimate(0, successionTimestep, ClimatePhase.SpinUp_Climate);
                         EcoregionData.GenerateNewClimate(time + ageCohorts[0].Age, successionTimestep, ClimatePhase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years

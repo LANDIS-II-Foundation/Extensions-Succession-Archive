@@ -413,13 +413,17 @@ namespace Landis.Extension.Succession.Century
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                dtMonthly.AddObject(new MonthlyLog());
-                ppt[ecoregion.Index] = 0.0;
-                airtemp[ecoregion.Index] = 0.0;
-                avgNPPtc[ecoregion.Index] = 0.0;
-                avgResp[ecoregion.Index] = 0.0;
-                avgNEE[ecoregion.Index] = 0.0;
-                Ndep[ecoregion.Index] = 0.0;
+                if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
+                {
+
+                    dtMonthly.AddObject(new MonthlyLog() { EcoregionName = ecoregion.Name});
+                    ppt[ecoregion.Index] = 0.0;
+                    airtemp[ecoregion.Index] = 0.0;
+                    avgNPPtc[ecoregion.Index] = 0.0;
+                    avgResp[ecoregion.Index] = 0.0;
+                    avgNEE[ecoregion.Index] = 0.0;
+                    Ndep[ecoregion.Index] = 0.0;
+                }
             }
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -462,7 +466,8 @@ namespace Landis.Extension.Succession.Century
             {
                 if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 {
-                    MonthlyLog ml = dtMonthly.GetObjectAt(ecoregion.Index);
+                    int objIndx = dtMonthly.ObjectsList.FindIndex(m => m.EcoregionName == ecoregion.Name);
+                    MonthlyLog ml = dtMonthly.GetObjectAt(objIndx);
                     ml.Time = PlugIn.ModelCore.CurrentTime;
                     ml.Month = month + 1;
                     ml.EcoregionName = ecoregion.Name;
