@@ -13,14 +13,16 @@
 
 [Files]
 ; Auxiliary libs
-Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#AppDir}\bin; Flags: replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#AppDir}\bin; Flags: replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#AppDir}\bin; Flags: replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#AppDir}\bin; Flags: uninsneveruninstall replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#AppDir}\bin; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#AppDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
 
 ; Century Succession
-Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#AppDir}\bin\extensions; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#BuildDir}; Flags: replacesameversion
+
+; Supporting documents
 Source: docs\LANDIS-II Century Succession v3.1 User Guide.pdf; DestDir: {#AppDir}\docs
 Source: docs\Century-succession-log-metadata.xlsx; DestDir: {#AppDir}\docs
 Source: examples\*; DestDir: {#AppDir}\examples\century-succession

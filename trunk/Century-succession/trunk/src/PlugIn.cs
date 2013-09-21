@@ -108,7 +108,7 @@ namespace Landis.Extension.Succession.Century
             AgeOnlyDisturbances.Module.Initialize(parameters.AgeOnlyDisturbanceParms);
 
             Dynamic.Module.Initialize(parameters.DynamicUpdates);
-            EcoregionData.Initialize(parameters);
+            //EcoregionData.Initialize(parameters);
             FireEffects.Initialize(parameters);
             InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
             if (parameters.CalibrateMode)

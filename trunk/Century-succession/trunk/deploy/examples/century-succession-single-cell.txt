@@ -82,8 +82,8 @@ EcoregionParameters
 >>	Soil	Percent	Percent	Field	Wilt	StormF	BaseF	Drain	Atmos	Atmos	Lat-	Decay	Decay	Decay	Decay	Denit
 >>	Depth	Clay	Sand	Cap	Point	Fract	Fract		N	N	itude	Rate	Rate	Rate	Rate	Slope
 >>      cm					frac	frac		slope	inter		Surf	SOM1	SOM2	SOM3
-eco3	100	0.069	0.591	0.3	0.2	0.4	0.4	0.75	0.05	0.05	44.0	0.4	1.0	0.02	0.0002	0.02
-eco2	100	0.069	0.591	0.3	0.2	0.4	0.4	0.75	0.05	0.05	44.0	0.4	1.0	0.02	0.0002	0.02
+eco3	100	0.069	0.591	0.3	0.2	0.4	0.4	0.75	0.005	0.05	44.0	0.4	1.0	0.02	0.0002	0.02
+eco2	100	0.069	0.591	0.3	0.2	0.4	0.4	0.75	0.005	0.05	44.0	0.4	1.0	0.02	0.0002	0.02
 
 FireReductionParameters
 >>	Severity	Wood	Litter
