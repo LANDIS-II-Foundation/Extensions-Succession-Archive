@@ -242,18 +242,18 @@ namespace Landis.Extension.Succession.Century
 
             //  Adjust the leaf:wood NPP ratio to ensure that there is a minimal amount of leaf NPP,
             //  at the expense of wood NPP.
-            double minimumLeafNPP = (double) cohort.WoodBiomass * 0.002;
+            //double minimumLeafNPP = (double) cohort.WoodBiomass * 0.0002;
 
-            leafNPP         = Math.Max(leafNPP, minimumLeafNPP);
-            if (actualANPP > 0.0)
-                leafFractionNPP = leafNPP / actualANPP;
-            else
-                leafFractionNPP = 0.0;
+            //leafNPP         = Math.Max(leafNPP, minimumLeafNPP);
+            //if (actualANPP > 0.0)
+            //    leafFractionNPP = leafNPP / actualANPP;
+            //else
+            //    leafFractionNPP = 0.0;
 
-            leafFractionNPP = Math.Min(1.0, leafFractionNPP);
+            //leafFractionNPP = Math.Min(1.0, leafFractionNPP);
 
-            leafNPP  = actualANPP * leafFractionNPP;
-            woodNPP  = actualANPP * (1.0 - leafFractionNPP);
+            //leafNPP  = actualANPP * leafFractionNPP;
+            //woodNPP  = actualANPP * (1.0 - leafFractionNPP);
 
             if (Double.IsNaN(leafNPP) || Double.IsNaN(woodNPP))
             {
