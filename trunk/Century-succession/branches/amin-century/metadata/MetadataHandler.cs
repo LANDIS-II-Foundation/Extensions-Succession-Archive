@@ -53,9 +53,9 @@ namespace Landis.Extension.Succession.Century
             {
                 Type = OutputType.Map,
                 Name = "ag_npp",
-                FilePath = @"Century-Succession\ag_npp-{timeStep}.img",
+                FilePath = @"century\ag_npp-{timeStep}.gis",  //century
                 Map_DataType = MapDataType.Nominal,
-                Map_Unit = "unit?",
+                Map_Unit = FiledUnits.g_C_m_2,
                 //MetadataFilePath = @"Century-Succession\ANPP.xml"
             };
             Extension.OutputMetadatas.Add(mapOut_ANPP);

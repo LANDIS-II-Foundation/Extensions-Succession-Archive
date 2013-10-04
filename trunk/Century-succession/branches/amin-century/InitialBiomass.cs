@@ -272,7 +272,6 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
-
         /// <summary>
         /// A method that computes the initial biomass for a new cohort at a
         /// site based on the existing cohorts.

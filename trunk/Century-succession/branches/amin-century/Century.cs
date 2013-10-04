@@ -25,7 +25,7 @@ namespace Landis.Extension.Succession.Century
                                        int         years,
                                        bool        isSuccessionTimeStep)
         {
-
+            
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             //PlugIn.ModelCore.UI.WriteLine("SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);

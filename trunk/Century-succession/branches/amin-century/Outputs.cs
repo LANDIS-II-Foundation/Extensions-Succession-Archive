@@ -415,7 +415,6 @@ namespace Landis.Extension.Succession.Century
             {
                 if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 {
-
                     dtMonthly.AddObject(new MonthlyLog() { EcoregionName = ecoregion.Name});
                     ppt[ecoregion.Index] = 0.0;
                     airtemp[ecoregion.Index] = 0.0;
