@@ -21,12 +21,12 @@ namespace Landis.Extension.Succession.Century
                 RasterOutCellArea = PlugIn.ModelCore.CellArea,
                 TimeMin = PlugIn.ModelCore.StartTime,
                 TimeMax = PlugIn.ModelCore.EndTime,
-                ProjectionFilePath = "Projection.?" //How do we get projections???
+                ProjectionFilePath = @"Metadata\projection.xml" //How do we get projections???
             };
 
             Extension = new ExtensionMetadata(){
                 Name = "Century-Succession",
-                TimeInterval = PlugIn.SuccessionTimeStep, //change this to PlugIn.TimeStep for other extensions
+                TimeInterval = 5, //I hard coded this bcause PlugIn.SuccessionTimeStep returns 0 Rob please take a look at this.    PlugIn.SuccessionTimeStep, //change this to PlugIn.TimeStep for other extensions
                 ScenarioReplicationMetadata = scenRep
             };
 
@@ -53,12 +53,24 @@ namespace Landis.Extension.Succession.Century
             {
                 Type = OutputType.Map,
                 Name = "ag_npp",
-                FilePath = @"century\ag_npp-{timeStep}.gis",  //century
-                Map_DataType = MapDataType.Nominal,
+                FilePath = @"century\ag_npp-{timestep}.gis",  //century
+                Map_DataType = MapDataType.Quantitative,
                 Map_Unit = FiledUnits.g_C_m_2,
                 //MetadataFilePath = @"Century-Succession\ANPP.xml"
             };
             Extension.OutputMetadatas.Add(mapOut_ANPP);
+
+
+            OutputMetadata mapOut_Nee = new OutputMetadata()
+            {
+                Type = OutputType.Map,
+                Name = "nee",
+                FilePath = @"century\nee-{timestep}.gis",  //century
+                Map_DataType = MapDataType.Quantitative,
+                Map_Unit = FiledUnits.g_C_m_2,
+                //MetadataFilePath = @"Century-Succession\ANPP.xml"
+            };
+            Extension.OutputMetadatas.Add(mapOut_Nee);
 
             //---------------------------------------
             MetadataProvider mp = new MetadataProvider(Extension);

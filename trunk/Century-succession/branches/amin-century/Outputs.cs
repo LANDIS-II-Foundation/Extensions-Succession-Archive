@@ -22,7 +22,7 @@ namespace Landis.Extension.Succession.Century
         private static StreamWriter log;
         private static StreamWriter logMonthly;
         public static StreamWriter CalibrateLog;
-        public static MetadataTable<MonthlyLog> dtMonthly = new MetadataTable<MonthlyLog>("Century-succession-monthly-TEST-log.csv");
+        public static MetadataTable<MonthlyLog> dtMonthly = new MetadataTable<MonthlyLog>("Century-succession-monthly-log.csv");
 
 
         //---------------------------------------------------------------------
@@ -61,22 +61,22 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         public static void InitializeMonthly(IInputParameters parameters)
         {
-            string logFileName   = "Century-succession-monthly-log.csv"; 
-            PlugIn.ModelCore.UI.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
-            try {
-                logMonthly = new StreamWriter(logFileName);
-            }
-            catch (Exception err) {
-                string mesg = string.Format("{0}", err.Message);
-                throw new System.ApplicationException(mesg);
-            }
+            //string logFileName   = "Century-succession-monthly-log.csv"; 
+            //PlugIn.ModelCore.UI.WriteLine("   Opening Century-succession log file \"{0}\" ...", logFileName);
+            //try {
+            //    logMonthly = new StreamWriter(logFileName);
+            //}
+            //catch (Exception err) {
+            //    string mesg = string.Format("{0}", err.Message);
+            //    throw new System.ApplicationException(mesg);
+            //}
             
-            logMonthly.AutoFlush = true;
-            logMonthly.Write("Time, Month, Ecoregion, NumSites,");
-            logMonthly.Write("PPT, T, ");
-            logMonthly.Write("NPPC, Resp, NEE, ");
-            logMonthly.Write("Ndeposition,");
-            logMonthly.WriteLine("");
+            //logMonthly.AutoFlush = true;
+            //logMonthly.Write("Time, Month, Ecoregion, NumSites,");
+            //logMonthly.Write("PPT, T, ");
+            //logMonthly.Write("NPPC, Resp, NEE, ");
+            //logMonthly.Write("Ndeposition,");
+            //logMonthly.WriteLine("");
 
 
         }
