@@ -72,15 +72,12 @@ namespace Landis.Extension.Succession.Century
 
         public override void Initialize()
         {
-            MetadataHandler.InitializeMetadata();
-//          VersioningHelper.Verify(new string[] {"Landis.Library.Climate ; 2.0.0.0"});
-            //Console.Read();
-
             PlugIn.ModelCore.UI.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;
             SuccessionTimeStep    = Timestep;
             sufficientLight       = parameters.LightClassProbabilities;
             ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
+            MetadataHandler.InitializeMetadata(Timestep);
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
             
 
@@ -89,11 +86,6 @@ namespace Landis.Extension.Succession.Century
             //Climate.Convert_FileFormat(parameters.ClimateFileFormat, parameters.ClimateFile);			
             //Initialize climate.
 
-//            ExtensionMetadata ext ExtensionMetadata
-
-//            MetadataProvider metaProvider = new MetadataProvider();
-
-//            metaProvider.GetMetadataString();
             Climate.Initialize(parameters.ClimateConfigFile, false, modelCore);
             //Climate.Initialize(Climate.Convert_FileFormat(parameters.ClimateFileFormat, parameters.ClimateFile), Climate.Convert_FileFormat(parameters.SpinUpClimateFileFormat, parameters.SpinUpClimateFile), false, modelCore);
             //Climate.Initialize(parameters.ClimateFile, false, modelCore);

@@ -13,7 +13,7 @@ namespace Landis.Extension.Succession.Century
         
         public static ExtensionMetadata Extension {get; set;}
 
-        public static void InitializeMetadata()
+        public static void InitializeMetadata(int timestep)
         {
             ScenarioReplicationMetadata scenRep = new ScenarioReplicationMetadata() {
                 //String outputFolder = OutputPath.ReplaceTemplateVars("", FINISH ME LATER);
@@ -26,7 +26,7 @@ namespace Landis.Extension.Succession.Century
 
             Extension = new ExtensionMetadata(){
                 Name = "Century-Succession",
-                TimeInterval = 5, //I hard coded this bcause PlugIn.SuccessionTimeStep returns 0 Rob please take a look at this.    PlugIn.SuccessionTimeStep, //change this to PlugIn.TimeStep for other extensions
+                TimeInterval = timestep, 
                 ScenarioReplicationMetadata = scenRep
             };
 
