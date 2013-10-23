@@ -15,17 +15,18 @@
 [Files]
 
 Source: ..\src\bin\Debug\Landis.Extension.Succession.Biomass.dll; DestDir: {#ExtDir}; Flags: replacesameversion
-Source: docs\LANDIS-II Biomass Succession v3.1 User Guide.pdf; DestDir: {#AppDir}\docs
-Source: examples\*; DestDir: {#AppDir}\examples\biomass-succession
-
-#define BioSucc3 "Biomass Succession 3.1.txt"
-Source: {#BioSucc3}; DestDir: {#LandisPlugInDir}
-
-; Libraries
 Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
 Source: ..\src\bin\Debug\Landis.Library.BiomassCohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
 Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
 Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion uninsneveruninstall
+
+Source: docs\LANDIS-II Biomass Succession v3.1 User Guide.pdf; DestDir: {#AppDir}\docs
+Source: examples\*.txt; DestDir: {#AppDir}\examples\biomass-succession
+Source: examples\*.gis; DestDir: {#AppDir}\examples\biomass-succession
+Source: examples\*.bat; DestDir: {#AppDir}\examples\biomass-succession
+
+#define BioSucc3 "Biomass Succession 3.1.txt"
+Source: {#BioSucc3}; DestDir: {#LandisPlugInDir}
 
 [Run]
 ;; Run plug-in admin tool to add an entry for the plug-in
