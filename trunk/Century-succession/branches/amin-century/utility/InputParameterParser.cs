@@ -20,7 +20,7 @@ namespace Landis.Extension.Succession.Century
         {
             get
             {
-                return "Century Succession";
+                return PlugIn.ExtensionName;
             }
         }
 
@@ -29,7 +29,6 @@ namespace Landis.Extension.Succession.Century
             public const string Timestep = "Timestep";
             public const string SeedingAlgorithm = "SeedingAlgorithm";
 
-//            public const string LandisData = "LandisData";
             public const string ClimateConfigFile = "ClimateConfigFile";
             //public const string ClimateFileFormat = "ClimateFileFormat";
             //public const string ClimateFile = "ClimateFile";
@@ -80,10 +79,6 @@ namespace Landis.Extension.Succession.Century
 
         protected override IInputParameters Parse()
         {
-            //InputVar<string> landisData = new InputVar<string>("LandisData");
-            //ReadVar(landisData);
-            //if (landisData.Value.Actual != PlugIn.ExtensionName)
-            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
 
             ReadLandisDataVar();
 

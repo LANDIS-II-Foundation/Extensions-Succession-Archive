@@ -77,7 +77,7 @@ namespace Landis.Extension.Succession.Century
             SuccessionTimeStep    = Timestep;
             sufficientLight       = parameters.LightClassProbabilities;
             ProbEstablishAdjust = parameters.ProbEstablishAdjustment;
-            MetadataHandler.InitializeMetadata(Timestep);
+            MetadataHandler.InitializeMetadata(Timestep, modelCore, SoilCarbonMapNames, SoilNitrogenMapNames, ANPPMapNames, ANEEMapNames, TotalCMapNames);
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
             
 
@@ -96,8 +96,8 @@ namespace Landis.Extension.Succession.Century
 
             OtherData.Initialize(parameters);
             FunctionalType.Initialize(parameters);
-            Outputs.Initialize(parameters);
-            Outputs.InitializeMonthly(parameters);
+            //Outputs.Initialize(parameters);
+            //Outputs.InitializeMonthly(parameters);
 
             //  Cohorts must be created before the base class is initialized
             //  because the base class' reproduction module uses the core's
