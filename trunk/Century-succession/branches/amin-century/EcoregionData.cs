@@ -159,13 +159,7 @@ namespace Landis.Extension.Succession.Century
             //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
             AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
-            
-            // Issues with this approach:  Each ecoregion will have unique variability associated with 
-            // temperature and precipitation.  In reality, we expect some regional synchronicity.  An 
-            // easy-ish solution would be to use the same random number in combination with standard 
-            // deviations for all ecoregions.  The converse problem is over synchronization of climate, but
-            // that would certainly be preferrable over smaller regions.
-            
+                                 
             Console.WriteLine("\n-------get {0}-------> {1}, {2} \n", spinupOrfuture.ToString(), startingTimestep, timeStepCount);
             
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
@@ -186,7 +180,7 @@ namespace Landis.Extension.Succession.Century
                         //    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
                         //}
 
-                        AnnualClimate.AnnualClimateInitialize();
+                        AnnualClimate.AnnualClimateInitialize();  // Synchronizes temperature and precipitation deviation across ecoregions.
                         tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion], spinupOrfuture, actualYear); //actual year and timeStep here have been set to be identity
                         
                         //Console.WriteLine("---{0} , for eco:{1} actualYear/timeStep: {2}  ", spinuOrfuture.ToString(), ecoregion.Index, actualYear);

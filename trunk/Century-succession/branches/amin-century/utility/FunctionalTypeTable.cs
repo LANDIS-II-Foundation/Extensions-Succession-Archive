@@ -52,38 +52,7 @@ namespace Landis.Extension.Succession.Century
             parameters = new FunctionalType[index];
         }
 
-        //---------------------------------------------------------------------
-/*        public bool //IsComplete
-        {
-            get {
-                foreach (FunctionalType editableParms in parameters) {
-                //foreach (IEditableFunctionalType editableParms in parameters) {
-                    if (editableParms != null && !editableParms.IsComplete)
-                        return false;
-                }
-                return true;
-            }
-        }
-
-        //---------------------------------------------------------------------
-
-        public IFunctionalType[] //GetComplete()
-        {
-            if (IsComplete) {
-                IFunctionalType[] eventParms = new IFunctionalType[parameters.Length];
-                for (int i = 0; i < parameters.Length; i++) {
-                    //IEditableFunctionalType editableParms = parameters[i];
-                    FunctionalType editableParms = parameters[i];
-                    if (editableParms != null)
-                        eventParms[i] = editableParms.GetComplete();
-                    else
-                        eventParms[i] = new FunctionalType();
-                }
-                return eventParms;
-            }
-            else
-                return null;
-        }*/
+              
 
     }
 }

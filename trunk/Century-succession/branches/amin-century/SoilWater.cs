@@ -269,6 +269,8 @@ namespace Landis.Extension.Succession.Century
             //...Streamflow = stormflow + baseflow:
             double streamFlow = stormFlow + baseFlow;
 
+            //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilWaterContent={2:0.0}, stormFlow={3:0.00}, baseFlow={4:0.00}.", year, month, soilWaterContent, stormFlow, baseFlow);
+
             //...Save soilWaterContent before transpiration for future use:
             double asimx = soilWaterContent;
 

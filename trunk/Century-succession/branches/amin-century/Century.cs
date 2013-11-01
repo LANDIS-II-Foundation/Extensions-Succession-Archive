@@ -95,11 +95,11 @@ namespace Landis.Extension.Succession.Century
                     SoilWater.Run(y, Month, liveBiomass, site, out baseFlow, out stormFlow);
 
 
-                    // Reset N resorption if it is September
-                    if (Month == 8)
+                    // Reset N resorption if it is July
+                    if (Month == 6)
                     {
                         AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
-                        ComputeResorbedN(siteCohorts, site, Month);
+                        //ComputeResorbedN(siteCohorts, site, Month);
                     }
 
                     // Calculate mineral N fractions based on fine root biomass (leaf biomass) in July
@@ -130,7 +130,7 @@ namespace Landis.Extension.Succession.Century
                     //     remains after uptake by plants.  ML added a correction factor for wetlands since their denitrification rate is double that of wetlands
                     //based on a review paper by Seitziner 2006.
 
-                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]) / 12; // monthly value
+                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]); // monthly value
 
                     //PlugIn.ModelCore.UI.WriteLine("BeforeVol.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
@@ -151,25 +151,6 @@ namespace Landis.Extension.Succession.Century
 
             return siteCohorts;
         }
-
-        //---------------------------------------------------------------------
-
-        public static void ComputeResorbedN(ISiteCohorts cohorts, ActiveSite site, int month)
-        {
-            if (cohorts != null)
-                foreach (ISpeciesCohorts speciesCohorts in cohorts)
-                    foreach (ICohort cohort in speciesCohorts)
-                    {
-                        // Resorbed N:  We are assuming that any leaves dropped as a function of normal
-                        // growth and maintenance (e.g., fall senescence) will involve resorption of leaf N.
-                        double resorbedN = AvailableN.CalculateResorbedN(site, cohort.Species, cohort.LeafBiomass, month);
-
-                        AvailableN.SetResorbedNallocation(cohort, resorbedN);
-
-                    }
-            return;
-        }
-
 
         //---------------------------------------------------------------------
 

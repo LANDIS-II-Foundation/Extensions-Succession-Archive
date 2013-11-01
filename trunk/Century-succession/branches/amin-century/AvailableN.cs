@@ -25,8 +25,6 @@ namespace Landis.Extension.Succession.Century
         // Return amount of resorbed N in g N m-2.
         public static double GetResorbedNallocation(ICohort cohort)
         {
-            //int currentYear = PlugIn.ModelCore.CurrentTime;
-            //int successionTime = PlugIn.SuccessionTimeStep;
             int cohortAddYear = GetAddYear(cohort); //currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
             //PlugIn.ModelCore.UI.WriteLine("GETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
             double resorbedNallocation = 0.0;
@@ -45,11 +43,8 @@ namespace Landis.Extension.Succession.Century
         // Amount of resorbed N must be in units of g N m-2.
         public static void SetResorbedNallocation(ICohort cohort, double resorbedNallocation)
         {
-            //int currentYear = PlugIn.ModelCore.CurrentTime;
-            //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
             int cohortAddYear = GetAddYear(cohort); 
             //PlugIn.ModelCore.UI.WriteLine("SETResorbedNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
-            //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.month == 11 ? 1 : 0);
             Dictionary<int, double> cohortDict;
             double oldResorbedNallocation;
 
@@ -80,7 +75,7 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         // Method for calculationg how much N should be resorbed, based the difference in N content between leaves and litterfall;
         // month is only included for logging purposes.
-        public static double CalculateResorbedN(ActiveSite site, ISpecies species, double leafBiomass, int month)
+        public static double CalculateResorbedN(ActiveSite site, ISpecies species, double leafBiomass)
         {
            
                 double leafN = leafBiomass * 0.47 / SpeciesData.LeafCN[species];
@@ -115,8 +110,7 @@ namespace Landis.Extension.Succession.Century
                 {
                     int cohortAddYear = GetAddYear(cohort); 
                     //PlugIn.ModelCore.UI.WriteLine("CALCMineralNfraction: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
-                    //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
-
+                    
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
                     //double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass); 
                     double Nallocation = 1- Math.Exp((-Roots.CalculateCoarseRoot(cohort.WoodBiomass)*0.02));
@@ -229,12 +223,9 @@ namespace Landis.Extension.Succession.Century
         // Return amount of resorbed N in g N m-2.
         public static double GetMineralNallocation(ICohort cohort)
         {
-            //int currentYear = PlugIn.ModelCore.CurrentTime;
-            //int successionTime = PlugIn.SuccessionTimeStep;
+           
             int cohortAddYear = GetAddYear(cohort); 
-            //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.centuryMonth == 11 ? 1 : 0);
             //PlugIn.ModelCore.UI.WriteLine("GETMineralNallocation: year={0}, mo={1}, species={2}, cohortAge={3}, cohortAddYear={4}.", PlugIn.ModelCore.CurrentTime, Century.Month, cohort.Species.Name, cohort.Age, cohortAddYear);
-            //int cohortAddYear = currentYear - (cohort.Age - Century.Year) + (CohortBiomass.month == 11 ? 1 : 0);
             double mineralNallocation = 0.0;
             Dictionary<int, double> cohortDict;
 
@@ -323,6 +314,27 @@ namespace Landis.Extension.Succession.Century
             return cohortAddYear;
         }
 
+        //---------------------------------------------------------------------
 
+        public static void AddResorbedN(ICohort cohort, double leafBiomass, ActiveSite site)//, int month)
+        {
+            //if (cohorts != null)
+            //    foreach (ISpeciesCohorts speciesCohorts in cohorts)
+            //        foreach (ICohort cohort in speciesCohorts)
+            //        {
+            //if (SpeciesData.LeafLongevity[cohort.Species] <= 1.0 && )
+            //{
+            // Resorbed N:  We are assuming that any leaves dropped as a function of normal
+            // growth and maintenance (e.g., fall senescence) will involve resorption of leaf N.
+            double resorbedN = AvailableN.CalculateResorbedN(site, cohort.Species, leafBiomass); //, month);
+            double previouslyResorbedN = GetResorbedNallocation(cohort);
+
+            AvailableN.SetResorbedNallocation(cohort, resorbedN + previouslyResorbedN);
+
+            //PlugIn.ModelCore.UI.WriteLine("  Set Resorbed N = {0:0.000} (new) + {1:0.000} (old).", resorbedN, previouslyResorbedN);
+            //    }
+            //}
+            return;
+        }
     }
 }

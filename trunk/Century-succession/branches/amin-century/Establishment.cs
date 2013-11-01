@@ -31,7 +31,7 @@ namespace Landis.Extension.Succession.Century
             }
             
             log.AutoFlush = true;
-            log.WriteLine("Time, Ecoregion, Species, TempMult, MinJanTempMult, SoilMoistureMult, Adjust, ProbEst");
+            log.WriteLine("Time, Ecoregion, Species, TempMult, MinJanTempMult, SoilMoistureMult, OtherAdjustMult, ProbEst");
         }
 
 
@@ -110,10 +110,7 @@ namespace Landis.Extension.Succession.Century
                     }
                 }
             }     
-            
-            //Reproduction.ChangeEstablishProbabilities(Util.ToArray<double>(EstablishProbability));
-
-            
+                        
             return EstablishProbability;
 
         }

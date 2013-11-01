@@ -240,20 +240,20 @@ namespace Landis.Extension.Succession.Century
             double leafNPP  = actualANPP * leafFractionNPP;
             double woodNPP  = actualANPP * (1.0 - leafFractionNPP);
 
-            //  Adjust the leaf:wood NPP ratio to ensure that there is a minimal amount of leaf NPP,
-            //  at the expense of wood NPP.
-            double minimumLeafNPP = (double) cohort.WoodBiomass * 0.002;
+            ////  Adjust the leaf:wood NPP ratio to ensure that there is a minimal amount of leaf NPP,
+            ////  at the expense of wood NPP.
+            //double minimumLeafNPP = (double) cohort.WoodBiomass * 0.002;
 
-            leafNPP         = Math.Max(leafNPP, minimumLeafNPP);
-            if (actualANPP > 0.0)
-                leafFractionNPP = leafNPP / actualANPP;
-            else
-                leafFractionNPP = 0.0;
+            //leafNPP         = Math.Max(leafNPP, minimumLeafNPP);
+            //if (actualANPP > 0.0)
+            //    leafFractionNPP = leafNPP / actualANPP;
+            //else
+            //    leafFractionNPP = 0.0;
 
-            leafFractionNPP = Math.Min(1.0, leafFractionNPP);
+            //leafFractionNPP = Math.Min(1.0, leafFractionNPP);
 
-            leafNPP  = actualANPP * leafFractionNPP;
-            woodNPP  = actualANPP * (1.0 - leafFractionNPP);
+            //leafNPP  = actualANPP * leafFractionNPP;
+            //woodNPP  = actualANPP * (1.0 - leafFractionNPP);
 
             if (Double.IsNaN(leafNPP) || Double.IsNaN(woodNPP))
             {
@@ -591,20 +591,20 @@ namespace Landis.Extension.Succession.Century
             double klai   = FunctionalType.Table[SpeciesData.FuncType[species]].KLAI;
             double maxlai = FunctionalType.Table[SpeciesData.FuncType[species]].MAXLAI;
 
-            double rlai = (leafC * 2.5) * btolai;
+            //double rlai = (leafC * 2.5) * btolai;
 
-            double tlai = maxlai * largeWoodC/(klai + largeWoodC);
+            lai = maxlai * largeWoodC/(klai + largeWoodC);
 
             //...Choose the LAI reducer on production.  I don't really understand
             //     why we take the average in the first case, but it will probably
             //     change...
 
-            if (rlai < tlai) lai = (rlai + tlai) / 2.0;
-            else lai = tlai;
+            //if (rlai < tlai) lai = (rlai + tlai) / 2.0;
+            //else lai = tlai;
 
             // This will allow us to set MAXLAI to zero such that LAI is completely dependent upon
             // foliar carbon, which may be necessary for simulating defoliation events.
-            if(tlai <= 0.0) lai = rlai;
+            //if(tlai <= 0.0) lai = rlai;
 
             //lai = tlai;  // Century 4.5 ignores rlai.
 
@@ -628,6 +628,9 @@ namespace Landis.Extension.Succession.Century
             //SiteVars.LAI[site] += lai; Tracking LAI.
 
             double LAI_limit = Math.Max(0.0, 1.0 - Math.Exp(laitop * lai));
+
+            if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
+                Outputs.CalibrateLog.Write("{0:0.00}, ", lai);
 
 
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, leafC={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, leafC, largeWoodC);

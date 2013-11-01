@@ -131,9 +131,9 @@ namespace Landis.Extension.Succession.Century
                 return fcfracLeaf;
             }
             set {
-                    if (value  < 0.0 || value  > 1.0)
+                    if (value  < 0.1 || value  > 1.0)
                         throw new InputValueException(value.ToString(),
-                            "The fraction of NPP allocated to leaves must be between 0 and 1.0");
+                            "The fraction of NPP allocated to leaves must be between 0.1 and 1.0");
                 fcfracLeaf = value;
             }
         }
