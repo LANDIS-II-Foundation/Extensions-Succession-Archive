@@ -84,7 +84,7 @@ namespace Landis.Extension.Succession.Century
 
 
         //---------------------------------------------------------------------
-        public static void WriteLogFile(int CurrentTime)
+        public static void WritePrimaryLogFile(int CurrentTime)
         {
             
             double[] avgAnnualPPT  = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -301,8 +301,8 @@ namespace Landis.Extension.Succession.Century
             
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
-                {
+                //if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
+                //{
                     primaryLog.Clear();
                     PrimaryLog pl = new PrimaryLog();
 
@@ -398,7 +398,7 @@ namespace Landis.Extension.Succession.Century
                     primaryLog.AddObject(pl);
                     primaryLog.WriteToFile();
 
-                }
+                //}
                
             }
             //Reset back to zero:
@@ -423,16 +423,16 @@ namespace Landis.Extension.Succession.Century
             
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
-                {
-                    monthlyLog.AddObject(new MonthlyLog() { EcoregionName = ecoregion.Name});
+                //if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
+                //{
+                    //monthlyLog.AddObject(new MonthlyLog() { EcoregionName = ecoregion.Name});
                     ppt[ecoregion.Index] = 0.0;
                     airtemp[ecoregion.Index] = 0.0;
                     avgNPPtc[ecoregion.Index] = 0.0;
                     avgResp[ecoregion.Index] = 0.0;
                     avgNEE[ecoregion.Index] = 0.0;
                     Ndep[ecoregion.Index] = 0.0;
-                }
+                //}
             }
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -455,8 +455,8 @@ namespace Landis.Extension.Succession.Century
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
-                {
+                //if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
+                //{
                     monthlyLog.Clear();
                     MonthlyLog ml = new MonthlyLog();
 
@@ -494,7 +494,7 @@ namespace Landis.Extension.Succession.Century
                     //logMonthly.WriteLine("");
                     monthlyLog.AddObject(ml);
                     monthlyLog.WriteToFile();
-                }
+                //}
             }
 
         }

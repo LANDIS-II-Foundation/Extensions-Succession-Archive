@@ -158,7 +158,7 @@ namespace Landis.Extension.Succession.Century
                     int month = months[i];
                     Outputs.WriteMonthlyLogFile(month);
                 }
-                Outputs.WriteLogFile(PlugIn.ModelCore.CurrentTime);
+                Outputs.WritePrimaryLogFile(PlugIn.ModelCore.CurrentTime);
 
                 if (SoilCarbonMapNames != null && (PlugIn.ModelCore.CurrentTime % SoilCarbonMapFrequency) == 0)
                 {
@@ -279,7 +279,7 @@ namespace Landis.Extension.Succession.Century
             catch(ClimateDataOutOfRangeException ex)
             {
                 //ignore this run
-                PlugIn.ModelCore.UI.WriteLine("\n*** PlugIng.Run() was ignored at time step " + PlugIn.ModelCore.CurrentTime + " ***\nDetail: " + ex.InnerException.Message);
+                PlugIn.ModelCore.UI.WriteLine("\n*** PlugIn.Run() was ignored at time step " + PlugIn.ModelCore.CurrentTime + " ***\nDetail: " + ex.InnerException.Message);
             }
         }
 
