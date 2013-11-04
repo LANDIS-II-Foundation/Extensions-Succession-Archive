@@ -244,13 +244,13 @@ namespace Landis.Extension.Succession.Century
 
             //...Calculate field capacity of soil, drain soil, pass excess
             //     on to waterMovement:
-            double waterFull = soilDepth * fieldCapacity;
+            double waterFull = soilDepth * fieldCapacity;  //units of cm
             double waterMovement = 0.0;
 
             if (soilWaterContent > waterFull)
             {
                 //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilWaterContent > waterFull", year, month); 
-                waterMovement = (soilWaterContent - waterFull) / soilWaterContent;
+                waterMovement = (soilWaterContent - waterFull); // / soilWaterContent;
                 soilWaterContent = waterFull;
 
                 //...Compute storm flow.
