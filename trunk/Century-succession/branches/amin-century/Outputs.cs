@@ -87,8 +87,6 @@ namespace Landis.Extension.Succession.Century
         public static void WritePrimaryLogFile(int CurrentTime)
         {
 
-            PlugIn.ModelCore.UI.WriteLine("Stuff happening!");
-            
             double[] avgAnnualPPT  = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgJJAtemp    = new double[PlugIn.ModelCore.Ecoregions.Count];
             

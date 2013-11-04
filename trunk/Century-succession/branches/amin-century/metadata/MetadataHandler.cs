@@ -9,7 +9,7 @@ using Edu.Wisc.Forest.Flel.Util;
 
 namespace Landis.Extension.Succession.Century
 {
-    public static class MetadataHandler
+    public class MetadataHandler
     {
         
         public static ExtensionMetadata Extension {get; set;}
