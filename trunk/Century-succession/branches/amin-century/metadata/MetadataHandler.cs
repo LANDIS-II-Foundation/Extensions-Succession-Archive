@@ -37,6 +37,9 @@ namespace Landis.Extension.Succession.Century
             //          table outputs:   
             //---------------------------------------
 
+            Outputs.primaryLog = new MetadataTable<PrimaryLog>("Century-succession-log.csv");
+            Outputs.monthlyLog = new MetadataTable<MonthlyLog>("Century-succession-monthly-log.csv");
+
             OutputMetadata tblOut_monthly = new OutputMetadata()
             {
                 Type = OutputType.Table,

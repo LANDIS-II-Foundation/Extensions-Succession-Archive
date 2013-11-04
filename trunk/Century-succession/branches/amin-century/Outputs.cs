@@ -22,8 +22,8 @@ namespace Landis.Extension.Succession.Century
         //private static StreamWriter log;
         //private static StreamWriter logMonthly;
         public static StreamWriter CalibrateLog;
-        public static MetadataTable<MonthlyLog> monthlyLog = new MetadataTable<MonthlyLog>("Century-succession-monthly-log.csv");
-        public static MetadataTable<PrimaryLog> primaryLog = new MetadataTable<PrimaryLog>("Century-succession-log.csv");
+        public static MetadataTable<MonthlyLog> monthlyLog; 
+        public static MetadataTable<PrimaryLog> primaryLog; 
 
 
         //---------------------------------------------------------------------
