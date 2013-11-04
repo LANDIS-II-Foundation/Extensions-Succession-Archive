@@ -110,9 +110,10 @@ namespace Landis.Extension.Succession.Century
             double resorbedNused = 0.0;
             double mineralNused = 0.0;
 
-            // Treat Resorbed N first and only if it is spring time.  // TESTING: ALLOW TREES TO RESORB CONTINUOUSLY
-            //if (Century.Month > 2 && Century.Month < 6)
-            //{
+            // Treat Resorbed N first and only if it is spring time unless you are evergreen.  
+            double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
+            if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
+            {
                 double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
 
                 resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
@@ -120,7 +121,7 @@ namespace Landis.Extension.Succession.Century
                 AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
 
                 adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
-            //}
+            }
 
             // Reduce available N after taking into account that some N may have been provided
             // via resorption (above).
