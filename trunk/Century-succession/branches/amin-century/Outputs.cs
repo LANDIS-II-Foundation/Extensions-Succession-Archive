@@ -455,8 +455,8 @@ namespace Landis.Extension.Succession.Century
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                //if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
-                //{
+                if (EcoregionData.ActiveSiteCount[ecoregion] > 0) //Amin: I uncommented this line
+                {
                     monthlyLog.Clear();
                     MonthlyLog ml = new MonthlyLog();
 
@@ -494,7 +494,7 @@ namespace Landis.Extension.Succession.Century
                     //logMonthly.WriteLine("");
                     monthlyLog.AddObject(ml);
                     monthlyLog.WriteToFile();
-                //}
+                }
             }
 
         }

@@ -39,8 +39,8 @@ namespace Landis.Extension.Succession.Century
         
         // AnnualClimateArray contains climates for N years whereby N is the succession time step.
         // AnnualClimate is the active (current) year's climate, one of the elements in AnnualClimateArray.
-        public static Ecoregions.AuxParm<AnnualClimate[]> AnnualClimateArray;
-        public static Ecoregions.AuxParm<AnnualClimate> AnnualWeather;
+        public static Ecoregions.AuxParm<AnnualClimate_Monthly[]> AnnualClimateArray;
+        public static Ecoregions.AuxParm<AnnualClimate_Monthly> AnnualWeather;
         public static Ecoregions.AuxParm<bool[]> ClimateUpdates;
 
         //---------------------------------------------------------------------
@@ -95,7 +95,7 @@ namespace Landis.Extension.Succession.Century
             
             GenerateNewClimate(0, parameters.Timestep, ClimatePhase.SpinUp_Climate);
             
-            AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);
+            AnnualWeather = new Ecoregions.AuxParm<AnnualClimate_Monthly>(PlugIn.ModelCore.Ecoregions);
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
                 if(ecoregion.Active)
                 {
@@ -158,7 +158,7 @@ namespace Landis.Extension.Succession.Century
         {
             //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
-            AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
+            AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate_Monthly[]>(PlugIn.ModelCore.Ecoregions);
                                  
             Console.WriteLine("\n-------get {0}-------> {1}, {2} \n", spinupOrfuture.ToString(), startingTimestep, timeStepCount);
             
@@ -166,7 +166,7 @@ namespace Landis.Extension.Succession.Century
             {
                 if(ecoregion.Active)
                 {            
-                    AnnualClimate[] tempClimate = new AnnualClimate[timeStepCount];
+                    AnnualClimate_Monthly[] tempClimate = new AnnualClimate_Monthly[timeStepCount];
             
                     for (int y = 0; y < timeStepCount; y++)
                     {
@@ -181,7 +181,7 @@ namespace Landis.Extension.Succession.Century
                         //}
 
                         AnnualClimate.AnnualClimateInitialize();  // Synchronizes temperature and precipitation deviation across ecoregions.
-                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion], spinupOrfuture, actualYear); //actual year and timeStep here have been set to be identity
+                        tempClimate[y] = new AnnualClimate_Monthly(ecoregion, actualYear, Latitude[ecoregion], spinupOrfuture, actualYear); //actual year and timeStep here have been set to be identity
                         
                         //Console.WriteLine("---{0} , for eco:{1} actualYear/timeStep: {2}  ", spinuOrfuture.ToString(), ecoregion.Index, actualYear);
                     }
@@ -195,7 +195,7 @@ namespace Landis.Extension.Succession.Century
 
             //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
-            AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
+            AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate_Monthly[]>(PlugIn.ModelCore.Ecoregions);
 
             // Issues with this approach:  Each ecoregion will have unique variability associated with 
             // temperature and precipitation.  In reality, we expect some regional synchronicity.  An 
@@ -209,7 +209,7 @@ namespace Landis.Extension.Succession.Century
             {
                 if (ecoregion.Active)
                 {
-                    AnnualClimate[] tempClimate = new AnnualClimate[years];
+                    AnnualClimate_Monthly[] tempClimate = new AnnualClimate_Monthly[years];
 
                     for (int y = 0; y < years; y++)
                     {
@@ -225,7 +225,7 @@ namespace Landis.Extension.Succession.Century
                         }
 
                         AnnualClimate.AnnualClimateInitialize();
-                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]);
+                        tempClimate[y] = new AnnualClimate_Monthly(ecoregion, actualYear, Latitude[ecoregion]);
 
                     }
 

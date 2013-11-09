@@ -42,7 +42,7 @@
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Climate">
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Climate.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Climate.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Cohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Cohorts.dll</HintPath>
@@ -51,7 +51,7 @@
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.LeafBiomassCohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Metadata">
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Metadata.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Succession">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Succession.dll</HintPath>
@@ -81,8 +81,8 @@
     <Compile Include="LitterType.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="metadata\PrimaryLog.cs" />
     <Compile Include="metadata\MonthlyLog.cs" />
+    <Compile Include="metadata\PrimaryLog.cs" />
     <Compile Include="utility\BaseCohortsSiteVar.cs" />
     <Compile Include="Century.cs" />
     <Compile Include="CohortBiomass.cs" />
@@ -125,7 +125,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetName).dll "C:\Program Files\LANDIS-II\v6\bin\extensions\"</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\extensions\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
