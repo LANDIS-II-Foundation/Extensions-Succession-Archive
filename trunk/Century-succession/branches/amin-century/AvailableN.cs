@@ -83,7 +83,7 @@ namespace Landis.Extension.Succession.Century
 
                 double resorbedN = leafN - litterN;
 
-               //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}.     leafN={2:0.00}, litterN={3:0.00}, resorbedN={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, leafN, litterN, resorbedN);
+                //PlugIn.ModelCore.UI.WriteLine("   How much N to resorb?  leafN={0:0.00}, litterN={1:0.00}, resorbedN={2:0.00}.", leafN, litterN, resorbedN);
 
                 SiteVars.ResorbedN[site] += resorbedN;
 

@@ -110,8 +110,8 @@ namespace Landis.Extension.Succession.Century
             double resorbedNused = 0.0;
             double mineralNused = 0.0;
 
-            // Treat Resorbed N first and only if it is spring time.
-            if (Century.Month > 2 && Century.Month < 6)
+            // Treat Resorbed N first and only if it is spring time.  // TESTING: ALLOW TREES TO RESORB CONTINUOUSLY
+           //if (Century.Month > 2 && Century.Month < 6)
             {
                 double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
 
@@ -170,7 +170,7 @@ namespace Landis.Extension.Succession.Century
             //if((totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)
             //   PlugIn.ModelCore.UI.WriteLine("Warning: Leaf Mortality exceeds cohort leaf biomass. M={0:0.0}, B={1:0.0}, DefoLeafBiomass={2:0.0}, defoliationIndex={3:0.0}", totalMortality[1], cohort.LeafBiomass, defoliatedLeafBiomass, defoliation);
             
-            UpdateDeadBiomass(cohort.Species, site, totalMortality);
+            UpdateDeadBiomass(cohort, site, totalMortality);
 
             CalculateNPPcarbon(site, actualANPP);
 
@@ -376,7 +376,7 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
 
-        private void UpdateDeadBiomass(ISpecies species, ActiveSite site, double[] totalMortality)
+        private void UpdateDeadBiomass(ICohort cohort, ActiveSite site, double[] totalMortality)
         {
 
 
@@ -389,14 +389,15 @@ namespace Landis.Extension.Succession.Century
             //    mass is assumed 25% of aboveground wood (White et al. 2000, Niklas & Enquist 2002)
             if(mortality_wood > 0.0)
             {
-                ForestFloor.AddWoodLitter(mortality_wood, species, site);
-                Roots.AddCoarseRootLitter(mortality_wood, species, site);
+                ForestFloor.AddWoodLitter(mortality_wood, cohort.Species, site);
+                Roots.AddCoarseRootLitter(mortality_wood, cohort.Species, site);
             }
 
             if(mortality_nonwood > 0.0)
             {
-                ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, species, site);
-                Roots.AddFineRootLitter(mortality_nonwood, species, site);
+                AvailableN.AddResorbedN(cohort, totalMortality[1], site); //ignoring input from scorching, which is rare, but not resorbed.
+                ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, cohort.Species, site);
+                Roots.AddFineRootLitter(mortality_nonwood, cohort.Species, site);
             }
 
             return;
@@ -539,9 +540,9 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", AvailableN.GetMineralNallocation(cohort), AvailableN.GetResorbedNallocation(cohort));
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", mineralNallocation, resorbedNallocation);
 
-            return limitN;
+            return Math.Max(limitN, 0.0);
         }
         //--------------------------------------------------------------------------
         // Originally from lacalc.f of CENTURY model
