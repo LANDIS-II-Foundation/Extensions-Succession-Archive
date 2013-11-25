@@ -63,7 +63,7 @@ namespace Landis.Extension.Succession.Biomass.AgeOnlyDisturbances
         {
             ReadName(tableName);
 
-            PlugIn.ModelCore.UI.WriteLine("   Age-only-disturbances:  reading {0}.", tableName);
+            System.Console.WriteLine("   Age-only-disturbances:  reading {0}.", tableName);
 
             InputVar<string> disturbance = new InputVar<string>("Disturbance");
             InputVar<Percentage> woodPercentage = new InputVar<Percentage>("Woody");

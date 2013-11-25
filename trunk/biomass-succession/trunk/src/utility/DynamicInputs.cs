@@ -43,7 +43,7 @@ namespace Landis.Extension.Succession.Biomass
                     if (!ecoregion.Active)
                         continue;
 
-                    PlugIn.ModelCore.UI.WriteLine("Spp={0}, Eco={1}, Pest={2:0.0}, maxANPP={3}, maxB={4}.", species.Name, ecoregion.Name,
+                    System.Console.WriteLine("Spp={0}, Eco={1}, Pest={2:0.0}, maxANPP={3}, maxB={4}.", species.Name, ecoregion.Name,
                         timestepData[species.Index, ecoregion.Index].ProbEst,
                         timestepData[species.Index, ecoregion.Index].ANPP_MAX_Spp,
                         timestepData[species.Index, ecoregion.Index].B_MAX_Spp);
@@ -55,7 +55,7 @@ namespace Landis.Extension.Succession.Biomass
         //---------------------------------------------------------------------
         public static void Initialize(string filename, bool writeOutput)
         {
-            PlugIn.ModelCore.UI.WriteLine("   Loading dynamic input data from file \"{0}\" ...", filename);
+            System.Console.WriteLine("   Loading dynamic input data from file \"{0}\" ...", filename);
             DynamicInputsParser parser = new DynamicInputsParser();
             try
             {

@@ -47,7 +47,7 @@ namespace Landis.Extension.Succession.Biomass
             //double leafKReg = ((0.10015 * siteAET - 3.44618) - (0.01341 + 0.00147 * siteAET) *
             //SpeciesData.LeafLignin[species]) / 100;
             
-            //PlugIn.ModelCore.UI.WriteLine("Decay rate for {0} within {1} = {2}.  LL = {3}.", species.Name, ecoregion.Name, leafKReg, SpeciesData.LeafLignin[species]);
+            //System.Console.WriteLine("Decay rate for {0} within {1} = {2}.  LL = {3}.", species.Name, ecoregion.Name, leafKReg, SpeciesData.LeafLignin[species]);
 
             double decayValue = leafKReg;
 
