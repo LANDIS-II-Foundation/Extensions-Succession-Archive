@@ -39,7 +39,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 if (EcoregionData.AET[ecoregion] <= 0.0 && ecoregion.Active)
                 {
-                    System.Console.WriteLine("   CAUTION: Ecoregion {0} has AET set to zero.", ecoregion.Name);
+                    PlugIn.ModelCore.UI.WriteLine("   CAUTION: Ecoregion {0} has AET set to zero.", ecoregion.Name);
                 }
 
             }

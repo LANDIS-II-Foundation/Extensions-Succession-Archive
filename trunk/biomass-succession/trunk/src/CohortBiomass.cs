@@ -117,10 +117,10 @@ namespace Landis.Extension.Succession.Biomass
 
             if (PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                System.Console.WriteLine("Yr={0}. Calculate Delta Biomass...", (PlugIn.ModelCore.CurrentTime+SubYear));
-                System.Console.WriteLine("Yr={0}.    Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
-                System.Console.WriteLine("Yr={0}.    ANPPact={1:0.0}, Mtotal={2:0.0}, litter={3:0.00}.", (PlugIn.ModelCore.CurrentTime+SubYear), actualANPP, totalMortality, totalLitter);
-                System.Console.WriteLine("Yr={0}.    DeltaB={1:0.0}, CohortB={2}, Bsite={3}", (PlugIn.ModelCore.CurrentTime+SubYear), deltaBiomass, cohort.Biomass, (int) siteBiomass);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}. Calculate Delta Biomass...", (PlugIn.ModelCore.CurrentTime+SubYear));
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    ANPPact={1:0.0}, Mtotal={2:0.0}, litter={3:0.00}.", (PlugIn.ModelCore.CurrentTime+SubYear), actualANPP, totalMortality, totalLitter);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    DeltaB={1:0.0}, CohortB={2}, Bsite={3}", (PlugIn.ModelCore.CurrentTime+SubYear), deltaBiomass, cohort.Biomass, (int) siteBiomass);
             }
 
             return deltaBiomass;
@@ -145,7 +145,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 M_AGE += cohort.Biomass * SpinupMortalityFraction;
                 if(PlugIn.CalibrateMode)
-                    System.Console.WriteLine("Yr={0}. SpinupMortalityFraction={1:0.0000}, AdditionalMortality={2:0.0}, Spp={3}, Age={4}.", (PlugIn.ModelCore.CurrentTime+SubYear), SpinupMortalityFraction, (cohort.Biomass * SpinupMortalityFraction), cohort.Species.Name, cohort.Age);
+                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. SpinupMortalityFraction={1:0.0000}, AdditionalMortality={2:0.0}, Spp={3}, Age={4}.", (PlugIn.ModelCore.CurrentTime+SubYear), SpinupMortalityFraction, (cohort.Biomass * SpinupMortalityFraction), cohort.Species.Name, cohort.Age);
             }
 
 
@@ -173,7 +173,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 capacityReduction = 1.0 - SiteVars.CapacityReduction[site];
                 if(PlugIn.CalibrateMode)
-                    System.Console.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.", (PlugIn.ModelCore.CurrentTime+SubYear), capacityReduction, cohort.Species.Name, cohort.Age, cohort.Biomass);
+                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.", (PlugIn.ModelCore.CurrentTime+SubYear), capacityReduction, cohort.Species.Name, cohort.Age, cohort.Biomass);
             }
 
             double maxBiomass  = SpeciesData.B_MAX_Spp[cohort.Species][ecoregion] * capacityReduction;
@@ -194,14 +194,14 @@ namespace Landis.Extension.Succession.Biomass
 
             if ((indexC <= 0.0 && cohortBiomass > 0) || indexC > 1.0)
             {
-                System.Console.WriteLine("Error: Competition Index [{0:0.00}] is <= 0.0 or > 1.0", indexC);
-                System.Console.WriteLine("Yr={0}. SPECIES={1}, AGE={2}, B={3}", (PlugIn.ModelCore.CurrentTime + SubYear), cohort.Species.Name, cohort.Age, cohortBiomass);
+                PlugIn.ModelCore.UI.WriteLine("Error: Competition Index [{0:0.00}] is <= 0.0 or > 1.0", indexC);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}. SPECIES={1}, AGE={2}, B={3}", (PlugIn.ModelCore.CurrentTime + SubYear), cohort.Species.Name, cohort.Age, cohortBiomass);
 
                 throw new ApplicationException("Application terminating.");
             }
 
             B_PM = indexC; 
-            // System.Console.WriteLine("indexC={0:0.00}, lightIndexC={1:0.00}, OldSchool={2:0.00}.", indexC, indexLightC, indexOldSchool);
+            // PlugIn.ModelCore.UI.WriteLine("indexC={0:0.00}, lightIndexC={1:0.00}, OldSchool={2:0.00}.", indexC, indexLightC, indexOldSchool);
 
             //  Actual ANPP: equation (4) from Scheller & Mladenoff, 2004.
             double actualANPP = maxANPP * Math.E * Math.Pow(B_AP, growthShape) * Math.Exp(-1 * Math.Pow(B_AP, growthShape)) * B_PM;
@@ -217,10 +217,10 @@ namespace Landis.Extension.Succession.Biomass
 
             if(PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                System.Console.WriteLine("Yr={0}. Calculate ANPPactual...", (PlugIn.ModelCore.CurrentTime+SubYear));
-                System.Console.WriteLine("Yr={0}.     Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
-                System.Console.WriteLine("Yr={0}.     MaxANPP={1}, MaxB={2:0}, Bsite={3}, Bcohort={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), maxANPP, maxBiomass, (int) siteBiomass, cohort.Biomass);
-                System.Console.WriteLine("Yr={0}.     B_PM={1:0.0}, B_AP={2:0.0}, actualANPP={3:0.0}, capacityReduction={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), B_PM, B_AP, actualANPP, capacityReduction);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}. Calculate ANPPactual...", (PlugIn.ModelCore.CurrentTime+SubYear));
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     MaxANPP={1}, MaxB={2:0}, Bsite={3}, Bcohort={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), maxANPP, maxBiomass, (int) siteBiomass, cohort.Biomass);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     B_PM={1:0.0}, B_AP={2:0.0}, actualANPP={3:0.0}, capacityReduction={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), B_PM, B_AP, actualANPP, capacityReduction);
             }
 
             return actualANPP;
@@ -425,12 +425,12 @@ namespace Landis.Extension.Succession.Biomass
             double competitionPower = 0.95;
             double CMultiplier = Math.Max(Math.Pow(cohort.Biomass, competitionPower), 1.0);
             double CMultTotal = CMultiplier;
-            // System.Console.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal);
+            // PlugIn.ModelCore.UI.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal);
 
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
             {
                 //write.speciesCohorts.Name;
-                // System.Console.WriteLine("Name={0}, Cnt={1}", speciesCohorts.Species.Name, speciesCohorts.Count);
+                // PlugIn.ModelCore.UI.WriteLine("Name={0}, Cnt={1}", speciesCohorts.Species.Name, speciesCohorts.Count);
                 /*foreach (ICohort ycohort in speciesCohorts)
                 {
                     ICohort xcohort = (Landis.Library.BiomassCohorts.ICohort)ycohort;
@@ -438,7 +438,7 @@ namespace Landis.Extension.Succession.Biomass
                     {
                         double tempMultiplier = Math.Max(Math.Pow(xcohort.Biomass, competitionPower), 1.0);
                         CMultTotal += tempMultiplier;
-                        //System.Console.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}.", xcohort.Species.Name, xcohort.Age, tempMultiplier, CMultTotal);
+                        //PlugIn.ModelCore.UI.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}.", xcohort.Species.Name, xcohort.Age, tempMultiplier, CMultTotal);
                     }
                 }*/
 
@@ -454,7 +454,7 @@ namespace Landis.Extension.Succession.Biomass
 
 
             double Cfraction = CMultiplier / CMultTotal;
-            //System.Console.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}, CI={4:0.00}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal, Cfraction);
+            //PlugIn.ModelCore.UI.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}, CI={4:0.00}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal, Cfraction);
 
             return Cfraction;
 

@@ -132,7 +132,7 @@ namespace Landis.Extension.Succession.Biomass
         public void Decompose()
         {
             if (PlugIn.CalibrateMode && mass > 0)
-                System.Console.WriteLine("Pool mass = {0}.", mass);
+                PlugIn.ModelCore.UI.WriteLine("Pool mass = {0}.", mass);
             mass = (uint) (mass * Math.Exp(-decayValue));
         }
 
