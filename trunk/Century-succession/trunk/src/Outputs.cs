@@ -46,7 +46,7 @@ namespace Landis.Extension.Succession.Century
             log.Write("SurfStrucNetMin, SurfMetaNetMin, SoilStrucNetMin, SoilMetaNetMin, ");
             log.Write("SOM1surfNetMin, SOM1soilNetMin, SOM2NetMin, SOM3NetMin, ");
             log.Write("StreamC, StreamN, FireCEfflux, FireNEfflux, ");
-            log.Write("Nuptake, Nresorbed, TotalSoilN, Nvol, avgfrassC,");
+            log.Write("Nuptake, Nresorbed, TotalSoilN, Nvol, Ndep, NetNBalance, AvgfrassC,");
             log.WriteLine("");
 
 
@@ -141,10 +141,14 @@ namespace Landis.Extension.Succession.Century
             double[] avgStreamN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgFireCEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgFireNEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
+
             double[] avgNvol = new double[PlugIn.ModelCore.Ecoregions.Count];
+            //double[] avgNdep = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNresorbed = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgTotalSoilN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgNuptake = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] netNbalance = new double[PlugIn.ModelCore.Ecoregions.Count];
+            
             double[] avgfrassC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avglai = new double[PlugIn.ModelCore.Ecoregions.Count];            
 
@@ -214,6 +218,8 @@ namespace Landis.Extension.Succession.Century
                 avgNresorbed[ecoregion.Index] = 0.0;
                 avgTotalSoilN[ecoregion.Index] = 0.0;
                 avgNvol[ecoregion.Index] = 0.0;
+                //avgNdep[ecoregion.Index] = 0.0;
+                netNbalance[ecoregion.Index] = 0.0;
                 avgfrassC[ecoregion.Index] = 0.0;
                 
             }
@@ -282,9 +288,11 @@ namespace Landis.Extension.Succession.Century
                 avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen; //+ SiteVars.NLoss[site];
                 avgFireCEfflux[ecoregion.Index] += SiteVars.FireCEfflux[site];
                 avgFireNEfflux[ecoregion.Index] += SiteVars.FireNEfflux[site];
+
                 avgNresorbed[ecoregion.Index] += SiteVars.ResorbedN[site];
                 avgNuptake[ecoregion.Index] += GetSoilNuptake(site);
                 avgNvol[ecoregion.Index] += SiteVars.Nvol[site];
+                netNbalance[ecoregion.Index] = EcoregionData.AnnualNDeposition[ecoregion] - SiteVars.Nvol[site] - SiteVars.Stream[site].Nitrogen;
                 avgfrassC[ecoregion.Index] += SiteVars.FrassC[site];
 
                                
@@ -370,13 +378,15 @@ namespace Landis.Extension.Succession.Century
                         (avgFireCEfflux[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgFireNEfflux[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.0}, ",
+                    log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.000},",
                         (avgNuptake[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgNresorbed[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgTotalSoilN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgNvol[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
-                    log.Write("{0:0.0000},  ",
+                    log.Write("{0:0.000}, {1:0.0000}, {2:0.000}",
+                        EcoregionData.AnnualNDeposition[ecoregion],
+                        (netNbalance[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
                         (avgfrassC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
                         );
                     log.WriteLine("");
@@ -488,8 +498,8 @@ namespace Landis.Extension.Succession.Century
             CalibrateLog.Write("limitLAI, limitH20, limitT, limitCapacity, limitN, ");  //from ComputeActualANPP
             CalibrateLog.Write("maxNPP, Bmax, Bsite, Bcohort, soilTemp, ");  //from ComputeActualANPP
             CalibrateLog.Write("actualWoodNPP, actualLeafNPP, ");  //from ComputeActualANPP
-            CalibrateLog.Write("deltaWood, deltaLeaf, totalMortalityWood, totalMortalityLeaf, ");  // from ComputeChange
-            CalibrateLog.WriteLine("resorbedNused, mineralNused, Ndemand,");  // from ComputeChange
+            CalibrateLog.Write("resorbedNused, mineralNused, Ndemand,");  // from AdjustAvailableN
+            CalibrateLog.WriteLine("deltaWood, deltaLeaf, totalMortalityWood, totalMortalityLeaf, ");  // from ComputeChange
             
            
            

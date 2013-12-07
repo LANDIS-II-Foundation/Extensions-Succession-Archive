@@ -93,10 +93,7 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.UI.WriteLine("Defoliation.Month={0:0.0}, LeafBiomass={1:0.00}, DefoliatedLeafBiomass={2:0.00}, TotalLeafMort={2:0.00}", Century.Month, cohort.LeafBiomass, defoliatedLeafBiomass , mortalityAge[1]);
 
                     ForestFloor.AddFrassLitter(defoliatedLeafBiomass, cohort.Species, site);
-
                 }
-
-
             }
             else
             {
@@ -104,43 +101,45 @@ namespace Landis.Extension.Succession.Century
                 defoliatedLeafBiomass = 0.0;
             }
 
+            //// Because Growth used some Nitrogen, it must be subtracted from the appropriate pools, either resorbed or mineral.
+            //double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
+            //double adjNdemand = totalNdemand;
+            //double resorbedNused = 0.0;
+            //double mineralNused = 0.0;
 
-            double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
-            double adjNdemand = totalNdemand;
-            double resorbedNused = 0.0;
-            double mineralNused = 0.0;
+            //// Treat Resorbed N first and only if it is spring time unless you are evergreen.  
+            //double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
+            //if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
+            //{
+            //    double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
 
-            // Treat Resorbed N first and only if it is spring time unless you are evergreen.  
-            double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
-            if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
-            {
-                double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
+            //    resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
 
-                resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
+            //    AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
 
-                AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
+            //    adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
+            //}
 
-                adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
-            }
+            //// Reduce available N after taking into account that some N may have been provided
+            //// via resorption (above).
+            //double Nuptake = 0.0;
+            //if (SiteVars.MineralN[site] >= adjNdemand)
+            //{
+            //        SiteVars.MineralN[site] -= adjNdemand;
+            //        mineralNused = adjNdemand;
+            //        Nuptake = adjNdemand;
+            //}
+            //else
+            //{
+            //        double NdemandAdjusted = SiteVars.MineralN[site];
+            //        mineralNused = SiteVars.MineralN[site];
+            //        SiteVars.MineralN[site] = 0.0;
 
-            // Reduce available N after taking into account that some N may have been provided
-            // via resorption (above).
-            double Nuptake = 0.0;
-            if (SiteVars.MineralN[site] >= adjNdemand)
-            {
-                    SiteVars.MineralN[site] -= adjNdemand;
-                    mineralNused = adjNdemand;
-                    Nuptake = adjNdemand;
-            }
-            else
-            {
-                    double NdemandAdjusted = SiteVars.MineralN[site];
-                    mineralNused = SiteVars.MineralN[site];
-                    SiteVars.MineralN[site] = 0.0;
+            //        Nuptake = SiteVars.MineralN[site];
+            //}
+            
+            //SiteVars.TotalNuptake[site] += Nuptake;
 
-                    Nuptake = SiteVars.MineralN[site];
-            }
-            SiteVars.TotalNuptake[site] += Nuptake;
 
             if (totalMortality[0] <= 0.0 || cohort.WoodBiomass <= 0.0)
                 totalMortality[0] = 0.0;
@@ -168,17 +167,15 @@ namespace Landis.Extension.Succession.Century
 
             float[] deltas = new float[2] { deltaWood, deltaLeaf };
 
-            //if((totalMortality[1] + defoliatedLeafBiomass) > cohort.LeafBiomass)
-            //   PlugIn.ModelCore.UI.WriteLine("Warning: Leaf Mortality exceeds cohort leaf biomass. M={0:0.0}, B={1:0.0}, DefoLeafBiomass={2:0.0}, defoliationIndex={3:0.0}", totalMortality[1], cohort.LeafBiomass, defoliatedLeafBiomass, defoliation);
-            
             UpdateDeadBiomass(cohort, site, totalMortality);
 
             CalculateNPPcarbon(site, actualANPP);
 
+            AvailableN.AdjustAvailableN(cohort, site, actualANPP);
+
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
-                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00},", resorbedNused, mineralNused, totalNdemand);
+                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
             }
 
             return deltas;
@@ -241,21 +238,6 @@ namespace Landis.Extension.Succession.Century
             double leafNPP  = actualANPP * leafFractionNPP;
             double woodNPP  = actualANPP * (1.0 - leafFractionNPP);
 
-            //  Adjust the leaf:wood NPP ratio to ensure that there is a minimal amount of leaf NPP,
-            //  at the expense of wood NPP.
-            //double minimumLeafNPP = (double) cohort.WoodBiomass * 0.0002;
-
-            //leafNPP         = Math.Max(leafNPP, minimumLeafNPP);
-            //if (actualANPP > 0.0)
-            //    leafFractionNPP = leafNPP / actualANPP;
-            //else
-            //    leafFractionNPP = 0.0;
-
-            //leafFractionNPP = Math.Min(1.0, leafFractionNPP);
-
-            //leafNPP  = actualANPP * leafFractionNPP;
-            //woodNPP  = actualANPP * (1.0 - leafFractionNPP);
-
             if (Double.IsNaN(leafNPP) || Double.IsNaN(woodNPP))
             {
                 PlugIn.ModelCore.UI.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
@@ -273,11 +255,7 @@ namespace Landis.Extension.Succession.Century
             {
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}, ", limitLAI, limitH20, limitT, limitCapacity, limitN);
                 Outputs.CalibrateLog.Write("{0}, {1}, {2}, {3:0.0}, {4:0.0}, ", maxNPP, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", woodNPP, leafNPP);
-                
             }
-
-
 
             return new double[2]{woodNPP, leafNPP};
 
@@ -471,6 +449,13 @@ namespace Landis.Extension.Succession.Century
             SiteVars.MonthlyAGNPPcarbon[site][Century.Month] += NPPwood + NPPleaf;
             SiteVars.MonthlyBGNPPcarbon[site][Century.Month] += NPPcoarseRoot + NPPfineRoot;
 
+            if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
+            {
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", NPPwood, NPPleaf);
+
+            }
+
+
 
         }
 
@@ -481,11 +466,10 @@ namespace Landis.Extension.Succession.Century
 
             //Get Cohort Mineral and Resorbed N allocation.
             double mineralNallocation = AvailableN.GetMineralNallocation(cohort);
-            double resorbedNallocation = 0.0;
 
             //if (SpeciesData.LeafLongevity[cohort.Species] <= 1.0 && Century.Month > 2 && Century.Month < 6)
             //if (Century.Month > 2 && Century.Month < 6)
-                resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             double WoodNPP = NPP * (1.0 - leafFractionNPP);
@@ -501,7 +485,7 @@ namespace Landis.Extension.Succession.Century
                 // Divide allocation N by N demand here:
                 //PlugIn.ModelCore.UI.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
 
-                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); //, FineRootNPP, CoarseRootNPP }));
+                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); 
 
                 if (Ndemand > 0.0)
                 {
@@ -557,8 +541,11 @@ namespace Landis.Extension.Succession.Century
             //             3)  Gholz, H.L.  1982.  Environmental limits on aboveground
             //                 net primary production and biomass in vegetation zones of
             //                 the Pacific Northwest.  Ecology 63:469-481.
-
-            //...Local variables
+            
+            // RMS: A quick fix for Megan; will add leaf start month to the interface after testing.
+            if (SpeciesData.LeafLongevity[species] <= 1.0 &&
+                (Century.Month > FunctionalType.Table[SpeciesData.FuncType[species]].LeafNeedleDrop || Century.Month < 3))
+                return 0.0;
 
             double lai = 0.0;
             double laitop = -0.47;  // This is the value given for all biomes in the tree.100 file.

@@ -539,7 +539,7 @@ namespace Landis.Extension.Succession.Century
 
             //PlugIn.ModelCore.UI.WriteLine("WaterMove={0:0}, ", waterMove);         
            
-         //...waterMove > 0. indicates a saturated water flow out of layer lyr
+            //...waterMove > 0. indicates a saturated water flow out of layer lyr
             if (waterMove > 0.0 && SiteVars.MineralN[site] > 0.0)
             {
                 //double leachIntensity = (1.0 - (OtherData.OMLeachWater - waterMove) / OtherData.OMLeachWater);

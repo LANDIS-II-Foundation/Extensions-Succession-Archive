@@ -36,6 +36,7 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double> ActiveSiteCount;
         public static Ecoregions.AuxParm<Percentage>[] ShadeBiomass;
         public static Ecoregions.AuxParm<int> B_MAX;
+        public static Ecoregions.AuxParm<double> AnnualNDeposition;  
         
         // AnnualClimateArray contains climates for N years whereby N is the succession time step.
         // AnnualClimate is the active (current) year's climate, one of the elements in AnnualClimateArray.
@@ -96,7 +97,8 @@ namespace Landis.Extension.Succession.Century
             GenerateNewClimate(0, parameters.Timestep);
             
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);
-            foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
+            AnnualNDeposition = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
+            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
                 if(ecoregion.Active)
                 {
                     SetAnnualClimate(ecoregion, 0);
@@ -145,6 +147,8 @@ namespace Landis.Extension.Succession.Century
                 string weatherWrite = AnnualWeather[ecoregion].Write();
                 //PlugIn.ModelCore.UI.WriteLine("{0}", weatherWrite);
             }
+
+            AnnualNDeposition[ecoregion] = 0.0;
         }
 
         

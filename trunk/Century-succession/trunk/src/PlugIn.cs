@@ -113,6 +113,7 @@ namespace Landis.Extension.Succession.Century
             InitializeSites(parameters.InitialCommunities, parameters.InitialCommunitiesMap, modelCore);
             if (parameters.CalibrateMode)
                 Outputs.CreateCalibrateLogFile();
+            Outputs.WriteLogFile(0);
 
         }
 

@@ -132,17 +132,17 @@ namespace Landis.Extension.Succession.Century
                         double leachTextureEffect = OtherData.OMLeachIntercept + OtherData.OMLeachSlope * EcoregionData.PercentSand[ecoregion];
                         double linten = System.Math.Min(1.0 - ((OtherData.OMLeachWater - SiteVars.WaterMovement[site])  / OtherData.OMLeachWater), 1.0);
                         cLeached = netCFlow * leachTextureEffect * linten;
-                
-                        //Partition and schedule C flows 
-                        SiteVars.SOM1soil[site].TransferCarbon(SiteVars.Stream[site], cLeached);
 
                         // Compute and schedule N flows and update mineralization accumulators
                         // Need to use the ratio for som1 for organic leaching
-                        double ratioCN_SOM1soil = som1c_soil / SiteVars.SOM1soil[site].Nitrogen;
-                        double orgflow = cLeached / ratioCN_SOM1soil;
-                        
-                        SiteVars.SOM1soil[site].Nitrogen -= orgflow; 
-                        SiteVars.Stream[site].Nitrogen += orgflow;
+                        double ratioCN_SOM1soil = SiteVars.SOM1soil[site].Carbon / SiteVars.SOM1soil[site].Nitrogen;
+
+                        //Partition and schedule C flows 
+                        SiteVars.SOM1soil[site].TransferCarbon(SiteVars.Stream[site], cLeached);
+
+                        double nLeached = cLeached / ratioCN_SOM1soil;
+                        SiteVars.SOM1soil[site].Nitrogen -= nLeached;
+                        SiteVars.Stream[site].Nitrogen += nLeached;
                         //PlugIn.ModelCore.UI.WriteLine("IfWaterMoves.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
                     }
