@@ -74,10 +74,11 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         // Method for RESETTING the available resorbed N for each cohort.  Any remaining in the Dictionary is deposited as Mineral N.
         // Amount of resorbed N must be in units of g N m-2.
-        //public static void ResetResorbedNallocation(ICohort cohort, double resorbedNallocation)
-        //{
-        //    CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
-        //}
+        // This is necessary to prevent infinite storage of N.
+        public static void ResetResorbedNallocation(ICohort cohort, double resorbedNallocation)
+        {
+            CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
+        }
 
 
         //---------------------------------------------------------------------
@@ -311,10 +312,10 @@ namespace Landis.Extension.Succession.Century
             double resorbedNused = 0.0;
             double mineralNused = 0.0;
 
-            // Treat Resorbed N first and only if it is spring time unless you are evergreen.  
-            double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
-            if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
-            {
+            // Use resorbed N first and only if it is spring time unless you are evergreen.  
+            //double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
+            //if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
+            //{
                 double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
 
                 resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
@@ -322,7 +323,7 @@ namespace Landis.Extension.Succession.Century
                 AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
 
                 adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
-            }
+            //}
 
             // Reduce available N after taking into account that some N may have been provided
             // via resorption (above).
@@ -365,12 +366,6 @@ namespace Landis.Extension.Succession.Century
 
         public static void AddResorbedN(ICohort cohort,  double leafBiomass, ActiveSite site)//, int month)
         {
-            //if (cohorts != null)
-            //    foreach (ISpeciesCohorts speciesCohorts in cohorts)
-            //        foreach (ICohort cohort in speciesCohorts)
-            //        {
-            //if (SpeciesData.LeafLongevity[cohort.Species] <= 1.0 && )
-            //{
             // Resorbed N:  We are assuming that any leaves dropped as a function of normal
             // growth and maintenance (e.g., fall senescence) will involve resorption of leaf N.
             double resorbedN = AvailableN.CalculateResorbedN(site, cohort.Species, leafBiomass); //, month);
@@ -378,9 +373,6 @@ namespace Landis.Extension.Succession.Century
 
             AvailableN.SetResorbedNallocation(cohort, resorbedN + previouslyResorbedN);
 
-            //PlugIn.ModelCore.UI.WriteLine("  Set Resorbed N = {0:0.000} (new) + {1:0.000} (old).", resorbedN, previouslyResorbedN);
-            //    }
-            //}
             return;
         }
 

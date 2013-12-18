@@ -542,10 +542,6 @@ namespace Landis.Extension.Succession.Century
             //                 net primary production and biomass in vegetation zones of
             //                 the Pacific Northwest.  Ecology 63:469-481.
             
-            // RMS: A quick fix for Megan; will add leaf start month to the interface after testing.
-            if (SpeciesData.LeafLongevity[species] <= 1.0 &&
-                (Century.Month > FunctionalType.Table[SpeciesData.FuncType[species]].LeafNeedleDrop || Century.Month < 3))
-                return 0.0;
 
             double lai = 0.0;
             double laitop = -0.47;  // This is the value given for all biomes in the tree.100 file.
@@ -591,6 +587,14 @@ namespace Landis.Extension.Succession.Century
             //SiteVars.LAI[site] += lai; Tracking LAI.
 
             double LAI_limit = Math.Max(0.0, 1.0 - Math.Exp(laitop * lai));
+
+            // RMS: A quick fix for Megan; will add leaf start month to the interface after testing.
+            if (SpeciesData.LeafLongevity[species] <= 1.0 &&
+                (Century.Month > FunctionalType.Table[SpeciesData.FuncType[species]].LeafNeedleDrop || Century.Month < 3))
+            {
+                lai = 0.0;
+                LAI_limit = 0.0;
+            }
 
 
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, leafC={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, leafC, largeWoodC);
