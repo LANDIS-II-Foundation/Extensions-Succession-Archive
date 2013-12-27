@@ -10,22 +10,25 @@ namespace Landis.Extension.Succession.Century
     {
             //log.WriteLine("");
 
-        [DataFieldAttribute(Unit = FiledUnits.Year, Desc = "...")]
+        [DataFieldAttribute(Unit = FiledUnits.Year, Desc = "Simulation Year")]
         public int Time {set; get;}
 
         [DataFieldAttribute(Desc = "...")]
         public string EcoregionName { set; get; }
 
-        [DataFieldAttribute(Unit = FiledUnits.Count, Desc = "...")]
+        [DataFieldAttribute(Desc = "Ecoregion Index")]
+        public int EcoregionIndex { set; get; }
+
+        [DataFieldAttribute(Unit = FiledUnits.Count, Desc = "Number of Sites")]
         public int NumSites { set; get; }
 
-        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "...", Format = "0.0")]
+        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Net Ecosystem Exchange C", Format = "0.0")]
         public double NEEC {get; set;}
 
-        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "...", Format = "0.0")]
+        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Total Soil Organic Carbon", Format = "0.0")]
         public double SOMTC { get; set; }
 
-        [DataFieldAttribute(Unit = FiledUnits.g_B_m2, Desc = "...", Format = "0.0")]
+        [DataFieldAttribute(Unit = FiledUnits.g_B_m2, Desc = "Aboveground Biomass", Format = "0.0")]
         public double AGB { get; set; }
         
         //log.Write("AG_NPPC, BG_NPPC, LitterfallC, AgeMortality, ");

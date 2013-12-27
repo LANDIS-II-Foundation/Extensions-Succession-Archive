@@ -17,6 +17,9 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Desc = "Ecoregion Name")]
         public string EcoregionName { set; get; }
 
+        [DataFieldAttribute(Desc = "Ecoregion Index")]
+        public int EcoregionIndex { set; get; }
+
         [DataFieldAttribute(Unit = FiledUnits.Count, Desc = "Number of Sites")]
         public int NumSites { set; get; }
 

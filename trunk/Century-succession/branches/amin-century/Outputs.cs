@@ -303,19 +303,19 @@ namespace Landis.Extension.Succession.Century
             {
                 //if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 //{
-                    primaryLog.Clear();
-                    PrimaryLog pl = new PrimaryLog();
+                primaryLog.Clear();
+                PrimaryLog pl = new PrimaryLog();
 
                     
                     //primary.AddObject(new PrimaryLog()); // { EcoregionName = ecoregion.Name });
 
                     //log.Write("{0}, {1}, {2}, ", 
-                    pl.Time =    CurrentTime;
-                    pl.EcoregionName =    ecoregion.Name;
-                    pl.NumSites = EcoregionData.ActiveSiteCount[ecoregion];
-                    //    );
-                    //log.Write("{0:0.00}, {1:0.0}, {2:0.0}, ", 
-                    pl.NEEC =    (avgNEEc[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                pl.Time =    CurrentTime;
+                pl.EcoregionName =    ecoregion.Name;
+                pl.EcoregionIndex = ecoregion.Index;
+                pl.NumSites = EcoregionData.ActiveSiteCount[ecoregion];
+
+                pl.NEEC =    (avgNEEc[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.SOMTC = (avgSOMtc[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.AGB = (avgAGB[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
@@ -464,6 +464,8 @@ namespace Landis.Extension.Succession.Century
                     ml.Time = PlugIn.ModelCore.CurrentTime;
                     ml.Month = month + 1;
                     ml.EcoregionName = ecoregion.Name;
+                    ml.EcoregionIndex = ecoregion.Index;
+
                     ml.NumSites = Convert.ToInt32(EcoregionData.ActiveSiteCount[ecoregion]);
 
                     ml.ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month];
