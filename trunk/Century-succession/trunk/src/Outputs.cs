@@ -442,7 +442,7 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
 
-                Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
+                Ndep[ecoregion.Index] = EcoregionData.MonthlyNDeposition[ecoregion][month];
             }
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)

@@ -89,7 +89,9 @@ namespace Landis.Extension.Succession.Century
                     SoilWater.Run(y, Month, liveBiomass, site, out baseFlow, out stormFlow);
                     SiteVars.MonthlySoilWaterContent[site][Month] = SiteVars.SoilWaterContent[site];
 
-                    double monthlyNdeposition = EcoregionData.AnnualWeather[PlugIn.ModelCore.Ecoregion[site]].MonthlyNdeposition[Century.Month];
+                    double ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month];
+                    double monthlyNdeposition = EcoregionData.AtmosNintercept[ecoregion] + (EcoregionData.AtmosNslope[ecoregion] * ppt);
+                    EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
                     EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
                     SiteVars.MineralN[site] += monthlyNdeposition;
 
@@ -115,9 +117,9 @@ namespace Landis.Extension.Succession.Century
                     SoilLayer.Decompose(site);
 
 
-                    //...Volatilization loss as a function of the mineral n which
-                    //     remains after uptake by plants.  ML added a correction factor for wetlands since their denitrification rate is double that of wetlands
-                    //based on a review paper by Seitziner 2006.
+                    // Volatilization loss as a function of the mineral n which remains after uptake by plants.  
+                    // ML added a correction factor for wetlands since their denitrification rate is double that of wetlands
+                    // based on a review paper by Seitziner 2006.
 
                     double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]); // / 12; // monthly value WHY DIVIDE BY 12??
 

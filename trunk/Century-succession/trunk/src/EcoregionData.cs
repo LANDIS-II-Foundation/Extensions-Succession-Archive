@@ -36,7 +36,8 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double> ActiveSiteCount;
         public static Ecoregions.AuxParm<Percentage>[] ShadeBiomass;
         public static Ecoregions.AuxParm<int> B_MAX;
-        public static Ecoregions.AuxParm<double> AnnualNDeposition;  
+        public static Ecoregions.AuxParm<double> AnnualNDeposition;
+        public static Ecoregions.AuxParm<double[]> MonthlyNDeposition;  
         
         // AnnualClimateArray contains climates for N years whereby N is the succession time step.
         // AnnualClimate is the active (current) year's climate, one of the elements in AnnualClimateArray.
@@ -56,7 +57,6 @@ namespace Landis.Extension.Succession.Century
             StormFlowFraction   = parameters.StormFlowFraction;
             BaseFlowFraction    = parameters.BaseFlowFraction;
             Drain               = parameters.Drain;
-            //MonthlyNDeposition = parameters.MonthlyNDeposition;
             AtmosNslope         = parameters.AtmosNslope;
             AtmosNintercept     = parameters.AtmosNintercept;
             Latitude            = parameters.Latitude;
@@ -98,6 +98,8 @@ namespace Landis.Extension.Succession.Century
             
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);
             AnnualNDeposition = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
+            MonthlyNDeposition = new Ecoregions.AuxParm<double[]>(PlugIn.ModelCore.Ecoregions);
+            
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
                 if(ecoregion.Active)
                 {
@@ -142,7 +144,7 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.UI.WriteLine("  SETTING ANNAUL CLIMATE:  Yr={0}, SimYr={1}, Eco={2}.", year, actualYear, ecoregion.Name);
                 
                 AnnualWeather[ecoregion] = AnnualClimateArray[ecoregion][year];
-                AnnualWeather[ecoregion].SetAnnualN(EcoregionData.AtmosNslope[ecoregion], EcoregionData.AtmosNintercept[ecoregion]);
+                //AnnualWeather[ecoregion].SetAnnualN(EcoregionData.AtmosNslope[ecoregion], EcoregionData.AtmosNintercept[ecoregion]);
 
                 string weatherWrite = AnnualWeather[ecoregion].Write();
                 //PlugIn.ModelCore.UI.WriteLine("{0}", weatherWrite);
