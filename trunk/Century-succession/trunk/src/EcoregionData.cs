@@ -106,6 +106,7 @@ namespace Landis.Extension.Succession.Century
                     SetAnnualClimate(ecoregion, 0);
                     ClimateUpdates[ecoregion] = new bool[PlugIn.ModelCore.EndTime + parameters.Timestep + 1];
                     ClimateUpdates[ecoregion][0] = true;
+                    MonthlyNDeposition[ecoregion] = new double[13];
                 }
             
         }
