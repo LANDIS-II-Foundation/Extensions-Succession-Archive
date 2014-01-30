@@ -368,7 +368,7 @@ namespace Landis.Extension.Succession.Century
             double ratioPrecipPET = 0.0;
             if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet;
 
-            //PlugIn.ModelCore.UI.WriteLine("ratioPrecipPET={0}, totalAvailableH20={1}, H2Oinputs={2}, pet={3}.", ratioPrecipPET, totalAvailableWater, H2Oinputs, pet);
+            PlugIn.ModelCore.UI.WriteLine("ratioPrecipPET={0}, totalAvailableH20={1}, H2Oinputs={2}, pet={3}.", ratioPrecipPET, availableWater, H2Oinputs, pet);
 
             SiteVars.WaterMovement[site] = waterMovement;
             SiteVars.AvailableWater[site] = availableWater;  //available to plants for growth
