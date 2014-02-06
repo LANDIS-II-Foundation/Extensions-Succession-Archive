@@ -304,7 +304,7 @@ namespace Landis.Extension.Succession.Century
             //if (Climate.Spinup_AllData.Count >= ageCohorts[0].Age)
             try
             {    
-                PlugIn.ModelCore.UI.WriteLine("Making Biomass Cohorts using spin-up climate data");
+                //PlugIn.ModelCore.UI.WriteLine("Making Biomass Cohorts using spin-up climate data");
 
                 SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); 
                 if (ageCohorts.Count == 0)

@@ -73,6 +73,15 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
+        // Method for RESETTING the available resorbed N for each cohort.  Any remaining in the Dictionary is deposited as Mineral N.
+        // Amount of resorbed N must be in units of g N m-2.
+        // This is necessary to prevent infinite storage of N.
+        public static void ResetResorbedNallocation(ICohort cohort, double resorbedNallocation)
+        {
+            CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
+        }
+
+        //---------------------------------------------------------------------
         // Method for calculationg how much N should be resorbed, based the difference in N content between leaves and litterfall;
         // month is only included for logging purposes.
         public static double CalculateResorbedN(ActiveSite site, ISpecies species, double leafBiomass)
@@ -303,6 +312,55 @@ namespace Landis.Extension.Succession.Century
             }
 
             return Ndemand;
+        }
+
+        public static void AdjustAvailableN(ICohort cohort, ActiveSite site, double[] actualANPP)
+        {
+            // Because Growth used some Nitrogen, it must be subtracted from the appropriate pools, either resorbed or mineral.
+            double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
+            double adjNdemand = totalNdemand;
+            double resorbedNused = 0.0;
+            double mineralNused = 0.0;
+
+            // Use resorbed N first and only if it is spring time unless you are evergreen.  
+            //double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
+            //if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
+            //{
+            double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
+
+            resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
+
+            AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
+
+            adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
+            //}
+
+            // Reduce available N after taking into account that some N may have been provided
+            // via resorption (above).
+            double Nuptake = 0.0;
+            if (SiteVars.MineralN[site] >= adjNdemand)
+            {
+                SiteVars.MineralN[site] -= adjNdemand;
+                mineralNused = adjNdemand;
+                Nuptake = adjNdemand;
+            }
+            else
+            {
+                double NdemandAdjusted = SiteVars.MineralN[site];
+                mineralNused = SiteVars.MineralN[site];
+                SiteVars.MineralN[site] = 0.0;
+
+                Nuptake = SiteVars.MineralN[site];
+            }
+
+            SiteVars.TotalNuptake[site] += Nuptake;
+
+            if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
+            {
+                //Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00},", resorbedNused, mineralNused, totalNdemand);
+            }
+
         }
 
         private static int GetAddYear(ICohort cohort)
