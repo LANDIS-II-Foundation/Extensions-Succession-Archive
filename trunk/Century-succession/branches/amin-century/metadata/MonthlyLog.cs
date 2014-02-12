@@ -29,16 +29,16 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Unit = FiledUnits.DegreeC, Desc = "Air Temperature", Format = "0.0")]
         public double airtemp { get; set; }
 
-        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Aboveground NPP C", Format = "0.0")]
+        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Aboveground NPP C", Format = "0.00")]
         public double avgNPPtc { get; set; }
 
-        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Aboveground Heterotrophic Respiration", Format = "0.0")]
+        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Aboveground Heterotrophic Respiration", Format = "0.00")]
         public double avgResp { get; set; }
 
-        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Net Ecosystem Exchange", Format = "0.0")]
+        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "Net Ecosystem Exchange", Format = "0.00")]
         public double avgNEE { get; set; }
 
-        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "N Deposition", Format = "0.0")]
+        [DataFieldAttribute(Unit = FiledUnits.g_C_m2, Desc = "N Deposition", Format = "0.00")]
         public double Ndep { get; set; }
     }
 }
