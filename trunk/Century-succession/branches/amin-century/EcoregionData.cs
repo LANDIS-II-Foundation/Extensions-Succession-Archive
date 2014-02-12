@@ -6,7 +6,6 @@ using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Library.Succession;
 using Landis.Library.Climate;
-
 using System.Collections.Generic;
 using System;
 
@@ -93,7 +92,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             
-            GenerateNewClimate(0, parameters.Timestep, ClimatePhase.SpinUp_Climate);
+            GenerateNewClimate(0, parameters.Timestep, Climate.Phase.SpinUp_Climate);
             
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate_Monthly>(PlugIn.ModelCore.Ecoregions);
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
@@ -154,13 +153,13 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
         // Generates new climate parameters at an annual time step.
         // 
-        public static void GenerateNewClimate(int startingTimestep, int timeStepCount, ClimatePhase spinupOrfuture) //Pass false for spin-up (historic)
+        public static void GenerateNewClimate(int startingTimestep, int timeStepCount, Climate.Phase spinupOrfuture) //Pass false for spin-up (historic)
         {
             //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
             AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate_Monthly[]>(PlugIn.ModelCore.Ecoregions);
                                  
-            Console.WriteLine("\n-------get {0}-------> {1}, {2} \n", spinupOrfuture.ToString(), startingTimestep, timeStepCount);
+            PlugIn.ModelCore.UI.WriteLine("    Loading {0}, Year: {1}", spinupOrfuture.ToString(), startingTimestep);
             
             foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
             {

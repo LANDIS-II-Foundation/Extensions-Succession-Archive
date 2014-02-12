@@ -139,7 +139,7 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.InitializeDisturbances();
 
                 Dynamic.Module.CheckForUpdate();
-                EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, ClimatePhase.Future_Climate);
+                EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, Climate.Phase.Future_Climate);
 
                 // Update Pest only once.
                 SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);

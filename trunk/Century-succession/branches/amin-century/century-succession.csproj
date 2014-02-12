@@ -41,8 +41,9 @@
     <Reference Include="Landis.Library.AgeOnlyCohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Climate">
-      <HintPath>..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Climate.dll</HintPath>
+    <Reference Include="Landis.Library.Climate, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Climate.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Cohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Cohorts.dll</HintPath>
