@@ -22,7 +22,7 @@ Source: ..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#BuildDir}; Flags
 Source: ..\..\branches\amin-century\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
 
 ; Century Succession
-Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#BuildDir}; Flags: replacesameversion
+Source: ..\..\branches\amin-century\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#BuildDir}; Flags: replacesameversion
 
 ; Supporting documents
 ; FIX ME!!
