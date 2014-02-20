@@ -99,16 +99,17 @@ namespace Landis.Extension.Succession.Century
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);
             AnnualNDeposition = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
             MonthlyNDeposition = new Ecoregions.AuxParm<double[]>(PlugIn.ModelCore.Ecoregions);
-            
-            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
-                if(ecoregion.Active)
+
+            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+            {
+                if (ecoregion.Active)
                 {
                     SetAnnualClimate(ecoregion, 0);
                     ClimateUpdates[ecoregion] = new bool[PlugIn.ModelCore.EndTime + parameters.Timestep + 1];
                     ClimateUpdates[ecoregion][0] = true;
-                    MonthlyNDeposition[ecoregion] = new double[13];
+                    MonthlyNDeposition[ecoregion] = new double[12];
                 }
-            
+            }
         }
         //---------------------------------------------------------------------
         public static void ChangeParameters(Dynamic.IParameters parameters)
@@ -151,7 +152,7 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.UI.WriteLine("{0}", weatherWrite);
             }
 
-            AnnualNDeposition[ecoregion] = 0.0;
+            //AnnualNDeposition[ecoregion] = 0.0;
         }
 
         

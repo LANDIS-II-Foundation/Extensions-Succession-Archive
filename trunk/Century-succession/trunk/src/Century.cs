@@ -42,6 +42,7 @@ namespace Landis.Extension.Succession.Century
                 Year = y + 1;
 
                 SiteVars.ResetAnnualValues(site);
+                EcoregionData.AnnualNDeposition[ecoregion] = 0.0;
 
                 if(y == 0 && SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     FireEffects.ReduceLayers(SiteVars.FireSeverity[site], site);
@@ -89,7 +90,7 @@ namespace Landis.Extension.Succession.Century
                     SoilWater.Run(y, Month, liveBiomass, site, out baseFlow, out stormFlow);
                     SiteVars.MonthlySoilWaterContent[site][Month] = SiteVars.SoilWaterContent[site];
 
-                    double ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month];
+                    double ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Month];
                     double monthlyNdeposition = EcoregionData.AtmosNintercept[ecoregion] + (EcoregionData.AtmosNslope[ecoregion] * ppt);
                     EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
                     EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
