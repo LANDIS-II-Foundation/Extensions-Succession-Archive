@@ -105,38 +105,10 @@ namespace Landis.Extension.Succession.Century
             ReadVar(communitiesMap);
             parameters.InitialCommunitiesMap = communitiesMap.Value;
 
-            //---------------------------------------------------------------------------------
-            //System.Console.WriteLine("LandisData removed!");
-            //Read line LandisData "Climate Data"
-//            InputVar<string> landisData = new InputVar<string>(Names.LandisData);
-//            ReadVar(landisData);
 
             InputVar<string> climateConfigFile = new InputVar<string>(Names.ClimateConfigFile);
             ReadVar(climateConfigFile);
             parameters.ClimateConfigFile = climateConfigFile.Value;
-
-            //InputVar<string> climateFileFormat = new InputVar<string>(Names.ClimateFileFormat);
-            //ReadVar(climateFileFormat);
-            //parameters.ClimateFileFormat = climateFileFormat.Value;
-
-            //InputVar<string> climateFile = new InputVar<string>(Names.ClimateFile);
-            //ReadVar(climateFile);
-            //parameters.ClimateFile = climateFile.Value;
-
-            //InputVar<string> spinUpClimateFileFormat = new InputVar<string>(Names.SpinUpClimateFileFormat);
-            //ReadVar(spinUpClimateFileFormat);
-            //parameters.SpinUpClimateFileFormat = spinUpClimateFileFormat.Value;
-
-            //InputVar<string> spinUpClimateFile = new InputVar<string>(Names.SpinUpClimateFile);
-            //if (spinUpClimateFileFormat.Value != "no")
-            //{
-            //    ReadVar(spinUpClimateFile);
-            //    parameters.SpinUpClimateFile = spinUpClimateFile.Value;
-            //}
-            //else
-            //{
-            //    GetNextLine();
-            //}
 
             InputVar<bool> calimode = new InputVar<bool>(Names.CalibrateMode);
             if (ReadOptionalVar(calimode))

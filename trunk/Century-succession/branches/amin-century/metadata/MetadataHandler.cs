@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.Century
                 Type = OutputType.Table,
                 Name = "MonthlyLog",
                 FilePath = Outputs.monthlyLog.FilePath,
-                //MetadataFilePath = @"Century-Succession\MonthlyLog.xml" //this is set automatically and it's not required to be set
+                Visualize = false,
             };
             tblOut_monthly.RetriveFields(typeof(MonthlyLog));
             Extension.OutputMetadatas.Add(tblOut_monthly);
@@ -55,7 +55,7 @@ namespace Landis.Extension.Succession.Century
                 Type = OutputType.Table,
                 Name = "PrimaryLog",
                 FilePath = Outputs.primaryLog.FilePath,
-                //MetadataFilePath = @"Century-Succession\MonthlyLog.xml" //this is set automatically and it's not required to be set
+                Visualize = true,
             };
             tblOut_primary.RetriveFields(typeof(PrimaryLog));
             Extension.OutputMetadatas.Add(tblOut_primary);
@@ -71,8 +71,8 @@ namespace Landis.Extension.Succession.Century
                     Name = "Aboveground Net Primary Production",
                     FilePath = @"century\AG_NPP-{timestep}.gis",  //century
                     Map_DataType = MapDataType.Continuous,
-                    Map_Unit = FiledUnits.g_C_m2,
-                    //MetadataFilePath = @"Century-Succession\ANPP.xml"
+                    Map_Unit = FieldUnits.g_C_m2,
+                    Visualize = true,
                 };
                 Extension.OutputMetadatas.Add(mapOut_ANPP);
             }
@@ -85,7 +85,8 @@ namespace Landis.Extension.Succession.Century
                     Name = "Net Ecosystem Exchange",
                     FilePath = @"century\NEE-{timestep}.gis",  //century
                     Map_DataType = MapDataType.Continuous,
-                    Map_Unit = FiledUnits.g_C_m2,
+                    Map_Unit = FieldUnits.g_C_m2,
+                    Visualize = true,
                 };
                 Extension.OutputMetadatas.Add(mapOut_Nee);
             }
@@ -97,7 +98,8 @@ namespace Landis.Extension.Succession.Century
                     Name = "Soil Organic Carbon",
                     FilePath = @"century\SOC-{timestep}.gis",  //century
                     Map_DataType = MapDataType.Continuous,
-                    Map_Unit = FiledUnits.g_C_m2,
+                    Map_Unit = FieldUnits.g_C_m2,
+                    Visualize = true,
                 };
                 Extension.OutputMetadatas.Add(mapOut_SOC);
             }
@@ -109,7 +111,8 @@ namespace Landis.Extension.Succession.Century
                     Name = "Soil Organic Nitrogen",
                     FilePath = @"century\SON-{timestep}.gis",  //century
                     Map_DataType = MapDataType.Continuous,
-                    Map_Unit = FiledUnits.g_N_m2,
+                    Map_Unit = FieldUnits.g_N_m2,
+                    Visualize = true,
                 };
                 Extension.OutputMetadatas.Add(mapOut_SON);
             }
@@ -121,7 +124,8 @@ namespace Landis.Extension.Succession.Century
                     Name = "Total Carbon",
                     FilePath = @"century\TotalC-{timestep}.gis",  //century
                     Map_DataType = MapDataType.Continuous,
-                    Map_Unit = FiledUnits.g_C_m2,
+                    Map_Unit = FieldUnits.g_C_m2,
+                    Visualize = true,
                 };
                 Extension.OutputMetadatas.Add(mapOut_TotalC);
             }

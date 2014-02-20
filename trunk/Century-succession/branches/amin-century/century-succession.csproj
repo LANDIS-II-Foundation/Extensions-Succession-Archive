@@ -51,8 +51,9 @@
     <Reference Include="Landis.Library.LeafBiomassCohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.LeafBiomassCohorts.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Metadata">
-      <HintPath>..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Metadata.dll</HintPath>
+    <Reference Include="Landis.Library.Metadata, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Succession">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Succession.dll</HintPath>
