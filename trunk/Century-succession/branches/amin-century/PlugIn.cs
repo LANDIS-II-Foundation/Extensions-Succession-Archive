@@ -160,7 +160,7 @@ namespace Landis.Extension.Succession.Century
                 }
                 Outputs.WritePrimaryLogFile(PlugIn.ModelCore.CurrentTime);
 
-                if (SoilCarbonMapNames != null && (PlugIn.ModelCore.CurrentTime % SoilCarbonMapFrequency) == 0)
+                if (SoilCarbonMapNames != null)// && (PlugIn.ModelCore.CurrentTime % SoilCarbonMapFrequency) == 0)
                 {
                     string path = MapNames.ReplaceTemplateVars(SoilCarbonMapNames, PlugIn.ModelCore.CurrentTime);
                     using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path, modelCore.Landscape.Dimensions))
@@ -183,7 +183,7 @@ namespace Landis.Extension.Succession.Century
                 }
 
 
-                if (SoilNitrogenMapNames != null && (PlugIn.ModelCore.CurrentTime % SoilNitrogenMapFrequency) == 0)
+                if (SoilNitrogenMapNames != null)// && (PlugIn.ModelCore.CurrentTime % SoilNitrogenMapFrequency) == 0)
                 {
                     string path2 = MapNames.ReplaceTemplateVars(SoilNitrogenMapNames, PlugIn.ModelCore.CurrentTime);
                     using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
@@ -205,7 +205,7 @@ namespace Landis.Extension.Succession.Century
                     }
                 }
 
-                if (ANPPMapNames != null && (PlugIn.ModelCore.CurrentTime % ANPPMapFrequency) == 0)
+                if (ANPPMapNames != null)// && (PlugIn.ModelCore.CurrentTime % ANPPMapFrequency) == 0)
                 {
                     string path3 = MapNames.ReplaceTemplateVars(ANPPMapNames, PlugIn.ModelCore.CurrentTime);
                     using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path3, modelCore.Landscape.Dimensions))
@@ -226,7 +226,7 @@ namespace Landis.Extension.Succession.Century
                         }
                     }
                 }
-                if (ANEEMapNames != null && (PlugIn.ModelCore.CurrentTime % ANEEMapFrequency) == 0)
+                if (ANEEMapNames != null)// && (PlugIn.ModelCore.CurrentTime % ANEEMapFrequency) == 0)
                 {
 
                     string path4 = MapNames.ReplaceTemplateVars(ANEEMapNames, PlugIn.ModelCore.CurrentTime);
@@ -248,7 +248,7 @@ namespace Landis.Extension.Succession.Century
                         }
                     }
                 }
-                if (TotalCMapNames != null && (PlugIn.ModelCore.CurrentTime % TotalCMapFrequency) == 0)
+                if (TotalCMapNames != null)// && (PlugIn.ModelCore.CurrentTime % TotalCMapFrequency) == 0)
                 {
 
                     string path5 = MapNames.ReplaceTemplateVars(TotalCMapNames, PlugIn.ModelCore.CurrentTime);
