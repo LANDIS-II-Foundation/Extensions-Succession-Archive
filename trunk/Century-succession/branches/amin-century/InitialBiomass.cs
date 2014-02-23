@@ -301,9 +301,10 @@ namespace Landis.Extension.Succession.Century
                                                      ActiveSite site,
                                                      ComputeMethod initialBiomassMethod)
         {
+            IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
             //if (Climate.Spinup_AllData.Count >= ageCohorts[0].Age)
-            try
-            {    
+            //try
+            //{    
                 //PlugIn.ModelCore.UI.WriteLine("Making Biomass Cohorts using spin-up climate data");
 
                 SiteVars.Cohorts[site] = new Library.LeafBiomassCohorts.SiteCohorts(); 
@@ -331,7 +332,8 @@ namespace Landis.Extension.Succession.Century
                 {
                      //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
                      //EcoregionData.GenerateNewClimate(0, successionTimestep, ClimatePhase.SpinUp_Climate);
-                     EcoregionData.GenerateNewClimate(time + ageCohorts[0].Age, successionTimestep, Climate.Phase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
+                     //EcoregionData.GenerateNewClimate(time + ageCohorts[0].Age, successionTimestep, Climate.Phase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
+                    EcoregionData.SetAnnualClimate(ecoregion, time + ageCohorts[0].Age, Climate.Phase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
 
                      //  Add those cohorts that were born at the current year
                      while (indexNextAgeCohort < ageCohorts.Count && ageCohorts[indexNextAgeCohort].Age == -time)
@@ -349,11 +351,11 @@ namespace Landis.Extension.Succession.Century
                 
                 
                 }
-            }
-            catch (ClimateDataOutOfRangeException ex)
-            {
-                throw ex;   //do nothing
-            }
+            //}
+            //catch (ClimateDataOutOfRangeException ex)
+            //{
+            //    throw ex;   //do nothing
+            //}
             return SiteVars.Cohorts[site];
         }
 

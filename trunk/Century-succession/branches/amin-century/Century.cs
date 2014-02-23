@@ -5,6 +5,7 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.LeafBiomassCohorts;
 using System.Collections.Generic;
+using Landis.Library.Climate;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -28,7 +29,6 @@ namespace Landis.Extension.Succession.Century
             
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            //PlugIn.ModelCore.UI.WriteLine("SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
             // If in spin-up mode and calibration mode, then this needs to happen first.
             //if (PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
@@ -40,26 +40,30 @@ namespace Landis.Extension.Succession.Century
             for (int y = 0; y < years; ++y) {
 
                 Year = y + 1;
+                Climate.Phase spinupOrfuture = Climate.Phase.Future_Climate;
 
                 SiteVars.ResetAnnualValues(site);
 
                 if(y == 0 && SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     FireEffects.ReduceLayers(SiteVars.FireSeverity[site], site);
 
+                if (PlugIn.ModelCore.CurrentTime == 0)
+                    spinupOrfuture = Climate.Phase.SpinUp_Climate;
+
                 // Do not reset annual climate if it has already happend for this year.
-                if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
-                {
-                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
-                    EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
-                }
+                //if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
+                //{
+                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, spinupOrfuture);
+                //    EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
+                //}
 
                 
 
                 // if spin-up phase, allow each initial community to have a unique climate
-                if(PlugIn.ModelCore.CurrentTime == 0)
-                {
-                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
-                }
+                //if(PlugIn.ModelCore.CurrentTime == 0)
+                //{
+                //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
+                //}
 
                 // Next, Grow and Decompose each month
                 int[] months = new int[12]{6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5};

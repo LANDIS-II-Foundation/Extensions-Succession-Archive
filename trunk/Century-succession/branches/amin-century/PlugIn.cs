@@ -133,13 +133,13 @@ namespace Landis.Extension.Succession.Century
 
         public override void Run()
         {
-            try
-            {
+            //try
+            //{
                 if (PlugIn.ModelCore.CurrentTime > 0)
                     SiteVars.InitializeDisturbances();
 
-                Dynamic.Module.CheckForUpdate();
-                EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, Climate.Phase.Future_Climate);
+                //Dynamic.Module.CheckForUpdate();
+                //EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, Climate.Phase.Future_Climate);
 
                 // Update Pest only once.
                 SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);
@@ -275,12 +275,12 @@ namespace Landis.Extension.Succession.Century
                     }
                 }
 
-            }
-            catch(ClimateDataOutOfRangeException ex)
-            {
-                //ignore this run
-                PlugIn.ModelCore.UI.WriteLine("\n*** PlugIn.Run() was ignored at time step " + PlugIn.ModelCore.CurrentTime + " ***\nDetail: " + ex.InnerException.Message);
-            }
+            //}
+            //catch(ClimateDataOutOfRangeException ex)
+            //{
+            //    //ignore this run
+            //    PlugIn.ModelCore.UI.WriteLine("\n*** PlugIn.Run() was ignored at time step " + PlugIn.ModelCore.CurrentTime + " ***\nDetail: " + ex.InnerException.Message);
+            //}
         }
 
 

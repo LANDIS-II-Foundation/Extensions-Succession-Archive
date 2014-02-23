@@ -431,7 +431,7 @@ namespace Landis.Extension.Succession.Century
                     avgNPPtc[ecoregion.Index] = 0.0;
                     avgResp[ecoregion.Index] = 0.0;
                     avgNEE[ecoregion.Index] = 0.0;
-                    Ndep[ecoregion.Index] = 0.0;
+                    //Ndep[ecoregion.Index] = 0.0;
                 //}
             }
 
@@ -448,7 +448,7 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
 
-                Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
+                //Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
 
             }
             
@@ -473,7 +473,7 @@ namespace Landis.Extension.Succession.Century
                     ml.avgNPPtc = (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.avgResp = (avgResp[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.avgNEE = (avgNEE[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
-                    ml.Ndep = Ndep[ecoregion.Index];
+                    //ml.Ndep = Ndep[ecoregion.Index];
 
                     //logMonthly.Write("{0}, {1}, {2}, {3},",
                     //    PlugIn.ModelCore.CurrentTime,

@@ -60,7 +60,10 @@ namespace Landis.Extension.Succession.Century
                     if(!ecoregion.Active || EcoregionData.ActiveSiteCount[ecoregion] < 1)
                         continue;
 
-                    AnnualClimate_Monthly ecoClimate = EcoregionData.AnnualClimateArray[ecoregion][y];
+                    int actualYear = PlugIn.ModelCore.TimeSinceStart + y;
+
+                    //AnnualClimate_Monthly ecoClimate = EcoregionData.AnnualWeather[ecoregion]; //[y];
+                    AnnualClimate_Monthly ecoClimate = new AnnualClimate_Monthly(ecoregion, actualYear, EcoregionData.Latitude[ecoregion], Climate.Phase.Future_Climate, actualYear);
                 
                     if(ecoClimate == null)
                         throw new System.ApplicationException("Error: CLIMATE NULL.");
