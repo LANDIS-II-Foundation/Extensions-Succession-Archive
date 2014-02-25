@@ -87,8 +87,6 @@ namespace Landis.Extension.Succession.Century
             //Initialize climate.
 
             Climate.Initialize(parameters.ClimateConfigFile, false, modelCore);
-            //Climate.Initialize(Climate.Convert_FileFormat(parameters.ClimateFileFormat, parameters.ClimateFile), Climate.Convert_FileFormat(parameters.SpinUpClimateFileFormat, parameters.SpinUpClimateFile), false, modelCore);
-            //Climate.Initialize(parameters.ClimateFile, false, modelCore);
             
             EcoregionData.Initialize(parameters);
             SpeciesData.Initialize(parameters);
@@ -137,7 +135,8 @@ namespace Landis.Extension.Succession.Century
             //{
                 if (PlugIn.ModelCore.CurrentTime > 0)
                     SiteVars.InitializeDisturbances();
-
+            
+            //EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, spinupOrfuture);
                 //Dynamic.Module.CheckForUpdate();
                 //EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, Climate.Phase.Future_Climate);
 

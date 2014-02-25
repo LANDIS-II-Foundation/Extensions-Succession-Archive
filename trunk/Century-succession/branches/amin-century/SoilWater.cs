@@ -6,6 +6,7 @@ using System.IO;
 using System;
 using Landis.Core;
 using Landis.SpatialModeling;
+using Landis.Library.Climate;
 
 namespace Landis.Extension.Succession.Century
 {

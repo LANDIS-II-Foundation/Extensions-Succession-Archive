@@ -40,7 +40,7 @@ namespace Landis.Extension.Succession.Century
             for (int y = 0; y < years; ++y) {
 
                 Year = y + 1;
-                Climate.Phase spinupOrfuture = Climate.Phase.Future_Climate;
+                //Climate.Phase spinupOrfuture = Climate.Phase.Future_Climate;
 
                 SiteVars.ResetAnnualValues(site);
 
@@ -48,12 +48,13 @@ namespace Landis.Extension.Succession.Century
                     FireEffects.ReduceLayers(SiteVars.FireSeverity[site], site);
 
                 if (PlugIn.ModelCore.CurrentTime == 0)
-                    spinupOrfuture = Climate.Phase.SpinUp_Climate;
+                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.SpinUp_Climate);
+                else
+                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.Future_Climate);
 
                 // Do not reset annual climate if it has already happend for this year.
                 //if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
                 //{
-                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, spinupOrfuture);
                 //    EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
                 //}
 
@@ -81,8 +82,6 @@ namespace Landis.Extension.Succession.Century
                     //PlugIn.ModelCore.UI.WriteLine("SiteVars.MineralN = {0:0.00}, month = {1}.", SiteVars.MineralN[site], i);
 
                     Month = months[MonthCnt];
-                    //CohortBiomass.month = month;
-                    //CohortBiomass.centuryMonth = i;
 
                     SiteVars.MonthlyAGNPPcarbon[site][Month] = 0.0;
                     SiteVars.MonthlyBGNPPcarbon[site][Month] = 0.0;

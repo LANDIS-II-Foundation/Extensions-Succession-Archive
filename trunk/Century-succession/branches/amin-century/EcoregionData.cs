@@ -7,6 +7,7 @@ using Edu.Wisc.Forest.Flel.Util;
 using Landis.Library.Succession;
 using Landis.Library.Climate;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 
@@ -35,12 +36,14 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<int> ActiveSiteCount;
         public static Ecoregions.AuxParm<Percentage>[] ShadeBiomass;
         public static Ecoregions.AuxParm<int> B_MAX;
+        private static Ecoregions.AuxParm<int> LastYearUpdated;
+
         
+        public static Ecoregions.AuxParm<AnnualClimate_Monthly> AnnualWeather;
         // AnnualClimateArray contains climates for N years whereby N is the succession time step.
         // AnnualClimate is the active (current) year's climate, one of the elements in AnnualClimateArray.
-        //public static Ecoregions.AuxParm<AnnualClimate_Monthly[]> AnnualClimateArray;
-        public static Ecoregions.AuxParm<AnnualClimate_Monthly> AnnualWeather;
-        public static Ecoregions.AuxParm<bool[]> ClimateUpdates;
+        //public static AnnualClimate_Monthly[] AnnualWeather;  //index by ecoregion
+        //public static Ecoregions.AuxParm<bool[]> ClimateUpdates;
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
@@ -67,7 +70,9 @@ namespace Landis.Extension.Succession.Century
             ShadeBiomass = parameters.MinRelativeBiomass;
     
             ActiveSiteCount = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
-            ClimateUpdates  = new Ecoregions.AuxParm<bool[]>(PlugIn.ModelCore.Ecoregions);
+            LastYearUpdated = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
+            AnnualWeather = new Ecoregions.AuxParm<AnnualClimate_Monthly>(PlugIn.ModelCore.Ecoregions);
+            //ClimateUpdates  = new Ecoregions.AuxParm<bool[]>(PlugIn.ModelCore.Ecoregions);
             
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
@@ -93,16 +98,20 @@ namespace Landis.Extension.Succession.Century
 
             
             //GenerateNewClimate(0, parameters.Timestep, Climate.Phase.SpinUp_Climate);
-            
-            AnnualWeather = new Ecoregions.AuxParm<AnnualClimate_Monthly>(PlugIn.ModelCore.Ecoregions);
-            foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
-                if(ecoregion.Active)
+            //AnnualWeather = Climate.Future_MonthlyData[0];
+
+            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+            {
+                if (ecoregion.Active)
                 {
+                    //AnnualWeather[ecoregion] = new AnnualClimate_Monthly();
+                    Climate.GenerateEcoregionClimateData(ecoregion, 0, Latitude[ecoregion], FieldCapacity[ecoregion], WiltingPoint[ecoregion]);
+
                     SetAnnualClimate(ecoregion, 0, Climate.Phase.SpinUp_Climate);
-                    ClimateUpdates[ecoregion] = new bool[1000]; //assume that the oldest cohort ever is 1000 years.  PlugIn.ModelCore.EndTime + parameters.Timestep + 1];
-                    ClimateUpdates[ecoregion][0] = true;
+                    //ClimateUpdates[ecoregion] = new bool[1000]; //assume that the oldest cohort ever is 1000 years.  PlugIn.ModelCore.EndTime + parameters.Timestep + 1];
+                    //ClimateUpdates[ecoregion][0] = true;
                 }
-            
+            }
         }
         //---------------------------------------------------------------------
         public static void ChangeParameters(Dynamic.IParameters parameters)
@@ -131,11 +140,39 @@ namespace Landis.Extension.Succession.Century
         public static void SetAnnualClimate(IEcoregion ecoregion, int year, Climate.Phase spinupOrfuture)
         {
             int actualYear = PlugIn.ModelCore.CurrentTime + year;
-            
-            if(actualYear == 0 || actualYear != AnnualWeather[ecoregion].Year)
+
+            if (spinupOrfuture == Climate.Phase.Future_Climate)
             {
-                AnnualWeather[ecoregion] = new AnnualClimate_Monthly(ecoregion, actualYear, Latitude[ecoregion], spinupOrfuture, actualYear); //AnnualClimateArray[ecoregion][year];
+                actualYear += Climate.Future_MonthlyData.First().Key;
+                //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+                if (Climate.Future_MonthlyData.ContainsKey(actualYear))
+                    AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index]; 
+                else
+                    PlugIn.ModelCore.UI.WriteLine("Key is missing: Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
             }
+            else
+            {
+                if (LastYearUpdated[ecoregion] == year+1)
+                    return;
+
+                actualYear += Climate.Spinup_MonthlyData.First().Key;
+                //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+                if (Climate.Spinup_MonthlyData.ContainsKey(actualYear))
+                {
+                    AnnualWeather[ecoregion] = Climate.Spinup_MonthlyData[actualYear][ecoregion.Index];
+                    LastYearUpdated[ecoregion] = year+1;
+                }
+            }
+            
+            //if(actualYear == 0 || actualYear != AnnualWeather[ecoregion].Year)
+            //{
+            //    //AnnualWeather[ecoregion] = Climate.Future_MonthlyData[year].[ecoregion.Index];
+            //    //IClimateRecord[,] test = Climate.Future_MonthlyData[year];
+            //    double test2 = Climate.Future_MonthlyData[year][ecoregion.Index, 12].AvgMaxTemp;
+                //new AnnualClimate_Monthly(ecoregion, actualYear, Latitude[ecoregion], spinupOrfuture, actualYear); 
+                //AnnualClimateArray[ecoregion][year];
+                //AnnualWeather[ecoregion] = Climate.TimestepData[ecoregion.Index, year];
+            //}
         }
         
         //***Amin's NOTE:***

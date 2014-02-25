@@ -636,7 +636,7 @@ namespace Landis.Extension.Succession.Century
             double waterContent = EcoregionData.FieldCapacity[ecoregion] - EcoregionData.WiltingPoint[ecoregion];
 
             double tmoist = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month]; //rain + irract;
-
+            
             double pet = EcoregionData.AnnualWeather[ecoregion].MonthlyPET[Century.Month];
 
             if (pet >= 0.01)
