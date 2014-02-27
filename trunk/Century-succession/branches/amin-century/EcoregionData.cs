@@ -146,9 +146,12 @@ namespace Landis.Extension.Succession.Century
                 actualYear += Climate.Future_MonthlyData.First().Key;
                 //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
                 if (Climate.Future_MonthlyData.ContainsKey(actualYear))
-                    AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index]; 
-                else
-                    PlugIn.ModelCore.UI.WriteLine("Key is missing: Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+                {
+                    AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index];
+                    //AnnualWeather[ecoregion].WriteToLandisLogFile();
+                }
+                //else
+                //    PlugIn.ModelCore.UI.WriteLine("Key is missing: Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
             }
             else
             {
