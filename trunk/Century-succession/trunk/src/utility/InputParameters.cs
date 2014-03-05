@@ -838,7 +838,7 @@ namespace Landis.Extension.Succession.Century
         public void SetInitSOM3C(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            initSOM3C[ecoregion] = CheckBiomassParm(newValue, 0.0, 10000.0);
+            initSOM3C[ecoregion] = CheckBiomassParm(newValue, 0.0, 25000.0);
         }
         //---------------------------------------------------------------------
         public void SetInitSOM3N(IEcoregion ecoregion, InputValue<double> newValue)
