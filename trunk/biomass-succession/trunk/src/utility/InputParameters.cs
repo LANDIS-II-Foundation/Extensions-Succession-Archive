@@ -423,29 +423,7 @@ namespace Landis.Extension.Succession.Biomass
             Debug.Assert(species != null);
             leafLignin[species] = Util.CheckBiomassParm(newValue, 0.0, 0.4);
         }
-        //---------------------------------------------------------------------
-        /*
-        public void SetMAXLAI(ISpecies species, InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            maxLAI[species] = Util.CheckBiomassParm(newValue, 0.0, 30.0);
-        }
-        //---------------------------------------------------------------------
-
-        public void SetLightExtinctionCoeff(ISpecies species, InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            lightExtinctionCoeff[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
-        }
-        //---------------------------------------------------------------------
-
-
-        public void SetPctBioMaxLAI(ISpecies species, InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            pctBioMaxLAI[species] = Util.CheckBiomassParm(newValue, 0.0, 100.0);
-        } */
-        //---------------------------------------------------------------------
+         
         /// <summary>
         /// Path to the optional file with the biomass parameters for age-only
         /// disturbances.
