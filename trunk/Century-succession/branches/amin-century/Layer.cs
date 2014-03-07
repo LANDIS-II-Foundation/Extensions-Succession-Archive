@@ -236,7 +236,7 @@ namespace Landis.Extension.Succession.Century
                 this.Respiration(co2loss, site);
 
                 //Net C flow to SOM2
-                double netCFlow = carbonToSOM2 = co2loss;
+                double netCFlow = carbonToSOM2 - co2loss;
 
                 // Partition and schedule C flows 
                 this.TransferCarbon(SiteVars.SOM2[site], netCFlow);
@@ -298,7 +298,7 @@ namespace Landis.Extension.Succession.Century
                                         OtherData.MaxCNenterSOM1,
                                         OtherData.MinContentN_SOM1);
 
-                //Compute total C flow out of metabolic in layer lyr
+                //Compute total C flow out of metabolic layer
                 double totalCFlow = litterC
                                 * SiteVars.DecayFactor[site]
                                 * OtherData.LitterParameters[(int) this.Type].DecayRateMetabolicC
@@ -332,7 +332,7 @@ namespace Landis.Extension.Succession.Century
                         PlugIn.ModelCore.UI.WriteLine("   ERROR:  Decompose Metabolic:  netCFlow={0:0.000} > layer.Carbon={0:0.000}.", netCFlow, this.Carbon);
 
                     // -- CARBON AND NITROGEN ---------------------------
-                    // Partition and schedule C flows by isotope
+                    // Partition and schedule C flows
                     // Compute and schedule N flows and update mineralization accumulators.
                     if((int) this.Type == (int) LayerType.Surface)
                     {
@@ -354,8 +354,10 @@ namespace Landis.Extension.Succession.Century
         public void TransferCarbon(Layer destination, double netCFlow)
         {
 
-            if(netCFlow < 0)
-                PlugIn.ModelCore.UI.WriteLine("NEGATIVE C FLOW!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
+            if (netCFlow < 0)
+            {
+                //PlugIn.ModelCore.UI.WriteLine("NEGATIVE C FLOW!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
+            }
 
             if (netCFlow > this.Carbon)
                 netCFlow = this.Carbon;

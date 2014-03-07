@@ -133,17 +133,19 @@ namespace Landis.Extension.Succession.Century
         {
             //try
             //{
-                if (PlugIn.ModelCore.CurrentTime > 0)
-                    SiteVars.InitializeDisturbances();
-            
             //EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, spinupOrfuture);
-                //Dynamic.Module.CheckForUpdate();
-                //EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, Climate.Phase.Future_Climate);
+            //Dynamic.Module.CheckForUpdate();
+            //EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, Climate.Phase.Future_Climate);
+            
+            if (PlugIn.ModelCore.CurrentTime > 0)
+                    SiteVars.InitializeDisturbances();
 
-                // Update Pest only once.
-                SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);
+            EcoregionData.SetAllFutureAnnualClimates(PlugIn.modelCore.CurrentTime);
 
-                base.RunReproductionFirst();
+            // Update Pest only once.
+            SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);
+
+            base.RunReproductionFirst();
 
                 // Write monthly log file:
                 // Output must reflect the order of operation:

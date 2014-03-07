@@ -87,6 +87,8 @@ namespace Landis.Extension.Succession.Century
             tmax = EcoregionData.AnnualWeather[ecoregion].MonthlyMaxTemp[month];
             tmin = EcoregionData.AnnualWeather[ecoregion].MonthlyMinTemp[month];
             pet = EcoregionData.AnnualWeather[ecoregion].MonthlyPET[month];
+
+            //PlugIn.ModelCore.UI.WriteLine(" tave={0}, tmax={1}, tmin={2}, pet={3}, ppt={4}.", tave, tmax, tmin, pet, H2Oinputs);
             //double soilTemp         = tave;    
 
             double wiltingPoint = EcoregionData.WiltingPoint[ecoregion];

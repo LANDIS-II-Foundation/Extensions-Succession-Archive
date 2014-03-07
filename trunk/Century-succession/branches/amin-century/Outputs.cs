@@ -301,6 +301,9 @@ namespace Landis.Extension.Succession.Century
             
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
+                if (!ecoregion.Active)
+                    continue;
+                
                 //if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 //{
                 primaryLog.Clear();

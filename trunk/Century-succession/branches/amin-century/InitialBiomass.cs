@@ -326,14 +326,10 @@ namespace Landis.Extension.Succession.Century
                 
                 //int endTime = (successionTimestep == 1) ? -1 : -1;
                 //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}, endTime={2}.", ageCohorts[0].Age, successionTimestep, endTime);
-                //for (int time = -(ageCohorts[0].Age); time <= endTime; time += successionTimestep)
-
                 for (int time = -(ageCohorts[0].Age); time <= -1; time += successionTimestep)
                 {
                      //PlugIn.ModelCore.UI.WriteLine("  Ageing initial cohorts.  Oldest cohorts={0} yrs, succession timestep={1}.", ageCohorts[0].Age, successionTimestep); 
-                     //EcoregionData.GenerateNewClimate(0, successionTimestep, ClimatePhase.SpinUp_Climate);
-                     //EcoregionData.GenerateNewClimate(time + ageCohorts[0].Age, successionTimestep, Climate.Phase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
-                    EcoregionData.SetAnnualClimate(ecoregion, time + ageCohorts[0].Age, Climate.Phase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
+                    EcoregionData.SetSingleAnnualClimate(ecoregion, time + ageCohorts[0].Age, Climate.Phase.SpinUp_Climate); //the spinup climate array is sorted from oldest to newest years
 
                      //  Add those cohorts that were born at the current year
                      while (indexNextAgeCohort < ageCohorts.Count && ageCohorts[indexNextAgeCohort].Age == -time)

@@ -20,10 +20,6 @@ namespace Landis.Extension.Succession.Century
         private SeedingAlgorithms seedAlg;
 
         private string climateConfigFile;
-        //private string climateFileFormat;
-        //private string climateFile;
-        //private string spinUpClimateFileFormat;
-        //private string spinUpClimateFile;
 
         private bool calibrateMode;
         private string initCommunities;
@@ -192,65 +188,6 @@ namespace Landis.Extension.Succession.Century
             }
         }
         
-        ////---------------------------------------------------------------------
-        ///// <summary>
-        ///// Path to the required file with climatedata.
-        ///// </summary>
-        ///// 
-
-        //public string ClimateFileFormat			
-        //{
-        //    get
-        //    {
-        //        return climateFileFormat;
-        //    }
-        //    set
-        //    {
-                
-        //        climateFileFormat = value;
-        //    }
-        //}
-        
-        //public string ClimateFile
-        //{
-        //    get {
-        //        return climateFile;
-        //    }
-        //    set {
-        //        string path = value;
-        //        if (path.Trim(null).Length == 0)
-        //            throw new InputValueException(path, "\"{0}\" is not a valid path.", path);
-        //        climateFile = value;
-        //    }
-        //}
-
-        //public string SpinUpClimateFileFormat  
-        //{
-        //    get
-        //    {
-        //        return spinUpClimateFileFormat;
-        //    }
-        //    set
-        //    {
-
-        //        spinUpClimateFileFormat = value;
-        //    }
-        //}
-
-        //public string SpinUpClimateFile			
-        //{
-        //    get
-        //    {
-        //        return spinUpClimateFile;
-        //    }
-        //    set
-        //    {
-        //        string path = value;
-        //        if (spinUpClimateFileFormat != "no" && path.Trim(null).Length == 0)
-        //            throw new InputValueException(path, "\"{0}\" is not a valid path.", path);
-        //        spinUpClimateFile = value;
-        //    }
-        //}
         //---------------------------------------------------------------------
         /// <summary>
         /// Determines whether months are simulated 0 - 12 (calibration mode) or
@@ -901,13 +838,13 @@ namespace Landis.Extension.Succession.Century
         public void SetInitSOM3C(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            initSOM3C[ecoregion] = CheckBiomassParm(newValue, 0.0, 10000.0);
+            initSOM3C[ecoregion] = CheckBiomassParm(newValue, 0.0, 25000.0);
         }
         //---------------------------------------------------------------------
         public void SetInitSOM3N(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            initSOM3N[ecoregion] = CheckBiomassParm(newValue, 0.0, 500.0);
+            initSOM3N[ecoregion] = CheckBiomassParm(newValue, 0.0, 1000.0);
         }
         //---------------------------------------------------------------------
         public void SetInitMineralN(IEcoregion ecoregion, InputValue<double> newValue)

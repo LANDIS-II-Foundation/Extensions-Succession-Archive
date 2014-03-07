@@ -47,10 +47,10 @@ namespace Landis.Extension.Succession.Century
                 if(y == 0 && SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     FireEffects.ReduceLayers(SiteVars.FireSeverity[site], site);
 
-                if (PlugIn.ModelCore.CurrentTime == 0)
-                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.SpinUp_Climate);
-                else
-                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.Future_Climate);
+                //if (PlugIn.ModelCore.CurrentTime == 0)
+                //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.SpinUp_Climate);
+                //else
+                //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.Future_Climate);
 
                 // Do not reset annual climate if it has already happend for this year.
                 //if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
