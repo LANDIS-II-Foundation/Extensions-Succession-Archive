@@ -17,9 +17,9 @@ Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#BuildDir}
 Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
 Source: ..\src\bin\Debug\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#AppDir}; Flags: replacesameversion
 Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
 ; FIX ME!!
 Source: ..\..\branches\amin-century\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\..\branches\amin-century\bin\Debug\Landis.Library.Climate.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
 
 ; Century Succession
 Source: ..\..\branches\amin-century\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#BuildDir}; Flags: replacesameversion
