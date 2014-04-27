@@ -31,12 +31,11 @@ namespace Landis.Extension.Succession.AgeOnly
 
         //---------------------------------------------------------------------
 
-        public override void LoadParameters(string        dataFile,
-                                            ICore mCore)
+        public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
             InputParametersParser parser = new InputParametersParser();
-            parameters = modelCore.Load<IInputParameters>(dataFile, parser);
+            parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
 
         }
 

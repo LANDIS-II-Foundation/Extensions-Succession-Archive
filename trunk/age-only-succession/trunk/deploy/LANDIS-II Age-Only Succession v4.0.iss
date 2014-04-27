@@ -26,9 +26,9 @@ Source: examples\*; DestDir: {app}\examples\age-only-succession
 Source: {#AgeOnlySucc}; DestDir: {#LandisPlugInDir}
 
 ; Necessary libraries
-Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
-Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.Cohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
-Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\debug\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\debug\Landis.Library.Cohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
 
 
 [Run]

@@ -43,7 +43,7 @@ namespace Landis.Extension.Succession.AgeOnly
                     if (!ecoregion.Active)
                         continue;
 
-                    PlugIn.ModelCore.Log.WriteLine("Spp={0}, Eco={1}, Pest={2:0.0}.", species.Name, ecoregion.Name,
+                    PlugIn.ModelCore.UI.WriteLine("Spp={0}, Eco={1}, Pest={2:0.0}.", species.Name, ecoregion.Name,
                         timestepData[species.Index, ecoregion.Index].ProbEst);
 
                 }
@@ -53,17 +53,24 @@ namespace Landis.Extension.Succession.AgeOnly
         //---------------------------------------------------------------------
         public static void Initialize(string filename, bool writeOutput)
         {
-            PlugIn.ModelCore.Log.WriteLine("   Loading dynamic input data from file \"{0}\" ...", filename);
+            PlugIn.ModelCore.UI.WriteLine("   Loading dynamic input data from file \"{0}\" ...", filename);
             DynamicInputsParser parser = new DynamicInputsParser();
             try
             {
-                allData = PlugIn.ModelCore.Load<Dictionary<int, IDynamicInputRecord[,]>>(filename, parser);
+                allData = Landis.Data.Load<Dictionary<int, IDynamicInputRecord[,]>>(filename, parser);
             }
             catch (FileNotFoundException)
             {
                 string mesg = string.Format("Error: The file {0} does not exist", filename);
                 throw new System.ApplicationException(mesg);
             }
+
+            if (!allData.ContainsKey(0))
+            {
+                string mesg = string.Format("Error: There is no input for timestep zero (and there must be).");
+                throw new System.ApplicationException(mesg);
+            }
+
 
             timestepData = allData[0];
         }

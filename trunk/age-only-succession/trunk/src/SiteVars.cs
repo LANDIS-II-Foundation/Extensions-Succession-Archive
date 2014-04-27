@@ -3,7 +3,7 @@
 
 using Landis.Core;
 using Landis.SpatialModeling;
-using Landis.SpatialModeling.CoreServices;
+//using Landis.SpatialModeling.CoreServices;
 using Landis.Library.AgeOnlyCohorts;
 
 namespace Landis.Extension.Succession.AgeOnly

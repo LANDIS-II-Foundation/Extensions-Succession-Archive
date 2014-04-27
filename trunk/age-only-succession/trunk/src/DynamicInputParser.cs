@@ -15,7 +15,7 @@ namespace Landis.Extension.Succession.AgeOnly
         : TextParser<Dictionary<int, IDynamicInputRecord[,]>>
     {
 
-        private string FileName = "Dynamic Input Data";
+        //private string FileName = "Dynamic Input Data";
 
         //---------------------------------------------------------------------
         public DynamicInputsParser()
@@ -24,13 +24,25 @@ namespace Landis.Extension.Succession.AgeOnly
 
         //---------------------------------------------------------------------
 
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
+        //---------------------------------------------------------------------
+
         protected override Dictionary<int, IDynamicInputRecord[,]> Parse()
         {
 
-            InputVar<string> landisData = new InputVar<string>("LandisData");
-            ReadVar(landisData);
-            if (landisData.Value.Actual != FileName)
-                throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
+            ReadLandisDataVar();
+
+            //InputVar<string> landisData = new InputVar<string>("LandisData");
+            //ReadVar(landisData);
+            //if (landisData.Value.Actual != PlugIn.ExtensionName)
+            //    throw new InputValueException(landisData.Value.String, "The value is not \"{0}\"", PlugIn.ExtensionName);
+            
             
             Dictionary<int, IDynamicInputRecord[,]> allData = new Dictionary<int, IDynamicInputRecord[,]>();
 
@@ -54,7 +66,7 @@ namespace Landis.Extension.Succession.AgeOnly
                 {
                     IDynamicInputRecord[,] inputTable = new IDynamicInputRecord[PlugIn.ModelCore.Species.Count, PlugIn.ModelCore.Ecoregions.Count];
                     allData.Add(yr, inputTable);
-                    PlugIn.ModelCore.Log.WriteLine("  Dynamic Input Parser:  Add new year = {0}.", yr);
+                    PlugIn.ModelCore.UI.WriteLine("  Dynamic Input Parser:  Add new year = {0}.", yr);
                 }
 
                 ReadValue(ecoregionName, currentLine);
