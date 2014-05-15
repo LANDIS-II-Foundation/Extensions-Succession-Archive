@@ -67,7 +67,7 @@ namespace Landis.Extension.Succession.Century
                     AnnualClimate_Monthly ecoClimate = EcoregionData.AnnualWeather[ecoregion]; 
                 
                     if(ecoClimate == null)
-                        throw new System.ApplicationException("Error: CLIMATE NULL.");
+                        throw new System.ApplicationException("Error in Establishment: CLIMATE NULL.");
                     
                 
                     double ecoDryDays = CalculateSoilMoisture(ecoClimate, ecoregion, y);
