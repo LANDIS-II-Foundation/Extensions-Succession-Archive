@@ -138,7 +138,6 @@ namespace Landis.Extension.Succession.Century
         public static void SetSingleAnnualClimate(IEcoregion ecoregion, int year, Climate.Phase spinupOrfuture)
         {
             int actualYear = Climate.Future_MonthlyData.Keys.Min() + year;
-            //PlugIn.ModelCore.UI.WriteLine("Comparing years. ModelCore.CurrentTime = {0}, First year = {1}, actualYear = {2}, year = {3}", PlugIn.ModelCore.CurrentTime, Climate.Future_MonthlyData.Keys.Min(), actualYear, year);
 
             if (spinupOrfuture == Climate.Phase.Future_Climate)
             {
@@ -156,17 +155,19 @@ namespace Landis.Extension.Succession.Century
             }
             else
             {
-                if (LastYearUpdated[ecoregion] == year + 1)
-                    return;
+                //if (LastYearUpdated[ecoregion] == year + 1)
+                //    return;
 
                 //actualYear += Climate.Spinup_MonthlyData.First().Key;
                 //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
                 if (Climate.Spinup_MonthlyData.ContainsKey(actualYear))
                 {
                     AnnualWeather[ecoregion] = Climate.Spinup_MonthlyData[actualYear][ecoregion.Index];
-                    LastYearUpdated[ecoregion] = year + 1;
+                    //LastYearUpdated[ecoregion] = year + 1;
                 }
             }
+
+            //PlugIn.ModelCore.UI.WriteLine("SetSingleAnnualClimate: timeStep = {0}, actualYear = {1}, dataYear = {2}.", year, actualYear, AnnualWeather[ecoregion].Year);
 
             //for (var i = 0; i < 12; ++i)
             //{
@@ -207,19 +208,20 @@ namespace Landis.Extension.Succession.Century
         // Generates new climate parameters for all ecoregions at an annual time step.
         public static void SetAllFutureAnnualClimates(int year)
         {
-            int actualYear = Climate.Future_MonthlyData.Keys.Min() + year - 1;
-            PlugIn.ModelCore.UI.WriteLine("Input data year = {0}", actualYear);
+            int actualYear = Climate.Future_MonthlyData.Keys.Min() + year;
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 if (ecoregion.Active)
                 {
                     //actualYear += Climate.Future_MonthlyData.First().Key;
                     //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
-                    if (Climate.Future_MonthlyData.ContainsKey(actualYear))
+                    if (Climate.Future_MonthlyData.ContainsKey(actualYear - 1))
                     {
-                        AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index];
+                        AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear - 1][ecoregion.Index];
                         //AnnualWeather[ecoregion].WriteToLandisLogFile();
                     }
+
+                    PlugIn.ModelCore.UI.WriteLine("Utilizing Climate Data: SimulatedYear = {0}, actualClimateYearUsed = {1}.", actualYear, AnnualWeather[ecoregion].Year);
                 }
 
                 //for (var i = 0; i < 12; ++i)
