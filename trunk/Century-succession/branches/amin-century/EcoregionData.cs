@@ -208,16 +208,16 @@ namespace Landis.Extension.Succession.Century
         // Generates new climate parameters for all ecoregions at an annual time step.
         public static void SetAllFutureAnnualClimates(int year)
         {
-            int actualYear = Climate.Future_MonthlyData.Keys.Min() + year;
+            int actualYear = Climate.Future_MonthlyData.Keys.Min() + year - 1;
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 if (ecoregion.Active)
                 {
                     //actualYear += Climate.Future_MonthlyData.First().Key;
                     //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
-                    if (Climate.Future_MonthlyData.ContainsKey(actualYear - 1))
+                    if (Climate.Future_MonthlyData.ContainsKey(actualYear))
                     {
-                        AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear - 1][ecoregion.Index];
+                        AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index];
                         //AnnualWeather[ecoregion].WriteToLandisLogFile();
                     }
 
