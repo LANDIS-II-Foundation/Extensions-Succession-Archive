@@ -5,6 +5,7 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.LeafBiomassCohorts;
 using System.Collections.Generic;
+using Landis.Library.Climate;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -25,40 +26,45 @@ namespace Landis.Extension.Succession.Century
                                        int         years,
                                        bool        isSuccessionTimeStep)
         {
-
+            
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            //PlugIn.ModelCore.UI.WriteLine("SOM2C for = {0}.", SiteVars.SOM2[site].Carbon);
 
             // If in spin-up mode and calibration mode, then this needs to happen first.
-            //if (PlugIn.ModelCore.CurrentTime == 0)// && OtherData.CalibrateMode)
+            //if (PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
             //{
-            //    //MonthCnt = 11;  // adjustment for sequence
+            //    MonthCnt = 11;  // adjustment for sequence
             //    AvailableN.CalculateMineralNfraction(site);
             //}
 
             for (int y = 0; y < years; ++y) {
 
                 Year = y + 1;
+                //Climate.Phase spinupOrfuture = Climate.Phase.Future_Climate;
 
                 SiteVars.ResetAnnualValues(site);
-                EcoregionData.AnnualNDeposition[ecoregion] = 0.0;
 
                 if(y == 0 && SiteVars.FireSeverity != null && SiteVars.FireSeverity[site] > 0)
                     FireEffects.ReduceLayers(SiteVars.FireSeverity[site], site);
 
+                //if (PlugIn.ModelCore.CurrentTime == 0)
+                //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.SpinUp_Climate);
+                //else
+                //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.Future_Climate);
+
                 // Do not reset annual climate if it has already happend for this year.
-                if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
-                {
-                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
-                    EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
-                }
+                //if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
+                //{
+                //    EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
+                //}
+
+                
 
                 // if spin-up phase, allow each initial community to have a unique climate
-                if(PlugIn.ModelCore.CurrentTime == 0)
-                {
-                    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
-                }
+                //if(PlugIn.ModelCore.CurrentTime == 0)
+                //{
+                //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
+                //}
 
                 // Next, Grow and Decompose each month
                 int[] months = new int[12]{6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5};
@@ -84,26 +90,31 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.SourceSink[site].Carbon = 0.0;
                     SiteVars.TotalWoodBiomass[site] = Century.ComputeWoodBiomass((ActiveSite) site);
                     //SiteVars.LAI[site] = Century.ComputeLAI((ActiveSite)site);
+                                   
+                    double ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month];
+                    double monthlyNdeposition = EcoregionData.AtmosNintercept[ecoregion] + (EcoregionData.AtmosNslope[ecoregion] * ppt);
+                    //EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
+                    //EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
+                    SiteVars.MineralN[site] += monthlyNdeposition;
+                    //PlugIn.ModelCore.UI.WriteLine("Ndeposition={0},MineralN={1:0.00}.", monthlyNdeposition, SiteVars.MineralN[site]);
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     double baseFlow, stormFlow;
                     SoilWater.Run(y, Month, liveBiomass, site, out baseFlow, out stormFlow);
-                    SiteVars.MonthlySoilWaterContent[site][Month] = SiteVars.SoilWaterContent[site];
 
-                    double ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Month];
-                    double monthlyNdeposition = EcoregionData.AtmosNintercept[ecoregion] + (EcoregionData.AtmosNslope[ecoregion] * ppt);
-                    EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
-                    EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
-                    SiteVars.MineralN[site] += monthlyNdeposition;
 
-                    ////Reset N resorption if it is July
+                    //// Reset N resorption if it is July
                     //if (Month == 6)
                     //{
                     //    AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
-                    //    AvailableN.ResetResorbedNallocation();
                     //    //ComputeResorbedN(siteCohorts, site, Month);
                     //}
 
+                    //// Calculate mineral N fractions based on fine root biomass (leaf biomass) in July
+                    //if (Month == 6)
+                    //{
+                    //    AvailableN.CalculateMineralNfraction(site);
+                    //}
 
                     // Calculate N allocation for each cohort
                     AvailableN.SetMineralNallocation(site);
@@ -116,13 +127,12 @@ namespace Landis.Extension.Succession.Century
                     WoodLayer.Decompose(site);
                     LitterLayer.Decompose(site);
                     SoilLayer.Decompose(site);
+                   
+                    //...Volatilization loss as a function of the mineral n which
+                    //     remains after uptake by plants.  ML added a correction factor for wetlands since their denitrification rate is double that of wetlands
+                    //based on a review paper by Seitziner 2006.
 
-
-                    // Volatilization loss as a function of the mineral n which remains after uptake by plants.  
-                    // ML added a correction factor for wetlands since their denitrification rate is double that of wetlands
-                    // based on a review paper by Seitziner 2006.
-
-                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]); // / 12; // monthly value WHY DIVIDE BY 12??
+                    double volatilize = (SiteVars.MineralN[site] * EcoregionData.Denitrif[ecoregion]); // monthly value
 
                     //PlugIn.ModelCore.UI.WriteLine("BeforeVol.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
 
@@ -143,8 +153,6 @@ namespace Landis.Extension.Succession.Century
 
             return siteCohorts;
         }
-
-
 
         //---------------------------------------------------------------------
 
@@ -191,7 +199,6 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         private static void CalculateCohortCN(ActiveSite site, ICohort cohort)
         {
-
             ISpecies species = cohort.Species;
 
             double leafC = cohort.LeafBiomass * 0.47;

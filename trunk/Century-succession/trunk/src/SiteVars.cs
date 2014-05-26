@@ -64,7 +64,6 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyAGNPPC;
         private static ISiteVar<double[]> monthlyBGNPPC;
         private static ISiteVar<double[]> monthlyNEE;
-        private static ISiteVar<double[]> monthlySoilWaterContent;
         public static ISiteVar<double> AnnualNEE;
         public static ISiteVar<double> FireCEfflux;
         public static ISiteVar<double> FireNEfflux;
@@ -131,7 +130,6 @@ namespace Landis.Extension.Succession.Century
             monthlyAGNPPC       = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             monthlyBGNPPC       = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             monthlyNEE          = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
-            monthlySoilWaterContent = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             AnnualNEE           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             FireCEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             FireNEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -159,7 +157,10 @@ namespace Landis.Extension.Succession.Century
             
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
+                //  site cohorts are initialized by the PlugIn.InitializeSite method
                 
+                //leafBiomassCohorts[site]    = new SiteCohorts();
+                //Console.Write("-");
                 surfaceDeadWood[site]       = new Layer(LayerName.Wood, LayerType.Surface);
                 soilDeadWood[site]          = new Layer(LayerName.CoarseRoot, LayerType.Soil);
                 
@@ -181,7 +182,7 @@ namespace Landis.Extension.Succession.Century
                 monthlyBGNPPC[site]           = new double[12];
                 monthlyNEE[site]            = new double[12];
                 monthlyResp[site]           = new double[12];
-                monthlySoilWaterContent[site]       = new double[12];
+                //monthlymineralN[site]       = new double[12];
 
                 AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
             }
@@ -688,23 +689,6 @@ namespace Landis.Extension.Succession.Century
             }
             set {
                 monthlyNEE = value;
-            }
-        }
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// A summary of Net Ecosystem Exchange (g C/m2), from a flux tower's perspective,
-        /// whereby positive values indicate terrestrial C loss, negative values indicate C gain.
-        /// Replace SourceSink?
-        /// </summary>
-        public static ISiteVar<double[]> MonthlySoilWaterContent
-        {
-            get
-            {
-                return monthlySoilWaterContent;
-            }
-            set
-            {
-                monthlySoilWaterContent = value;
             }
         }
         //---------------------------------------------------------------------

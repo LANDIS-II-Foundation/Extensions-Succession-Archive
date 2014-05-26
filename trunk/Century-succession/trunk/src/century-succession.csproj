@@ -41,7 +41,8 @@
     <Reference Include="Landis.Library.AgeOnlyCohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Climate">
+    <Reference Include="Landis.Library.Climate, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Climate.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Cohorts">
@@ -49,6 +50,10 @@
     </Reference>
     <Reference Include="Landis.Library.LeafBiomassCohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.LeafBiomassCohorts.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Metadata, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Succession">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Succession.dll</HintPath>
@@ -58,6 +63,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="age-only-disturbances\DatasetParser.cs" />
@@ -76,6 +83,8 @@
     <Compile Include="LitterType.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="metadata\MonthlyLog.cs" />
+    <Compile Include="metadata\PrimaryLog.cs" />
     <Compile Include="utility\BaseCohortsSiteVar.cs" />
     <Compile Include="Century.cs" />
     <Compile Include="CohortBiomass.cs" />
@@ -109,15 +118,16 @@
     <Compile Include="utility\InputParameters.cs" />
     <Compile Include="utility\IntPixel.cs" />
     <Compile Include="utility\MapNames.cs" />
+    <Compile Include="metadata\MetadataHandler.cs" />
     <Compile Include="utility\Species_AuxParm.cs" />
     <Compile Include="utility\ShortPixel.cs" />
     <Compile Include="utility\Util.cs" />
+    <Compile Include="utility\VersioningVerifier.cs" />
     <Compile Include="WoodLayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\extensions\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

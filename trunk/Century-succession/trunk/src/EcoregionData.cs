@@ -6,8 +6,8 @@ using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Library.Succession;
 using Landis.Library.Climate;
-
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 
@@ -33,17 +33,19 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double> DecayRateSOM2;
         public static Ecoregions.AuxParm<double> DecayRateSOM3;
         public static Ecoregions.AuxParm<double> Denitrif;
-        public static Ecoregions.AuxParm<double> ActiveSiteCount;
+        public static Ecoregions.AuxParm<int> ActiveSiteCount;
         public static Ecoregions.AuxParm<Percentage>[] ShadeBiomass;
         public static Ecoregions.AuxParm<int> B_MAX;
-        public static Ecoregions.AuxParm<double> AnnualNDeposition;
-        public static Ecoregions.AuxParm<double[]> MonthlyNDeposition;  
+        //public static Ecoregions.AuxParm<double> AnnualNDeposition;    //added by ML from trunk
+        //public static Ecoregions.AuxParm<double[]> MonthlyNDeposition; //added by ML from trunk
+        private static Ecoregions.AuxParm<int> LastYearUpdated;
+
         
+        public static Ecoregions.AuxParm<AnnualClimate_Monthly> AnnualWeather;
         // AnnualClimateArray contains climates for N years whereby N is the succession time step.
         // AnnualClimate is the active (current) year's climate, one of the elements in AnnualClimateArray.
-        public static Ecoregions.AuxParm<AnnualClimate[]> AnnualClimateArray;
-        public static Ecoregions.AuxParm<AnnualClimate> AnnualWeather;
-        public static Ecoregions.AuxParm<bool[]> ClimateUpdates;
+        //public static AnnualClimate_Monthly[] AnnualWeather;  //index by ecoregion
+        //public static Ecoregions.AuxParm<bool[]> ClimateUpdates;
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
@@ -57,6 +59,7 @@ namespace Landis.Extension.Succession.Century
             StormFlowFraction   = parameters.StormFlowFraction;
             BaseFlowFraction    = parameters.BaseFlowFraction;
             Drain               = parameters.Drain;
+            //MonthlyNDeposition = parameters.MonthlyNDeposition;
             AtmosNslope         = parameters.AtmosNslope;
             AtmosNintercept     = parameters.AtmosNintercept;
             Latitude            = parameters.Latitude;
@@ -68,8 +71,10 @@ namespace Landis.Extension.Succession.Century
             
             ShadeBiomass = parameters.MinRelativeBiomass;
     
-            ActiveSiteCount = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
-            ClimateUpdates  = new Ecoregions.AuxParm<bool[]>(PlugIn.ModelCore.Ecoregions);
+            ActiveSiteCount = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
+            LastYearUpdated = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
+            AnnualWeather = new Ecoregions.AuxParm<AnnualClimate_Monthly>(PlugIn.ModelCore.Ecoregions);
+            //ClimateUpdates  = new Ecoregions.AuxParm<bool[]>(PlugIn.ModelCore.Ecoregions);
             
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
@@ -93,21 +98,16 @@ namespace Landis.Extension.Succession.Century
                 ActiveSiteCount[ecoregion]++;
             }
 
-
-            GenerateNewClimate(0, parameters.Timestep);
             
-            AnnualWeather = new Ecoregions.AuxParm<AnnualClimate>(PlugIn.ModelCore.Ecoregions);
-            AnnualNDeposition = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
-            MonthlyNDeposition = new Ecoregions.AuxParm<double[]>(PlugIn.ModelCore.Ecoregions);
+            //GenerateNewClimate(0, parameters.Timestep, Climate.Phase.SpinUp_Climate);
+            //AnnualWeather = Climate.Future_MonthlyData[0];
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
                 if (ecoregion.Active)
                 {
-                    SetAnnualClimate(ecoregion, 0);
-                    ClimateUpdates[ecoregion] = new bool[PlugIn.ModelCore.EndTime + parameters.Timestep + 1];
-                    ClimateUpdates[ecoregion][0] = true;
-                    MonthlyNDeposition[ecoregion] = new double[12];
+                    Climate.GenerateEcoregionClimateData(ecoregion, 0, Latitude[ecoregion], FieldCapacity[ecoregion], WiltingPoint[ecoregion]);
+                    SetSingleAnnualClimate(ecoregion, 0, Climate.Phase.SpinUp_Climate);  // Some placeholder data to get things started.
                 }
             }
         }
@@ -134,68 +134,191 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
-        // Generates new climate parameters at an annual time step.
-        // Note:  During the spin-up phase of growth, the same annual climates will
-        // be used repeatedly in order.
-        public static void SetAnnualClimate(IEcoregion ecoregion, int year)
+        // Generates new climate parameters for a SINGLE ECOREGION at an annual time step.
+        public static void SetSingleAnnualClimate(IEcoregion ecoregion, int year, Climate.Phase spinupOrfuture)
         {
-            int actualYear = PlugIn.ModelCore.CurrentTime + year;
-            
-            if(actualYear == 0 || actualYear != AnnualWeather[ecoregion].Year)
-            {
-                //PlugIn.ModelCore.UI.WriteLine("  SETTING ANNAUL CLIMATE:  Yr={0}, SimYr={1}, Eco={2}.", year, actualYear, ecoregion.Name);
-                
-                AnnualWeather[ecoregion] = AnnualClimateArray[ecoregion][year];
-                //AnnualWeather[ecoregion].SetAnnualN(EcoregionData.AtmosNslope[ecoregion], EcoregionData.AtmosNintercept[ecoregion]);
+            int actualYear = Climate.Future_MonthlyData.Keys.Min() + year;
 
-                string weatherWrite = AnnualWeather[ecoregion].Write();
-                //PlugIn.ModelCore.UI.WriteLine("{0}", weatherWrite);
+            if (spinupOrfuture == Climate.Phase.Future_Climate)
+            {
+                //actualYear += Climate.Future_MonthlyData.First().Key;
+                //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+                //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+                if (Climate.Future_MonthlyData.ContainsKey(actualYear))
+                {
+                    AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index];
+
+                    //AnnualWeather[ecoregion].WriteToLandisLogFile();
+                }
+                //else
+                //    PlugIn.ModelCore.UI.WriteLine("Key is missing: Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+            }
+            else
+            {
+                //if (LastYearUpdated[ecoregion] == year + 1)
+                //    return;
+
+                //actualYear += Climate.Spinup_MonthlyData.First().Key;
+                //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+                if (Climate.Spinup_MonthlyData.ContainsKey(actualYear))
+                {
+                    AnnualWeather[ecoregion] = Climate.Spinup_MonthlyData[actualYear][ecoregion.Index];
+                    //LastYearUpdated[ecoregion] = year + 1;
+                }
             }
 
-            //AnnualNDeposition[ecoregion] = 0.0;
+            //PlugIn.ModelCore.UI.WriteLine("SetSingleAnnualClimate: timeStep = {0}, actualYear = {1}, dataYear = {2}.", year, actualYear, AnnualWeather[ecoregion].Year);
+
+            //for (var i = 0; i < 12; ++i)
+            //{
+            //    PlugIn.ModelCore.UI.WriteLine("Year = {0}, Precip[{1}] = {2}.", actualYear, i + 1, AnnualWeather[ecoregion].MonthlyPrecip[i]);
+            //}
+
+            //if (spinupOrfuture == Climate.Phase.Future_Climate)
+            //{
+            //    actualYear += Climate.Future_MonthlyData.First().Key;
+            //    //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+            //    //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+            //    PlugIn.ModelCore.UI.WriteLine("Comparing years. ModelCore.CurrentTime = {0}, First key = {1}, actualYear = {2}, year = {3}", PlugIn.ModelCore.CurrentTime, Climate.Future_MonthlyData.First().Key, actualYear, year);
+            //    if (Climate.Future_MonthlyData.ContainsKey(actualYear))
+            //    {
+            //        AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index];
+            //        //AnnualWeather[ecoregion].WriteToLandisLogFile();
+            //    }
+            //    //else
+            //    //    PlugIn.ModelCore.UI.WriteLine("Key is missing: Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+            //}
+            //else
+            //{
+            //    if (LastYearUpdated[ecoregion] == year+1)
+            //        return;
+
+            //    actualYear += Climate.Spinup_MonthlyData.First().Key;
+            //    //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+            //    if (Climate.Spinup_MonthlyData.ContainsKey(actualYear))
+            //    {
+            //        AnnualWeather[ecoregion] = Climate.Spinup_MonthlyData[actualYear][ecoregion.Index];
+            //        LastYearUpdated[ecoregion] = year+1;
+            //    }
+            //}
+            
         }
 
+        //---------------------------------------------------------------------
+        // Generates new climate parameters for all ecoregions at an annual time step.
+        public static void SetAllFutureAnnualClimates(int year)
+        {
+            int actualYear = Climate.Future_MonthlyData.Keys.Min() + year - 1;
+            foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+            {
+                if (ecoregion.Active)
+                {
+                    //actualYear += Climate.Future_MonthlyData.First().Key;
+                    //PlugIn.ModelCore.UI.WriteLine("Retrieving {0} for year {1}.", spinupOrfuture.ToString(), actualYear);
+                    if (Climate.Future_MonthlyData.ContainsKey(actualYear))
+                    {
+                        AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index];
+                        //AnnualWeather[ecoregion].WriteToLandisLogFile();
+                    }
+
+                    PlugIn.ModelCore.UI.WriteLine("Utilizing Climate Data: SimulatedYear = {0}, actualClimateYearUsed = {1}.", actualYear, AnnualWeather[ecoregion].Year);
+                }
+
+                //for (var i = 0; i < 12; ++i)
+                //{
+                //    PlugIn.ModelCore.UI.WriteLine("Year = {0}, Precip[{1}] = {2}.", actualYear, i + 1, AnnualWeather[ecoregion].MonthlyPrecip[i]);
+                //}
+            }
+        }
         
 
+        //***Amin's NOTE:***
+        //this function has been preserved because of the extensive use of this function and specially EcoregionData.AnnualClimateArray which is filled out here in this function. However, 
+        //since the "new AnnualClimate(...)" can provide the required climate for each ecoregion-timestep, the EcoregionData.AnnualClimateArray is no longer required and the "new AnnualClimate(...)" can be used instead.
+        //The advantage of the "new AnnualClimate(...)" is that it does not requre to iterate in ecoregions and store their coresponding climates and it's running time is a constant time. 
+        // Also, it is encapsulated in Climate library and is more maintainable and extendable.
         //---------------------------------------------------------------------
         // Generates new climate parameters at an annual time step.
         // 
-        public static void GenerateNewClimate(int year, int years)
-        {
-        
-            //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
+        //public static void GenerateNewClimate(int startingTimestep, int timeStepCount, Climate.Phase spinupOrfuture) //Pass false for spin-up (historic)
+        //{
+        //    //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
 
-            AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate[]>(PlugIn.ModelCore.Ecoregions);
+        //    AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate_Monthly[]>(PlugIn.ModelCore.Ecoregions);
+                                 
+        //    PlugIn.ModelCore.UI.WriteLine("    Loading {0}, Year: {1}", spinupOrfuture.ToString(), startingTimestep);
             
+        //    foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
+        //    {
+        //        if(ecoregion.Active)
+        //        {            
+        //            AnnualClimate_Monthly[] tempClimate = new AnnualClimate_Monthly[timeStepCount];
             
-            foreach(IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions) 
-            {
-                if(ecoregion.Active)
-                {            
-                    AnnualClimate[] tempClimate = new AnnualClimate[years];
+        //            for (int y = 0; y < timeStepCount; y++)
+        //            {
+        //                int actualYear = startingTimestep + y;
             
-                    for (int y = 0; y < years; y++)
-                    {
-                
-                        int actualYear = year + y;
-            
-                        if(Climate.AllData.ContainsKey(actualYear))
-                        {
-                            Climate.TimestepData = Climate.AllData[actualYear];
-                            //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Yr={0}, Eco={1}.", actualYear, ecoregion.Name);
-                            //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  AllData  Jan Ppt = {0:0.00}.", Climate.AllData[actualYear][ecoregion.Index,0].AvgPpt);
-                            //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
-                        }
+        //                //if(Climate.AllData.ContainsKey(actualYear))
+        //                //{
+        //                //    Climate.TimestepData = Climate.AllData[actualYear];
+        //                //    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Yr={0}, Eco={1}.", actualYear, ecoregion.Name);
+        //                //    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  AllData  Jan Ppt = {0:0.00}.", Climate.AllData[actualYear][ecoregion.Index,0].AvgPpt);
+        //                //    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
+        //                //}
 
-                        AnnualClimate.AnnualClimateInitialize();  // Synchronizes temperature and precipitation deviation across ecoregions.
-                        tempClimate[y] = new AnnualClimate(ecoregion, actualYear, Latitude[ecoregion]); 
-                    
-                    }
-                
-                    AnnualClimateArray[ecoregion] = tempClimate;
-                }
-            }
-        }
+        //                AnnualClimate.AnnualClimateInitialize();  // Synchronizes temperature and precipitation deviation across ecoregions.
+        //                tempClimate[y] = new AnnualClimate_Monthly(ecoregion, actualYear, Latitude[ecoregion], spinupOrfuture, actualYear); //actual year and timeStep here have been set to be identity
+                        
+        //                //Console.WriteLine("---{0} , for eco:{1} actualYear/timeStep: {2}  ", spinuOrfuture.ToString(), ecoregion.Index, actualYear);
+        //            }
+        //            AnnualClimateArray[ecoregion] = tempClimate;
+        //        }
+        //    }
+        //}
+
+        //public static void GenerateNewClimate_OLD(int year, int years) //Pass false for spin-up (historic)
+        //{
+
+        //    //PlugIn.ModelCore.UI.WriteLine("   Generating new climate for simulation year {0}.", year);
+
+        //    AnnualClimateArray = new Ecoregions.AuxParm<AnnualClimate_Monthly[]>(PlugIn.ModelCore.Ecoregions);
+
+        //    // Issues with this approach:  Each ecoregion will have unique variability associated with 
+        //    // temperature and precipitation.  In reality, we expect some regional synchronicity.  An 
+        //    // easy-ish solution would be to use the same random number in combination with standard 
+        //    // deviations for all ecoregions.  The converse problem is over synchronization of climate, but
+        //    // that would certainly be preferrable over smaller regions.
+
+
+
+        //    foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
+        //    {
+        //        if (ecoregion.Active)
+        //        {
+        //            AnnualClimate_Monthly[] tempClimate = new AnnualClimate_Monthly[years];
+
+        //            for (int y = 0; y < years; y++)
+        //            {
+
+        //                int actualYear = year + y;
+
+        //                if (Climate.AllData.ContainsKey(actualYear))
+        //                {
+        //                    Climate.TimestepData = Climate.AllData[actualYear];
+        //                    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Yr={0}, Eco={1}.", actualYear, ecoregion.Name);
+        //                    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  AllData  Jan Ppt = {0:0.00}.", Climate.AllData[actualYear][ecoregion.Index,0].AvgPpt);
+        //                    //PlugIn.ModelCore.UI.WriteLine("  Changing TimestepData:  Timestep Jan Ppt = {0:0.00}.", Climate.TimestepData[ecoregion.Index,0].AvgPpt);
+        //                }
+
+        //                AnnualClimate.AnnualClimateInitialize();
+        //                tempClimate[y] = new AnnualClimate_Monthly(ecoregion, actualYear, Latitude[ecoregion]);
+
+        //            }
+
+        //            AnnualClimateArray[ecoregion] = tempClimate;
+        //        }
+        //    }
+        //}
         
     }
 }

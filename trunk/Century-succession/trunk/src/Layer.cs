@@ -236,7 +236,7 @@ namespace Landis.Extension.Succession.Century
                 this.Respiration(co2loss, site);
 
                 //Net C flow to SOM2
-                double netCFlow = carbonToSOM2 = co2loss;
+                double netCFlow = carbonToSOM2 - co2loss;
 
                 // Partition and schedule C flows 
                 this.TransferCarbon(SiteVars.SOM2[site], netCFlow);
@@ -298,7 +298,7 @@ namespace Landis.Extension.Succession.Century
                                         OtherData.MaxCNenterSOM1,
                                         OtherData.MinContentN_SOM1);
 
-                //Compute total C flow out of metabolic in layer lyr
+                //Compute total C flow out of metabolic layer
                 double totalCFlow = litterC
                                 * SiteVars.DecayFactor[site]
                                 * OtherData.LitterParameters[(int) this.Type].DecayRateMetabolicC
@@ -332,7 +332,7 @@ namespace Landis.Extension.Succession.Century
                         PlugIn.ModelCore.UI.WriteLine("   ERROR:  Decompose Metabolic:  netCFlow={0:0.000} > layer.Carbon={0:0.000}.", netCFlow, this.Carbon);
 
                     // -- CARBON AND NITROGEN ---------------------------
-                    // Partition and schedule C flows by isotope
+                    // Partition and schedule C flows
                     // Compute and schedule N flows and update mineralization accumulators.
                     if((int) this.Type == (int) LayerType.Surface)
                     {
@@ -354,11 +354,14 @@ namespace Landis.Extension.Succession.Century
         public void TransferCarbon(Layer destination, double netCFlow)
         {
 
-            if(netCFlow < 0)
-                PlugIn.ModelCore.UI.WriteLine("NEGATIVE C FLOW!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
+            if (netCFlow < 0)
+            {
+                //PlugIn.ModelCore.UI.WriteLine("NEGATIVE C FLOW!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
+            }
 
             if (netCFlow > this.Carbon)
                 netCFlow = this.Carbon;
+                //PlugIn.ModelCore.UI.WriteLine("C FLOW EXCEEDS SOURCE!  Source: {0},{1}; Destination: {2},{3}.", this.Name, this.Type, destination.Name, destination.Type);
 
             this.Carbon -= netCFlow;
             destination.Carbon += netCFlow;
@@ -400,17 +403,21 @@ namespace Landis.Extension.Succession.Century
                 double immobileN = (CFlow / ratioCNtoDestination) - NFlow;
                 
                 //PlugIn.ModelCore.UI.WriteLine("     CFlow={0:0.000}, totalC={1:0.000}", CFlow, totalC);
+               
                // PlugIn.ModelCore.UI.WriteLine("     this.Name={0}, this.Type={1}", this.Name, this.Type);
                 //PlugIn.ModelCore.UI.WriteLine("     NFlow={0:0.000}, SourceN={1:0.000},CNdestination={2:0}", NFlow, this.Nitrogen,ratioCNtoDestination);
+
                 //PlugIn.ModelCore.UI.WriteLine("CalculatingImmobil.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
                 //...Schedule flow from Box A to Box B (outofa)
+                //flow(anps,bnps,time,outofa);
                 this.Nitrogen -= NFlow;
                 destination.Nitrogen += NFlow;
 
                 //PlugIn.ModelCore.UI.WriteLine("NFlow.  MineralN={0:0.00}, ImmobileN={1:0.000}.", SiteVars.MineralN[site],immobileN);
 
                 // Schedule flow from mineral pool to Box B (immobileN)
-                // Don't allow mineral N to go to zero or negative.- ML
+                // flow(labile,bnps,time,immflo);
+                //Don't allow mineral N to go to zero or negative.- ML
                 
                 if (immobileN > SiteVars.MineralN[site])
                     immobileN = SiteVars.MineralN[site] - 0.01; //leave some small amount of mineral N
@@ -478,7 +485,20 @@ namespace Landis.Extension.Succession.Century
 
         public void Respiration(double co2loss, ActiveSite site)
         {
-            // Compute flows associated with microbial respiration.
+        //lock(site){
+        // Copyright 1993 Colorado State University
+        // All Rights Reserved
+        // Compute flows associated with microbial respiration.
+
+        // Input:
+        //  co2loss = CO2 loss associated with decomposition
+        //  Box A.  For components with only 1 layer, tcstva will be dimensioned (1).
+
+        //  Transput:
+        //c         carbonSourceSink = C source/sink
+        //c         grossMineralization = gross mineralization
+        //c         netMineralization = net mineralization for layer N
+
             //c...Mineralization associated with respiration is proportional to the N fraction.
             double mineralNFlow = co2loss * this.Nitrogen / this.Carbon; 
 
@@ -503,10 +523,13 @@ namespace Landis.Extension.Succession.Century
             this.Nitrogen -= mineralNFlow;
             SiteVars.MineralN[site] += mineralNFlow;
 
-            //PlugIn.ModelCore.UI.WriteLine("  Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
+            //PlugIn.ModelCore.UI.WriteLine("     Source:  this.Name={0}, this.Type={1}", this.Name, this.Type);
             //PlugIn.ModelCore.UI.WriteLine("  Respiration.mineralN= {0:0.000}, co2loss={1:00}", mineralNFlow, co2loss);
+           
+
 
             //c...Update gross mineralization
+            // this.GrossMineralization += mineralNFlow;
             if (mineralNFlow > 0)
                 SiteVars.GrossMineralization[site] += mineralNFlow;
 
@@ -518,6 +541,11 @@ namespace Landis.Extension.Succession.Century
 
         public bool DecomposePossible(double ratioCNnew, double mineralN)
         {
+
+            //Copyright 1993 Colorado State University
+            //All Rights Reserved
+            //logical function candec(nelem,aminrl,tca,elstva,nlr,lyr,rcenew)
+            //c...Determine if decomposition can occur.
 
             bool canDecompose = true;
 

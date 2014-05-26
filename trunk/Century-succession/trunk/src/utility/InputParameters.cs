@@ -18,7 +18,9 @@ namespace Landis.Extension.Succession.Century
     {
         private int timestep;
         private SeedingAlgorithms seedAlg;
-        private string climateFile;
+
+        private string climateConfigFile;
+
         private bool calibrateMode;
         private string initCommunities;
         private string communitiesMap;
@@ -171,23 +173,21 @@ namespace Landis.Extension.Succession.Century
                 spinupMortalityFraction = value;
             }
         }
+
         //---------------------------------------------------------------------
-        /// <summary>
-        /// Path to the required file with climatedata.
-        /// </summary>
-        public string ClimateFile
+        public string ClimateConfigFile
         {
-            get {
-                return climateFile;
+            get
+            {
+                return climateConfigFile;
             }
-            set {
-                string path = value;
-                if (path.Trim(null).Length == 0)
-                    throw new InputValueException(path, "\"{0}\" is not a valid path.", path);
-                climateFile = value;
+            set
+            {
+
+                climateConfigFile = value;
             }
         }
-
+        
         //---------------------------------------------------------------------
         /// <summary>
         /// Determines whether months are simulated 0 - 12 (calibration mode) or
@@ -844,7 +844,7 @@ namespace Landis.Extension.Succession.Century
         public void SetInitSOM3N(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            initSOM3N[ecoregion] = CheckBiomassParm(newValue, 0.0, 600.0);
+            initSOM3N[ecoregion] = CheckBiomassParm(newValue, 0.0, 1000.0);
         }
         //---------------------------------------------------------------------
         public void SetInitMineralN(IEcoregion ecoregion, InputValue<double> newValue)

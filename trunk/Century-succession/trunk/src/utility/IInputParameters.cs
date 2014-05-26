@@ -17,7 +17,13 @@ namespace Landis.Extension.Succession.Century
         SeedingAlgorithms SeedAlgorithm{ get;set;}
         string InitialCommunities{ get;set;}
         string InitialCommunitiesMap{ get;set;}
-        string ClimateFile { get; set; }
+
+        string ClimateConfigFile { get; set; }
+        //string ClimateFileFormat { get; set; }
+        //string ClimateFile { get; set; }
+        //string SpinUpClimateFileFormat { get; set; }
+        //string SpinUpClimateFile { get; set; }
+
         double SpinupMortalityFraction { get; set; }
         bool CalibrateMode { get; set; }
         WaterType WType {get;set;}
@@ -138,5 +144,7 @@ namespace Landis.Extension.Succession.Century
         {
             get;
         }
+
+        
     }
 }

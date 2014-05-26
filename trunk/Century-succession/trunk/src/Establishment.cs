@@ -60,10 +60,14 @@ namespace Landis.Extension.Succession.Century
                     if(!ecoregion.Active || EcoregionData.ActiveSiteCount[ecoregion] < 1)
                         continue;
 
-                    AnnualClimate ecoClimate = EcoregionData.AnnualClimateArray[ecoregion][y];
+                    int actualYear = PlugIn.ModelCore.TimeSinceStart + y;
+
+                    //AnnualClimate_Monthly ecoClimate = EcoregionData.AnnualWeather[ecoregion]; //[y];
+                    //new AnnualClimate_Monthly(ecoregion, actualYear, EcoregionData.Latitude[ecoregion], Climate.Phase.Future_Climate, actualYear);
+                    AnnualClimate_Monthly ecoClimate = EcoregionData.AnnualWeather[ecoregion]; 
                 
                     if(ecoClimate == null)
-                        throw new System.ApplicationException("Error: CLIMATE NULL.");
+                        throw new System.ApplicationException("Error in Establishment: CLIMATE NULL.");
                     
                 
                     double ecoDryDays = CalculateSoilMoisture(ecoClimate, ecoregion, y);
@@ -110,7 +114,7 @@ namespace Landis.Extension.Succession.Century
                     }
                 }
             }     
-            
+                        
             return EstablishProbability;
 
         }
@@ -170,7 +174,7 @@ namespace Landis.Extension.Succession.Century
         }
         
         //---------------------------------------------------------------------------
-        private static double MinJanuaryTempModifier(AnnualClimate weather, ISpecies species)
+        private static double MinJanuaryTempModifier(AnnualClimate_Monthly weather, ISpecies species)
         // Is the January mean temperature greater than the species specified minimum?
         {
         
@@ -183,7 +187,7 @@ namespace Landis.Extension.Succession.Century
         }
         
         //---------------------------------------------------------------------------
-        private static double CalculateSoilMoisture(AnnualClimate weather, IEcoregion ecoregion, int year)
+        private static double CalculateSoilMoisture(AnnualClimate_Monthly weather, IEcoregion ecoregion, int year)
         // Calculate fraction of growing season with unfavorable soil moisture
         // for growth (Dry_Days_in_Grow_Seas) used in SoilMoistureMultiplier to determine soil
         // moisture growth multipliers.

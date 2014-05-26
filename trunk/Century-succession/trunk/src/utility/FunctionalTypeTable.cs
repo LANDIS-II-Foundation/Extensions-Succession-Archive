@@ -48,9 +48,11 @@ namespace Landis.Extension.Succession.Century
 
         public FunctionalTypeTable(int index)
         {
+            //parameters = new IEditableFunctionalType[index];
             parameters = new FunctionalType[index];
         }
 
+              
 
     }
 }
