@@ -51,19 +51,10 @@ namespace Landis.Extension.Succession.Century
                 //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.SpinUp_Climate);
                 //else
                 //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, Climate.Phase.Future_Climate);
-
                 // Do not reset annual climate if it has already happend for this year.
                 //if(!EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime])
                 //{
                 //    EcoregionData.ClimateUpdates[ecoregion][y + PlugIn.ModelCore.CurrentTime] = true;
-                //}
-
-                
-
-                // if spin-up phase, allow each initial community to have a unique climate
-                //if(PlugIn.ModelCore.CurrentTime == 0)
-                //{
-                //    EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y);
                 //}
 
                 // Next, Grow and Decompose each month
@@ -93,28 +84,14 @@ namespace Landis.Extension.Succession.Century
                                    
                     double ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month];
                     double monthlyNdeposition = EcoregionData.AtmosNintercept[ecoregion] + (EcoregionData.AtmosNslope[ecoregion] * ppt);
-                    //EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
-                    //EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
+                    EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
+                    EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
                     SiteVars.MineralN[site] += monthlyNdeposition;
                     //PlugIn.ModelCore.UI.WriteLine("Ndeposition={0},MineralN={1:0.00}.", monthlyNdeposition, SiteVars.MineralN[site]);
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     double baseFlow, stormFlow;
                     SoilWater.Run(y, Month, liveBiomass, site, out baseFlow, out stormFlow);
-
-
-                    //// Reset N resorption if it is July
-                    //if (Month == 6)
-                    //{
-                    //    AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
-                    //    //ComputeResorbedN(siteCohorts, site, Month);
-                    //}
-
-                    //// Calculate mineral N fractions based on fine root biomass (leaf biomass) in July
-                    //if (Month == 6)
-                    //{
-                    //    AvailableN.CalculateMineralNfraction(site);
-                    //}
 
                     // Calculate N allocation for each cohort
                     AvailableN.SetMineralNallocation(site);

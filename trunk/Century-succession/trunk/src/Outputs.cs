@@ -426,16 +426,12 @@ namespace Landis.Extension.Succession.Century
             
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                //if (EcoregionData.ActiveSiteCount[ecoregion] > 0)
-                //{
-                    //monthlyLog.AddObject(new MonthlyLog() { EcoregionName = ecoregion.Name});
-                    ppt[ecoregion.Index] = 0.0;
-                    airtemp[ecoregion.Index] = 0.0;
-                    avgNPPtc[ecoregion.Index] = 0.0;
-                    avgResp[ecoregion.Index] = 0.0;
-                    avgNEE[ecoregion.Index] = 0.0;
-                    //Ndep[ecoregion.Index] = 0.0;
-                //}
+                ppt[ecoregion.Index] = 0.0;
+                airtemp[ecoregion.Index] = 0.0;
+                avgNPPtc[ecoregion.Index] = 0.0;
+                avgResp[ecoregion.Index] = 0.0;
+                avgNEE[ecoregion.Index] = 0.0;
+                Ndep[ecoregion.Index] = 0.0;
             }
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -451,19 +447,18 @@ namespace Landis.Extension.Succession.Century
 
                 SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
 
-                //Ndep[ecoregion.Index] = EcoregionData.AnnualWeather[ecoregion].MonthlyNdeposition[month];
+                Ndep[ecoregion.Index] = EcoregionData.MonthlyNDeposition[ecoregion][month];
 
             }
             
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                if (EcoregionData.ActiveSiteCount[ecoregion] > 0) //Amin: I uncommented this line
+                if (EcoregionData.ActiveSiteCount[ecoregion] > 0) 
                 {
                     monthlyLog.Clear();
                     MonthlyLog ml = new MonthlyLog();
 
-                    //int objIndx = monthlyLog.ObjectsList.FindIndex(m => m.EcoregionName == ecoregion.Name);
                     ml.Time = PlugIn.ModelCore.CurrentTime;
                     ml.Month = month + 1;
                     ml.EcoregionName = ecoregion.Name;
@@ -476,27 +471,8 @@ namespace Landis.Extension.Succession.Century
                     ml.avgNPPtc = (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.avgResp = (avgResp[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.avgNEE = (avgNEE[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
-                    //ml.Ndep = Ndep[ecoregion.Index];
+                    ml.Ndep = Ndep[ecoregion.Index];
 
-                    //logMonthly.Write("{0}, {1}, {2}, {3},",
-                    //    PlugIn.ModelCore.CurrentTime,
-                    //    month + 1,
-                    //    ecoregion.Name,
-                    //    EcoregionData.ActiveSiteCount[ecoregion]
-                    //    );
-                    //logMonthly.Write("{0:0.0}, {1:0.0}, ",
-                    //    ppt[ecoregion.Index],
-                    //    airtemp[ecoregion.Index]
-                    //    );
-                    //logMonthly.Write("{0:0.00}, {1:0.00}, {2:0.00}, ",
-                    //    (avgNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                    //    (avgResp[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]),
-                    //    (avgNEE[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion])
-                    //    );
-                    //logMonthly.Write("{0:0.00}, ",
-                    //    Ndep[ecoregion.Index]
-                    //    );
-                    //logMonthly.WriteLine("");
                     monthlyLog.AddObject(ml);
                     monthlyLog.WriteToFile();
                 }
