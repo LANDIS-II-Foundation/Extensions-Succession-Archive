@@ -74,6 +74,7 @@ namespace Landis.Extension.Succession.Century
             LastYearUpdated = new Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
             AnnualWeather = new Ecoregions.AuxParm<AnnualClimate_Monthly>(PlugIn.ModelCore.Ecoregions);
             MonthlyNDeposition = new Ecoregions.AuxParm<double[]>(PlugIn.ModelCore.Ecoregions);
+
             AnnualNDeposition = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
             
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -100,6 +101,9 @@ namespace Landis.Extension.Succession.Century
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
+                for (int i = 0; i < 12; i++)
+                    MonthlyNDeposition[ecoregion][i] = 0.0;
+
                 if (ecoregion.Active)
                 {
                     Climate.GenerateEcoregionClimateData(ecoregion, 0, Latitude[ecoregion], FieldCapacity[ecoregion], WiltingPoint[ecoregion]);
