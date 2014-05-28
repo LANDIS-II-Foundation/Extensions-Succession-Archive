@@ -101,8 +101,10 @@ namespace Landis.Extension.Succession.Century
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                for (int i = 0; i < 12; i++)
-                    MonthlyNDeposition[ecoregion][i] = 0.0;
+                MonthlyNDeposition[ecoregion] = new double[12];
+
+                //for (int i = 0; i < 12; i++)
+                //    MonthlyNDeposition[ecoregion][i] = 0.0;
 
                 if (ecoregion.Active)
                 {
