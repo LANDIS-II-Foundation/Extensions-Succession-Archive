@@ -1,0 +1,5 @@
+c:\program files\landis-ii\6.0\bin\Landis.Extension.Succession.Biomass.dll
+c:\program files\landis-ii\6.0\bin\Landis.Extension.Succession.Biomass.pdb
+C:\BRM\LANDIS_II\Code\landis-extensions\trunk\biomass-succession\trunk\src\obj\Release\ResolveAssemblyReference.cache
+C:\BRM\LANDIS_II\Code\landis-extensions\trunk\biomass-succession\trunk\src\obj\Release\Landis.Extension.Succession.Biomass.dll
+C:\BRM\LANDIS_II\Code\landis-extensions\trunk\biomass-succession\trunk\src\obj\Release\Landis.Extension.Succession.Biomass.pdb
