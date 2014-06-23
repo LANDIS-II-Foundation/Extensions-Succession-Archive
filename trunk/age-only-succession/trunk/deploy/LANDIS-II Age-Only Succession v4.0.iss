@@ -7,29 +7,27 @@
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
 
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Setup section) v6.0.iss"
-
-#if ReleaseType != "official"
-  #define Configuration  "debug"
-#else
-  #define Configuration  "release"
-#endif
+#include "J:\Scheller\LANDIS-II\deploy\package (Setup section) v6.0.iss"
+#define ExtDir "C:\Program Files\LANDIS-II\v6\bin\extensions"
+#define AppDir "C:\Program Files\LANDIS-II\v6\"
 
 [Files]
 
-; Base Harvest (v1.0)
-Source: C:\Program Files\LANDIS-II\6.0\bin\Landis.Extension.Succession.AgeOnly.dll; DestDir: {app}\bin; Flags: replacesameversion
-Source: docs\LANDIS-II Age-Only Succession v3.0 User Guide.pdf; DestDir: {app}\docs
-Source: examples\*; DestDir: {app}\examples\age-only-succession
+; Install Files and Necessary Libraries
+Source: ..\src\bin\debug\Landis.Extension.Succession.AgeOnly.dll; DestDir: {#ExtDir}; Flags: replacesameversion
+Source: ..\src\bin\debug\Landis.Library.Succession.dll; DestDir: {#ExtDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\debug\Landis.Library.Cohorts.dll; DestDir: {#ExtDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#ExtDir}; Flags: uninsneveruninstall replacesameversion
+
+; Ancillary Files
+Source: docs\LANDIS-II Age-Only Succession v4.0 User Guide.pdf; DestDir: {#AppDir}\docs
+Source: examples\ecoregions.gis; DestDir: {#AppDir}\examples\age-only-succession
+Source: examples\initial-communities.gis; DestDir: {#AppDir}\examples\age-only-succession
+Source: examples\*.txt; DestDir: {#AppDir}\examples\age-only-succession
+Source: examples\*.bat; DestDir: {#AppDir}\examples\age-only-succession
 
 #define AgeOnlySucc "Age-only Succession 4.0.txt"
 Source: {#AgeOnlySucc}; DestDir: {#LandisPlugInDir}
-
-; Necessary libraries
-Source: ..\src\bin\debug\Landis.Library.Succession.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
-Source: ..\src\bin\debug\Landis.Library.Cohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
-Source: ..\src\bin\debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin; Flags: uninsneveruninstall replacesameversion
-
 
 [Run]
 ;; Run plug-in admin tool to add an entry for the plug-in
