@@ -13,34 +13,8 @@ namespace Landis.Extension.Succession.AgeOnly
     public class SpeciesData
     {
 
-        //public static Species.AuxParm<double> WoodyDebrisDecay;
-        //public static Species.AuxParm<double> LeafLignin;
-        //public static Species.AuxParm<double> LeafLongevity;
-        //public static Species.AuxParm<double> MortCurveShapeParm;
-        //public static Species.AuxParm<double> GrowthCurveShapeParm;
-
         //  Establishment probability for each species in each ecoregion
         public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishProbability;
-        //  Establishment probability modifier for each species in each ecoregion
-        //public static Species.AuxParm<Ecoregions.AuxParm<double>> EstablishModifier;
-
-        ////  Maximum ANPP for each species in each ecoregion
-        //public static Species.AuxParm<Ecoregions.AuxParm<int>> ANPP_MAX_Spp;
-
-        ////  Maximum possible biomass for each species in each ecoregion
-        //public static Species.AuxParm<Ecoregions.AuxParm<int>> B_MAX_Spp;
-
-        ////---------------------------------------------------------------------
-        //public static void Initialize(IInputParameters parameters)
-        //{
-        //    LeafLignin              = parameters.LeafLignin;
-        //    LeafLongevity           = parameters.LeafLongevity;
-        //    MortCurveShapeParm      = parameters.MortCurveShapeParm;
-        //    GrowthCurveShapeParm = parameters.GrowthCurveShapeParm;
-        //    WoodyDebrisDecay = parameters.WoodyDecayRate;
-
-
-        //}
 
         public static void ChangeDynamicParameters(int year)
         {
@@ -49,10 +23,6 @@ namespace Landis.Extension.Succession.AgeOnly
             {
 
                 EstablishProbability = CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-                //EstablishModifier = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-                //ANPP_MAX_Spp = Util.CreateSpeciesEcoregionParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-                //B_MAX_Spp            = Util.CreateSpeciesEcoregionParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-
 
                 DynamicInputs.TimestepData = DynamicInputs.AllData[year];
 
@@ -62,12 +32,17 @@ namespace Landis.Extension.Succession.AgeOnly
                     {
                         if (!ecoregion.Active)
                             continue;
-                        
-                        EstablishProbability[species][ecoregion] = DynamicInputs.TimestepData[species.Index, ecoregion.Index].ProbEst;
-                        //EstablishModifier[species][ecoregion] = 1.0;
-                        //ANPP_MAX_Spp[species][ecoregion] = DynamicInputs.TimestepData[species.Index, ecoregion.Index].ANPP_MAX_Spp;
-                        //B_MAX_Spp[species][ecoregion] = DynamicInputs.TimestepData[species.Index, ecoregion.Index].B_MAX_Spp;
 
+                        try
+                        {
+                            EstablishProbability[species][ecoregion] = DynamicInputs.TimestepData[species.Index, ecoregion.Index].ProbEst;
+                        }
+                        catch (System.NullReferenceException)
+                        {
+                            string mesg = string.Format("Cannot find data for Spp={0}, Eco={1}, Year={2}.", species.Name, ecoregion.Name, year);
+                            throw new System.ApplicationException(mesg);
+
+                        }
                     }
                 }
 

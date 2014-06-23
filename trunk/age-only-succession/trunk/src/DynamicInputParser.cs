@@ -28,7 +28,7 @@ namespace Landis.Extension.Succession.AgeOnly
         {
             get
             {
-                return PlugIn.ExtensionName;
+                return "Dynamic Input Data";
             }
         }
         //---------------------------------------------------------------------
