@@ -1,8 +1,8 @@
 #define PackageName      "Century Succession"
 #define PackageNameLong  "Century Succession Extension"
-#define Version          "4.0"
+#define Version          "3.2"
 #define ReleaseType      "official"
-#define ReleaseNumber    "4"
+#define ReleaseNumber    "3"
 
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
@@ -15,20 +15,22 @@
 ; Auxiliary libs
 Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
 Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#AppDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
 Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
-; FIX ME!!
-Source: ..\..\branches\amin-century\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
-Source: ..\..\branches\amin-century\bin\Debug\Landis.Library.Climate.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
 
 ; Century Succession
-Source: ..\..\branches\amin-century\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#BuildDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#BuildDir}; Flags: replacesameversion
 
 ; Supporting documents
-; FIX ME!!
-Source: docs\LANDIS-II Century Succession v3.1 User Guide.pdf; DestDir: {#AppDir}\docs
+Source: docs\LANDIS-II Century Succession v3.2 User Guide.pdf; DestDir: {#AppDir}\docs
 Source: docs\Century-succession-log-metadata.xlsx; DestDir: {#AppDir}\docs
-Source: examples\*; DestDir: {#AppDir}\examples\century-succession
+Source: examples\*.bat; DestDir: {#AppDir}\examples\century-succession
+Source: examples\*.txt; DestDir: {#AppDir}\examples\century-succession
+Source: examples\single_cell_3.img; DestDir: {#AppDir}\examples\century-succession
+Source: examples\ecoregions.gis; DestDir: {#AppDir}\examples\century-succession
+Source: examples\initial-communities.gis; DestDir: {#AppDir}\examples\century-succession
 
 #define CenturySucc "Century Succession 4.0.txt"
 Source: {#CenturySucc}; DestDir: {#LandisPlugInDir}
