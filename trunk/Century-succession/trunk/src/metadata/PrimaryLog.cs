@@ -13,7 +13,7 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Unit = FieldUnits.Year, Desc = "Simulation Year")]
         public int Time {set; get;}
 
-        [DataFieldAttribute(Desc = "...")]
+        [DataFieldAttribute(Desc = "Name of Ecoregion")]
         public string EcoregionName { set; get; }
 
         [DataFieldAttribute(Desc = "Ecoregion Index")]

@@ -5,7 +5,7 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.LeafBiomassCohorts;
 using System.Collections.Generic;
-using Landis.Library.Climate;
+//using Landis.Library.Climate;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -29,13 +29,6 @@ namespace Landis.Extension.Succession.Century
             
             ISiteCohorts siteCohorts = SiteVars.Cohorts[site];
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-
-            // If in spin-up mode and calibration mode, then this needs to happen first.
-            //if (PlugIn.ModelCore.CurrentTime == 0 && OtherData.CalibrateMode)
-            //{
-            //    MonthCnt = 11;  // adjustment for sequence
-            //    AvailableN.CalculateMineralNfraction(site);
-            //}
 
             for (int y = 0; y < years; ++y) {
 

@@ -40,12 +40,7 @@ namespace Landis.Extension.Succession.Century
         public static Ecoregions.AuxParm<double[]> MonthlyNDeposition; 
         private static Ecoregions.AuxParm<int> LastYearUpdated;
 
-        
         public static Ecoregions.AuxParm<AnnualClimate_Monthly> AnnualWeather;
-        // AnnualClimateArray contains climates for N years whereby N is the succession time step.
-        // AnnualClimate is the active (current) year's climate, one of the elements in AnnualClimateArray.
-        //public static AnnualClimate_Monthly[] AnnualWeather;  //index by ecoregion
-        //public static Ecoregions.AuxParm<bool[]> ClimateUpdates;
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
@@ -164,7 +159,7 @@ namespace Landis.Extension.Succession.Century
 
         //---------------------------------------------------------------------
         // Generates new climate parameters for all ecoregions at an annual time step.
-        public static void SetAllFutureAnnualClimates(int year)
+        public static void SetAllEcoregions_FutureAnnualClimate(int year)
         {
             int actualYear = Climate.Future_MonthlyData.Keys.Min() + year - 1;
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
@@ -177,7 +172,7 @@ namespace Landis.Extension.Succession.Century
                         AnnualWeather[ecoregion] = Climate.Future_MonthlyData[actualYear][ecoregion.Index];
                     }
 
-                    PlugIn.ModelCore.UI.WriteLine("Utilizing Climate Data: SimulatedYear = {0}, actualClimateYearUsed = {1}.", actualYear, AnnualWeather[ecoregion].Year);
+                    PlugIn.ModelCore.UI.WriteLine("Utilizing Climate Data: Simulated Year = {0}, actualClimateYearUsed = {1}.", actualYear, AnnualWeather[ecoregion].Year);
                 }
 
             }

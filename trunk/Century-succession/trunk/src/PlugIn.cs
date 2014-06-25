@@ -80,12 +80,7 @@ namespace Landis.Extension.Succession.Century
             MetadataHandler.InitializeMetadata(Timestep, modelCore, SoilCarbonMapNames, SoilNitrogenMapNames, ANPPMapNames, ANEEMapNames, TotalCMapNames);
             CohortBiomass.SpinupMortalityFraction = parameters.SpinupMortalityFraction;
             
-
-            //Before initialization all climate data should be converted if is needed.
-
-            //Climate.Convert_FileFormat(parameters.ClimateFileFormat, parameters.ClimateFile);			
             //Initialize climate.
-
             Climate.Initialize(parameters.ClimateConfigFile, false, modelCore);
             
             EcoregionData.Initialize(parameters);
@@ -94,8 +89,6 @@ namespace Landis.Extension.Succession.Century
 
             OtherData.Initialize(parameters);
             FunctionalType.Initialize(parameters);
-            //Outputs.Initialize(parameters);
-            //Outputs.InitializeMonthly(parameters);
 
             //  Cohorts must be created before the base class is initialized
             //  because the base class' reproduction module uses the core's
@@ -121,7 +114,7 @@ namespace Landis.Extension.Succession.Century
             if (parameters.CalibrateMode)
                 Outputs.CreateCalibrateLogFile();
 
-            
+            Outputs.WritePrimaryLogFile(0);
             
             //UriBuilder metadata here;
 
@@ -131,16 +124,11 @@ namespace Landis.Extension.Succession.Century
 
         public override void Run()
         {
-            //try
-            //{
-            //EcoregionData.SetAnnualClimate(PlugIn.ModelCore.Ecoregion[site], y, spinupOrfuture);
-            //Dynamic.Module.CheckForUpdate();
-            //EcoregionData.GenerateNewClimate(PlugIn.ModelCore.CurrentTime, Timestep, Climate.Phase.Future_Climate);
             
             if (PlugIn.ModelCore.CurrentTime > 0)
                     SiteVars.InitializeDisturbances();
 
-            EcoregionData.SetAllFutureAnnualClimates(PlugIn.modelCore.CurrentTime);
+            EcoregionData.SetAllEcoregions_FutureAnnualClimate(PlugIn.modelCore.CurrentTime);
 
             // Update Pest only once.
             SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);
@@ -276,12 +264,6 @@ namespace Landis.Extension.Succession.Century
                     }
                 }
 
-            //}
-            //catch(ClimateDataOutOfRangeException ex)
-            //{
-            //    //ignore this run
-            //    PlugIn.ModelCore.UI.WriteLine("\n*** PlugIn.Run() was ignored at time step " + PlugIn.ModelCore.CurrentTime + " ***\nDetail: " + ex.InnerException.Message);
-            //}
         }
 
 
