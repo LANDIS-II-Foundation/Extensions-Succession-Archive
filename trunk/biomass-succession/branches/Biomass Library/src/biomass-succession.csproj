@@ -81,6 +81,7 @@
     <Compile Include="InitialBiomass.cs" />
     <Compile Include="Outputs.cs" />
     <Compile Include="PlugIn.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SiteVars.cs" />
     <Compile Include="SpeciesData.cs" />
     <Compile Include="SufficientLight.cs" />
