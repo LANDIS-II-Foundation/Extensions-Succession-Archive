@@ -16,6 +16,7 @@ Source: {#LandisExtDir}\Landis.Library.Succession.dll; DestDir: {app}\bin\extens
 Source: {#LandisExtDir}\Landis.Library.BiomassCohorts.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
 Source: {#LandisExtDir}\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
 Source: {#LandisExtDir}\Landis.Library.Cohorts.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
+Source: {#LandisExtDir}\Landis.Library.Biomass.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion
 
 #define UserGuideSrc "LANDIS-II " + ExtensionName + " vX.Y User Guide.pdf"
 #define UserGuide    StringChange(UserGuideSrc, "X.Y", MajorMinor)
