@@ -5,7 +5,7 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Landis.Library.LeafBiomassCohorts;
 using System.Collections.Generic;
-//using Landis.Library.Climate;
+using Landis.Library.Climate;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -33,7 +33,9 @@ namespace Landis.Extension.Succession.Century
             for (int y = 0; y < years; ++y) {
 
                 Year = y + 1;
-                //Climate.Phase spinupOrfuture = Climate.Phase.Future_Climate;
+                
+                if (Climate.Future_MonthlyData.ContainsKey(PlugIn.FutureClimateBaseYear + y + PlugIn.ModelCore.CurrentTime))
+                    EcoregionData.AnnualWeather[ecoregion] = Climate.Future_MonthlyData[PlugIn.FutureClimateBaseYear + y + PlugIn.ModelCore.CurrentTime][ecoregion.Index];
 
                 SiteVars.ResetAnnualValues(site);
 

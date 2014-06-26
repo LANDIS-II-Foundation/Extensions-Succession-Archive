@@ -13,6 +13,7 @@ using Landis.Library.Metadata;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -37,6 +38,8 @@ namespace Landis.Extension.Succession.Century
         public static int TotalCMapFrequency;
         public static int SuccessionTimeStep;
         public static double ProbEstablishAdjust;
+
+        public static int FutureClimateBaseYear = Climate.Future_MonthlyData.Keys.Min();
 
         //---------------------------------------------------------------------
 
@@ -116,8 +119,6 @@ namespace Landis.Extension.Succession.Century
 
             Outputs.WritePrimaryLogFile(0);
             
-            //UriBuilder metadata here;
-
         }
 
         //---------------------------------------------------------------------
@@ -128,7 +129,7 @@ namespace Landis.Extension.Succession.Century
             if (PlugIn.ModelCore.CurrentTime > 0)
                     SiteVars.InitializeDisturbances();
 
-            EcoregionData.SetAllEcoregions_FutureAnnualClimate(PlugIn.modelCore.CurrentTime);
+            //EcoregionData.SetAllEcoregions_FutureAnnualClimate(PlugIn.modelCore.CurrentTime); //TESTING
 
             // Update Pest only once.
             SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);
