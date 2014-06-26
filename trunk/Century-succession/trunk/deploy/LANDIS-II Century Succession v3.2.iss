@@ -32,7 +32,7 @@ Source: examples\single_cell_3.img; DestDir: {#AppDir}\examples\century-successi
 Source: examples\ecoregions.gis; DestDir: {#AppDir}\examples\century-succession
 Source: examples\initial-communities.gis; DestDir: {#AppDir}\examples\century-succession
 
-#define CenturySucc "Century Succession 4.0.txt"
+#define CenturySucc "Century Succession 3.2.txt"
 Source: {#CenturySucc}; DestDir: {#LandisPlugInDir}
 
 [Run]

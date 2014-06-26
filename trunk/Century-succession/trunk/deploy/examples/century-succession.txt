@@ -15,16 +15,16 @@ WaterDecayFunction Ratio <<Linear or Ratio
 
 ProbEstablishAdjust 1
 
-ANPPMapNames		century/ag_npp-{timestep}.img
-ANPPMapFrequency	5
-ANEEMapNames		century/nee-{timestep}.img
-ANEEMapFrequency	5
-SoilCarbonMapNames	century/soilC-{timestep}.img
-SoilCarbonMapFrequency	5
-SoilNitrogenMapNames	century/soilN-{timestep}.img
-SoilNitrogenMapFrequency	5
-TotalCMapNames		century/totalC-{timestep}.img
-TotalCMapFrequency	5
+ANPPMapNames		century/ag_npp-{timestep}.img <<Optional
+ANPPMapFrequency	5                             <<Optional
+ANEEMapNames		century/nee-{timestep}.img    <<Optional
+ANEEMapFrequency	5                             <<Optional
+SoilCarbonMapNames	century/soilC-{timestep}.img  <<Optional
+SoilCarbonMapFrequency	5                             <<Optional
+SoilNitrogenMapNames	century/soilN-{timestep}.img  <<Optional
+SoilNitrogenMapFrequency	5                     <<Optional
+TotalCMapNames		century/totalC-{timestep}.img <<Optional
+TotalCMapFrequency	5                             <<Optional
 
 AvailableLightBiomass
 
