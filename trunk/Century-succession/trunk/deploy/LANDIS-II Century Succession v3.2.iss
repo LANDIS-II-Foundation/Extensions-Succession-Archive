@@ -25,7 +25,7 @@ Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#Bui
 
 ; Supporting documents
 Source: docs\LANDIS-II Century Succession v3.2 User Guide.pdf; DestDir: {#AppDir}\docs
-Source: docs\Century-succession-log-metadata.xlsx; DestDir: {#AppDir}\docs
+;; Source: docs\Century-succession-log-metadata.xlsx; DestDir: {#AppDir}\docs
 Source: examples\*.bat; DestDir: {#AppDir}\examples\century-succession
 Source: examples\*.txt; DestDir: {#AppDir}\examples\century-succession
 Source: examples\single_cell_3.img; DestDir: {#AppDir}\examples\century-succession
