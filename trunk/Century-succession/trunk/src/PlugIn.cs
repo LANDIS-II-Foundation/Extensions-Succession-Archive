@@ -39,7 +39,7 @@ namespace Landis.Extension.Succession.Century
         public static int SuccessionTimeStep;
         public static double ProbEstablishAdjust;
 
-        public static int FutureClimateBaseYear = Climate.Future_MonthlyData.Keys.Min();
+        public static int FutureClimateBaseYear;
 
         //---------------------------------------------------------------------
 
@@ -85,6 +85,7 @@ namespace Landis.Extension.Succession.Century
             
             //Initialize climate.
             Climate.Initialize(parameters.ClimateConfigFile, false, modelCore);
+            FutureClimateBaseYear = Climate.Future_MonthlyData.Keys.Min();
             
             EcoregionData.Initialize(parameters);
             SpeciesData.Initialize(parameters);
