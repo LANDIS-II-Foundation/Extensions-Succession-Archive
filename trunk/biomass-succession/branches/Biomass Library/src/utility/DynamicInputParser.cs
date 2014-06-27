@@ -16,7 +16,14 @@ namespace Landis.Extension.Succession.Biomass
     {
 
         private string FileName = "Dynamic Input Data";
-
+        //---------------------------------------------------------------------
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
         //---------------------------------------------------------------------
         public DynamicInputsParser()
         {

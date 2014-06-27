@@ -22,7 +22,14 @@ namespace Landis.Extension.Succession.Biomass
             public const string DynamicInputFile = "DynamicInputFile";
             public const string CalibrateMode = "CalibrateMode";
         }
-
+        //---------------------------------------------------------------------
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
         //---------------------------------------------------------------------
 
         private Dictionary<string, int> speciesLineNums;
