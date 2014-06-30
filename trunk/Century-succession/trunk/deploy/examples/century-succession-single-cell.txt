@@ -7,7 +7,7 @@ SeedingAlgorithm  WardSeedDispersal
 InitialCommunities      "initial-communities-single-cell.txt"
 InitialCommunitiesMap   "single_cell_3.img"
 
-ClimateConfigFile	climate-generator-baseline.txt
+ClimateConfigFile	climate-generator-single-cell.txt
 
 CalibrateMode 	yes
 
