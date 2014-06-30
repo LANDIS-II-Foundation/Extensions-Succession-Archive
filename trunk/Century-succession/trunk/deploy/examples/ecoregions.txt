@@ -1,8 +1,8 @@
-LandisData  Ecoregions
+LandisData	"Ecoregions"		
 
->>         Map
->> Active  Code  Name   Description
->> ------  ----  -----  -----------
-      yes    1   eco1   "Mesic soils"
-      yes    2   eco2   "Sandy outwash plain"
-      yes    3   eco3   "Mesic soils"
+>> 	Map Code		
+>>Active	Name	Description
+>>--------------------------------------------------------			
+yes	3	MN100		"MN 100"
+
+
