@@ -8,20 +8,20 @@
 #define CoreReleaseAbbr  ""
 
 #include "J:\Scheller\LANDIS-II\deploy\package (Setup section) v6.0.iss"
-#define BuildDir "C:\Program Files\LANDIS-II\v6\bin\extensions"
+#define ExtDir "C:\Program Files\LANDIS-II\v6\bin\extensions"
 #define AppDir "C:\Program Files\LANDIS-II\v6"
 
 [Files]
 ; Auxiliary libs
-Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#BuildDir}; Flags: replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
-Source: ..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#BuildDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Cohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.LeafBiomassCohorts.dll; DestDir: {#ExtDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Succession.dll; DestDir: {#ExtDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Metadata.dll; DestDir: {#ExtDir}; Flags: uninsneveruninstall replacesameversion
+Source: ..\src\bin\Debug\Landis.Library.Climate.dll; DestDir: {#ExtDir}; Flags: uninsneveruninstall replacesameversion
 
 ; Century Succession
-Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#BuildDir}; Flags: replacesameversion
+Source: ..\src\bin\Debug\Landis.Extension.Succession.Century.dll; DestDir: {#ExtDir}; Flags: replacesameversion
 
 ; Supporting documents
 Source: docs\LANDIS-II Century Succession v3.2 User Guide.pdf; DestDir: {#AppDir}\docs
