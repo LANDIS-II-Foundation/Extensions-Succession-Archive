@@ -20,16 +20,15 @@ CellLength  100 << meters, 100 x 100 m = 1 ha
 
 >> Disturbance Extensions   Initialization File
 >> ----------------------   -------------------
->>"Leaf Biomass Insects"	    BiomassInsectsInput.txt
+
 
 >>   DisturbancesRandomOrder  yes  << optional parameter; default = no
 
 
 >> Other Extensions         Initialization File
 >> ----------------         -------------------
->>"Output Leaf Biomass Reclass"	    CNF_output-biomass-reclass.txt
->>"Output Leaf Biomass"	    	CNF_output-leaf-biomass.txt
->>"Output Cohort Statistics"	    	CNF_cohort-stats.output.txt
+>>"Output Leaf Biomass Reclass"	output-biomass-reclass.txt
+>>"Output Leaf Biomass"	    	output-leaf-biomass.txt
 
 
 RandomNumberSeed  3,397,480,526  << optional parameter; default = the seed is
