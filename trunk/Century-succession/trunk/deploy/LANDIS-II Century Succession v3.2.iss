@@ -35,6 +35,9 @@ Source: examples\initial-communities.gis; DestDir: {#AppDir}\examples\century-su
 #define CenturySucc "Century Succession 3.2.txt"
 Source: {#CenturySucc}; DestDir: {#LandisPlugInDir}
 
+[InstallDelete]
+Type: files; Name: "{#AppDir}\bin\Landis.Library.Climate.dll"
+
 [Run]
 ;; Run plug-in admin tool to add an entry for the plug-in
 #define PlugInAdminTool  CoreBinDir + "\Landis.PlugIns.Admin.exe"
