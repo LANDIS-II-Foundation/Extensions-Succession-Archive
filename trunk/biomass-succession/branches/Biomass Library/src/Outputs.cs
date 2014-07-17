@@ -23,9 +23,9 @@ namespace Landis.Extension.Succession.Biomass
         {
 
             string logFileName   = "Biomass-succession-v3-log.csv";
-            PlugIn.ModelCore.Log.WriteLine("   Opening Biomass-succession log file \"{0}\" ...", logFileName);
+            PlugIn.ModelCore.UI.WriteLine("   Opening Biomass-succession log file \"{0}\" ...", logFileName);
             try {
-                log = PlugIn.ModelCore.CreateTextFile(logFileName);
+                log = Landis.Data.CreateTextFile(logFileName);
             }
             catch (Exception err) {
                 string mesg = string.Format("{0}", err.Message);

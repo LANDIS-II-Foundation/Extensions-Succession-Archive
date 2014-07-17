@@ -37,7 +37,8 @@ namespace Landis.Extension.Succession.Biomass
             modelCore = mCore;
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
-            parameters = modelCore.Load<IInputParameters>(dataFile, parser);
+            parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
+             
 
         }
 
@@ -283,7 +284,7 @@ namespace Landis.Extension.Succession.Biomass
                 }
             }
 
-            if (!found) PlugIn.ModelCore.Log.WriteLine("Could not find sufficient light data for {0}.", species.Name);
+            if (!found) PlugIn.ModelCore.UI.WriteLine("Could not find sufficient light data for {0}.", species.Name);
 
             return PlugIn.ModelCore.GenerateUniform() < lightProbability;
         }

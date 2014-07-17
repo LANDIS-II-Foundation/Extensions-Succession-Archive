@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("biomass_succession")]
+[assembly: AssemblyTitle("Landis.Extension.Succession.Biomass")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("USDA Forest Service")]
 [assembly: AssemblyProduct("biomass_succession.Properties")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright © USDA Forest Service 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("340b147d-ab78-4030-afd0-c30f4deade67")]
+[assembly: Guid("d5598960-1bc9-4b0d-b1e9-2a55e47268d3")]
 
 // Version information for an assembly consists of the following four values:
 //
