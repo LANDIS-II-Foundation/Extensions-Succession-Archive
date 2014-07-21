@@ -59,8 +59,10 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double> litterfallC;
         private static ISiteVar<double> cohortLeafN;
         private static ISiteVar<double> cohortLeafC;
+        private static ISiteVar<double> cohortFineRootC;
         private static ISiteVar<double> cohortWoodN;
         private static ISiteVar<double> cohortWoodC;
+        private static ISiteVar<double> cohortCoarseRootC;
         private static ISiteVar<double[]> monthlyAGNPPC;
         private static ISiteVar<double[]> monthlyBGNPPC;
         private static ISiteVar<double[]> monthlyNEE;
@@ -137,8 +139,10 @@ namespace Landis.Extension.Succession.Century
 
             cohortLeafN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortLeafC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            cohortFineRootC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodN         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             cohortWoodC         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            cohortCoarseRootC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
                         
             TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -251,8 +255,10 @@ namespace Landis.Extension.Succession.Century
             // Reset these accumulators to zero:
             SiteVars.CohortLeafN[site] = 0.0;
             SiteVars.CohortLeafC[site] = 0.0;
+            SiteVars.CohortFineRootC[site] = 0.0;
             SiteVars.CohortWoodN[site] = 0.0;
             SiteVars.CohortWoodC[site] = 0.0;
+            SiteVars.CohortCoarseRootC[site] = 0.0;
             SiteVars.GrossMineralization[site] = 0.0;
             SiteVars.AGNPPcarbon[site] = 0.0;
             SiteVars.BGNPPcarbon[site] = 0.0;
@@ -550,7 +556,7 @@ namespace Landis.Extension.Succession.Century
         //---------------------------------------------------------------------
 
         /// <summary>
-        /// A summary of all Carbon in the Cohorts.
+        /// A summary of all Carbon in the Leaves
         /// </summary>
         public static ISiteVar<double> CohortLeafC
         {
@@ -558,6 +564,21 @@ namespace Landis.Extension.Succession.Century
                 return cohortLeafC;
             }
             set {
+                cohortLeafC = value;
+            }
+        }
+
+        /// <summary>
+        /// A summary of all Carbon in the Fine Roots
+        /// </summary>
+        public static ISiteVar<double> CohortFineRootC
+        {
+            get
+            {
+                return cohortFineRootC;
+            }
+            set
+            {
                 cohortLeafC = value;
             }
         }
@@ -590,6 +611,23 @@ namespace Landis.Extension.Succession.Century
             }
         }
         //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of all Carbon in the Coarse Roots
+        /// </summary>
+        public static ISiteVar<double> CohortCoarseRootC
+        {
+            get
+            {
+                return cohortCoarseRootC;
+            }
+            set
+            {
+                cohortCoarseRootC = value;
+            }
+        }
+
+        //-------------------------
+
         /// <summary>
         /// A summary of Gross Mineraliztion.
         /// </summary>

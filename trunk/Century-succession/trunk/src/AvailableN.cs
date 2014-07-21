@@ -303,7 +303,8 @@ namespace Landis.Extension.Succession.Century
             double totalANPP_C = (ANPPleaf + ANPPwood + ANPPcoarseRoot + ANPPfineRoot) * 0.47;
             double Ndemand = leafN + woodN + coarseRootN + fineRootN;
 
-            //PlugIn.ModelCore.UI.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0}, Nreduction={4:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot,Nreduction);
+            //PlugIn.ModelCore.UI.WriteLine("ANPPleaf={0:0.0}, ANPPwood={1:0.0}, ANPPcRoot={2:0.0}, ANPPfRoot={3:0.0},", ANPPleaf, ANPPwood, ANPPcoarseRoot, ANPPfineRoot);
+            //PlugIn.ModelCore.UI.WriteLine("leafN={0:0.0}, woodN={1:0.0}, coarseRootN={2:0.0}, fineRootN={3:0.0}, month = {4:0},", leafN, woodN, coarseRootN, fineRootN, Century.Month);
 
             if(Ndemand < 0.0)
             {
@@ -317,15 +318,16 @@ namespace Landis.Extension.Succession.Century
         public static void AdjustAvailableN(ICohort cohort, ActiveSite site, double[] actualANPP)
         {
             // Because Growth used some Nitrogen, it must be subtracted from the appropriate pools, either resorbed or mineral.
+            //PlugIn.ModelCore.UI.WriteLine("AdjustAvailableN");
             double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
             double adjNdemand = totalNdemand;
             double resorbedNused = 0.0;
             double mineralNused = 0.0;
 
             // Use resorbed N first and only if it is spring time unless you are evergreen.  
-            //double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
-            //if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
-            //{
+            double leafLongevity = SpeciesData.LeafLongevity[cohort.Species];
+            if ((leafLongevity <= 1.0 && Century.Month > 2 && Century.Month < 6) || leafLongevity > 1.0)
+            {
             double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
 
             resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
@@ -333,7 +335,8 @@ namespace Landis.Extension.Succession.Century
             AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
 
             adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
-            //}
+            }
+            
 
             // Reduce available N after taking into account that some N may have been provided
             // via resorption (above).
@@ -352,7 +355,7 @@ namespace Landis.Extension.Succession.Century
 
                 Nuptake = SiteVars.MineralN[site];
             }
-
+            //PlugIn.ModelCore.UI.WriteLine("totalNdemand={0:0.00}, Nuptake={1:0.00}, mineralN={2:0.0}, mineralNused={3:0.0}, resorbedNused={4:0.0},", totalNdemand, Nuptake, SiteVars.MineralN[site], mineralNused, resorbedNused);
             SiteVars.TotalNuptake[site] += Nuptake;
 
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)

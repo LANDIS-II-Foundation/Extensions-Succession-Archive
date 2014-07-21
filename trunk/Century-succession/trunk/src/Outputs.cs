@@ -104,8 +104,10 @@ namespace Landis.Extension.Succession.Century
             double[] avgTotalN      = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             double[] avgCohortLeafC = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortFineRootC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgCohortWoodC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgWoodC       = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortCoarseRootC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgCRootC      = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             double[] avgCohortLeafN = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -244,7 +246,9 @@ namespace Landis.Extension.Succession.Century
                 avgGrossMin[ecoregion.Index] += SiteVars.GrossMineralization[site];
 
                 avgCohortLeafC[ecoregion.Index] += SiteVars.CohortLeafC[site];
+                avgCohortFineRootC[ecoregion.Index] += SiteVars.CohortFineRootC[site];
                 avgCohortWoodC[ecoregion.Index] += SiteVars.CohortWoodC[site];
+                avgCohortCoarseRootC[ecoregion.Index] += SiteVars.CohortCoarseRootC[site];
                 avgWoodC[ecoregion.Index]       += SiteVars.SurfaceDeadWood[site].Carbon; 
                 avgCRootC[ecoregion.Index]      += SiteVars.SoilDeadWood[site].Carbon; 
                 
@@ -334,8 +338,10 @@ namespace Landis.Extension.Succession.Century
                     pl.GrossMineralization = (avgGrossMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
                     //log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
-                    pl.C_LeafFRoot =    (avgCohortLeafC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
-                    pl.C_WoodCRoot =    (avgCohortWoodC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.C_Leaf =    (avgCohortLeafC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.C_FineRoots = (avgCohortFineRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.C_Wood =    (avgCohortWoodC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.C_CoarseRoots = (avgCohortCoarseRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.C_DeadWood =    (avgWoodC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.C_DeadCRoot = (avgCRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
@@ -500,7 +506,7 @@ namespace Landis.Extension.Succession.Century
             CalibrateLog.Write("Year, Month, EcoregionIndex, SpeciesName, CohortAge, CohortWoodB, CohortLeafB, ");  // from ComputeChange
             CalibrateLog.Write("MortalityAGEwood, MortalityAGEleaf, ");  // from ComputeAgeMortality
             CalibrateLog.Write("MortalityBIOwood, MortalityBIOleaf, ");  // from ComputeGrowthMortality
-            CalibrateLog.Write("LAI,");  // from ComputeChange
+            CalibrateLog.Write("LAI,tlai,rlai,");  // from ComputeChange
             CalibrateLog.Write("mineralNalloc, resorbedNalloc, ");  // from calculateN_Limit
             CalibrateLog.Write("limitLAI, limitH20, limitT, limitCapacity, limitN, ");  //from ComputeActualANPP
             CalibrateLog.Write("maxNPP, Bmax, Bsite, Bcohort, soilTemp, ");  //from ComputeActualANPP

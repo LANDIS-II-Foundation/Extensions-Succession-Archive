@@ -252,7 +252,9 @@ namespace Landis.Extension.Succession.Century
                             {
                                 pixel.MapCode.Value = (int)(Outputs.GetOrganicCarbon(site) +
                                     SiteVars.CohortLeafC[site] +
+                                    SiteVars.CohortFineRootC[site] +
                                     SiteVars.CohortWoodC[site] +
+                                    SiteVars.CohortCoarseRootC[site] +
                                     SiteVars.SurfaceDeadWood[site].Carbon +
                                     SiteVars.SoilDeadWood[site].Carbon);
                             }
@@ -335,8 +337,10 @@ namespace Landis.Extension.Succession.Century
 
             SiteVars.MineralN[site]              = initialBiomass.MineralN;
             SiteVars.CohortLeafC[site]           = initialBiomass.CohortLeafC;
+            SiteVars.CohortFineRootC[site]           = initialBiomass.CohortFineRootC;
             SiteVars.CohortLeafN[site]           = initialBiomass.CohortLeafN;
             SiteVars.CohortWoodC[site]           = initialBiomass.CohortWoodC;
+            SiteVars.CohortCoarseRootC[site]          = initialBiomass.CohortCoarseRootC;
             SiteVars.CohortWoodN[site]           = initialBiomass.CohortWoodN;
 
             //// Override the spin-up soil C and N values with the contemporary data

@@ -84,9 +84,11 @@ namespace Landis.Extension.Succession.Century
         } 
         
         public double MineralN { get { return mineralN; } } 
-        public double CohortLeafC { get { return cohortLeafC; } } 
+        public double CohortLeafC { get { return cohortLeafC; } }
+        public double CohortFineRootC { get { return cohortLeafC; } } 
         public double CohortLeafN { get { return cohortLeafN; } } 
-        public double CohortWoodC { get { return cohortWoodC; } } 
+        public double CohortWoodC { get { return cohortWoodC; } }
+        public double CohortCoarseRootC { get { return cohortWoodC; } } 
         public double CohortWoodN { get { return cohortWoodN; } } 
 
         //---------------------------------------------------------------------
@@ -108,8 +110,10 @@ namespace Landis.Extension.Succession.Century
                 
                 double mineralN,
                 double cohortLeafC,
+             double cohortFineRootC,
                 double cohortLeafN,
                 double cohortWoodC,
+             double cohortCoarseRootC,
                 double cohortWoodN
                 )
         {
@@ -241,8 +245,10 @@ namespace Landis.Extension.Succession.Century
                         
                         SiteVars.MineralN[site],
                         SiteVars.CohortLeafC[site],
+                        SiteVars.CohortFineRootC[site],
                         SiteVars.CohortLeafN[site],
                         SiteVars.CohortWoodC[site],
+                         SiteVars.CohortCoarseRootC[site],
                         SiteVars.CohortWoodN[site]
                         );
 

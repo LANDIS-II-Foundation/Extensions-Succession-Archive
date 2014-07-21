@@ -55,11 +55,17 @@ namespace Landis.Extension.Succession.Century
         public double GrossMineralization { get; set; }
 
         //log.Write("C:LeafFRoot, C:WoodCRoot, C:DeadWood, C:DeadCRoot, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Leaf and Fine Root C", Format = "0.0")]
-        public double C_LeafFRoot { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Leaf C", Format = "0.00")]
+        public double C_Leaf { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Wood and Coarse Root C", Format = "0.0")]
-        public double C_WoodCRoot { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Fine Root C", Format = "0.00")]
+        public double C_FineRoots { get; set; }
+
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Wood C", Format = "0.0")]
+        public double C_Wood { get; set; }
+
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Coarse Root C", Format = "0.0")]
+        public double C_CoarseRoots { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Dead Wood C", Format = "0.0")]
         public double C_DeadWood { get; set; }

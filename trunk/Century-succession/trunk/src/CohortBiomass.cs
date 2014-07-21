@@ -243,6 +243,9 @@ namespace Landis.Extension.Succession.Century
             double woodNPP  = actualANPP * (1.0 - leafFractionNPP);
                         
             if (Double.IsNaN(leafNPP) || Double.IsNaN(woodNPP))
+
+
+
             {
                 PlugIn.ModelCore.UI.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
                 PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, Century.Month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
@@ -477,7 +480,8 @@ namespace Landis.Extension.Succession.Century
             double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
-            double WoodNPP = NPP * (1.0 - leafFractionNPP);
+            //double WoodNPP = NPP * (1.0 - leafFractionNPP);
+            double WoodNPP = NPP - LeafNPP;
 
             //double FineRootNPP = LeafNPP * 0.75;
             //double CoarseRootNPP = WoodNPP * 0.75;
@@ -489,7 +493,7 @@ namespace Landis.Extension.Succession.Century
             {
                 // Divide allocation N by N demand here:
                 //PlugIn.ModelCore.UI.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
-
+                //PlugIn.ModelCore.UI.WriteLine("Calculate Demand for Nitrogen now");
                 double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); 
 
                 if (Ndemand > 0.0)
@@ -555,7 +559,12 @@ namespace Landis.Extension.Succession.Century
             double klai   = FunctionalType.Table[SpeciesData.FuncType[species]].KLAI;
             double maxlai = FunctionalType.Table[SpeciesData.FuncType[species]].MAXLAI;
 
-            double rlai = (leafC * 2.5) * btolai;
+            double rlai = (Math.Max(0.0, 1.0 - Math.Exp(btolai * leafC)));
+
+            if (SpeciesData.LeafLongevity[species] > 1.0)
+            {
+                rlai = 1.0;
+            }
 
             double tlai = maxlai * largeWoodC/(klai + largeWoodC);
 
@@ -563,8 +572,9 @@ namespace Landis.Extension.Succession.Century
             //     why we take the average in the first case, but it will probably
             //     change...
 
-            if (rlai < tlai) lai = (rlai + tlai) / 2.0;
-            else lai = tlai;
+            //if (rlai < tlai) lai = (rlai + tlai) / 2.0;
+            lai = tlai * rlai;
+            //else lai = tlai;
 
             // This will allow us to set MAXLAI to zero such that LAI is completely dependent upon
             // foliar carbon, which may be necessary for simulating defoliation events.
@@ -603,7 +613,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, ", lai);
+                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, ", lai, tlai, rlai);
 
 
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, leafC={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, leafC, largeWoodC);

@@ -148,9 +148,9 @@ namespace Landis.Extension.Succession.Century
                 return btolai;
             }
             set {
-                    if (value  < 0.00001 || value  > 2.5)
+                    if (value  < -3.0 || value  > 1000.0)
                         throw new InputValueException(value.ToString(),
-                            "Decay rate must be between 0.00001 and 0.1");
+                            "BTOLAI must be between -3 and 1000");
                 btolai = value;
             }
         }
@@ -166,9 +166,9 @@ namespace Landis.Extension.Succession.Century
                 return klai;
             }
             set {
-                    if (value  < 1.0 || value  > 10000.0)
+                    if (value  < 1.0 || value  > 20000.0)
                         throw new InputValueException(value.ToString(),
-                            "K LAI must be between 1 and 10000");
+                            "K LAI must be between 1 and 20000");
                 klai = value;
             }
         }
