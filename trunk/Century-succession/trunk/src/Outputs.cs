@@ -589,12 +589,12 @@ namespace Landis.Extension.Succession.Century
         {
             double totalC = 
                     
-                    SiteVars.SurfaceStructural[site].Carbon
-                    + SiteVars.SoilStructural[site].Carbon
-                    + SiteVars.SurfaceMetabolic[site].Carbon
-                    + SiteVars.SoilMetabolic[site].Carbon
+                    //SiteVars.SurfaceStructural[site].Carbon
+                    //+ SiteVars.SoilStructural[site].Carbon
+                    //+ SiteVars.SurfaceMetabolic[site].Carbon
+                    //+ SiteVars.SoilMetabolic[site].Carbon
 
-                    + SiteVars.SOM1surface[site].Carbon
+                    SiteVars.SOM1surface[site].Carbon
                     + SiteVars.SOM1soil[site].Carbon
                     + SiteVars.SOM2[site].Carbon
                     + SiteVars.SOM3[site].Carbon
