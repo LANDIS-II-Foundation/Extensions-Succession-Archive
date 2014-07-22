@@ -640,7 +640,7 @@ namespace Landis.Extension.Succession.Century
 
 
         /// <summary>
-        /// A summary of all Carbon in the Cohorts.
+        /// A summary of all Aboveground Wood Carbon in the Cohorts.
         /// </summary>
         public static ISiteVar<double> CohortWoodC
         {

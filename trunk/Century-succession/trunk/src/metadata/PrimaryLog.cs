@@ -74,17 +74,17 @@ namespace Landis.Extension.Succession.Century
         public double C_DeadCRoot { get; set; }
 
         //log.Write("C:SurfStruc, C:SurfMeta, C:SoilStruc, C:SoilMeta, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Surface Structural C", Format = "0.0")]
-        public double C_SurfStruc { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Dead Leaf Structural C", Format = "0.0")]
+        public double C_DeadLeaf_Struc { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Surface Metabolic C", Format = "0.0")]
-        public double C_SurfMeta { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Dead Leaf Metabolic C", Format = "0.0")]
+        public double C_DeadLeaf_Meta { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Soil Structural C", Format = "0.0")]
-        public double C_SoilStruc { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Dead Fine Root Structural C", Format = "0.0")]
+        public double C_DeadFRoot_Struc { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Soil Metabolic C", Format = "0.0")]
-        public double C_SoilMeta { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Dead Fine RootMetabolic C", Format = "0.0")]
+        public double C_DeadFRoot_Meta { get; set; }
 
         //log.Write("C:SOM1surf, C:SOM1soil, C:SOM2, C:SOM3, ");
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "SOM1 Surface C", Format = "0.0")]
@@ -119,17 +119,17 @@ namespace Landis.Extension.Succession.Century
         public double N_DeadCRoot { get; set; }
 
         //log.Write("N:SurfStruc, N:SurfMeta, N:SoilStruc, N:SoilMeta, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Surface Structural N", Format = "0.0")]
-        public double N_SurfStruc { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Dead Leaf Structural N", Format = "0.0")]
+        public double N_DeadLeaf_Struc { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Surface Metabolic N", Format = "0.0")]
-        public double N_SurfMeta { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Dead Leaf Metabolic N", Format = "0.0")]
+        public double N_DeadLeaf_Meta { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Soil Structural N", Format = "0.0")]
-        public double N_SoilStruc { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Dead Fine Root Structural N", Format = "0.0")]
+        public double N_DeadFRoot_Struc { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Soil Metabolic N", Format = "0.0")]
-        public double N_SoilMeta { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Dead Fine Root Metabolic N", Format = "0.0")]
+        public double N_DeadFRoot_Meta { get; set; }
 
         //log.Write("N:SOM1surf, N:SOM1soil, N:SOM2, N:SOM3, ");
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "SOM1 Surface N", Format = "0.0")]
