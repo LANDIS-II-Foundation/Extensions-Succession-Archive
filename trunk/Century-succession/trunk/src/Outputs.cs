@@ -104,16 +104,18 @@ namespace Landis.Extension.Succession.Century
             double[] avgTotalN      = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             double[] avgCohortLeafC = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgCohortFineRootC = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortFRootC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgCohortWoodC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgWoodC       = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgCohortCoarseRootC = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortCRootC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgCRootC      = new double[PlugIn.ModelCore.Ecoregions.Count];
             
-            double[] avgCohortLeafN = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgCohortWoodN = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgWoodN       = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgCRootN      = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortLeafN        = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortFRootN    = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortWoodN        = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCohortCRootN  = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgWoodN              = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgCRootN              = new double[PlugIn.ModelCore.Ecoregions.Count];
 
             double[] avgSurfStrucC  = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSurfMetaC   = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -175,7 +177,9 @@ namespace Landis.Extension.Succession.Century
                 avgTotalN[ecoregion.Index] = 0.0;
                 
                 avgCohortLeafC[ecoregion.Index] = 0.0;
+                avgCohortFRootC[ecoregion.Index] = 0.0;
                 avgCohortWoodC[ecoregion.Index] = 0.0;
+                avgCohortCRootC[ecoregion.Index] = 0.0;
                 avgWoodC[ecoregion.Index] = 0.0;
                 avgCRootC[ecoregion.Index] = 0.0;
                 
@@ -185,7 +189,9 @@ namespace Landis.Extension.Succession.Century
                 avgSoilMetaC[ecoregion.Index] = 0.0;
                 
                 avgCohortLeafN[ecoregion.Index] = 0.0;
+                avgCohortFRootN[ecoregion.Index] = 0.0;
                 avgCohortWoodN[ecoregion.Index] = 0.0;
+                avgCohortCRootN[ecoregion.Index] = 0.0;
                 avgWoodN[ecoregion.Index] = 0.0;
                 avgCRootN[ecoregion.Index] = 0.0;
 
@@ -246,9 +252,9 @@ namespace Landis.Extension.Succession.Century
                 avgGrossMin[ecoregion.Index] += SiteVars.GrossMineralization[site];
 
                 avgCohortLeafC[ecoregion.Index] += SiteVars.CohortLeafC[site];
-                avgCohortFineRootC[ecoregion.Index] += SiteVars.CohortFineRootC[site];
+                avgCohortFRootC[ecoregion.Index] += SiteVars.CohortFRootC[site];
                 avgCohortWoodC[ecoregion.Index] += SiteVars.CohortWoodC[site];
-                avgCohortCoarseRootC[ecoregion.Index] += SiteVars.CohortCoarseRootC[site];
+                avgCohortCRootC[ecoregion.Index] += SiteVars.CohortCRootC[site];
                 avgWoodC[ecoregion.Index]       += SiteVars.SurfaceDeadWood[site].Carbon; 
                 avgCRootC[ecoregion.Index]      += SiteVars.SoilDeadWood[site].Carbon; 
                 
@@ -263,7 +269,9 @@ namespace Landis.Extension.Succession.Century
                 avgSOM3C[ecoregion.Index]     += SiteVars.SOM3[site].Carbon; 
 
                 avgCohortLeafN[ecoregion.Index]   += SiteVars.CohortLeafN[site];
+                avgCohortFRootN[ecoregion.Index] += SiteVars.CohortFRootN[site];
                 avgCohortWoodN[ecoregion.Index]   += SiteVars.CohortWoodN[site];
+                avgCohortCRootN[ecoregion.Index] += SiteVars.CohortCRootN[site];
                 avgWoodN[ecoregion.Index]     += SiteVars.SurfaceDeadWood[site].Nitrogen; 
                 avgCRootN[ecoregion.Index]    += SiteVars.SoilDeadWood[site].Nitrogen; 
                 
@@ -339,9 +347,9 @@ namespace Landis.Extension.Succession.Century
                         //);
                     //log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
                     pl.C_Leaf =    (avgCohortLeafC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
-                    pl.C_FineRoots = (avgCohortFineRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.C_FRoot = (avgCohortFRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.C_Wood =    (avgCohortWoodC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
-                    pl.C_CoarseRoots = (avgCohortCoarseRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.C_CRoot = (avgCohortCRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.C_DeadWood =    (avgWoodC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.C_DeadCRoot = (avgCRootC[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
@@ -358,8 +366,10 @@ namespace Landis.Extension.Succession.Century
                     pl.C_SOM3 = (avgSOM3C[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
                     //log.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, ", 
-                    pl.N_LeafFRoot =    (avgCohortLeafN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
-                    pl.N_WoodCRoot = (avgCohortWoodN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]); 
+                    pl.N_Leaf =    (avgCohortLeafN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.N_FRoot = (avgCohortFRootN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.N_Wood = (avgCohortWoodN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.N_CRoot = (avgCohortCRootN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]); 
                     pl.N_DeadWood = (avgWoodN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.N_DeadCRoot = (avgCRootN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
@@ -526,8 +536,10 @@ namespace Landis.Extension.Succession.Century
         
             
             double totalN =
-                    + SiteVars.CohortLeafN[site] 
-                    + SiteVars.CohortWoodN[site] 
+                    + SiteVars.CohortLeafN[site]
+                    + SiteVars.CohortFRootN[site] 
+                    + SiteVars.CohortWoodN[site]
+                    + SiteVars.CohortCRootN[site] 
 
                     + SiteVars.MineralN[site]
                     

@@ -155,11 +155,13 @@ namespace Landis.Extension.Succession.Century
         private static void ComputeTotalCohortCN(ActiveSite site, ISiteCohorts cohorts)
         {
             SiteVars.CohortLeafC[site] = 0;
-            SiteVars.CohortFineRootC[site] = 0;
+            SiteVars.CohortFRootC[site] = 0;
             SiteVars.CohortLeafN[site] = 0;
+            SiteVars.CohortFRootN[site] = 0;
             SiteVars.CohortWoodC[site] = 0;
-            SiteVars.CohortCoarseRootC[site] = 0;
+            SiteVars.CohortCRootC[site] = 0;
             SiteVars.CohortWoodN[site] = 0;
+            SiteVars.CohortCRootN[site] = 0;
 
             if (cohorts != null)
                 foreach (ISpeciesCohorts speciesCohorts in cohorts)
@@ -193,11 +195,13 @@ namespace Landis.Extension.Succession.Century
             //PlugIn.ModelCore.UI.WriteLine("month={0}, species={1}, leafB={2:0.0}, leafC={3:0.00}, leafN={4:0.0}, woodB={5:0.0}, woodC={6:0.000}, woodN={7:0.0}", Month, cohort.Species.Name, cohort.LeafBiomass, leafC, leafN, cohort.WoodBiomass, woodC, woodN);
 
             SiteVars.CohortLeafC[site] += leafC;
-            SiteVars.CohortFineRootC[site] += fRootC;
-            SiteVars.CohortLeafN[site] += leafN + fRootN;
+            SiteVars.CohortFRootC[site] += fRootC;
+            SiteVars.CohortLeafN[site] += leafN;
+            SiteVars.CohortFRootN[site] += fRootN;
             SiteVars.CohortWoodC[site] += woodC;
-            SiteVars.CohortCoarseRootC[site] += cRootC;
-            SiteVars.CohortWoodN[site] += woodN + cRootN;
+            SiteVars.CohortCRootC[site] += cRootC;
+            SiteVars.CohortWoodN[site] += woodN ;
+            SiteVars.CohortCRootN[site] += cRootN;
 
             return;
 

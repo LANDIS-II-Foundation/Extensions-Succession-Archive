@@ -59,13 +59,13 @@ namespace Landis.Extension.Succession.Century
         public double C_Leaf { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Fine Root C", Format = "0.00")]
-        public double C_FineRoots { get; set; }
+        public double C_FRoot { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Wood C", Format = "0.0")]
         public double C_Wood { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Coarse Root C", Format = "0.0")]
-        public double C_CoarseRoots { get; set; }
+        public double C_CRoot { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Dead Wood C", Format = "0.0")]
         public double C_DeadWood { get; set; }
@@ -100,11 +100,17 @@ namespace Landis.Extension.Succession.Century
         public double C_SOM3 { get; set; }
 
         //log.Write("N:CohortLeaf, N:CohortWood, N:DeadWood, N:DeadRoot, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Leaf and Fine Root N", Format = "0.0")]
-        public double N_LeafFRoot { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Leaf N", Format = "0.0")]
+        public double N_Leaf { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Wood and Coarse Root N", Format = "0.0")]
-        public double N_WoodCRoot { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Fine Root N", Format = "0.0")]
+        public double N_FRoot { get; set; }
+
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Wood N", Format = "0.0")]
+        public double N_Wood { get; set; }
+
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Coarse Root N", Format = "0.0")]
+        public double N_CRoot { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Dead Wood N", Format = "0.0")]
         public double N_DeadWood { get; set; }

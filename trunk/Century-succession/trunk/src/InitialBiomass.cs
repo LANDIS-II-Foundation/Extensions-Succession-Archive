@@ -36,9 +36,13 @@ namespace Landis.Extension.Succession.Century
         
         private double mineralN;
         private double cohortLeafC;
+        private double cohortFRootC;
         private double cohortLeafN;
+        private double cohortFRootN;
         private double cohortWoodC;
+        private double cohortCRootC;
         private double cohortWoodN;
+        private double cohortCRootN;
         
         //---------------------------------------------------------------------
 
@@ -85,12 +89,14 @@ namespace Landis.Extension.Succession.Century
         
         public double MineralN { get { return mineralN; } } 
         public double CohortLeafC { get { return cohortLeafC; } }
-        public double CohortFineRootC { get { return cohortLeafC; } } 
-        public double CohortLeafN { get { return cohortLeafN; } } 
+        public double CohortFRootC { get { return cohortFRootC; } } 
+        public double CohortLeafN { get { return cohortLeafN; } }
+        public double CohortFRootN { get { return cohortFRootN; } } 
         public double CohortWoodC { get { return cohortWoodC; } }
-        public double CohortCoarseRootC { get { return cohortWoodC; } } 
-        public double CohortWoodN { get { return cohortWoodN; } } 
-
+        public double CohortCRootC { get { return cohortCRootC; } } 
+        public double CohortWoodN { get { return cohortWoodN; } }
+        public double CohortCRootN { get { return cohortCRootN; } }
+        
         //---------------------------------------------------------------------
 
         private InitialBiomass(ISiteCohorts cohorts,
@@ -110,11 +116,14 @@ namespace Landis.Extension.Succession.Century
                 
                 double mineralN,
                 double cohortLeafC,
-             double cohortFineRootC,
+                double cohortFRootC,
                 double cohortLeafN,
+                double cohortFRootN,
                 double cohortWoodC,
-             double cohortCoarseRootC,
-                double cohortWoodN
+                double cohortCRootC,
+                double cohortWoodN,
+                double cohortCRootN
+
                 )
         {
             this.cohorts = cohorts;
@@ -134,9 +143,13 @@ namespace Landis.Extension.Succession.Century
             
             this.mineralN = mineralN;
             this.cohortLeafC = cohortLeafC;
+            this.cohortFRootC = cohortFRootC;
             this.cohortLeafN = cohortLeafN;
+            this.cohortFRootN = cohortFRootN;
             this.cohortWoodC = cohortWoodC;
+            this.cohortCRootC = cohortCRootC;
             this.cohortWoodN = cohortWoodN;
+            this.cohortCRootN = cohortCRootN;
         }
 
         //---------------------------------------------------------------------
@@ -245,11 +258,13 @@ namespace Landis.Extension.Succession.Century
                         
                         SiteVars.MineralN[site],
                         SiteVars.CohortLeafC[site],
-                        SiteVars.CohortFineRootC[site],
+                        SiteVars.CohortFRootC[site],
                         SiteVars.CohortLeafN[site],
+                        SiteVars.CohortFRootN[site],
                         SiteVars.CohortWoodC[site],
-                         SiteVars.CohortCoarseRootC[site],
-                        SiteVars.CohortWoodN[site]
+                         SiteVars.CohortCRootC[site],
+                        SiteVars.CohortWoodN[site],
+                        SiteVars.CohortCRootN[site]
                         );
 
             initialSites[key] = initialBiomass;
