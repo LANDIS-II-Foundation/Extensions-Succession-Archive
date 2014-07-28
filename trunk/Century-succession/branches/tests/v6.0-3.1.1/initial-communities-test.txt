@@ -1,7 +1,0 @@
-LandisData   "Initial Communities"
-
-MapCode 3
-   acerrubr 51
-   >>betualle 1
-   >>betupapy 1
-
