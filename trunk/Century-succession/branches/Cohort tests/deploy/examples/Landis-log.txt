@@ -1,0 +1,24 @@
+2014-07-28 08:08:30,401 - LANDIS-II 6.0 (official release)
+2014-07-28 08:08:30,417 - 
+2014-07-28 08:08:32,886 - Loading scenario from file "scenario-single-cell.txt" ...
+2014-07-28 08:08:33,183 - Loading species data from file "species.txt" ...
+2014-07-28 08:08:33,261 - Loading ecoregions from file "ecoregions-single-cell.txt" ...
+2014-07-28 08:08:33,323 - Initializing landscape from ecoregions map "single_cell_3.img" ...
+2014-07-28 08:08:33,495 - Cell length = 100 m, cell area = 1 ha
+2014-07-28 08:08:33,495 - Map dimensions: 1 row by 1 column = 1 cell
+2014-07-28 08:08:33,526 - Sites: 1 active (100.0 %), 0 inactive (0.0 %)
+2014-07-28 08:08:33,542 - Loading Century Succession extension ...
+2014-07-28 08:08:33,745 -    Registering Data:  Succession.LeafBiomassCohorts.
+2014-07-28 08:08:33,745 -    Registering Data:  Succession.AgeCohorts.
+2014-07-28 08:08:33,901 -    Begin parsing FUNCTIONAL GROUP table.
+2014-07-28 08:08:33,917 -    Begin reading INITIAL ECOREGION parameters.
+2014-07-28 08:08:33,917 -    Begin reading FIXED ECOREGION parameters.
+2014-07-28 08:08:33,933 -    Begin reading FIRE REDUCTION parameters.
+2014-07-28 08:08:33,933 -    Begin reading HARVEST REDUCTION parameters.
+2014-07-28 08:08:34,167 - Internal error occurred within the program:
+2014-07-28 08:08:34,167 -   Field not found: 'Landis.Library.Climate.Climate.Future_MonthlyData'.
+2014-07-28 08:08:34,167 - 
+2014-07-28 08:08:34,167 - Stack trace:
+2014-07-28 08:08:34,214 -    at Landis.Extension.Succession.Century.PlugIn.Initialize()
+   at Landis.Model.Run(String scenarioPath, IUserInterface ui)
+   at Landis.App.Main(String[] args)
