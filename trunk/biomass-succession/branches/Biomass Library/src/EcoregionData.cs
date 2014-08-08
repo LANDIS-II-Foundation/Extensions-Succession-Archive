@@ -49,7 +49,8 @@ namespace Landis.Extension.Succession.Biomass
                 int largest_B_MAX_Spp = 0;
                 foreach (ISpecies species in PlugIn.ModelCore.Species)
                 {
-                    largest_B_MAX_Spp = System.Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species][ecoregion]);
+                    //largest_B_MAX_Spp = System.Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species][ecoregion]);
+                    largest_B_MAX_Spp = System.Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species, ecoregion]);
                 }
                 B_MAX[ecoregion] = largest_B_MAX_Spp;
             }

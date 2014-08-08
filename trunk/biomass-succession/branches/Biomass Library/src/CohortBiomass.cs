@@ -178,8 +178,8 @@ namespace Landis.Extension.Succession.Biomass
                     PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.", (PlugIn.ModelCore.CurrentTime + SubYear), capacityReduction, cohort.Species.Name, cohort.Age, cohort.Biomass);
             }
 
-            double maxBiomass  = SpeciesData.B_MAX_Spp[cohort.Species][ecoregion] * capacityReduction;
-            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
+            double maxBiomass  = SpeciesData.B_MAX_Spp[cohort.Species,ecoregion] * capacityReduction;
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species,ecoregion];
 
             //  Potential biomass, equation 3 in Scheller and Mladenoff, 2004
             double potentialBiomass = Math.Max(1.0, maxBiomass - siteBiomass + cohortBiomass);
@@ -237,7 +237,7 @@ namespace Landis.Extension.Succession.Biomass
         /// </summary>
         private double ComputeGrowthMortality(ICohort cohort, ActiveSite site)
         {
-            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species,ecoregion];
             double M_BIO = 0.0;
 
             //Michaelis-Menton function:
@@ -399,9 +399,9 @@ namespace Landis.Extension.Succession.Biomass
 
             double B_ACT = (double) Cohorts.ComputeNonYoungBiomass(cohorts);
 
-            double maxBiomass = SpeciesData.B_MAX_Spp[species][ecoregion];
+            double maxBiomass = SpeciesData.B_MAX_Spp[species,ecoregion];
 
-            double maxANPP = SpeciesData.ANPP_MAX_Spp[species][ecoregion];
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[species,ecoregion];
 
             //  Initial biomass exponentially declines in response to
             //  competition.

@@ -133,7 +133,7 @@ namespace Landis.Extension.Succession.Biomass
                 {
                     if (!ecoregion.Active)
                             continue;
-                    SpeciesData.EstablishModifier[species][ecoregion] = 1.0;
+                    SpeciesData.EstablishModifier[species,ecoregion] = 1.0;
                 }
             }
         }
@@ -307,8 +307,8 @@ namespace Landis.Extension.Succession.Biomass
         public bool Establish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
-            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
-            double modEstabProb = establishProbability * SpeciesData.EstablishModifier[species][ecoregion];
+            double establishProbability = SpeciesData.EstablishProbability[species,ecoregion];
+            double modEstabProb = establishProbability * SpeciesData.EstablishModifier[species,ecoregion];
 
             return modelCore.GenerateUniform() < modEstabProb;
         }
@@ -333,7 +333,7 @@ namespace Landis.Extension.Succession.Biomass
         public bool PlantingEstablish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
-            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+            double establishProbability = SpeciesData.EstablishProbability[species,ecoregion];
 
             return establishProbability > 0.0;
         }

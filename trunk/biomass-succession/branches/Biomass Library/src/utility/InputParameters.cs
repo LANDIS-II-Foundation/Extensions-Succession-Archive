@@ -386,7 +386,7 @@ namespace Landis.Extension.Succession.Biomass
                                      InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            leafLongevity[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 1.0, 10.0);
+            leafLongevity[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(newValue, 1.0, 10.0);
         }
 
         //---------------------------------------------------------------------
@@ -395,7 +395,7 @@ namespace Landis.Extension.Succession.Biomass
                                      InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            woodyDecayRate[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            woodyDecayRate[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(newValue, 0.0, 1.0);
         }
 
         //---------------------------------------------------------------------
@@ -404,7 +404,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            mortCurveShapeParm[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 5.0, 25.0);
+            mortCurveShapeParm[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(newValue, 5.0, 25.0);
         }
 
         //---------------------------------------------------------------------
@@ -413,7 +413,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            growthCurveShapeParm[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            growthCurveShapeParm[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(newValue, 0.0, 1.0);
         }
         //---------------------------------------------------------------------
 
@@ -421,7 +421,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            leafLignin[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0.0, 0.4);
+            leafLignin[species] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(newValue, 0.0, 0.4);
         }
         //---------------------------------------------------------------------
         /*
@@ -469,7 +469,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<int> newValue)
         {
             Debug.Assert(ecoregion != null);
-            aet[ecoregion] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0, 10000);  //FIXME:  FIND GOOD MAXIMUM
+            aet[ecoregion] = Landis.Library.Biomass.CheckParms.CheckBiomassParm(newValue, 0, 10000);  //FIXME:  FIND GOOD MAXIMUM
         }
         //---------------------------------------------------------------------
 
