@@ -14,23 +14,23 @@ namespace Landis.Extension.Succession.Biomass
     public class SpeciesData
     {
 
-        public static Landis.Library.Biomass.Species.AuxParm<double> WoodyDebrisDecay;
-        public static Landis.Library.Biomass.Species.AuxParm<double> LeafLignin;
-        public static Landis.Library.Biomass.Species.AuxParm<double> LeafLongevity;
-        public static Landis.Library.Biomass.Species.AuxParm<double> MortCurveShapeParm;
-        public static Landis.Library.Biomass.Species.AuxParm<double> GrowthCurveShapeParm;
+        public static Landis.Library.Parameters.Species.AuxParm<double> WoodyDebrisDecay;
+        public static Landis.Library.Parameters.Species.AuxParm<double> LeafLignin;
+        public static Landis.Library.Parameters.Species.AuxParm<double> LeafLongevity;
+        public static Landis.Library.Parameters.Species.AuxParm<double> MortCurveShapeParm;
+        public static Landis.Library.Parameters.Species.AuxParm<double> GrowthCurveShapeParm;
 
         //  Establishment probability for each species in each ecoregion
-        public static Landis.Library.Biomass.SpeciesEcoregionAuxParm<double> EstablishProbability;
+        public static Landis.Library.Parameters.SpeciesEcoregionAuxParm<double> EstablishProbability;
         //public static Landis.Library.Biomass.Species.AuxParm<Landis.Library.Biomass.Ecoregions.AuxParm<double>> EstablishProbability;
         //  Establishment probability modifier for each species in each ecoregion
-        public static Landis.Library.Biomass.SpeciesEcoregionAuxParm<double> EstablishModifier;
+        public static Landis.Library.Parameters.SpeciesEcoregionAuxParm<double> EstablishModifier;
 
         //  Maximum ANPP for each species in each ecoregion
-        public static Landis.Library.Biomass.SpeciesEcoregionAuxParm<int> ANPP_MAX_Spp;
+        public static Landis.Library.Parameters.SpeciesEcoregionAuxParm<int> ANPP_MAX_Spp;
 
         //  Maximum possible biomass for each species in each ecoregion
-        public static Landis.Library.Biomass.SpeciesEcoregionAuxParm<int> B_MAX_Spp;
+        public static Landis.Library.Parameters.SpeciesEcoregionAuxParm<int> B_MAX_Spp;
 
         //---------------------------------------------------------------------
         public static void Initialize(IInputParameters parameters)
@@ -49,13 +49,13 @@ namespace Landis.Extension.Succession.Biomass
 
             if(DynamicInputs.AllData.ContainsKey(year))
             {
-                EstablishProbability = new SpeciesEcoregionAuxParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
+                EstablishProbability = new Landis.Library.Parameters.SpeciesEcoregionAuxParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
                 //EstablishProbability = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-                EstablishModifier = new SpeciesEcoregionAuxParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
+                EstablishModifier = new Landis.Library.Parameters.SpeciesEcoregionAuxParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
                 //EstablishModifier = Util.CreateSpeciesEcoregionParm<double>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-                ANPP_MAX_Spp = new SpeciesEcoregionAuxParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
+                ANPP_MAX_Spp = new Landis.Library.Parameters.SpeciesEcoregionAuxParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
                 //ANPP_MAX_Spp = Util.CreateSpeciesEcoregionParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
-                B_MAX_Spp = new SpeciesEcoregionAuxParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
+                B_MAX_Spp = new Landis.Library.Parameters.SpeciesEcoregionAuxParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
                 //B_MAX_Spp            = Util.CreateSpeciesEcoregionParm<int>(PlugIn.ModelCore.Species, PlugIn.ModelCore.Ecoregions);
 
 

@@ -1,14 +1,11 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller
 
-using Landis.SpatialModeling;
-using Landis.Library.BiomassCohorts;
-using Landis.Core;
-using System.Collections.Generic;
-using System.IO;
 using System;
-
-
+using System.IO;
+using Landis.Core;
+using Landis.Library.BiomassCohorts;
+using Landis.SpatialModeling;
 namespace Landis.Extension.Succession.Biomass
 {
     public class Outputs

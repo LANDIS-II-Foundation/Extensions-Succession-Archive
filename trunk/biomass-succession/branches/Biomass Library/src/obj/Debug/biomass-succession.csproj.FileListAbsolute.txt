@@ -18,3 +18,4 @@ C:\BRM\LANDIS_II\Code\landis-extensions\trunk\biomass-succession\branches\Biomas
 C:\BRM\LANDIS_II\Code\landis-extensions\trunk\biomass-succession\branches\Biomass Library\src\bin\Debug\Landis.Core.pdb
 C:\BRM\LANDIS_II\Code\landis-extensions\trunk\biomass-succession\branches\Biomass Library\src\bin\Debug\Landis.Library.Biomass.pdb
 C:\BRM\LANDIS_II\Code\landis-extensions\trunk\biomass-succession\branches\Biomass Library\src\bin\Debug\Landis.Library.Succession.pdb
+C:\Users\adebruij\Desktop\PnET-Succession\biomass-succession\branches\Biomass Library\src\obj\Debug\ResolveAssemblyReference.cache

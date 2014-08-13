@@ -16,7 +16,8 @@ namespace Landis.Extension.Succession.Biomass
     {
 
         private static ISiteVar<Library.BiomassCohorts.ISiteCohorts> biomassCohorts;
-        private static Landis.Library.Biomass.BaseCohortsSiteVar baseCohortsSiteVar;
+        
+        private static ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> baseCohortsSiteVar;
 
         private static ISiteVar<Landis.Library.Biomass.Pool> woodyDebris;
         private static ISiteVar<Landis.Library.Biomass.Pool> litter;
@@ -39,7 +40,9 @@ namespace Landis.Extension.Succession.Biomass
         {
 
             biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.ISiteCohorts>();
-            baseCohortsSiteVar = new Landis.Library.Biomass.BaseCohortsSiteVar(biomassCohorts);
+
+            baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(biomassCohorts);
+            
 
             woodyDebris = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.Biomass.Pool>();
             litter = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.Biomass.Pool>();
@@ -61,6 +64,7 @@ namespace Landis.Extension.Succession.Biomass
 
             PlugIn.ModelCore.RegisterSiteVar(biomassCohorts, "Succession.BiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
+ 
 
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.WoodyDebris, "Succession.WoodyDebris");
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.Litter, "Succession.Litter");
