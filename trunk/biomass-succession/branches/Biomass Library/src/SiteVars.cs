@@ -15,7 +15,7 @@ namespace Landis.Extension.Succession.Biomass
     public static class SiteVars
     {
 
-        private static ISiteVar<Library.BiomassCohorts.ISiteCohorts> biomassCohorts;
+        private static ISiteVar<Landis.Library.BiomassCohorts.SiteCohorts> biomassCohorts;
         
         private static ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> baseCohortsSiteVar;
 
@@ -32,16 +32,30 @@ namespace Landis.Extension.Succession.Biomass
 
 
         //---------------------------------------------------------------------
+        public static void Initialize1()
+        {
+            // This compiles but does not run
+            //ISiteVar<Library.BiomassCohorts.SiteCohorts> biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.BiomassCohorts.SiteCohorts>();
 
+            //This compiles and runs, but does not match Jimm's example and Initiliaze2 still fails
+            ISiteVar<Library.BiomassCohorts.ISiteCohorts> biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.ISiteCohorts>();
+
+        }
+        public static void Initialize2()
+        {
+            ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(biomassCohorts);
+  
+        }
         /// <summary>
         /// Initializes the module.
         /// </summary>
         public static void Initialize()
         {
-
-            biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.ISiteCohorts>();
-
-            baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(biomassCohorts);
+            // temporarily moved to Initialize1 for debugging
+            //biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.SiteCohorts>();
+            
+            // temporarily moved to Initialize2 for debugging
+            //baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(biomassCohorts);
             
 
             woodyDebris = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.Biomass.Pool>();
@@ -91,7 +105,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <summary>
         /// Biomass cohorts at each site.
         /// </summary>
-        public static ISiteVar<ISiteCohorts> Cohorts
+        public static ISiteVar<SiteCohorts> Cohorts
         {
             get
             {
@@ -167,31 +181,6 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
         //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Percent Shade (the inverse of percent transmittance)
-        /// </summary>
-        /*public static ISiteVar<double> PercentShade
-        {
-            get
-            {
-                return percentShade;
-            }
-        }
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Light transmittance
-        /// </summary>
-        public static ISiteVar<double> LightTrans
-        {
-            get
-            {
-                return lightTrans;
-            }
-        }*/
-        //---------------------------------------------------------------------
-
         /// <summary>
         /// </summary>
         public static ISiteVar<double> CapacityReduction

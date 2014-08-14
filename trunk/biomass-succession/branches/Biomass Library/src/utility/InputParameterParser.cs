@@ -129,32 +129,6 @@ namespace Landis.Extension.Succession.Biomass
                 GetNextLine();
             }
             //----------------------------------------------------------
-            // ShadeClassTable
-            // Read table of min percent sun by shade class
-            // Shade classes are in increasing order
-
-            /*const string PercentSun = "ShadeClassTable";
-
-            ReadName(PercentSun);
-
-            InputVar<double> pctSun1 = new InputVar<double>("Class1");
-            InputVar<double> pctSun2 = new InputVar<double>("Class2");
-            InputVar<double> pctSun3 = new InputVar<double>("Class3");
-            InputVar<double> pctSun4 = new InputVar<double>("Class4");
-            InputVar<double> pctSun5 = new InputVar<double>("Class5");
-
-            ReadVar(pctSun1);
-            parameters.PctSun1 = pctSun1.Value;
-            ReadVar(pctSun2);
-            parameters.PctSun2 = pctSun2.Value;
-            ReadVar(pctSun3);
-            parameters.PctSun3 = pctSun3.Value;
-            ReadVar(pctSun4);
-            parameters.PctSun4 = pctSun4.Value;
-            ReadVar(pctSun5);
-            parameters.PctSun5 = pctSun5.Value;*/
-
-            //----------------------------------------------------------
             //  Read table of sufficient light probabilities.
             //  Shade classes are in increasing order.
 
