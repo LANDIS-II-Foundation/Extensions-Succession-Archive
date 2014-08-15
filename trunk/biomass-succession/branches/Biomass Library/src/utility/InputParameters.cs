@@ -1,6 +1,7 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller, James B. Domingo
 
+using Landis.Library.Parameters;
 using Landis.Library.Succession;
 using Landis.Core;
 
@@ -386,7 +387,7 @@ namespace Landis.Extension.Succession.Biomass
                                      InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            leafLongevity[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(newValue.Actual, 1.0, 10.0, "leafLongevity");
+            leafLongevity[species] = newValue.CheckInRange(1.0, 10.0, "leafLongevity");
         }
 
         //---------------------------------------------------------------------
@@ -395,7 +396,7 @@ namespace Landis.Extension.Succession.Biomass
                                      InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            woodyDecayRate[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(newValue.Actual, 0.0, 1.0, "woodyDecayRate");
+            woodyDecayRate[species] = newValue.CheckInRange(0.0, 1.0, "woodyDecayRate");
         }
 
         //---------------------------------------------------------------------
@@ -404,7 +405,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            mortCurveShapeParm[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(newValue.Actual, 5.0, 25.0, "mortCurveShapeParm"); 
+            mortCurveShapeParm[species] = newValue.CheckInRange(5.0, 25.0, "mortCurveShapeParm"); 
         }
 
         //---------------------------------------------------------------------
@@ -413,7 +414,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            growthCurveShapeParm[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(newValue.Actual, 0, 1.0, "growthCurveShapeParm"); 
+            growthCurveShapeParm[species] = newValue.CheckInRange(0, 1.0, "growthCurveShapeParm"); 
         }
         //---------------------------------------------------------------------
 
@@ -421,7 +422,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            leafLignin[species] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<double>(newValue.Actual, 0, 0.4, "leafLignin"); 
+            leafLignin[species] = newValue.CheckInRange(0, 0.4, "leafLignin"); 
         }
         //---------------------------------------------------------------------
         /*
@@ -470,7 +471,7 @@ namespace Landis.Extension.Succession.Biomass
         {
             Debug.Assert(ecoregion != null);
 
-            aet[ecoregion] = Landis.Library.Parameters.InputValue_ExtensionMethods.CheckInRange<int>(newValue.Actual, 0, 10000, "aet");  //FIXME:  FIND GOOD MAXIMUM
+            aet[ecoregion] = newValue.CheckInRange(0, 10000, "aet");  //FIXME:  FIND GOOD MAXIMUM
         }
         //---------------------------------------------------------------------
 
