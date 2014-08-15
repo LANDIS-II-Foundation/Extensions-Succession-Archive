@@ -39,26 +39,27 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\6.0\Landis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.AgeOnlyCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Landis.Library.AgeOnlyCohorts, Version=2.1.5339.21793, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.AgeOnlyCohorts.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.AgeOnlyCohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Biomass">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Biomass.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.BiomassCohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Landis.Library.BiomassCohorts, Version=1.3.5339.22666, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.BiomassCohorts.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.BiomassCohorts.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Cohorts">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Cohorts.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.Parameters-v1">
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.Parameters-v1.dll</HintPath>
-    </Reference>
-    <Reference Include="Landis.Library.Succession, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Landis.Library.Parameters-v1, Version=1.0.5340.12141, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.Succession.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Parameters-v1.dll</HintPath>
+    </Reference>
+    <Reference Include="Landis.Library.Succession, Version=4.0.5339.22389, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.Succession.dll</HintPath>
     </Reference>
     <Reference Include="Landis.SpatialModeling">
       <HintPath>C:\Program Files\LANDIS-II\v6\bin\6.0\Landis.SpatialModeling.dll</HintPath>

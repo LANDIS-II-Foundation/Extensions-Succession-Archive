@@ -7,7 +7,6 @@ using Landis.Library.Succession;
 using Landis.Library.InitialCommunities;
 using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Util;
 
 namespace Landis.Extension.Succession.Biomass
 {
@@ -35,8 +34,6 @@ namespace Landis.Extension.Succession.Biomass
         public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
-            //SiteVars.Initialize1();
-            //SiteVars.Initialize2();
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
             parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);

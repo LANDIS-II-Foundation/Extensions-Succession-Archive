@@ -2,10 +2,7 @@
 //  Authors:  Robert M. Scheller, James B. Domingo
 
 using Landis.SpatialModeling;
-using Landis.Core;
 using Landis.Library.BiomassCohorts;
-using System.Collections.Generic;
-using System;
 
 namespace Landis.Extension.Succession.Biomass
 {
@@ -32,26 +29,13 @@ namespace Landis.Extension.Succession.Biomass
 
 
         //---------------------------------------------------------------------
-        public static void Initialize1()
-        {
-            // This compiles but does not run
-            biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.BiomassCohorts.SiteCohorts>();
-
-            //This compiles and runs, but does not match Jimm's example and Initiliaze2 still fails
-            //ISiteVar<Library.BiomassCohorts.ISiteCohorts> biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.ISiteCohorts>();
-
-        }
-        public static void Initialize2()
-        {
-            baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(biomassCohorts);
-  
-        }
         /// <summary>
         /// Initializes the module.
         /// </summary>
         public static void Initialize()
         {
             biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.SiteCohorts>();
+            ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> biomassCohortSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.BiomassCohorts.ISiteCohorts>.Wrap(biomassCohorts);
             
             baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(biomassCohorts);
             
@@ -74,7 +58,7 @@ namespace Landis.Extension.Succession.Biomass
             currentYearMortality.ActiveSiteValues = 0;
             previousYearMortality.ActiveSiteValues = 0;
 
-            PlugIn.ModelCore.RegisterSiteVar(biomassCohorts, "Succession.BiomassCohorts");
+            PlugIn.ModelCore.RegisterSiteVar(biomassCohortSiteVar, "Succession.BiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
  
 
