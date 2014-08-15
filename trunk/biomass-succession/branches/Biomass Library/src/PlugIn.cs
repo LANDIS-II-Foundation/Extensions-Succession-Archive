@@ -35,8 +35,8 @@ namespace Landis.Extension.Succession.Biomass
         public override void LoadParameters(string dataFile, ICore mCore)
         {
             modelCore = mCore;
-            SiteVars.Initialize1();
-            SiteVars.Initialize2();
+            //SiteVars.Initialize1();
+            //SiteVars.Initialize2();
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
             parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
