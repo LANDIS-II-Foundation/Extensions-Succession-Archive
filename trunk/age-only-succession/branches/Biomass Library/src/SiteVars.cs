@@ -11,7 +11,7 @@ namespace Landis.Extension.Succession.AgeOnly
     public static class SiteVars
     {
         private static ISiteVar<SiteCohorts> cohorts;
-        //private static ISiteVar<Library.AgeOnlyCohorts.SiteCohorts> baseCohorts;
+        
         //private static BaseCohortsSiteVar baseCohortsSiteVar;
 
         //---------------------------------------------------------------------
@@ -20,10 +20,10 @@ namespace Landis.Extension.Succession.AgeOnly
         {
 
             cohorts = PlugIn.ModelCore.Landscape.NewSiteVar<SiteCohorts>();
-            //baseCohortsSiteVar = new BaseCohortsSiteVar(cohorts);
 
-            //PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeOnlyCohorts");
-            PlugIn.ModelCore.RegisterSiteVar(cohorts, "Succession.AgeCohorts");
+            ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> baseCohorts = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(cohorts);
+
+            PlugIn.ModelCore.RegisterSiteVar(baseCohorts, "Succession.AgeCohorts");
         }
 
         //---------------------------------------------------------------------
