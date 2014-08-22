@@ -1,13 +1,14 @@
 #define PackageName      "Age-only Succession"
 #define PackageNameLong  "Age-only Succession Extension"
-#define Version          "4.0"
+#define Version          "4.1"
 #define ReleaseType      "official"
 #define ReleaseNumber    ""
 
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
 
-#include "J:\Scheller\LANDIS-II\deploy\package (Setup section) v6.0.iss"
+#include GetEnv("LANDIS_DEPLOY") + "\package (Setup section) v6.0.iss"
+;#include "C:\BRM\LANDIS_II\code\deploy\package (Setup section) v6.0.iss"
 #define ExtDir "C:\Program Files\LANDIS-II\v6\bin\extensions"
 #define AppDir "C:\Program Files\LANDIS-II\v6\"
 
@@ -20,13 +21,13 @@ Source: ..\src\bin\debug\Landis.Library.Cohorts.dll; DestDir: {#ExtDir}; Flags: 
 Source: ..\src\bin\debug\Landis.Library.AgeOnlyCohorts.dll; DestDir: {#ExtDir}; Flags: uninsneveruninstall replacesameversion
 
 ; Ancillary Files
-Source: docs\LANDIS-II Age-Only Succession v4.0 User Guide.pdf; DestDir: {#AppDir}\docs
+Source: docs\LANDIS-II Age-Only Succession v4.1 User Guide.pdf; DestDir: {#AppDir}\docs
 Source: examples\ecoregions.gis; DestDir: {#AppDir}\examples\age-only-succession
 Source: examples\initial-communities.gis; DestDir: {#AppDir}\examples\age-only-succession
 Source: examples\*.txt; DestDir: {#AppDir}\examples\age-only-succession
 Source: examples\*.bat; DestDir: {#AppDir}\examples\age-only-succession
 
-#define AgeOnlySucc "Age-only Succession 4.0.txt"
+#define AgeOnlySucc "Age-only Succession 4.1.txt"
 Source: {#AgeOnlySucc}; DestDir: {#LandisPlugInDir}
 
 [Run]
@@ -40,7 +41,7 @@ Filename: {#PlugInAdminTool}; Parameters: "add ""{#AgeOnlySucc}"" "; WorkingDir:
 ;; Run plug-in admin tool to remove the entry for the plug-in
 
 [Code]
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "package (Code section) v3.iss"
+#include GetEnv("LANDIS_DEPLOY")+"\package (Code section) v3.iss"
 
 //-----------------------------------------------------------------------------
 
