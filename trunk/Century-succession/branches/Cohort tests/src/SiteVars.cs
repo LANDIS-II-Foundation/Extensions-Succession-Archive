@@ -21,9 +21,10 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<int> timeOfLast;
         
         // Live biomass:  The BaseCohortsSiteVar class allows translation from LeafBioamss to AgeOnly cohorts.
-        private static ISiteVar<Library.LeafBiomassCohorts.ISiteCohorts> leafBiomassCohorts;
-        private static Landis.Library.Biomass.BaseCohortsSiteVar baseCohortsSiteVar;
-        private static BiomassCohortsSiteVar BiomassCohorts;
+        
+        private static ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> baseCohortsSiteVar;
+        private static ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> biomassCohortsSiteVar;
+//        private static BiomassCohortsSiteVar BiomassCohorts;
         
         // Dead biomass:
         private static ISiteVar<Layer> surfaceDeadWood;
@@ -91,9 +92,10 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         public static void Initialize()
         {
-            leafBiomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.LeafBiomassCohorts.ISiteCohorts>();
-            BiomassCohorts = new BiomassCohortsSiteVar(leafBiomassCohorts);
-            baseCohortsSiteVar = new Landis.Library.Biomass.BaseCohortsSiteVar(BiomassCohorts);
+            cohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.LeafBiomassCohorts.SiteCohorts>();
+            biomassCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.BiomassCohorts.ISiteCohorts>.Wrap(cohorts);
+            baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(cohorts);
+           
         
             timeOfLast = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             
@@ -157,9 +159,9 @@ namespace Landis.Extension.Succession.Century
             
                        
 
-            PlugIn.ModelCore.RegisterSiteVar(leafBiomassCohorts, "Succession.LeafBiomassCohorts");
+            PlugIn.ModelCore.RegisterSiteVar(cohorts, "Succession.LeafBiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
-            PlugIn.ModelCore.RegisterSiteVar(BiomassCohorts, "Succession.BiomassCohorts");
+            PlugIn.ModelCore.RegisterSiteVar(biomassCohortsSiteVar  , "Succession.BiomassCohorts");
 
             
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -211,7 +213,21 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Biomass cohorts at each site.
         /// </summary>
-        public static ISiteVar<ISiteCohorts> Cohorts
+        private static ISiteVar<SiteCohorts> cohorts;
+        public static ISiteVar<SiteCohorts> Cohorts
+        {
+            get
+            {
+                return cohorts;
+            }
+            set
+            {
+                cohorts = value;
+            }
+        }
+        /*
+        private static ISiteVar<Library.LeafBiomassCohorts.SiteCohorts> leafBiomassCohorts;
+        public static ISiteVar<SiteCohorts> Cohorts
         {
             get
             {
@@ -222,6 +238,7 @@ namespace Landis.Extension.Succession.Century
                 leafBiomassCohorts = value;
             }
         }
+         */
         //---------------------------------------------------------------------
 
         /// <summary>

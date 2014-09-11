@@ -68,17 +68,18 @@ namespace Landis.Extension.Succession.Century
 
 
         //---------------------------------------------------------------------
-
+        /*
         class PnETCohorts: BiomassCohorts
         {
             double t = 0.0;
         }
-
+       
         class BiomassCohorts
         {
             double t = 0.0;
         }
-           public override void Initialize()
+         */
+        public override void Initialize()
         {
             /* Testing
                Landis.Library.BiomassCohorts.Cohort C;

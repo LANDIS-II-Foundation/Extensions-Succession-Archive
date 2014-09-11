@@ -134,9 +134,9 @@ namespace Landis.Extension.Succession.Century
         }
 
         //---------------------------------------------------------------------
-        public static ISiteCohorts Clone(ISiteCohorts site_cohorts)
+        public static SiteCohorts Clone(ISiteCohorts site_cohorts)
         {
-            ISiteCohorts clone = new SiteCohorts();
+            SiteCohorts clone = new SiteCohorts();
             foreach (ISpeciesCohorts speciesCohorts in site_cohorts)
                 foreach (ICohort cohort in speciesCohorts)
                     clone.AddNewCohort(cohort.Species, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);  
