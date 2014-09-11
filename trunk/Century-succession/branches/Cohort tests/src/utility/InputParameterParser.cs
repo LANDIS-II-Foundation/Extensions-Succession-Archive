@@ -1,11 +1,10 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
 //  Author: Robert Scheller, Ben Sulman
 
-using Landis.Core;
-using Landis.SpatialModeling;
-using Edu.Wisc.Forest.Flel.Util;
-using Landis.Library.Succession;
 using System.Collections.Generic;
+using Edu.Wisc.Forest.Flel.Util;
+using Landis.Core;
+using Landis.Library.Succession;
 
 namespace Landis.Extension.Succession.Century
 {

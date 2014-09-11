@@ -1,17 +1,14 @@
 //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
 //  Author: Robert Scheller, Ben Sulman
 
-using Landis.Core;
-using Landis.SpatialModeling;
-using Edu.Wisc.Forest.Flel.Util;
-
-using Landis.Library.InitialCommunities;
-using Landis.Library.Succession;
-using Landis.Library.LeafBiomassCohorts;
-using Landis.Library.Climate;
-
 using System;
 using System.Collections.Generic;
+using Landis.Core;
+using Landis.Library.Climate;
+using Landis.Library.InitialCommunities;
+using Landis.Library.LeafBiomassCohorts;
+using Landis.Library.Succession;
+using Landis.SpatialModeling;
 
 namespace Landis.Extension.Succession.Century
 {
@@ -68,31 +65,9 @@ namespace Landis.Extension.Succession.Century
 
 
         //---------------------------------------------------------------------
-        /*
-        class PnETCohorts: BiomassCohorts
-        {
-            double t = 0.0;
-        }
-       
-        class BiomassCohorts
-        {
-            double t = 0.0;
-        }
-         */
+
         public override void Initialize()
         {
-            /* Testing
-               Landis.Library.BiomassCohorts.Cohort C;
-            Cohort D;
-
-            D = (Landis.Library.BiomassCohorts.Cohort)C;
-
-            PnETCohorts PnETCohorts =new PnETCohorts();
-            BiomassCohorts biomassCohorts;
-
-            biomassCohorts = PnETCohorts;      // ok
-            //biomassCohorts = (BiomassCohorts)PnETCohorts; // unable to case
- */
 
             PlugIn.ModelCore.UI.WriteLine("Initializing {0} ...", ExtensionName);
             Timestep              = parameters.Timestep;

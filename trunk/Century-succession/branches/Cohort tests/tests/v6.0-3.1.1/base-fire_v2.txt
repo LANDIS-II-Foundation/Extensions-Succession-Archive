@@ -7,13 +7,14 @@ Timestep  5
 >> ---------   ------	----   ----   ----   --------  --------
     eco1       1	 100    4     400    0.001    100
     eco2       2	 200    6     600    0.001     50
+    eco3       3	 200    6     600    0.001     50
 
-InitialFireRegionsMap	ecoregions.gis
+InitialFireRegionsMap	single_cell_3.img
 
 DynamicFireRegionTable  << Optional parameter
 
 >>Year	FileName  (this line always commented out)
-  20	ecoregions.gis  << If table is not active, comment out this line
+>>  20	ecoregions.gis  << If table is not active, comment out this line
 
 
 FuelCurveTable
@@ -23,7 +24,7 @@ FuelCurveTable
 >> ------------------------------------
     eco1       10   20   50   70   120
     eco2        5   15   20   -1    -1
-
+    eco3       10   20   50   70   120
 
 WindCurveTable
 
@@ -32,6 +33,7 @@ WindCurveTable
 >> ------------------------------------
     eco1       -1   -1    1   10   20
     eco2        1    5   15   20   30
+    eco3        1    5   15   20   30
 
 
 FireDamageTable
@@ -46,5 +48,5 @@ FireDamageTable
 
 
 MapNames  fire/severity-{timestep}.img
-LogFile   fire-event-test-log.csv
+LogFile   fire/fire-event-test-log.csv
 SummaryLogFile fire/summary-log.csv

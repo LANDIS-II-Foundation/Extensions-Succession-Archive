@@ -20,11 +20,10 @@ namespace Landis.Extension.Succession.Century
         // Time of last succession simulation:
         private static ISiteVar<int> timeOfLast;
         
-        // Live biomass:  The BaseCohortsSiteVar class allows translation from LeafBioamss to AgeOnly cohorts.
-        
+        // Live biomass:        
         private static ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> baseCohortsSiteVar;
         private static ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> biomassCohortsSiteVar;
-//        private static BiomassCohortsSiteVar BiomassCohorts;
+
         
         // Dead biomass:
         private static ISiteVar<Layer> surfaceDeadWood;
@@ -96,7 +95,6 @@ namespace Landis.Extension.Succession.Century
             biomassCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.BiomassCohorts.ISiteCohorts>.Wrap(cohorts);
             baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(cohorts);
            
-        
             timeOfLast = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             
             // Dead biomass:
@@ -225,20 +223,7 @@ namespace Landis.Extension.Succession.Century
                 cohorts = value;
             }
         }
-        /*
-        private static ISiteVar<Library.LeafBiomassCohorts.SiteCohorts> leafBiomassCohorts;
-        public static ISiteVar<SiteCohorts> Cohorts
-        {
-            get
-            {
-                return leafBiomassCohorts;
-            }
-            set
-            {
-                leafBiomassCohorts = value;
-            }
-        }
-         */
+       
         //---------------------------------------------------------------------
 
         /// <summary>

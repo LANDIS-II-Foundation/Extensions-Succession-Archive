@@ -1,5 +1,0 @@
-C:\BRM\LANDIS_II\code\Century-succession\branches\Cohort tests\src\obj\Release\ResolveAssemblyReference.cache
-C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Extension.Succession.Century.dll
-C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Extension.Succession.Century.pdb
-C:\BRM\LANDIS_II\code\Century-succession\branches\Cohort tests\src\obj\Release\Landis.Extension.Succession.Century.dll
-C:\BRM\LANDIS_II\code\Century-succession\branches\Cohort tests\src\obj\Release\Landis.Extension.Succession.Century.pdb
