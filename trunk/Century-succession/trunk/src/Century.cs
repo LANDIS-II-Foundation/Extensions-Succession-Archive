@@ -78,7 +78,15 @@ namespace Landis.Extension.Succession.Century
                     //SiteVars.LAI[site] = Century.ComputeLAI((ActiveSite)site);
                                    
                     double ppt = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month];
-                    double monthlyNdeposition = EcoregionData.AtmosNintercept[ecoregion] + (EcoregionData.AtmosNslope[ecoregion] * ppt);
+
+                    double monthlyNdeposition;
+                    if  (EcoregionData.AtmosNintercept[ecoregion]!=-1 && EcoregionData.AtmosNslope[ecoregion] !=-1)
+                        monthlyNdeposition = EcoregionData.AtmosNintercept[ecoregion] + (EcoregionData.AtmosNslope[ecoregion] * ppt);
+                    else 
+                    {
+                        monthlyNdeposition = EcoregionData.AnnualWeather[ecoregion].MonthlyNDeposition[Century.Month];
+                    }
+
                     EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
                     EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
                     SiteVars.MineralN[site] += monthlyNdeposition;

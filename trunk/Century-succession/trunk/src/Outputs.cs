@@ -97,7 +97,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgAGNPPtc      = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgBGNPPtc      = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgLittertc   = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgAgeMc = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgWoodMortality = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             double[] avgMineralN    = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgGrossMin    = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -170,7 +170,7 @@ namespace Landis.Extension.Succession.Century
                 avgAGNPPtc[ecoregion.Index] = 0.0;
                 avgBGNPPtc[ecoregion.Index] = 0.0;
                 avgLittertc[ecoregion.Index] = 0.0;
-                avgAgeMc[ecoregion.Index] = 0.0;
+                avgWoodMortality[ecoregion.Index] = 0.0;
                 
                 avgMineralN[ecoregion.Index] = 0.0;
                 avgGrossMin[ecoregion.Index] = 0.0;
@@ -245,7 +245,7 @@ namespace Landis.Extension.Succession.Century
                 avgAGNPPtc[ecoregion.Index]    += SiteVars.AGNPPcarbon[site];
                 avgBGNPPtc[ecoregion.Index]    += SiteVars.BGNPPcarbon[site];
                 avgLittertc[ecoregion.Index] += SiteVars.LitterfallC[site];
-                avgAgeMc[ecoregion.Index] += SiteVars.AgeMortality[site] * 0.47;
+                avgWoodMortality[ecoregion.Index] += SiteVars.WoodMortality[site] * 0.47;
 
                 avgMineralN[ecoregion.Index] += SiteVars.MineralN[site];
                 avgTotalN[ecoregion.Index]   += GetTotalNitrogen(site);
@@ -338,7 +338,7 @@ namespace Landis.Extension.Succession.Century
                     pl.AG_NPPC =    (avgAGNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.BG_NPPC =    (avgBGNPPtc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.Litterfall = (avgLittertc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
-                    pl.AgeMortality = (avgAgeMc[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.AgeMortality = (avgWoodMortality[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
                     //log.Write("{0:0.0}, {1:0.0}, {2:0.0}, ", 
                     pl.MineralN =    (avgMineralN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);

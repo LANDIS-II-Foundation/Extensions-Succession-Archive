@@ -302,7 +302,7 @@ namespace Landis.Extension.Succession.Century
 
             double[] M_AGE = new double[2]{M_AGE_wood, M_AGE_leaf};
 
-            SiteVars.AgeMortality[site] += (M_AGE_leaf + M_AGE_wood);
+            SiteVars.WoodMortality[site] += (M_AGE_wood);
 
             if(M_AGE_wood < 0.0 || M_AGE_leaf < 0.0)
             {
@@ -358,6 +358,8 @@ namespace Landis.Extension.Succession.Century
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", M_wood, M_leaf);
+
+            SiteVars.WoodMortality[site] += (M_wood);
 
             return M_BIO;
 

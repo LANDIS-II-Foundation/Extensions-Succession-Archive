@@ -81,7 +81,7 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<double> TotalWoodBiomass;
         public static ISiteVar<int> PrevYearMortality;
         public static ISiteVar<byte> FireSeverity;
-        public static ISiteVar<double> AgeMortality;
+        public static ISiteVar<double> WoodMortality;
         public static ISiteVar<string> HarvestPrescriptionName;
 
         
@@ -149,7 +149,7 @@ namespace Landis.Extension.Succession.Century
             cohortCRootC = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
                         
             TotalWoodBiomass    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
-            AgeMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            WoodMortality        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             Nvol                = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             PrevYearMortality   = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             totalNuptake        = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -292,7 +292,7 @@ namespace Landis.Extension.Succession.Century
             SiteVars.ResorbedN[site] = 0.0;
             SiteVars.FrassC[site] = 0.0;
             SiteVars.LAI[site] = 0.0;
-            SiteVars.AgeMortality[site] = 0.0;
+            SiteVars.WoodMortality[site] = 0.0;
 
             //SiteVars.FireEfflux[site] = 0.0;
                         

@@ -751,13 +751,13 @@ namespace Landis.Extension.Succession.Century
         public void SetAtmosNslope(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            atmosNslope[ecoregion] = CheckBiomassParm(newValue, 0.0, 2.0);
+            atmosNslope[ecoregion] = CheckBiomassParm(newValue, -1.0, 2.0);
         }
         //---------------------------------------------------------------------
         public void SetAtmosNintercept(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            atmosNintercept[ecoregion] = CheckBiomassParm(newValue, 0.0, 2.0);
+            atmosNintercept[ecoregion] = CheckBiomassParm(newValue, -1.0, 2.0);
         }
         //---------------------------------------------------------------------
         public void SetLatitude(IEcoregion ecoregion, InputValue<double> newValue)
