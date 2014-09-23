@@ -34,8 +34,10 @@ namespace Landis.Extension.Succession.Century
 
                 Year = y + 1;
                 
-                if (Climate.Future_MonthlyData.ContainsKey(PlugIn.FutureClimateBaseYear + y + PlugIn.ModelCore.CurrentTime))
-                    EcoregionData.AnnualWeather[ecoregion] = Climate.Future_MonthlyData[PlugIn.FutureClimateBaseYear + y + PlugIn.ModelCore.CurrentTime][ecoregion.Index];
+                if (Climate.Future_MonthlyData.ContainsKey(PlugIn.FutureClimateBaseYear + y + PlugIn.ModelCore.CurrentTime- years))
+                    EcoregionData.AnnualWeather[ecoregion] = Climate.Future_MonthlyData[PlugIn.FutureClimateBaseYear + y - years + PlugIn.ModelCore.CurrentTime][ecoregion.Index];
+
+                //PlugIn.ModelCore.UI.WriteLine("PlugIn_FutureClimateBaseYear={0}, y={1}, ModelCore_CurrentTime={2}, CenturyTimeStep = {3}, SimulatedYear = {4}.", PlugIn.FutureClimateBaseYear, y, PlugIn.ModelCore.CurrentTime, years, (PlugIn.FutureClimateBaseYear + y - years + PlugIn.ModelCore.CurrentTime));
 
                 SiteVars.ResetAnnualValues(site);
 
@@ -90,7 +92,7 @@ namespace Landis.Extension.Succession.Century
                     EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
                     EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
                     SiteVars.MineralN[site] += monthlyNdeposition;
-                    //PlugIn.ModelCore.UI.WriteLine("Ndeposition={0},MineralN={1:0.00}.", monthlyNdeposition, SiteVars.MineralN[site]);
+                    PlugIn.ModelCore.UI.WriteLine("Ndeposition={0},MineralN={1:0.00}.", monthlyNdeposition, SiteVars.MineralN[site]);
 
                     double liveBiomass = (double) ComputeLivingBiomass(siteCohorts);
                     double baseFlow, stormFlow;
