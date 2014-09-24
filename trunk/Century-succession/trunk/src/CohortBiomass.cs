@@ -248,7 +248,7 @@ namespace Landis.Extension.Succession.Century
 
             {
                 PlugIn.ModelCore.UI.WriteLine("  EITHER WOOD or LEAF NPP = NaN!  Will set to zero.");
-                PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}.     GROWTH LIMITS: LAI={2:0.00}, H20={3:0.00}, N={4:0.00}, T={5:0.00}, Capacity={6:0.0}", PlugIn.ModelCore.CurrentTime, Century.Month + 1, limitLAI, limitH20, limitN, limitT, limitCapacity);
+                PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}, SpeciesName={2}, CohortAge={3}.   GROWTH LIMITS: LAI={4:0.00}, H20={5:0.00}, N={6:0.00}, T={7:0.00}, Capacity={8:0.0}.", PlugIn.ModelCore.CurrentTime, Century.Month + 1, cohort.Species.Name, cohort.Age, limitLAI, limitH20, limitN, limitT, limitCapacity);
                 PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}.     Other Information: MaxB={2}, Bsite={3}, Bcohort={4:0.0}, SoilT={5:0.0}.", PlugIn.ModelCore.CurrentTime, Century.Month + 1, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
                 PlugIn.ModelCore.UI.WriteLine("  Yr={0},Mo={1}.     WoodNPP={2:0.00}, LeafNPP={3:0.00}.", PlugIn.ModelCore.CurrentTime, Century.Month + 1, woodNPP, leafNPP);
                 if (Double.IsNaN(leafNPP))

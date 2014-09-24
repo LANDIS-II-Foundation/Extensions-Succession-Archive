@@ -89,6 +89,9 @@ namespace Landis.Extension.Succession.Century
                         monthlyNdeposition = EcoregionData.AnnualWeather[ecoregion].MonthlyNDeposition[Century.Month];
                     }
 
+                    if (monthlyNdeposition < 0)
+                        throw new System.ApplicationException("Error: Nitrogen deposition input data are not present in climate library");
+
                     EcoregionData.MonthlyNDeposition[ecoregion][Month] = monthlyNdeposition;
                     EcoregionData.AnnualNDeposition[ecoregion] += monthlyNdeposition;
                     SiteVars.MineralN[site] += monthlyNdeposition;
