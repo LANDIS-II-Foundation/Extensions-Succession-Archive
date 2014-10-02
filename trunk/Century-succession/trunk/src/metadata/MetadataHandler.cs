@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.Century
                 Type = OutputType.Table,
                 Name = "MonthlyLog",
                 FilePath = Outputs.monthlyLog.FilePath,
-                Visualize = false,
+                Visualize = true,
             };
             tblOut_monthly.RetriveFields(typeof(MonthlyLog));
             Extension.OutputMetadatas.Add(tblOut_monthly);
