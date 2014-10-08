@@ -11,14 +11,14 @@ namespace Landis.Extension.Succession.Biomass
     {
 
         //user-defined by ecoregion
-        public static Landis.Library.Biomass.Ecoregions.AuxParm<int> AET;
+        public static Landis.Library.Parameters.Ecoregions.AuxParm<int> AET;
 
         //  Minimum relative biomass for each shade class in each ecoregion
-        public static Landis.Library.Biomass.Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass;
+        public static Landis.Library.Parameters.Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass;
 
         //  Maximum biomass at any site in each ecoregion
-        public static Landis.Library.Biomass.Ecoregions.AuxParm<int> B_MAX;
-        public static Landis.Library.Biomass.Ecoregions.AuxParm<int> ActiveSiteCount;
+        public static Landis.Library.Parameters.Ecoregions.AuxParm<int> B_MAX;
+        public static Landis.Library.Parameters.Ecoregions.AuxParm<int> ActiveSiteCount;
 
 
         //---------------------------------------------------------------------

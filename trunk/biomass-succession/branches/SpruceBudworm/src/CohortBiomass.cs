@@ -116,6 +116,15 @@ namespace Landis.Extension.Succession.Biomass
 
             double totalLitter = UpdateDeadBiomass(cohort, actualANPP, totalMortality, site, newBiomass);
 
+            double leafFraction = ComputeFractionANPPleaf(cohort.Species);
+
+            // Mortality reduces the amount of new foliage
+            int annualLeafANPP = (int)((actualANPP - totalMortality) * leafFraction);
+            cohort.ChangeCurrentFoliage(annualLeafANPP);
+            int newTotalFoliage = (int)(annualLeafANPP + cohort.TotalFoliage * (1 - (1 /   SpeciesData.LeafLongevity[cohort.Species])));
+            cohort.ChangeTotalFoliage(newTotalFoliage);
+
+
             if (PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
                 PlugIn.ModelCore.Log.WriteLine("Yr={0}. Calculate Delta Biomass...", (PlugIn.ModelCore.CurrentTime+SubYear));

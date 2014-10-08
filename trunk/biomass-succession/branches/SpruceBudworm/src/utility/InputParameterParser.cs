@@ -28,7 +28,14 @@ namespace Landis.Extension.Succession.Biomass
         private Dictionary<string, int> speciesLineNums;
         private InputVar<string> speciesName;
 
-
+        //---------------------------------------------------------------------
+        public override string LandisDataValue
+        {
+            get
+            {
+                return PlugIn.ExtensionName;
+            }
+        }
         //---------------------------------------------------------------------
 
         static InputParametersParser()
