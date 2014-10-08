@@ -1,14 +1,11 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller
 
-using Landis.SpatialModeling;
-using Landis.Library.BiomassCohorts;
-using Landis.Core;
-using System.Collections.Generic;
-using System.IO;
 using System;
-
-
+using System.IO;
+using Landis.Core;
+using Landis.Library.BiomassCohorts;
+using Landis.SpatialModeling;
 namespace Landis.Extension.Succession.Biomass
 {
     public class Outputs
@@ -23,9 +20,9 @@ namespace Landis.Extension.Succession.Biomass
         {
 
             string logFileName   = "Biomass-succession-v3-log.csv";
-            PlugIn.ModelCore.Log.WriteLine("   Opening Biomass-succession log file \"{0}\" ...", logFileName);
+            PlugIn.ModelCore.UI.WriteLine("   Opening Biomass-succession log file \"{0}\" ...", logFileName);
             try {
-                log = PlugIn.ModelCore.CreateTextFile(logFileName);
+                log = Landis.Data.CreateTextFile(logFileName);
             }
             catch (Exception err) {
                 string mesg = string.Format("{0}", err.Message);

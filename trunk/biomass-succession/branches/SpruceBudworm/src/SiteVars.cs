@@ -2,10 +2,7 @@
 //  Authors:  Robert M. Scheller, James B. Domingo
 
 using Landis.SpatialModeling;
-using Landis.Core;
 using Landis.Library.BiomassCohorts;
-using System.Collections.Generic;
-using System;
 
 namespace Landis.Extension.Succession.Biomass
 {
@@ -15,8 +12,9 @@ namespace Landis.Extension.Succession.Biomass
     public static class SiteVars
     {
 
-        private static ISiteVar<Library.BiomassCohorts.ISiteCohorts> biomassCohorts;
-        private static Landis.Library.Biomass.BaseCohortsSiteVar baseCohortsSiteVar;
+        private static ISiteVar<Landis.Library.BiomassCohorts.SiteCohorts> biomassCohorts;
+        
+        private static ISiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts> baseCohortsSiteVar;
 
         private static ISiteVar<Landis.Library.Biomass.Pool> woodyDebris;
         private static ISiteVar<Landis.Library.Biomass.Pool> litter;
@@ -31,15 +29,16 @@ namespace Landis.Extension.Succession.Biomass
 
 
         //---------------------------------------------------------------------
-
         /// <summary>
         /// Initializes the module.
         /// </summary>
         public static void Initialize()
         {
-
-            biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.ISiteCohorts>();
-            baseCohortsSiteVar = new Landis.Library.Biomass.BaseCohortsSiteVar(biomassCohorts);
+            biomassCohorts = PlugIn.ModelCore.Landscape.NewSiteVar<Library.BiomassCohorts.SiteCohorts>();
+            ISiteVar<Landis.Library.BiomassCohorts.ISiteCohorts> biomassCohortSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.BiomassCohorts.ISiteCohorts>.Wrap(biomassCohorts);
+            
+            baseCohortsSiteVar = Landis.Library.Succession.CohortSiteVar<Landis.Library.AgeOnlyCohorts.ISiteCohorts>.Wrap(biomassCohorts);
+            
 
             woodyDebris = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.Biomass.Pool>();
             litter = PlugIn.ModelCore.Landscape.NewSiteVar<Landis.Library.Biomass.Pool>();
@@ -59,8 +58,9 @@ namespace Landis.Extension.Succession.Biomass
             currentYearMortality.ActiveSiteValues = 0;
             previousYearMortality.ActiveSiteValues = 0;
 
-            PlugIn.ModelCore.RegisterSiteVar(biomassCohorts, "Succession.BiomassCohorts");
+            PlugIn.ModelCore.RegisterSiteVar(biomassCohortSiteVar, "Succession.BiomassCohorts");
             PlugIn.ModelCore.RegisterSiteVar(baseCohortsSiteVar, "Succession.AgeCohorts");
+ 
 
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.WoodyDebris, "Succession.WoodyDebris");
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.Litter, "Succession.Litter");
@@ -87,7 +87,7 @@ namespace Landis.Extension.Succession.Biomass
         /// <summary>
         /// Biomass cohorts at each site.
         /// </summary>
-        public static ISiteVar<ISiteCohorts> Cohorts
+        public static ISiteVar<SiteCohorts> Cohorts
         {
             get
             {
@@ -163,31 +163,6 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
         //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Percent Shade (the inverse of percent transmittance)
-        /// </summary>
-        /*public static ISiteVar<double> PercentShade
-        {
-            get
-            {
-                return percentShade;
-            }
-        }
-        //---------------------------------------------------------------------
-
-        /// <summary>
-        /// Light transmittance
-        /// </summary>
-        public static ISiteVar<double> LightTrans
-        {
-            get
-            {
-                return lightTrans;
-            }
-        }*/
-        //---------------------------------------------------------------------
-
         /// <summary>
         /// </summary>
         public static ISiteVar<double> CapacityReduction

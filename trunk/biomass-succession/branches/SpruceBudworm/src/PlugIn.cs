@@ -7,7 +7,6 @@ using Landis.Library.Succession;
 using Landis.Library.InitialCommunities;
 using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Util;
 
 namespace Landis.Extension.Succession.Biomass
 {
@@ -37,8 +36,7 @@ namespace Landis.Extension.Succession.Biomass
             modelCore = mCore;
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
-            parameters = modelCore.Load<IInputParameters>(dataFile, parser);
-
+            parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
         }
 
         //---------------------------------------------------------------------
@@ -132,7 +130,7 @@ namespace Landis.Extension.Succession.Biomass
                 {
                     if (!ecoregion.Active)
                             continue;
-                    SpeciesData.EstablishModifier[species][ecoregion] = 1.0;
+                    SpeciesData.EstablishModifier[species,ecoregion] = 1.0;
                 }
             }
         }
@@ -283,7 +281,7 @@ namespace Landis.Extension.Succession.Biomass
                 }
             }
 
-            if (!found) PlugIn.ModelCore.Log.WriteLine("Could not find sufficient light data for {0}.", species.Name);
+            if (!found) PlugIn.ModelCore.UI.WriteLine("Could not find sufficient light data for {0}.", species.Name);
 
             return PlugIn.ModelCore.GenerateUniform() < lightProbability;
         }
@@ -306,8 +304,8 @@ namespace Landis.Extension.Succession.Biomass
         public bool Establish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
-            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
-            double modEstabProb = establishProbability * SpeciesData.EstablishModifier[species][ecoregion];
+            double establishProbability = SpeciesData.EstablishProbability[species,ecoregion];
+            double modEstabProb = establishProbability * SpeciesData.EstablishModifier[species,ecoregion];
 
             return modelCore.GenerateUniform() < modEstabProb;
         }
@@ -332,7 +330,7 @@ namespace Landis.Extension.Succession.Biomass
         public bool PlantingEstablish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
-            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+            double establishProbability = SpeciesData.EstablishProbability[species,ecoregion];
 
             return establishProbability > 0.0;
         }

@@ -27,8 +27,8 @@ namespace Landis.Extension.Succession.Biomass
              AET = parameters.AET;  //FINISH LATER
              MinRelativeBiomass = parameters.MinRelativeBiomass;
 
-             B_MAX = new Landis.Library.Biomass.Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
-             ActiveSiteCount = new Landis.Library.Biomass.Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
+             B_MAX = new Landis.Library.Parameters.Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
+             ActiveSiteCount = new Landis.Library.Parameters.Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
@@ -49,7 +49,8 @@ namespace Landis.Extension.Succession.Biomass
                 int largest_B_MAX_Spp = 0;
                 foreach (ISpecies species in PlugIn.ModelCore.Species)
                 {
-                    largest_B_MAX_Spp = System.Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species][ecoregion]);
+                    //largest_B_MAX_Spp = System.Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species][ecoregion]);
+                    largest_B_MAX_Spp = System.Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species, ecoregion]);
                 }
                 B_MAX[ecoregion] = largest_B_MAX_Spp;
             }
