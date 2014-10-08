@@ -1,13 +1,12 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller, James B. Domingo
 
-using Landis.Library.Succession;
-using Landis.Core;
-
-using Edu.Wisc.Forest.Flel.Util;
-
 using System.Collections.Generic;
 using System.Diagnostics;
+using Edu.Wisc.Forest.Flel.Util;
+using Landis.Core;
+using Landis.Library.Succession;
+using Landis.Library.Parameters;
 
 namespace Landis.Extension.Succession.Biomass
 {
@@ -22,24 +21,16 @@ namespace Landis.Extension.Succession.Biomass
         private SeedingAlgorithms seedAlg;
         private bool calibrateMode;
         private double spinupMortalityFraction;
-        //private double pctSun1;
-        //private double pctSun2;
-        //private double pctSun3;
-        //private double pctSun4;
-        //private double pctSun5;
 
         private List<ISufficientLight> sufficientLight;
 
-        private Landis.Library.Biomass.Species.AuxParm<double> leafLongevity;
-        private Landis.Library.Biomass.Species.AuxParm<double> woodyDecayRate;
-        private Landis.Library.Biomass.Species.AuxParm<double> mortCurveShapeParm;
-        private Landis.Library.Biomass.Species.AuxParm<double> growthCurveShapeParm;
-        private Landis.Library.Biomass.Species.AuxParm<double> leafLignin;
-        //private Species.AuxParm<double> maxLAI;
-        //private Species.AuxParm<double> lightExtinctionCoeff;
-        //private Species.AuxParm<double> pctBioMaxLAI;
-        private Landis.Library.Biomass.Ecoregions.AuxParm<int> aet;
-        private Landis.Library.Biomass.Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
+        private Landis.Library.Parameters.Species.AuxParm<double> leafLongevity;
+        private Landis.Library.Parameters.Species.AuxParm<double> woodyDecayRate;
+        private Landis.Library.Parameters.Species.AuxParm<double> mortCurveShapeParm;
+        private Landis.Library.Parameters.Species.AuxParm<double> growthCurveShapeParm;
+        private Landis.Library.Parameters.Species.AuxParm<double> leafLignin;
+        private Landis.Library.Parameters.Ecoregions.AuxParm<int> aet;
+        private Landis.Library.Parameters.Ecoregions.AuxParm<Percentage>[] minRelativeBiomass;
 
         private string dynamicInputFile;
         private string ageOnlyDisturbanceParms;
@@ -79,7 +70,7 @@ namespace Landis.Extension.Succession.Biomass
         }
         //---------------------------------------------------------------------
 
-        public Landis.Library.Biomass.Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass
+        public Landis.Library.Parameters.Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass
         {
             get
             {
@@ -158,7 +149,6 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
         //---------------------------------------------------------------------
-
         public void SetMinRelativeBiomass(byte shadeClass,
                                           IEcoregion ecoregion,
                                           InputValue<Percentage> newValue)
@@ -176,86 +166,6 @@ namespace Landis.Extension.Succession.Biomass
         }
         //---------------------------------------------------------------------
         /// <summary>
-        /// Min Pct Sun Shade Class 1
-        /// </summary>
-        /*public double PctSun1
-        {
-            get
-            {
-                return pctSun1;
-            }
-            set
-            {
-                pctSun1 = value;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Min Pct Sun Shade Class 2
-        /// </summary>
-        public double PctSun2
-        {
-            get
-            {
-                return pctSun2;
-            }
-            set
-            {
-                pctSun2 = value;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Min Pct Sun Shade Class 3
-        /// </summary>
-        public double PctSun3
-        {
-            get
-            {
-                return pctSun3;
-            }
-            set
-            {
-                pctSun3 = value;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Min Pct Sun Shade Class 4
-        /// </summary>
-        public double PctSun4
-        {
-            get
-            {
-                return pctSun4;
-            }
-            set
-            {
-                pctSun4 = value;
-            }
-        }
-
-        //---------------------------------------------------------------------
-        /// <summary>
-        /// Min Pct Sun Shade Class 5
-        /// </summary>
-        public double PctSun5
-        {
-            get
-            {
-                return pctSun5;
-            }
-            set
-            {
-                pctSun5 = value;
-            }
-        }*/
-
-        //---------------------------------------------------------------------
-        /// <summary>
         /// Definitions of sufficient light probabilities.
         /// </summary>
         public List<ISufficientLight> LightClassProbabilities
@@ -271,7 +181,7 @@ namespace Landis.Extension.Succession.Biomass
         }
         //---------------------------------------------------------------------
 
-        public Landis.Library.Biomass.Species.AuxParm<double> LeafLongevity
+        public Landis.Library.Parameters.Species.AuxParm<double> LeafLongevity
         {
             get {
                 return leafLongevity;
@@ -280,7 +190,7 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        public Landis.Library.Biomass.Species.AuxParm<double> WoodyDecayRate
+        public Landis.Library.Parameters.Species.AuxParm<double> WoodyDecayRate
         {
             get {
                 return woodyDecayRate;
@@ -289,7 +199,7 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        public Landis.Library.Biomass.Species.AuxParm<double> MortCurveShapeParm
+        public Landis.Library.Parameters.Species.AuxParm<double> MortCurveShapeParm
         {
             get {
                 return mortCurveShapeParm;
@@ -298,7 +208,7 @@ namespace Landis.Extension.Succession.Biomass
 
         //---------------------------------------------------------------------
 
-        public Landis.Library.Biomass.Species.AuxParm<double> GrowthCurveShapeParm
+        public Landis.Library.Parameters.Species.AuxParm<double> GrowthCurveShapeParm
         {
             get
             {
@@ -307,58 +217,16 @@ namespace Landis.Extension.Succession.Biomass
         }
         //---------------------------------------------------------------------
 
-        public Landis.Library.Biomass.Species.AuxParm<double> LeafLignin
+        public Landis.Library.Parameters.Species.AuxParm<double> LeafLignin
         {
             get {
                 return leafLignin;
             }
         }
-        //---------------------------------------------------------------------
-        /* No longer used
-        public Species.AuxParm<int> KLAI
-        {
-            get {
-                return kLAI;
-            }
-        }
-        */
-        //---------------------------------------------------------------------
-        /* No longer used
-        public Species.AuxParm<double> BTOLAI
-        {
-            get {
-                return btoLAI;
-            }
-        }
-        */
-        //---------------------------------------------------------------------
-        /*
-        public Species.AuxParm<double> MAXLAI
-        {
-            get {
-                return maxLAI;
-            }
-        }
+        
         //---------------------------------------------------------------------
 
-        public Species.AuxParm<double> LightExtinctionCoeff
-        {
-            get {
-                return lightExtinctionCoeff;
-            }
-        }
-        //---------------------------------------------------------------------
-
-        public Species.AuxParm<double> PctBioMaxLAI
-        {
-            get
-            {
-                return pctBioMaxLAI;
-            }
-        }*/
-        //---------------------------------------------------------------------
-
-        public Landis.Library.Biomass.Ecoregions.AuxParm<int> AET
+        public Landis.Library.Parameters.Ecoregions.AuxParm<int> AET
         {
             get {
                 return aet;
@@ -381,12 +249,11 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
         //---------------------------------------------------------------------
-
         public void SetLeafLongevity(ISpecies           species,
                                      InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            leafLongevity[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 1.0, 10.0);
+            leafLongevity[species] = newValue.CheckInRange(1.0, 10.0, "leafLongevity");
         }
 
         //---------------------------------------------------------------------
@@ -395,7 +262,7 @@ namespace Landis.Extension.Succession.Biomass
                                      InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            woodyDecayRate[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            woodyDecayRate[species] = newValue.CheckInRange(0.0, 1.0, "woodyDecayRate");
         }
 
         //---------------------------------------------------------------------
@@ -404,7 +271,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            mortCurveShapeParm[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 5.0, 25.0);
+            mortCurveShapeParm[species] = newValue.CheckInRange(5.0, 25.0, "mortCurveShapeParm"); 
         }
 
         //---------------------------------------------------------------------
@@ -413,7 +280,7 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            growthCurveShapeParm[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0.0, 1.0);
+            growthCurveShapeParm[species] = newValue.CheckInRange(0, 1.0, "growthCurveShapeParm"); 
         }
         //---------------------------------------------------------------------
 
@@ -421,30 +288,8 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<double> newValue)
         {
             Debug.Assert(species != null);
-            leafLignin[species] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0.0, 0.4);
+            leafLignin[species] = newValue.CheckInRange(0, 0.4, "leafLignin"); 
         }
-        //---------------------------------------------------------------------
-        /*
-        public void SetMAXLAI(ISpecies species, InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            maxLAI[species] = Util.CheckBiomassParm(newValue, 0.0, 30.0);
-        }
-        //---------------------------------------------------------------------
-
-        public void SetLightExtinctionCoeff(ISpecies species, InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            lightExtinctionCoeff[species] = Util.CheckBiomassParm(newValue, 0.0, 1.0);
-        }
-        //---------------------------------------------------------------------
-
-
-        public void SetPctBioMaxLAI(ISpecies species, InputValue<double> newValue)
-        {
-            Debug.Assert(species != null);
-            pctBioMaxLAI[species] = Util.CheckBiomassParm(newValue, 0.0, 100.0);
-        } */
         //---------------------------------------------------------------------
         /// <summary>
         /// Path to the optional file with the biomass parameters for age-only
@@ -469,32 +314,27 @@ namespace Landis.Extension.Succession.Biomass
                                           InputValue<int> newValue)
         {
             Debug.Assert(ecoregion != null);
-            aet[ecoregion] = Landis.Library.Biomass.Util.CheckBiomassParm(newValue, 0, 10000);  //FIXME:  FIND GOOD MAXIMUM
+            aet[ecoregion] = newValue.CheckInRange(0, 10000, "aet");  //FIXME:  FIND GOOD MAXIMUM
         }
         //---------------------------------------------------------------------
 
         public InputParameters()
         {
             sufficientLight = new List<ISufficientLight>();
-            /*pctSun1 = new double();
-            pctSun2 = new double();
-            pctSun3 = new double();
-            pctSun4 = new double();
-            pctSun5 = new double();*/
-            leafLongevity = new Landis.Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            woodyDecayRate = new Landis.Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            mortCurveShapeParm = new Landis.Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            growthCurveShapeParm = new Landis.Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            leafLignin = new Landis.Library.Biomass.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            leafLongevity = new Landis.Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            woodyDecayRate = new Landis.Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            mortCurveShapeParm = new Landis.Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            growthCurveShapeParm = new Landis.Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
+            leafLignin = new Landis.Library.Parameters.Species.AuxParm<double>(PlugIn.ModelCore.Species);
             //maxLAI = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             //lightExtinctionCoeff = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
             //pctBioMaxLAI = new Species.AuxParm<double>(PlugIn.ModelCore.Species);
-            aet = new Landis.Library.Biomass.Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
+            aet = new Landis.Library.Parameters.Ecoregions.AuxParm<int>(PlugIn.ModelCore.Ecoregions);
 
-            minRelativeBiomass = new Landis.Library.Biomass.Ecoregions.AuxParm<Percentage>[6];
+            minRelativeBiomass = new Landis.Library.Parameters.Ecoregions.AuxParm<Percentage>[6];
             for (byte shadeClass = 1; shadeClass <= 5; shadeClass++)
             {
-                minRelativeBiomass[shadeClass] = new Landis.Library.Biomass.Ecoregions.AuxParm<Percentage>(PlugIn.ModelCore.Ecoregions);
+                minRelativeBiomass[shadeClass] = new Landis.Library.Parameters.Ecoregions.AuxParm<Percentage>(PlugIn.ModelCore.Ecoregions);
             }
         }
         //---------------------------------------------------------------------

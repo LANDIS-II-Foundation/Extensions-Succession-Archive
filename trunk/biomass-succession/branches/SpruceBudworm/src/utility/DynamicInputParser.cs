@@ -16,11 +16,6 @@ namespace Landis.Extension.Succession.Biomass
     {
 
         private string FileName = "Dynamic Input Data";
-
-        //---------------------------------------------------------------------
-        public DynamicInputsParser()
-        {
-        }
         //---------------------------------------------------------------------
         public override string LandisDataValue
         {
@@ -30,6 +25,11 @@ namespace Landis.Extension.Succession.Biomass
             }
         }
         //---------------------------------------------------------------------
+        public DynamicInputsParser()
+        {
+        }
+
+        //---------------------------------------------------------------------        
 
         protected override Dictionary<int, IDynamicInputRecord[,]> Parse()
         {
@@ -61,7 +61,7 @@ namespace Landis.Extension.Succession.Biomass
                 {
                     IDynamicInputRecord[,] inputTable = new IDynamicInputRecord[PlugIn.ModelCore.Species.Count, PlugIn.ModelCore.Ecoregions.Count];
                     allData.Add(yr, inputTable);
-                    PlugIn.ModelCore.Log.WriteLine("  Dynamic Input Parser:  Add new year = {0}.", yr);
+                    PlugIn.ModelCore.UI.WriteLine("  Dynamic Input Parser:  Add new year = {0}.", yr);
                 }
 
                 ReadValue(ecoregionName, currentLine);
