@@ -1,0 +1,10 @@
+LandisData "Output Leaf Biomass"
+
+Timestep      10
+
+MakeMaps  yes
+MakeTable  yes
+
+Species  all
+     
+MapNames  output-leaf-biomass/{species}-{timestep}.img
