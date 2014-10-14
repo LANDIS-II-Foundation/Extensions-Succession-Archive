@@ -80,7 +80,12 @@ namespace Landis.Extension.Succession.Century
                     totalMortality[1] = Math.Min(cohort.LeafBiomass, scorch + totalMortality[1]);
 
                 // Defoliation (index) ranges from 1.0 (total) to none (0.0).
-                defoliation = CohortDefoliation.Compute(cohort, site, (int)siteBiomass);
+                if (PlugIn.ModelCore.CurrentTime > 0) //Skip this during initialization
+                {
+                    //defoliation = Landis.Library.LeafBiomassCohorts.CohortDefoliation.Compute(cohort, site,  (int)siteBiomass);
+                    int cohortBiomass = (int)(cohort.LeafBiomass + cohort.WoodBiomass);
+                    defoliation = Landis.Library.Biomass.CohortDefoliation.Compute(site, cohort.Species, cohortBiomass, (int)siteBiomass);
+                }
 
                 if (defoliation > 1.0)
                     defoliation = 1.0;
