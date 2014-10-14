@@ -2,7 +2,6 @@
 //  Author: Robert Scheller, Ben Sulman
 
 using Landis.Core;
-using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Library.Succession;
 using System.Collections.Generic;
