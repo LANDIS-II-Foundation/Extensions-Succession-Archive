@@ -90,12 +90,12 @@ ulmuamer	2	N	1204	6960	-20	0.33	1	N	0.137	0.27	0.2	0.251	25.5	26	417	50	65
 ulmurubr	1	N	1204	6960	-20	0.33	1	N	0.137	0.27	0.312	0.251	25.5	26	417	50	65
 
 FunctionalGroupParameters  <<from tree.100									Age	Leaf
->> Name	Index	PPDF1	PPDF2	PPDF3	PPDF4	FCFRAC	BTOLAI	KLAI	MAXLAI	PPRPTS2	PPRPTS3	Wood	Monthly	Mort	Drop
+>> Name	Index	PPDF1	PPDF2	PPDF3	PPDF4	FCFRAC	BTOLAI	KLAI	MAXLAI	PPRPTS2	PPRPTS3	Wood	Monthly	Mort	Drop   CRootFrac FRootFRac
 >> 		T-Mean	T-Max	T-shape	T-shape	leaf						DecayR	WoodMortShape	Month
-SMAPLE 	1	20.0	32.0	0.2	8.0	0.5	0.15	3000	20.0	1.0	0.8	0.4	0.001	10	9
-WPINE  	2	15.0	32.0	1.0	3.5	0.37	0.075	3000	10.0	1.0	0.8	0.4	0.001	10	10
-HVFST	3	25.0	45.0	1.0	3.0	0.5	0.15	2000	20.0	1.0	0.8	0.4	0.001	10	9
-ASPEN 	4	20.0	32.0	0.2	10.0	0.5	0.15	3000	20.0	1.0	0.8	0.4	0.001	10	9
+SMAPLE  1	32	42	1.2	1.5	0.35	-0.8	1700	10	1.0	0.8	0.51	0.003	15	9	0.25	  0.35
+WPINE  	2	25	40	1	3	0.48	-0.8	2000	5	1.0	0.8	0.6	0.004	15	10	0.25	  0.35
+HVFST	3	25	45	1	4	0.3	-0.8	700	7	1.0	0.8	0.6	0.004	15	9	0.25	  0.35
+ASPEN 	4	20	40	0.5	5	0.3	-0.8	650	6	1.0	0.8	0.6	0.004	15	9	0.25	  0.35
 
 >> Note:  The on-line Century guide and 
 >> default parameters suggest MaxLAI = 20.0
