@@ -5,6 +5,7 @@ using Landis.Core;
 using Landis.SpatialModeling;
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Library.Succession;
+using Landis.Library.LeafBiomassCohorts;
 using System;
 
 namespace Landis.Extension.Succession.Century
@@ -20,12 +21,12 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Kills coarse roots and add the biomass to the Wood Debris pool.
         /// </summary>
-        public static void AddCoarseRootLitter(double abovegroundWoodBiomass,
+        public static void AddCoarseRootLitter(double abovegroundWoodBiomass,ICohort cohort,
                                     ISpecies   species,
                                     ActiveSite site)
         {
 
-            double coarseRootBiomass = CalculateCoarseRoot(abovegroundWoodBiomass); // Ratio above to below
+            double coarseRootBiomass = CalculateCoarseRoot(cohort, abovegroundWoodBiomass); // Ratio above to below
 
             if(coarseRootBiomass > 0)
             WoodLayer.PartitionResidue(coarseRootBiomass,  
@@ -42,11 +43,11 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Kills fine roots and add the biomass to the Dead Fine Roots pool.
         /// </summary>
-        public static void AddFineRootLitter(double abovegroundFoliarBiomass, 
+        public static void AddFineRootLitter(double abovegroundFoliarBiomass, ICohort cohort,
                                       ISpecies   species,
                                       ActiveSite site)
         {
-            double fineRootBiomass = CalculateFineRoot(abovegroundFoliarBiomass); 
+            double fineRootBiomass = CalculateFineRoot(cohort, abovegroundFoliarBiomass); 
             
             double inputDecayValue = 1.0;   // Decay value is calculated for surface/soil (leaf/fine root), 
                                             // therefore, this is just a dummy value.
@@ -69,13 +70,14 @@ namespace Landis.Extension.Succession.Century
         /// Fine root:foliar biomass estimated from Park et al. 2008 at HBEF and Sleepers River.
         /// Fine root production used an average of deciduous and conifer species since they didn't differ in Park et al. 2008.
         /// </summary>
-        public static double CalculateCoarseRoot(double wood)
+        public static double CalculateCoarseRoot(ICohort cohort, double wood)
         {
-            return (wood * 0.5);
+            //return (wood * 0.5);
+            return (wood * FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].CoarseRootFraction);
         }
-        public static double CalculateFineRoot(double foliarBiomass)
+        public static double CalculateFineRoot(ICohort cohort, double foliarBiomass)
         {
-            return (foliarBiomass * 0.76);
+            return (foliarBiomass * FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].FineRootFraction);
         }
     }
 }

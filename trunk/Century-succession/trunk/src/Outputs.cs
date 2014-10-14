@@ -516,6 +516,7 @@ namespace Landis.Extension.Succession.Century
             CalibrateLog.Write("Year, Month, EcoregionIndex, SpeciesName, CohortAge, CohortWoodB, CohortLeafB, ");  // from ComputeChange
             CalibrateLog.Write("MortalityAGEwood, MortalityAGEleaf, ");  // from ComputeAgeMortality
             CalibrateLog.Write("MortalityBIOwood, MortalityBIOleaf, ");  // from ComputeGrowthMortality
+            CalibrateLog.Write("availableWater,");  //from Water_limit
             CalibrateLog.Write("LAI,tlai,rlai,");  // from ComputeChange
             CalibrateLog.Write("mineralNalloc, resorbedNalloc, ");  // from calculateN_Limit
             CalibrateLog.Write("limitLAI, limitH20, limitT, limitCapacity, limitN, ");  //from ComputeActualANPP

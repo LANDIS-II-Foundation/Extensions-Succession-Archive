@@ -408,6 +408,8 @@ namespace Landis.Extension.Succession.Century
 
             InputVar<double> ppr2 = new InputVar<double>("PPRPTS2");
             InputVar<double> ppr3 = new InputVar<double>("PPRPTS3");
+            InputVar<double> coarseRootFraction = new InputVar<double>("CRootFrac");
+            InputVar<double> fineRootFraction = new InputVar<double>("FRootFrac");
 
             while (! AtEndOfInput && CurrentName != InitialEcoregionParameters) {
                 StringReader currentLine = new StringReader(CurrentLine);
@@ -469,9 +471,15 @@ namespace Landis.Extension.Succession.Century
                 ReadValue(leafNeedleDrop, currentLine);
                 funcTParms.LeafNeedleDrop = leafNeedleDrop.Value;
 
+                ReadValue(coarseRootFraction, currentLine);
+                funcTParms.CoarseRootFraction = coarseRootFraction.Value;
+
+                ReadValue(fineRootFraction, currentLine);
+                funcTParms.FineRootFraction = fineRootFraction.Value;
+
                 //PlugIn.ModelCore.UI.WriteLine("PPRPTS2={0}.", parameters.FunctionalTypeTable[ln].PPRPTS2);
 
-                CheckNoDataAfter("the " + leafNeedleDrop.Name + " column", currentLine);
+                CheckNoDataAfter("the " + fineRootFraction.Name + " column", currentLine);
                 GetNextLine();
             }
 

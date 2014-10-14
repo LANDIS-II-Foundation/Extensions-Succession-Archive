@@ -25,6 +25,8 @@ namespace Landis.Extension.Succession.Century
         double WoodDecayRate{get;set;}
         double MortCurveShape{get;set;}
         int LeafNeedleDrop{get;set;}
+        double CoarseRootFraction { get; set; }
+        double FineRootFraction { get; set; }
 
     }
     
@@ -45,6 +47,8 @@ namespace Landis.Extension.Succession.Century
         private double woodDecayRate;
         private double mortCurveShape;
         private int leafNeedleDrop;
+        private double coarseRootFraction;
+        private double fineRootFraction;
 
         public static FunctionalTypeTable Table;
         
@@ -271,6 +275,45 @@ namespace Landis.Extension.Succession.Century
                 leafNeedleDrop = value;
             }
         }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Determines the fraction of woody biomass that is coarse roots
+        /// </summary>
+        public double CoarseRootFraction
+        {
+            get
+            {
+                return coarseRootFraction;
+            }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new InputValueException(value.ToString(),
+                        "Coarse Roots must be expressed as a fraction, 0-1");
+                coarseRootFraction = value;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Determines the fraction of leaf biomass that is fine roots
+        /// </summary>
+        public double FineRootFraction
+        {
+            get
+            {
+                return fineRootFraction;
+            }
+            set
+            {
+                if (value < 0 || value > 1)
+                    throw new InputValueException(value.ToString(),
+                        "Fine Roots must be expressed as a fraction, 0-1");
+                fineRootFraction = value;
+            }
+        }
+
         //---------------------------------------------------------------------
 
        public FunctionalType()

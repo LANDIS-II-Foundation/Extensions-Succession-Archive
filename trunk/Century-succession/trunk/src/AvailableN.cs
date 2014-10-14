@@ -122,7 +122,7 @@ namespace Landis.Extension.Succession.Century
                     
                     //Nallocation is a measure of how much N a cohort can gather relative to other cohorts
                     //double Nallocation = Roots.CalculateFineRoot(cohort.LeafBiomass); 
-                    double Nallocation = 1- Math.Exp((-Roots.CalculateCoarseRoot(cohort.WoodBiomass)*0.02));
+                    double Nallocation = 1- Math.Exp((-Roots.CalculateCoarseRoot(cohort, cohort.WoodBiomass)*0.02));
 
                     if (Nallocation <= 0.0) //PlugIn.ModelCore.CurrentTime == 0)
                         Nallocation = Math.Max(Nallocation, cohort.WoodBiomass * 0.01);
@@ -248,11 +248,12 @@ namespace Landis.Extension.Succession.Century
         /// Calculates cohort N demand depending upon how much N would be removed through growth (ANPP) of leaves, wood, coarse roots and fine roots.  
         /// Demand is then used to determine the amount of N that a cohort "wants".
         /// </summary>
-        public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, double[] ANPP)
+        public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, ICohort cohort, double[] ANPP)
         {
 
             if(ANPP[0] <= 0.0 && ANPP[1] <= 0.0)
-                return 0.0;
+                //return 0.0;
+                return 0.01;
 
             if (SpeciesData.NFixer[species])  // We fix our own N!
                 return 0.0;
@@ -276,7 +277,7 @@ namespace Landis.Extension.Succession.Century
 
                 //} else 
                 //{
-                ANPPcoarseRoot = Roots.CalculateCoarseRoot(ANPPwood);
+                ANPPcoarseRoot = Roots.CalculateCoarseRoot(cohort, ANPPwood);
                 //}
                 
                 woodN       = ANPPwood * 0.47  / SpeciesData.WoodCN[species];
@@ -292,7 +293,7 @@ namespace Landis.Extension.Succession.Century
                 //    ANPPfineRoot = actualANPP[3];
                 //} else {
 
-                ANPPfineRoot = Roots.CalculateFineRoot(ANPPleaf);
+                ANPPfineRoot = Roots.CalculateFineRoot(cohort, ANPPleaf);
                
                 //}
                 leafN       = ANPPleaf * 0.47 / SpeciesData.LeafCN[species];
@@ -319,7 +320,7 @@ namespace Landis.Extension.Succession.Century
         {
             // Because Growth used some Nitrogen, it must be subtracted from the appropriate pools, either resorbed or mineral.
             //PlugIn.ModelCore.UI.WriteLine("AdjustAvailableN");
-            double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
+            double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, cohort, actualANPP);
             double adjNdemand = totalNdemand;
             double resorbedNused = 0.0;
             double mineralNused = 0.0;

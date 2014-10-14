@@ -383,8 +383,8 @@ namespace Landis.Extension.Succession.Century
                 ForestFloor.AddWoodLitter(wood, cohort.Species, eventArgs.Site);
                 ForestFloor.AddFoliageLitter(foliar, cohort.Species, eventArgs.Site);
 
-                Roots.AddCoarseRootLitter(wood, cohort.Species, eventArgs.Site);
-                Roots.AddFineRootLitter(foliar, cohort.Species, eventArgs.Site);
+                Roots.AddCoarseRootLitter(wood, cohort, cohort.Species, eventArgs.Site);
+                Roots.AddFineRootLitter(foliar, cohort,  cohort.Species, eventArgs.Site);
             }
 
             if (disturbanceType != null) {

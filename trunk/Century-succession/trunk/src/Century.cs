@@ -193,8 +193,8 @@ namespace Landis.Extension.Succession.Century
             double leafC = cohort.LeafBiomass * 0.47;
             double woodC = cohort.WoodBiomass * 0.47;
 
-            double fRootC = Roots.CalculateFineRoot(leafC);
-            double cRootC = Roots.CalculateCoarseRoot(woodC);
+            double fRootC = Roots.CalculateFineRoot(cohort, leafC);
+            double cRootC = Roots.CalculateCoarseRoot(cohort, woodC);
 
             double totalC = leafC + woodC + fRootC + cRootC;
 

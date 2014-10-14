@@ -172,7 +172,7 @@ namespace Landis.Extension.Succession.Century
             
             UpdateDeadBiomass(cohort, site, totalMortality);
 
-            CalculateNPPcarbon(site, actualANPP);
+            CalculateNPPcarbon(site, cohort, actualANPP);
 
             AvailableN.AdjustAvailableN(cohort, site, actualANPP);
 
@@ -381,14 +381,14 @@ namespace Landis.Extension.Succession.Century
             if(mortality_wood > 0.0)
             {
                 ForestFloor.AddWoodLitter(mortality_wood, cohort.Species, site);
-                Roots.AddCoarseRootLitter(mortality_wood, cohort.Species, site);
+                Roots.AddCoarseRootLitter(mortality_wood, cohort, cohort.Species, site);
             }
 
             if(mortality_nonwood > 0.0)
             {
                 AvailableN.AddResorbedN(cohort, totalMortality[1], site); //ignoring input from scorching, which is rare, but not resorbed.
                 ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, cohort.Species, site);
-                Roots.AddFineRootLitter(mortality_nonwood, cohort.Species, site);
+                Roots.AddFineRootLitter(mortality_nonwood, cohort, cohort.Species, site);
             }
 
             return;
@@ -434,13 +434,13 @@ namespace Landis.Extension.Succession.Century
         /// <summary>
         /// Summarize NPP
         /// </summary>
-        private static void CalculateNPPcarbon(ActiveSite site, double[] AGNPP)
+        private static void CalculateNPPcarbon(ActiveSite site, ICohort cohort, double[] AGNPP)
         {
             double NPPwood = (double) AGNPP[0] * 0.47;
             double NPPleaf = (double) AGNPP[1] * 0.47;
 
-            double NPPcoarseRoot = Roots.CalculateCoarseRoot(NPPwood);
-            double NPPfineRoot = Roots.CalculateFineRoot(NPPleaf);
+            double NPPcoarseRoot = Roots.CalculateCoarseRoot(cohort, NPPwood);
+            double NPPfineRoot = Roots.CalculateFineRoot(cohort, NPPleaf);
 
             if (Double.IsNaN(NPPwood) || Double.IsNaN(NPPleaf) || Double.IsNaN(NPPcoarseRoot) || Double.IsNaN(NPPfineRoot))
             {
@@ -496,7 +496,7 @@ namespace Landis.Extension.Succession.Century
                 // Divide allocation N by N demand here:
                 //PlugIn.ModelCore.UI.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
                 //PlugIn.ModelCore.UI.WriteLine("Calculate Demand for Nitrogen now");
-                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, new double[] { WoodNPP, LeafNPP})); 
+                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, cohort, new double[] { WoodNPP, LeafNPP})); 
 
                 if (Ndemand > 0.0)
                 {
@@ -684,6 +684,8 @@ namespace Landis.Extension.Succession.Century
             if (pprdwc < 0.01) pprdwc = 0.01;
 
             //PlugIn.ModelCore.UI.WriteLine("Yr={0}, AvailH20={1:0.0}, MonthlyPPT={2:0.0}, PET={3:0.0}, PPTPRD={4:0.0}, Limit={6:0.0}.", PlugIn.ModelCore.CurrentTime, SiteVars.AvailableWater[site],tmoist, pet,pptprd,pprdwc);
+            if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
+                Outputs.CalibrateLog.Write("{0:0.00}, ", SiteVars.AvailableWater[site]);
 
             return pprdwc;
         }
