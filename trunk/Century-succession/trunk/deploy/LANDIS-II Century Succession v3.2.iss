@@ -7,7 +7,8 @@
 #define CoreVersion      "6.0"
 #define CoreReleaseAbbr  ""
 
-#include "J:\Scheller\LANDIS-II\deploy\package (Setup section) v6.0.iss"
+; #include "J:\Scheller\LANDIS-II\deploy\package (Setup section) v6.0.iss"
+#include "package (Setup section) v6.0.iss"
 #define ExtDir "C:\Program Files\LANDIS-II\v6\bin\extensions"
 #define AppDir "C:\Program Files\LANDIS-II\v6"
 
@@ -48,7 +49,7 @@ Filename: {#PlugInAdminTool}; Parameters: "add ""{#CenturySucc}"" "; WorkingDir:
 [UninstallRun]
 
 [Code]
-#include "J:\Scheller\LANDIS-II\deploy\package (Code section) v3.iss"
+#include "C:\Users\lucash\Documents\LANDIS_Code\Century_Code\deploy\package (Code section) v3.iss"
 
 //-----------------------------------------------------------------------------
 

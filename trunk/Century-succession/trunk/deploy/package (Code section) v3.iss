@@ -191,7 +191,11 @@ forward;
 
 //-----------------------------------------------------------------------------
 
-#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "EnsureLandisIIDirsUC.iss"
+//#include AddBackslash(GetEnv("LANDIS_DEPLOY")) + "EnsureLandisIIDirsUC.iss"
+//#include "I:\research\shares\scheller_lab\Scheller\LANDIS-II\deploy\EnsureLandisIIDirsUC.iss"
+// #include "J:\Scheller\LANDIS-II\deploy\EnsureLandisIIDirsUC.iss"
+#include "C:\Users\lucash\Documents\LANDIS_Code\Century_Code\deploy\EnsureLandisIIDirsUC.iss"
+//: ; \psuresearch.shares\scheller_lab\
 
 //-----------------------------------------------------------------------------
 
