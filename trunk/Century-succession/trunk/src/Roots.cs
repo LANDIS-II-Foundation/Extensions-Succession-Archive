@@ -77,6 +77,7 @@ namespace Landis.Extension.Succession.Century
         }
         public static double CalculateFineRoot(ICohort cohort, double foliarBiomass)
         {
+            //return (foliarbiomass * 0.76);
             return (foliarBiomass * FunctionalType.Table[SpeciesData.FuncType[cohort.Species]].FineRootFraction);
         }
     }
