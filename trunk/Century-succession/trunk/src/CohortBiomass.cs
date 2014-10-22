@@ -479,7 +479,7 @@ namespace Landis.Extension.Succession.Century
             //Get Cohort Mineral and Resorbed N allocation.
             double mineralNallocation = AvailableN.GetMineralNallocation(cohort);
                        //if (Century.Month > 2 && Century.Month < 6)
-            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort);
+            double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort, site);
 
             double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
             //double WoodNPP = NPP * (1.0 - leafFractionNPP);
