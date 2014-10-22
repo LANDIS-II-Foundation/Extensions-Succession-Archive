@@ -83,6 +83,7 @@ namespace Landis.Extension.Succession.Century
         public static ISiteVar<byte> FireSeverity;
         public static ISiteVar<double> WoodMortality;
         public static ISiteVar<string> HarvestPrescriptionName;
+        public static ISiteVar<Dictionary<int, Dictionary<int, double>>> CohortResorbedNallocation;
 
         
         //---------------------------------------------------------------------
@@ -157,6 +158,9 @@ namespace Landis.Extension.Succession.Century
             frassC              = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             lai                 = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             HarvestPrescriptionName = PlugIn.ModelCore.GetSiteVar<string>("Harvest.PrescriptionName");
+
+            CohortResorbedNallocation = PlugIn.ModelCore.Landscape.NewSiteVar<Dictionary<int, Dictionary<int, double>>>();
+
             
                        
 
@@ -192,7 +196,7 @@ namespace Landis.Extension.Succession.Century
                 monthlyResp[site]           = new double[12];
                 //monthlymineralN[site]       = new double[12];
 
-                AvailableN.CohortResorbedNallocation = new Dictionary<int, Dictionary<int, double>>();
+                CohortResorbedNallocation[site] = new Dictionary<int, Dictionary<int, double>>();
             }
             
         }
