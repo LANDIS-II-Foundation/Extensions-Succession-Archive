@@ -29,6 +29,7 @@ Source: docs\LANDIS-II Century Succession v3.2 User Guide.pdf; DestDir: {#AppDir
 ;; Source: docs\Century-succession-log-metadata.xlsx; DestDir: {#AppDir}\docs
 Source: examples\*.bat; DestDir: {#AppDir}\examples\century-succession
 Source: examples\*.txt; DestDir: {#AppDir}\examples\century-succession
+Source: examples\*.csv; DestDir: {#AppDir}\examples\century-succession
 Source: examples\single_cell_3.img; DestDir: {#AppDir}\examples\century-succession
 Source: examples\ecoregions.gis; DestDir: {#AppDir}\examples\century-succession
 Source: examples\initial-communities.gis; DestDir: {#AppDir}\examples\century-succession
