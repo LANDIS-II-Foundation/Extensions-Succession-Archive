@@ -30,67 +30,40 @@ namespace Landis.Extension.Succession.Century
             //Water Submodel for Century - written by Bill Parton
             //     Updated from Fortran 4 - rm 2/92
             //     Rewritten by Bill Pulliam - 9/94
-
-            //...Description of variables
-            //   deadBiomass        the average monthly standing dead biomass(gm/m..2)
-            //   soilDepth          depth of the ith soil layer(cm)
-            //   fieldCapacity      the field capacity of the ith soil layer(fraction)
-            //   litterBiomass      the average monthly litter biomass(gm/m..2)
-            //   liveBiomass        the average monthly live plant biomass(gm/m..2)
-            //   waterMovement      the index for water movement(0-no flow,1-satruated flow)
-            //   soilWaterContent   the soil water content of the ith soil layer(cm h2o)
-            //   asnow              the snow pack water contint(cm-h2o)
-            //   avh2o (1)          NA water available to plants for growth
-            //   avh2o (2)          NA water available to plants for survival
-            //                      (available water in the whole soil profile)
-            //   availableWater     available water in current soil layer
-            //   wiltingPoint       the wilting point of the  ith soil layer(fraction)
-            //   transpLossFactor   the weight factor for transpiration water loss 
-            //   totalEvaporated               the water evaporated from the  soil and vegetation(cm/mon)
-            //   evaporatedSnow             snow evaporated
-            //   inputs             rain + irrigation
-            //   H2Oinputs            inputs which are water (not converted to snow)
-            //   nlayer             NA number of soil layers with water available for plant survival
-            //   nlaypg             NA number of soil layers with water available for plant growth
-            //   remainingPET       remaining pet, updated after each incremental h2o loss
-            //   potentialEvapTop               the potential evaporation rate from the top  soil layer (cm/day)
-            //   rain               the total monthly rainfall (cm/month)
-            //   relativeWaterContent        the relative water content of the ith soil layer(0-1)
-            //   liquidSnowpack               the liquid water in the snow pack
-            //   tav                average monthly air temperature (2m-        //)
-            //   tran               transpriation water loss(cm/mon)
-            //   transpirationLoss  transpiration water loss
+            // Rewritten by Melissa Lucash and Rob Scheller- 11/2014
+        
 
             //...Initialize Local Variables
             double addToSoil = 0.0;
             double bareSoilEvap = 0.0;
             baseFlow = 0.0;
-            double totalEvaporated = 0.0;
-            double evaporativeLoss = 0.0;
+            double totalEvaporated = 0.0;  
             double potentialTrans = 0.0;
             double relativeWaterContent = 0.0;
             double snow = 0.0;
             double liquidSnowpack = 0.0;
             stormFlow = 0.0;
-            double tran = 0.0;
             double transpiration = 0.01;
+            double actualET = 0.0;
+            double remainingPET = 0.0;
+            double availableWaterMax = 0.0;  //amount of water available after precipitation and snowmelt (over-estimate of available water)
+            double availableWaterMin = 0.0;   //amount of water available after stormflow (runoff) evaporation and transpiration, but before baseflow/leaching (under-estimate of available water)
+            double availableWater = 0.0;     //amount of water deemed available to the trees, which will be the average between the max and min
 
             //...Calculate external inputs
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             double litterBiomass = (SiteVars.SurfaceStructural[site].Carbon + SiteVars.SurfaceMetabolic[site].Carbon) * 2.0;
-            double deadBiomass = SiteVars.SurfaceDeadWood[site].Carbon * 2.0;
+            double deadBiomass = SiteVars.SurfaceDeadWood[site].Carbon / 0.47;
             double soilWaterContent = SiteVars.SoilWaterContent[site];
 
-            H2Oinputs = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month]; //rain + irract;
+            H2Oinputs = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month]; //rain + irract in cm;
             tave = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
             tmax = EcoregionData.AnnualWeather[ecoregion].MonthlyMaxTemp[month];
             tmin = EcoregionData.AnnualWeather[ecoregion].MonthlyMinTemp[month];
             pet = EcoregionData.AnnualWeather[ecoregion].MonthlyPET[month];
 
-            //PlugIn.ModelCore.UI.WriteLine(" tave={0}, tmax={1}, tmin={2}, pet={3}, ppt={4}.", tave, tmax, tmin, pet, H2Oinputs);
-            //double soilTemp         = tave;    
-
+            PlugIn.ModelCore.UI.WriteLine("Line 91. Really just the inputs. Year={0}, month={1}, AvgMonthlyTemp={2}, tmax={3}, tmin={4}, pet={5:0.0000}, ppt={6}, soilWaterContent={7:0.0000}.", Century.Year, Century.Month, tave, tmax, tmin, pet, H2Oinputs, soilWaterContent);
             double wiltingPoint = EcoregionData.WiltingPoint[ecoregion];
             double soilDepth = EcoregionData.SoilDepth[ecoregion];
             double fieldCapacity = EcoregionData.FieldCapacity[ecoregion];
@@ -98,38 +71,42 @@ namespace Landis.Extension.Succession.Century
             double baseFlowFraction = EcoregionData.BaseFlowFraction[ecoregion];
             double drain = EcoregionData.Drain[ecoregion];
 
-            deadBiomass = 0.0;
+            //PlugIn.ModelCore.UI.WriteLine("Really just more inputs. wiltingpoint={0}, soildepth={1}, fieldcapacity={2}, stormflow={3}, baseflow={4}, drainage={5}.", wiltingPoint, soilDepth, fieldCapacity, stormFlowFraction, baseFlowFraction, drain);
 
-            //...Throughout, uses remainingPET as remaining energy for pet after
-            //     each melting and evaporation step.  Initially calculated
-            //     pet is not modified.  Pulliam 9/94
-            double remainingPET = pet;
-
+            deadBiomass = 0.0;  //ML: Why is this set to zero here?  
+                                   
             //...Determine the snow pack, melt snow, and evaporate from the snow pack
-            //...When mean monthly air temperature is below freezing,
+            
+            //...Calculating snow pack first. Occurs when mean monthly air temperature is below freezing,
             //     precipitation is in the form of snow.
-            if (tave < 0.0)
+            //if (tave < 0.0)
+            if (tave <= 2.0) // ML: We could use Avg Tmin here instead.  I shifted it to 2oC because it can (and often does) snow at 2oC.  
             {
                 snow = H2Oinputs; //snow + inputs;
-                H2Oinputs = 0.0;
+                H2Oinputs = 0.0;  //ML: Why does this get set to zero here?
+                PlugIn.ModelCore.UI.WriteLine("Let it snow!! snow={0}, waterinputs={1}.", snow, H2Oinputs);
             }
 
-            //...Melt snow if air temperature is above minimum (tmelt(1))
-            if (tave > OtherData.TMelt1)
+            //...Then melt snow if air temperature is above minimum (tmelt(1))
+            //if (tave > OtherData.TMelt1)  ///ML: This used to be -8, which seemed very low.  And all the snow melted by Feb in MN.
+            if (tave > 0.0)
             {
                 //...Calculate the amount of snow to melt:
-                double snowMelt = OtherData.TMelt2 * (tave - OtherData.TMelt1);
+                //double snowMelt = OtherData.TMelt2 * (tave - OtherData.TMelt1);  //1 is 4.0, 2 is -8  ML: this gave incredibly high values that were not biologically meaningful
+                double snowMeltFraction = (tave * 0.05) + 0.024;//This equation assumes a linear increase in the fraction of snow that melts as a function of air temp
 
-                if (snowMelt > snow)
-                    snowMelt = snow;
-                snow = snow - snowMelt;
+               if (snowMeltFraction > 1.0)
+                    snowMeltFraction = 0.0;
+
+                snow = snow * snowMeltFraction;                         
 
                 //..Melted snow goes to snow pack and drains excess
                 //  addToSoil rain-on-snow  and melted snow to snowpack liquid (liquidSnowpack):
                 if (tave > 0.0 && snow > 0.0)
                     liquidSnowpack = H2Oinputs;
 
-                liquidSnowpack = liquidSnowpack + snowMelt;
+                liquidSnowpack = liquidSnowpack + snow;
+                //PlugIn.ModelCore.UI.WriteLine("Line 136. Melting snow. LiquidSnowpack={0}, snow={1}, snowMelt={2}.", liquidSnowpack, snow, snowMelt);
 
                 //...Drain snowpack to 5% liquid content (weight/weight), excess to soil:
                 if (liquidSnowpack > (0.05 * snow))
@@ -137,16 +114,20 @@ namespace Landis.Extension.Succession.Century
                     addToSoil = liquidSnowpack - 0.05 * snow;
                     liquidSnowpack = liquidSnowpack - addToSoil;
                 }
+                soilWaterContent += addToSoil;
+                availableWaterMax = soilWaterContent;
+                PlugIn.ModelCore.UI.WriteLine("Line 120. Melting snow. snowMeltFraction={0}, snow={1}, LiquidSnowpack={2}, availableWaterMax={3}.", snowMeltFraction, snow, liquidSnowpack, addToSoil, availableWaterMax);
             }
 
             //...Evaporate water from the snow pack (rewritten Pulliam 9/94 to
             //     evaporate from both snow aqnd liquidSnowpack in proportion)
             //...Coefficient 0.87 relates to heat of fusion for ice vs. liquid water
             //     wasn't modified as snow pack is at least 95% ice.
-            if (snow > 0)
+           
+            if (snow > 0.0)
             {
                 //...Calculate cm of snow that remaining pet energy can evaporate:
-                double evaporatedSnow = remainingPET * 0.87;
+                double evaporatedSnow = pet * 0.87;
 
                 //...Calculate total snowpack water, ice + liquid:
                 double totalSnowpack = snow + liquidSnowpack;
@@ -159,20 +140,39 @@ namespace Landis.Extension.Succession.Century
                 snow = snow - evaporatedSnow * (snow / totalSnowpack);
                 liquidSnowpack = liquidSnowpack - evaporatedSnow * (liquidSnowpack / totalSnowpack);
 
-                //...addToSoil evaporated snow to evaporation accumulator (totalEvaporated):
-                totalEvaporated = evaporatedSnow;
-
                 //...Decrement remaining pet by energy used to evaporate snow:
-                remainingPET = remainingPET - evaporatedSnow / 0.87;
+                remainingPET = pet - evaporatedSnow / 0.87;
 
-                if (remainingPET < 0.0)
+                if (remainingPET < 0.0) 
                     remainingPET = 0.0;
+
+                //Add evaporated snow to accumulator of evaporation and substract it from the soil water content
+                totalEvaporated = evaporatedSnow;
+                soilWaterContent -= evaporatedSnow;
+
+                PlugIn.ModelCore.UI.WriteLine("Line 152. Evaporating snow. TotalEvaporated={0:0.000}, remainingPET={1}, totalSnowpack={2:0.00}, soilWaterContent={3:0.00}.", totalEvaporated, remainingPET, totalSnowpack, soilWaterContent);
             }
 
-            //...Calculate bare soil water loss and interception
-            //     when air temperature is above freezing and no snow cover.
-            //...Mofified 9/94 to allow interception when t < 0 but no snow
-            //     cover, Pulliam
+            //Allow excess water to run off during storm events (stormflow)
+            double waterFull = soilDepth * fieldCapacity;  //units of cm
+            
+            double waterMovement = 0.0;            
+
+            if (soilWaterContent > waterFull)
+            {
+
+                waterMovement = (soilWaterContent - waterFull); // / soilWaterContent;
+                soilWaterContent = waterFull;
+                
+                //...Compute storm flow.
+                stormFlow = waterMovement * stormFlowFraction;
+
+                PlugIn.ModelCore.UI.WriteLine("Line 171. soilwatercontent={0:0.00}, waterfull={0:0.00}, watermovement={0:0.00}, stormflow={0:0.00} soilWaterContent > waterFull.", soilWaterContent, waterFull, waterMovement, stormFlow);
+                
+            }                                                 
+            
+            //...Calculate bare soil water loss and interception  when air temperature is above freezing and no snow cover.
+            //...Mofified 9/94 to allow interception when t < 0 but no snow cover, Pulliam
             if (snow <= 0.0)
             {
                 //...Calculate total canopy cover and litter, put cap on effects:
@@ -186,18 +186,18 @@ namespace Landis.Extension.Succession.Century
 
                 //...Bare soil evaporation, fraction of precip (bareSoilEvap):
                 bareSoilEvap = 0.5 * System.Math.Exp((-0.002 * litterBiomass) - (0.004 * standingBiomass)) * OtherData.WaterLossFactor2;
-                //PlugIn.ModelCore.UI.WriteLine("bareSoilEvap={0}, litterBiomass={1}, standingBiomass={2}.", bareSoilEvap, litterBiomass, standingBiomass);
+                PlugIn.ModelCore.UI.WriteLine("If there is no snow. Line 191. BareSoilEvap={0}, litterBiomass={1}, standingBiomass={2}, CanopyIntercept={3}.", bareSoilEvap, litterBiomass, standingBiomass, canopyIntercept);
 
                 //...Calculate total surface evaporation losses, maximum
                 //     allowable is 0.4 * pet. -rm 6/94
-                evaporativeLoss = System.Math.Min(((bareSoilEvap + canopyIntercept) * H2Oinputs), (0.4 * remainingPET));
-                totalEvaporated = totalEvaporated + evaporativeLoss;
+                double soilEvaporation= System.Math.Min(((bareSoilEvap + canopyIntercept) * H2Oinputs), (0.4 * remainingPET));
+                totalEvaporated += soilEvaporation;
 
-                //...Calculate remaining water to addToSoil to soil and potential
-                //     transpiration as remaining pet:
-                addToSoil = H2Oinputs - evaporativeLoss;
-                transpiration = remainingPET - evaporativeLoss;
-                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, evaporativeLoss={2:0.0}, addToSoil={3:0.0}, remainingPET={4:0.0}", year, month, evaporativeLoss, addToSoil, remainingPET);
+                //...Calculate remaining water to addToSoil to soil and subtract soil evaporation from soil water content
+                addToSoil = H2Oinputs - totalEvaporated;
+                soilWaterContent -= soilEvaporation;
+                
+                PlugIn.ModelCore.UI.WriteLine("Line 202. This is the amount added to soil when no snow. bareSoilEvap={0:0.0}, soilevaporated={1:0.0}, TotalEvap={2:0.0}, addToSoil={3:0.0}", bareSoilEvap, soilEvaporation, totalEvaporated, addToSoil);
 
             }
 
@@ -209,155 +209,53 @@ namespace Landis.Extension.Succession.Century
                 potentialTrans = 0.0;
             else
                 potentialTrans = remainingPET * 0.65 * (1.0 - System.Math.Exp(-0.020 * liveBiomass));
-
+           
             if (potentialTrans < transpiration)
                 transpiration = potentialTrans;
 
             if (transpiration < 0.0) transpiration = 0.01;
+            PlugIn.ModelCore.UI.WriteLine("Line 218. Potential Transpiration. PotentialTranspiration={0:0.000}.", potentialTrans);
 
-            // **************************************************************************
-            //...Calculate the potential evaporation rate from the top soil layer
-            //     (potentialEvapTop-cm/day).  This is not actually taken out until after
-            //     transpiration losses
-            double potentialEvapTop = remainingPET - transpiration - evaporativeLoss;
 
-            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, PotentialEvapTop={2:0.0}, remainingPET={3:0.0}, transpiration={4:0.0}, evaporativeLoss={5:0.0}.", year, month, potentialEvapTop, remainingPET, transpiration, evaporativeLoss);
-            if (potentialEvapTop < 0.0) potentialEvapTop = 0.0;
-
-            // **************************************************************************
-            //...Transpire water from added water first, before passing water
-            //     on to soil.  This is necessary for a monthly time step to
-            //     give plants in wet climates adequate access to water for
-            //     transpiration. -rm 6/94, Pulliam 9/94
-            tran = System.Math.Min((transpiration - 0.01), addToSoil);
-            transpiration = transpiration - tran;
-            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, tran={2:0.0}, transpiration={3:0.0}, addToSoil={4:0.00}.", year, month, tran, transpiration, addToSoil);
-            addToSoil = addToSoil - tran;
-
-            //...Add water to the soil
-            //...Changed to add base flow and storm flow.  -rm 2/92
-            //...addToSoil water to layer:
-
-            soilWaterContent += addToSoil;
-            // PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilWaterContent={2:0.0}, addToSoil={3:0.0}.", year, month, soilWaterContent,addToSoil);
-
-            //...Calculate field capacity of soil, drain soil, pass excess
-            //     on to waterMovement:
-            double waterFull = soilDepth * fieldCapacity;  //units of cm
-            double waterMovement = 0.0;
+            // Calculate actual evapotranspiration
+            double waterEmpty = wiltingPoint * soilDepth;
 
             if (soilWaterContent > waterFull)
+                actualET = transpiration;
+            else
             {
-                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilWaterContent > waterFull", year, month); 
-                waterMovement = (soilWaterContent - waterFull); // / soilWaterContent;
-                soilWaterContent = waterFull;
-
-                //...Compute storm flow.
-                stormFlow = waterMovement * stormFlowFraction;
+                actualET = transpiration * ((soilWaterContent - waterEmpty) / (waterFull - waterEmpty));
             }
 
-            //...Compute base flow and stream flow for H2O. 
-            //...Put water draining out bottom that doesn't go to stormflow
-            //     into nlayer+1 holding tank:
-            double drainedWater = addToSoil - stormFlow;
+            if (actualET < 0.0)
+                actualET = 0.0;
 
-            //...Drain baseflow fraction from holding tank:
-            baseFlow = drainedWater * baseFlowFraction;
-            drainedWater = drainedWater - baseFlow;
+            //Subtract transpiration from soil water
+            soilWaterContent -= actualET;
 
-            //...Streamflow = stormflow + baseflow:
+            PlugIn.ModelCore.UI.WriteLine("Line 237. Calculating AET. actualET={0:0.000}, waterFull={1:0.000}, waterEmpty={2:0.000}, pet={3:0.000}", actualET, waterFull, waterEmpty, pet);
+
+              //...Drain baseflow fraction from holding tank:
+            baseFlow = soilWaterContent * baseFlowFraction;
             double streamFlow = stormFlow + baseFlow;
 
-            //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilWaterContent={2:0.0}, stormFlow={3:0.00}, baseFlow={4:0.00}.", year, month, soilWaterContent, stormFlow, baseFlow);
+            //Subtract transpiration from soil water
+            soilWaterContent -= streamFlow;
 
-            //...Save soilWaterContent before transpiration for future use:
-            double asimx = soilWaterContent;
+            PlugIn.ModelCore.UI.WriteLine("Line 246. StormFlowStuff.stormFlow={0:0.000}, baseflow={1:0.000}, streamflow={2:0.0000}, soilwaterContent={3:0.0000}.", stormFlow, baseFlow, streamFlow, soilWaterContent);
 
-            // **************************************************************************
-            //...Calculate transpiration water loss from each layer
-            //...This section was completely rewritten by Pulliam, though it
-            //     should still do the same thing.  9/94
+            //Calculate the amount of available water after all the evapotranspiration and leaching has taken place (minimum available water)           
+            availableWaterMin = soilWaterContent;
 
-            //...Calculate available water in layer, soilWaterContent minus wilting point:
-            double availableWater = soilWaterContent - wiltingPoint * soilDepth;
-            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, availableWater={2:0.0}, soilWaterContent={3:0.0}.", year, month, availableWater, soilWaterContent);
-
-            if (availableWater < 0.0)
-                availableWater = 0.0;
-
-            //...Calculate available water weighted by transpiration loss depth
-            //      distribution factors:
-            double availableWaterWeighted = availableWater * OtherData.TranspirationLossFactor;
-
-            //...Calculate the actual transpiration water loss(tran-cm/mon)
-            //...Also rewritten by Pulliam 9/94, should do the same thing
-            //...Update potential transpiration to be no greater than available water:
-            transpiration = System.Math.Min(availableWater, transpiration);
-
-            //...Transpire water from layer:
-
-            if (availableWaterWeighted > 0.0)
-            {
-                //...Calculate available water in layer j:
-                //for( j = 0; j < nlayer; j++)
-                availableWater = soilWaterContent - wiltingPoint * soilDepth;
-                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, availableWater={2:0.0}, SWC={3:0.0}", year, month, availableWater, soilWaterContent);
-
-                if (availableWater < 0.0) availableWater = 0.0;
-
-                //...Calculate transpiration loss from layer, using weighted
-                //     water availabilities:
-                double transpirationLoss = (transpiration * availableWaterWeighted) / availableWaterWeighted;
-
-                if (transpirationLoss > availableWater)
-                    transpirationLoss = availableWater;
-
-                soilWaterContent -= transpirationLoss;
-                availableWater -= transpirationLoss;
-                //tran = tran + transpirationLoss;  // ????
-                relativeWaterContent = ((soilWaterContent / soilDepth) - wiltingPoint) / (fieldCapacity - wiltingPoint);
-
-                //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, TranspirationLoss={2:0.0}, availableWater={3:0.0}, soilwaterContent={4:0.00}, relativeWaterContent={5:0.00}.", year, month, transpirationLoss, availableWater, soilWaterContent, relativeWaterContent);
-            }
-
-            // **************************************************************************
-            //...Evaporate water from the top layer
-            //...Rewritten by Pulliam, should still do the same thing 9/94
-
-            //...Minimum relative water content for top layer to evaporate:
-            double fwlos = 0.25;
-
-            //...Fraction of water content between fwlos and field capacity:
-            double evmt = (relativeWaterContent - fwlos) / (1.0 - fwlos);
-            //PlugIn.ModelCore.UI.WriteLine("evmt={0:0.0}, relativeWaterContent={1:0.00}, fwlos={2}.", evmt,relativeWaterContent,fwlos);
-
-            if (evmt <= 0.01) evmt = 0.01;
-
-            //...Evaporation loss from layer 1:
-            double evapLossTop = evmt * potentialEvapTop * bareSoilEvap * 0.10;
-
-            double topWater = soilWaterContent - wiltingPoint * soilDepth;
-            if (topWater < 0.0) topWater = 0.0;  //topWater = max evaporative loss from surface
-            if (evapLossTop > topWater) evapLossTop = topWater;
-
-            //...Update available water pools minus evaporation from top layer
-            availableWater -= evapLossTop;
-            soilWaterContent -= evapLossTop;
-
-            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, evapLossTop={2:0.00}, SWC={3:0.00}", year, month, evapLossTop, soilWaterContent);
-            //totalEvaporated += evapLossTop;
-
-            //...Recalculate relative Water Content to estimate mid-month water content
-            double avhsm = (soilWaterContent + relativeWaterContent * asimx) / (1.0 + relativeWaterContent);
-            relativeWaterContent = ((avhsm / soilDepth) - wiltingPoint) / (fieldCapacity - wiltingPoint);
-
-            //RMS: PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}, soilwaterContent={2:0.00}, relativeWaterContent={3:0.00}.", year, month,soilWaterContent, relativeWaterContent);
-
-            // Compute the ratio of precipitation to PET
+            //Calculate the final amount of available water, which is the average of the max and min          
+            availableWater = (availableWaterMax - availableWaterMin)/ 2;
+            PlugIn.ModelCore.UI.WriteLine("Line 253. availablewater={0:0.000}, availableWaterMax={0:0.000}, availableWaterMin={0:0.000}.", availableWater, availableWaterMax, availableWaterMin);
+            
+            //// Compute the ratio of precipitation to PET
             double ratioPrecipPET = 0.0;
             if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet;
 
-            //PlugIn.ModelCore.UI.WriteLine("ratioPrecipPET={0:0.0}, totalAvailableH20={1:0.00}, H2Oinputs={2:0.00}, pet={3:0.00}.", ratioPrecipPET, availableWater, H2Oinputs, pet);
+            //PlugIn.ModelCore.UI.WriteLine("Line 375. ratioPrecipPET={0:0.0}, totalAvailableH20={1:0.00}, H2Oinputs={2:0.00}, pet={3:0.00}.", ratioPrecipPET, availableWater, H2Oinputs, pet);
 
             SiteVars.WaterMovement[site] = waterMovement;
             SiteVars.AvailableWater[site] = availableWater;  //available to plants for growth
@@ -368,7 +266,7 @@ namespace Landis.Extension.Succession.Century
 
             //SoilWater.Leach(site, baseFlow, stormFlow);
 
-            //PlugIn.ModelCore.UI.WriteLine("availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}, waterMovement={4}", availableWater, soilWaterContent, wiltingPoint, soilDepth, waterMovement);
+            PlugIn.ModelCore.UI.WriteLine("Line 386. availH2O={0}, soilH2O={1}, wiltP={2}, soilCM={3}, waterMovement={4}, RatioPrecipPET={5}", availableWater, soilWaterContent, wiltingPoint, soilDepth, waterMovement, ratioPrecipPET);
             //PlugIn.ModelCore.UI.WriteLine("   yr={0}, mo={1}, DecayFactor={2:0.00}, Anaerobic={3:0.00}.", year, month, SiteVars.DecayFactor[site], SiteVars.AnaerobicEffect[site]);
 
             return;
