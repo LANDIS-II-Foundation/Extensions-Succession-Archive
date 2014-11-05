@@ -47,7 +47,8 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double> resorbedN;
         private static ISiteVar<double> waterMovement;  
         private static ISiteVar<double> availableWater;  
-        private static ISiteVar<double> soilWaterContent;  
+        private static ISiteVar<double> soilWaterContent;
+        private static ISiteVar<double> liquidSnowPack;  
         private static ISiteVar<double> decayFactor;
         private static ISiteVar<double> soilTemperature;
         private static ISiteVar<double> anaerobicEffect;
@@ -122,6 +123,7 @@ namespace Landis.Extension.Succession.Century
             resorbedN           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             waterMovement       = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             availableWater      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
+            liquidSnowPack      = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             soilWaterContent    = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             decayFactor         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             soilTemperature     = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -475,6 +477,22 @@ namespace Landis.Extension.Succession.Century
             }
             set {
                 soilWaterContent = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Liquid Snowpack
+        /// </summary>
+        public static ISiteVar<double> LiquidSnowPack
+        {
+            get
+            {
+                return liquidSnowPack;
+            }
+            set
+            {
+                liquidSnowPack = value;
             }
         }
         //---------------------------------------------------------------------
