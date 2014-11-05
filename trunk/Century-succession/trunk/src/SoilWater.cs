@@ -30,6 +30,8 @@ namespace Landis.Extension.Succession.Century
             //     Updated from Fortran 4 - rm 2/92
             //     Rewritten by Bill Pulliam - 9/94
             // Rewritten by Melissa Lucash- 11/2014
+
+            //PlugIn.ModelCore.UI.WriteLine("month={0}.", Century.Month);
         
             //...Initialize Local Variables
             double addToSoil = 0.0;
@@ -79,7 +81,7 @@ namespace Landis.Extension.Succession.Century
             else
             {
                 soilWaterContent += H2Oinputs;
-                //PlugIn.ModelCore.UI.WriteLine("Let it rain! soilWaterContent={0}.", soilWaterContent);
+                //PlugIn.ModelCore.UI.WriteLine("Let it rain! rain={0}, soilWaterContent={1}.", H2Oinputs, soilWaterContent);
             }
 
             //...Then melt snow if there is snow on the ground and air temperature (tmax) is above minimum.
@@ -145,6 +147,7 @@ namespace Landis.Extension.Succession.Century
 
                 //Subtract stormflow from soil water
                 soilWaterContent -= stormFlow;
+                //PlugIn.ModelCore.UI.WriteLine("Water Runs Off. stormflow={0}.", stormFlow);
             }                                                 
             
             //...Calculate bare soil water loss and interception  when air temperature is above freezing and no snow cover.
@@ -194,24 +197,27 @@ namespace Landis.Extension.Succession.Century
             
             //Subtract baseflow from soil water
             soilWaterContent -= baseFlow;
+
+            //PlugIn.ModelCore.UI.WriteLine("Water Leaches. baseflow={0}.", baseFlow);
             
             //Calculate the amount of available water after all the evapotranspiration and leaching has taken place (minimum available water)           
-            availableWaterMin = soilWaterContent;
+            availableWaterMin = Math.Min(soilWaterContent - waterEmpty,0);
 
             //Calculate the final amount of available water to the trees, which is the average of the max and min          
             availableWater = (availableWaterMax + availableWaterMin)/ 2;
                         
             //// Compute the ratio of precipitation to PET
             double ratioPrecipPET = 0.0;
-            if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet;
+            //if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet; //old ratio used in previous versions of LANDIS-Century
+            if (pet > 0.0) ratioPrecipPET = H2Oinputs / pet;  //assumes that the ratio is the amount of incoming precip divided by PET.
 
             SiteVars.LiquidSnowPack[site] = liquidSnowpack;
             SiteVars.WaterMovement[site] = waterMovement;
-            SiteVars.AvailableWater[site] = availableWater;  //available to plants for growth
+            SiteVars.AvailableWater[site] = availableWater;  //available to plants for growth     
             SiteVars.SoilWaterContent[site] = soilWaterContent;
             SiteVars.SoilTemperature[site] = CalculateSoilTemp(tmin, tmax, liveBiomass, litterBiomass, month);
             SiteVars.DecayFactor[site] = CalculateDecayFactor((int)OtherData.WType, SiteVars.SoilTemperature[site], relativeWaterContent, ratioPrecipPET, month);
-            SiteVars.AnaerobicEffect[site] = CalculateAnaerobicEffect(drain, ratioPrecipPET, pet, tave);
+            SiteVars.AnaerobicEffect[site] = CalculateAnaerobicEffect(drain, ratioPrecipPET, pet, tave);                             
                         
             return;
         }
@@ -308,9 +314,9 @@ namespace Landis.Extension.Succession.Century
             //     pet       - potential evapotranspiration
             //     rprpet    - actual (RAIN+IRRACT+AVH2O[3])/PET ratio
 
-            double aneref1 = OtherData.RatioPrecipPETMaximum;
-            double aneref2 = OtherData.RatioPrecipPETMinimum;
-            double aneref3 = OtherData.AnerobicEffectMinimum;
+            double aneref1 = OtherData.RatioPrecipPETMaximum;  //This value is 1.5
+            double aneref2 = OtherData.RatioPrecipPETMinimum;   //This value is 3.0
+            double aneref3 = OtherData.AnerobicEffectMinimum;   //This value is 0.3
 
             double anerob = 1.0;
 
@@ -326,13 +332,15 @@ namespace Landis.Extension.Succession.Century
                     double newrat = aneref1 + (xh2o / pet);
                     double slope = (1.0 - aneref3) / (aneref1 - aneref2);
                     anerob = 1.0 + slope * (newrat - aneref1);
+                    //PlugIn.ModelCore.UI.WriteLine("If higher threshold. newrat={0:0.0}, slope={1:0.00}, anerob={2:0.00}", newrat, slope, anerob);      
                 }
 
                 if (anerob < aneref3)
                     anerob = aneref3;
+                //PlugIn.ModelCore.UI.WriteLine("Lower than threshold. Anaerobic={0}", anerob);      
             }
-
-            //PlugIn.ModelCore.UI.WriteLine("Anaerobic Effect = {1}.", anerob);
+            //PlugIn.ModelCore.UI.WriteLine("ratioPrecipPET={0:0.0}, tave={1:0.00}, pet={2:0.00}, AnaerobicFactor={3:0.00}, Drainage={4:0.00}", ratioPrecipPET, tave, pet, anerob, drain);         
+            //PlugIn.ModelCore.UI.WriteLine("Anaerobic Effect = {0:0.00}.", anerob);
             return anerob;
         }
         //---------------------------------------------------------------------------
