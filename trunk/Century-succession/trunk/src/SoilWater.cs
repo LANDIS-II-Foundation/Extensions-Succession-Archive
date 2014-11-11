@@ -71,7 +71,7 @@ namespace Landis.Extension.Succession.Century
             //...Calculating snow pack first. Occurs when mean monthly air temperature is below freezing,
             //     precipitation is in the form of snow.
             
-            if (tmin <= 2.0) // Use tmin to dictate whether it snows or rains. I used a threshold of 2oC because it can (and often does) snow at 2oC.  
+            if (tmin <= 0.0) // Use tmin to dictate whether it snows or rains. 
             {
                 snow = H2Oinputs; 
                 H2Oinputs = 0.0;  
