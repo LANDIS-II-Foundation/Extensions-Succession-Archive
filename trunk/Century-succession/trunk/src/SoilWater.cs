@@ -81,7 +81,7 @@ namespace Landis.Extension.Succession.Century
             else
             {
                 soilWaterContent += H2Oinputs;
-                //PlugIn.ModelCore.UI.WriteLine("Let it rain! rain={0}, soilWaterContent={1}.", H2Oinputs, soilWaterContent);
+                //PlugIn.ModelCore.UI.WriteLine("Let it rain and add it to soil! rain={0}, soilWaterContent={1}.", H2Oinputs, soilWaterContent);
             }
 
             //...Then melt snow if there is snow on the ground and air temperature (tmax) is above minimum.
