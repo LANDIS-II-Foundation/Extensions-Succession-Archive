@@ -1,5 +1,5 @@
  //  Copyright 2007-2010 Portland State University, University of Wisconsin-Madison
-//  Author: Robert Scheller, Ben Sulman
+//  Author: Robert Scheller, Ben Sulman, Melissa Lucash
 
 using Edu.Wisc.Forest.Flel.Util;
 using Landis.Core;
@@ -644,21 +644,24 @@ namespace Landis.Extension.Succession.Century
         private static double calculateWater_Limit(ActiveSite site, IEcoregion ecoregion, ISpecies species)
         {
 
-            double pptprd = 0.0;
-            double waterContent = EcoregionData.FieldCapacity[ecoregion] - EcoregionData.WiltingPoint[ecoregion];
-
-            double tmoist = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month]; //rain + irract;
+            // Ratio_AvailWaterToPET used to be pptprd and WaterLimit used to be pprdwc
+            double Ratio_AvailWaterToPET = 0.0;
+            double waterContent = EcoregionData.FieldCapacity[ecoregion] - EcoregionData.WiltingPoint[ecoregion];  // Difference between two fractions (FC - WP), not the actual water content, per se.
+            double tmin = EcoregionData.AnnualWeather[ecoregion].MonthlyMinTemp[Century.Month];
+            
+            double H2Oinputs = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[Century.Month]; //rain + irract;
             
             double pet = EcoregionData.AnnualWeather[ecoregion].MonthlyPET[Century.Month];
-
+            //PlugIn.ModelCore.UI.WriteLine("pet={0}, waterContent={1}, precip={2}.", pet, waterContent, H2Oinputs);
+            
             if (pet >= 0.01)
             {   //       Trees are allowed to access the whole soil profile -rm 2/97
                 //         pptprd = (avh2o(1) + tmoist) / pet
-                pptprd = (SiteVars.AvailableWater[site] + tmoist) / pet;
-                //pptprd = SiteVars.AvailableWater[site] / pet;
-                
+               // pptprd = (SiteVars.AvailableWater[site] + H2Oinputs) / pet;  
+                Ratio_AvailWaterToPET = (SiteVars.AvailableWater[site] / pet);  //Modified by ML so that we weren't double-counting precip as in above equation
+                //PlugIn.ModelCore.UI.WriteLine("RatioAvailWaterToPET={0}, AvailableWater={1}.", Ratio_AvailWaterToPET, SiteVars.AvailableWater[site]);            
             }
-            else pptprd = 0.01;
+            else Ratio_AvailWaterToPET = 0.01;
 
             //...The equation for the y-intercept (intcpt) is A+B*WC.  A and B
             //     determine the effect of soil texture on plant production based
@@ -678,16 +681,18 @@ namespace Landis.Extension.Succession.Century
 
             double intcpt = pprpts1 + (pprpts2 * waterContent);
             double slope  = 1.0 / (pprpts3 - intcpt);
-            double pprdwc = 1.0 + slope * (pptprd - pprpts3);
+            
+            double WaterLimit = 1.0 + slope * (Ratio_AvailWaterToPET - pprpts3);
+              
+            if (WaterLimit > 1.0)  WaterLimit = 1.0;
+            if (WaterLimit < 0.01) WaterLimit = 0.01;
 
-            if (pprdwc > 1.0)  pprdwc = 1.0;
-            if (pprdwc < 0.01) pprdwc = 0.01;
+            //PlugIn.ModelCore.UI.WriteLine("Intercept={0}, Slope={1}, WaterLimit={2}.", intcpt, slope, WaterLimit);     
 
-            //PlugIn.ModelCore.UI.WriteLine("Yr={0}, AvailH20={1:0.0}, MonthlyPPT={2:0.0}, PET={3:0.0}, PPTPRD={4:0.0}, Limit={6:0.0}.", PlugIn.ModelCore.CurrentTime, SiteVars.AvailableWater[site],tmoist, pet,pptprd,pprdwc);
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 Outputs.CalibrateLog.Write("{0:0.00}, ", SiteVars.AvailableWater[site]);
 
-            return pprdwc;
+            return WaterLimit;
         }
 
 
