@@ -68,7 +68,7 @@ namespace Landis.Extension.Succession.Century
             double drain = EcoregionData.Drain[ecoregion];
            
                       
-            //...Calculating snow pack first. Occurs when mean monthly air temperature is below freezing,
+            //...Calculating snow pack first. Occurs when mean monthly air temperature is equal to or below freezing,
             //     precipitation is in the form of snow.
             
             if (tmin <= 0.0) // Use tmin to dictate whether it snows or rains. 
