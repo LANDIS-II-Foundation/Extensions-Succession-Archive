@@ -84,8 +84,7 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.UI.WriteLine("Let it rain and add it to soil! rain={0}, soilWaterContent={1}.", H2Oinputs, soilWaterContent);
             }
 
-            //...Then melt snow if there is snow on the ground and air temperature (tmax) is above minimum.
-            
+            //...Then melt snow if there is snow on the ground and air temperature (tmax) is above minimum.            
             if (liquidSnowpack > 0.0 && tmax > 0.0)
             {
                 //...Calculate the amount of snow to melt:
@@ -109,7 +108,6 @@ namespace Landis.Extension.Succession.Century
             
             //...Evaporate water from the snow pack (rewritten by Pulliam 9/94)
                   //...Coefficient 0.87 relates to heat of fusion for ice vs. liquid water
-
             if (liquidSnowpack > 0.0)
             {
                 //...Calculate cm of snow that remaining pet energy can evaporate:
@@ -201,10 +199,10 @@ namespace Landis.Extension.Succession.Century
             //PlugIn.ModelCore.UI.WriteLine("Water Leaches. baseflow={0}.", baseFlow);
             
             //Calculate the amount of available water after all the evapotranspiration and leaching has taken place (minimum available water)           
-            availableWaterMin = Math.Min(soilWaterContent - waterEmpty,0);
+            availableWaterMin = Math.Min(soilWaterContent - waterEmpty,0.0);
 
             //Calculate the final amount of available water to the trees, which is the average of the max and min          
-            availableWater = (availableWaterMax + availableWaterMin)/ 2;
+            availableWater = (availableWaterMax + availableWaterMin)/ 2.0;
                         
             //// Compute the ratio of precipitation to PET
             double ratioPrecipPET = 0.0;
