@@ -74,7 +74,7 @@
 
 ; #define LandisDeployDir    GetEnv("LANDIS_DEPLOY")
 ; #define LandisDeployDir    "J:\Scheller\LANDIS-II\deploy"
-#define LandisDeployDir    "C:\Users\lucash\Documents\LANDIS_Code\Century_Code\deploy"
+#define LandisDeployDir    "C:\Users\lucash\Documents\LANDIS_Code\Century_Code\trunk\deploy"
 #define LandisInstallDir   "C:\Program Files\LANDIS-II"
 #define LandisBinDir       LandisInstallDir + "\v6\bin"
 #define LandisPlugInDir    LandisInstallDir + "\plug-ins"
