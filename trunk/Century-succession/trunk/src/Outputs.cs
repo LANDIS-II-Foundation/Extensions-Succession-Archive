@@ -438,7 +438,8 @@ namespace Landis.Extension.Succession.Century
             double[] avgNEE = new double[PlugIn.ModelCore.Ecoregions.Count];
 
             double[] Ndep = new double[PlugIn.ModelCore.Ecoregions.Count];
- 
+            double[] StreamN = new double[PlugIn.ModelCore.Ecoregions.Count];
+             
             
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
@@ -448,6 +449,7 @@ namespace Landis.Extension.Succession.Century
                 avgResp[ecoregion.Index] = 0.0;
                 avgNEE[ecoregion.Index] = 0.0;
                 Ndep[ecoregion.Index] = 0.0;
+                StreamN[ecoregion.Index] = 0.0;
             }
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
@@ -464,6 +466,7 @@ namespace Landis.Extension.Succession.Century
                 SiteVars.AnnualNEE[site] += SiteVars.MonthlyNEE[site][month];
 
                 Ndep[ecoregion.Index] = EcoregionData.MonthlyNDeposition[ecoregion][month];
+                StreamN[ecoregion.Index] += SiteVars.MonthlyStreamN[site][month];
 
             }
             
@@ -488,6 +491,7 @@ namespace Landis.Extension.Succession.Century
                     ml.avgResp = (avgResp[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.avgNEE = (avgNEE[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.Ndep = Ndep[ecoregion.Index];
+                    ml.StreamN = StreamN[ecoregion.Index];
 
                     monthlyLog.AddObject(ml);
                     monthlyLog.WriteToFile();

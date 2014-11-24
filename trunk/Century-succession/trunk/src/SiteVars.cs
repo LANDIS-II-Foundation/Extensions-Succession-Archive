@@ -69,6 +69,7 @@ namespace Landis.Extension.Succession.Century
         private static ISiteVar<double[]> monthlyAGNPPC;
         private static ISiteVar<double[]> monthlyBGNPPC;
         private static ISiteVar<double[]> monthlyNEE;
+        private static ISiteVar<double[]> monthlyStreamN;
         public static ISiteVar<double> AnnualNEE;
         public static ISiteVar<double> FireCEfflux;
         public static ISiteVar<double> FireNEfflux;
@@ -137,6 +138,7 @@ namespace Landis.Extension.Succession.Century
             monthlyAGNPPC       = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             monthlyBGNPPC       = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             monthlyNEE          = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
+            monthlyStreamN      = PlugIn.ModelCore.Landscape.NewSiteVar<double[]>();
             AnnualNEE           = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             FireCEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
             FireNEfflux         = PlugIn.ModelCore.Landscape.NewSiteVar<double>();
@@ -195,6 +197,7 @@ namespace Landis.Extension.Succession.Century
                 monthlyAGNPPC[site]           = new double[12];
                 monthlyBGNPPC[site]           = new double[12];
                 monthlyNEE[site]            = new double[12];
+                monthlyStreamN[site]         = new double[12];
                 monthlyResp[site]           = new double[12];
                 //monthlymineralN[site]       = new double[12];
 
@@ -793,6 +796,22 @@ namespace Landis.Extension.Succession.Century
             }
         }
         //---------------------------------------------------------------------
+        /// <summary>
+        /// A summary of N leaching
+        /// </summary>
+        public static ISiteVar<double[]> MonthlyStreamN
+        {
+            get
+            {
+                return monthlyStreamN;
+            }
+            set
+            {
+                monthlyStreamN = value;
+            }
+        }
+        
+        //---------------------------------------------------------------------
 
         /// <summary>
         /// Water loss
@@ -858,5 +877,6 @@ namespace Landis.Extension.Succession.Century
 
         }
     }
+
 }
  

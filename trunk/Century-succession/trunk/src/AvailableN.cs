@@ -235,7 +235,7 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         public static double CalculateCohortNDemand(ISpecies species, ActiveSite site, ICohort cohort, double[] ANPP)
         {            
-            if(ANPP[0] <= 0.0 && ANPP[1] <= 0.0)
+            if(ANPP[1] <= 0.0)
                 return 0.0;
                 //return 0.01;
              

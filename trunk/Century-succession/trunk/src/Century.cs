@@ -75,6 +75,7 @@ namespace Landis.Extension.Succession.Century
                     SiteVars.MonthlyBGNPPcarbon[site][Month] = 0.0;
                     SiteVars.MonthlyNEE[site][Month] = 0.0;
                     SiteVars.MonthlyResp[site][Month] = 0.0;
+                    SiteVars.MonthlyStreamN[site][Month] = 0.0;
                     SiteVars.SourceSink[site].Carbon = 0.0;
                     SiteVars.TotalWoodBiomass[site] = Century.ComputeWoodBiomass((ActiveSite) site);
                     //SiteVars.LAI[site] = Century.ComputeLAI((ActiveSite)site);

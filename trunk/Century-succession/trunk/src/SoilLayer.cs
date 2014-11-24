@@ -139,6 +139,8 @@ namespace Landis.Extension.Succession.Century
 
                         double leachTextureEffect = OtherData.OMLeachIntercept + OtherData.OMLeachSlope * EcoregionData.PercentSand[ecoregion];
                        cLeached = netCFlow * leachTextureEffect;
+
+                       //PlugIn.ModelCore.UI.WriteLine("DOC Leaching. leachTextureEffect={0:0.0}, netCFlow={1:0.0}, cLeached={2:0.00}, watermovement={2:0.00}", leachTextureEffect, netCFlow, cLeached, SiteVars.WaterMovement[site]);         
                 
                         //Partition and schedule C flows 
                         SiteVars.SOM1soil[site].TransferCarbon(SiteVars.Stream[site], cLeached);
@@ -147,10 +149,14 @@ namespace Landis.Extension.Succession.Century
                         // Need to use the ratio for som1 for organic leaching
                         double ratioCN_SOM1soil = som1c_soil / SiteVars.SOM1soil[site].Nitrogen;
                         double orgflow = cLeached / ratioCN_SOM1soil;
-                        
+
                         SiteVars.SOM1soil[site].Nitrogen -= orgflow; 
                         SiteVars.Stream[site].Nitrogen += orgflow;
-                        //PlugIn.ModelCore.UI.WriteLine("IfWaterMoves.  MineralN={0:0.00}.", SiteVars.MineralN[site]);
+                        //PlugIn.ModelCore.UI.WriteLine("DON Leaching. ratioCN_SOM1soil={0:0.00}, DON={1:0.00}.", ratioCN_SOM1soil, orgflow);
+
+                        SiteVars.MonthlyStreamN[site][Century.Month] += orgflow;
+
+                        //PlugIn.ModelCore.UI.WriteLine("DON Leaching. totalNLeach={0:0.0}, MineralN={1:0.00}", totalNleached, SiteVars.MineralN[site]);         
 
                     }
 
