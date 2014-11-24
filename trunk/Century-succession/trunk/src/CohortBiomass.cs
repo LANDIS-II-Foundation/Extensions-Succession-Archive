@@ -44,11 +44,14 @@ namespace Landis.Extension.Succession.Century
         /// </summary>
         public float[] ComputeChange(ICohort cohort, ActiveSite site)
         {
+            //PlugIn.ModelCore.UI.WriteLine("What Month is it really?  Month={0:0.0},", Century.Month);
+            
             ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
             // First call to the Calibrate Log:
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 Outputs.CalibrateLog.Write("{0}, {1}, {2}, {3}, {4}, {5:0.0}, {6:0.0}, ", PlugIn.ModelCore.CurrentTime, Century.Month + 1, ecoregion.Index, cohort.Species.Name, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);
+           
 
             double siteBiomass = Century.ComputeLivingBiomass(SiteVars.Cohorts[site]);
 
@@ -103,43 +106,7 @@ namespace Landis.Extension.Succession.Century
                 defoliation = 0.0;
                 defoliatedLeafBiomass = 0.0;
             }
-
-
-           // double totalNdemand = AvailableN.CalculateCohortNDemand(cohort.Species, site, actualANPP);
-           // double adjNdemand = totalNdemand;
-           // double resorbedNused = 0.0;
-           // double mineralNused = 0.0;
-
-           // // Treat Resorbed N first and only if it is spring time.  // TESTING: ALLOW TREES TO RESORB CONTINUOUSLY
-           ////if (Century.Month > 2 && Century.Month < 6)
-           // {
-           //     double resorbedNallocation = Math.Max(0.0, AvailableN.GetResorbedNallocation(cohort));
-
-           //     resorbedNused = resorbedNallocation - Math.Max(0.0, resorbedNallocation - totalNdemand);
-
-           //     AvailableN.SetResorbedNallocation(cohort, Math.Max(0.0, resorbedNallocation - totalNdemand));
-
-           //     adjNdemand = Math.Max(0.0, totalNdemand - resorbedNallocation);
-           // }
-
-           // // Reduce available N after taking into account that some N may have been provided
-           // // via resorption (above).
-           // double Nuptake = 0.0;
-           // if (SiteVars.MineralN[site] >= adjNdemand)
-           // {
-           //         SiteVars.MineralN[site] -= adjNdemand;
-           //         mineralNused = adjNdemand;
-           //         Nuptake = adjNdemand;
-           // }
-           // else
-           // {
-           //         double NdemandAdjusted = SiteVars.MineralN[site];
-           //         mineralNused = SiteVars.MineralN[site];
-           //         SiteVars.MineralN[site] = 0.0;
-
-           //         Nuptake = SiteVars.MineralN[site];
-           // }
-           // SiteVars.TotalNuptake[site] += Nuptake;
+                                   
 
             if (totalMortality[0] <= 0.0 || cohort.WoodBiomass <= 0.0)
                 totalMortality[0] = 0.0;
@@ -264,9 +231,7 @@ namespace Landis.Extension.Succession.Century
                 Outputs.CalibrateLog.Write("{0}, {1}, {2}, {3:0.0}, {4:0.0}, ", maxNPP, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", woodNPP, leafNPP);
             }
-
-
-
+                        
             return new double[2]{woodNPP, leafNPP};
 
         }
@@ -386,7 +351,7 @@ namespace Landis.Extension.Succession.Century
 
             if(mortality_nonwood > 0.0)
             {
-                AvailableN.AddResorbedN(cohort, totalMortality[1], site); //ignoring input from scorching, which is rare, but not resorbed.
+                AvailableN.AddResorbedN(cohort, totalMortality[1], site); //ignoring input from scorching, which is rare, but not resorbed.             
                 ForestFloor.AddResorbedFoliageLitter(mortality_nonwood, cohort.Species, site);
                 Roots.AddFineRootLitter(mortality_nonwood, cohort, cohort.Species, site);
             }
@@ -478,16 +443,13 @@ namespace Landis.Extension.Succession.Century
 
             //Get Cohort Mineral and Resorbed N allocation.
             double mineralNallocation = AvailableN.GetMineralNallocation(cohort);
-                       //if (Century.Month > 2 && Century.Month < 6)
             double resorbedNallocation = AvailableN.GetResorbedNallocation(cohort, site);
 
-            double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);
-            //double WoodNPP = NPP * (1.0 - leafFractionNPP);
-            double WoodNPP = NPP - LeafNPP;
-
-            //double FineRootNPP = LeafNPP * 0.75;
-            //double CoarseRootNPP = WoodNPP * 0.75;
-
+            //double LeafNPP = Math.Max(NPP * leafFractionNPP, 0.002 * cohort.WoodBiomass);  This allowed for Ndemand in winter when there was no leaf NPP
+            double LeafNPP = (NPP * leafFractionNPP);
+            
+            double WoodNPP = NPP * (1.0 - leafFractionNPP); 
+         
             double limitN = 0.0;
             if (SpeciesData.NFixer[cohort.Species])
                 limitN = 1.0;  // No limit for N-fixing shrubs
@@ -495,18 +457,17 @@ namespace Landis.Extension.Succession.Century
             {
                 // Divide allocation N by N demand here:
                 //PlugIn.ModelCore.UI.WriteLine("  WoodNPP={0:0.00}, LeafNPP={1:0.00}, FineRootNPP={2:0.00}, CoarseRootNPP={3:0.00}.", WoodNPP, LeafNPP);
-                //PlugIn.ModelCore.UI.WriteLine("Calculate Demand for Nitrogen now");
-                double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, cohort, new double[] { WoodNPP, LeafNPP})); 
+               double Ndemand = (AvailableN.CalculateCohortNDemand(cohort.Species, site, cohort, new double[] { WoodNPP, LeafNPP})); 
 
                 if (Ndemand > 0.0)
                 {
-                    limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);
-                    //PlugIn.ModelCore.UI.WriteLine("  mineralNallocation={0:0.00}, resorbedNallocation={1:0.00}, maximumNdemand={2:0.00}.", mineralNallocation, resorbedNallocation, Ndemand);
+                    limitN = Math.Min(1.0, (mineralNallocation + resorbedNallocation) / Ndemand);                   
 
                 }
                 else
-                    limitN = 1.0; // No demand means that it is a new or very small cohort.  Will allow it to grow anyways.
+                    limitN = 1.0; // No demand means that it is a new or very small cohort.  Will allow it to grow anyways.                
             }
+            
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
                 Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", mineralNallocation, resorbedNallocation);
