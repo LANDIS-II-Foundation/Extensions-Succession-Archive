@@ -43,8 +43,7 @@ namespace Landis.Extension.Succession.Century
         /// related mortality (M_BIO).
         /// </summary>
         public float[] ComputeChange(ICohort cohort, ActiveSite site)
-        {
-            //PlugIn.ModelCore.UI.WriteLine("What Month is it really?  Month={0:0.0},", Century.Month);
+        {           
             
             ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
