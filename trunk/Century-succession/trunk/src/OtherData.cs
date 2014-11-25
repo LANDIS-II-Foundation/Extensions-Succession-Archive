@@ -102,21 +102,26 @@ namespace Landis.Extension.Succession.Century
         // out of water layer 2 to produce leaching of organics.
         // OMLECH(3):  web site says 1.9; ffix.100 file says 60.0 ???
         // website:  http://nrel.colostate.edu/projects/century5/reference/html/Century/param-fixed.htm
+        //public const double OMLeachWater   = 1.9;                      // Century:  OMLECH(3)  No longer used.
         //public const double OMLeachSlope       = 0.12;                  // Century:  OMLECH(2)
         //public const double OMLeachIntercept   = 0.03;                  // Century:  OMLECH(1)
-        public const double OMLeachSlope = -0.2;                  // Century:  OMLECH(2)
-        public const double OMLeachIntercept = 1.0;                  // Century:  OMLECH(1)
-        public const double OMLeachWater   = 1.9;                      // Century:  OMLECH(3)
+        //public const double OMLeachSlope = -0.2;                  //Modified by ML 
+        //public const double OMLeachIntercept = 1.0;                  // Modified by ML
+        public const double OMLeachSlope = 0.25;                  // Adjusted after SoilWater was revamped in 11/2014
+        public const double OMLeachIntercept = 0.0;                  // No leaching when there's no sand.  Adjusted after SoilWater was revamped in 11/2014
+        
 
         // FLEACH(1 & 2) Parameters for the effect of sand on leaching of mineral N compounds. 
         // FLEACH(3) - The amount of water in centimeters (cm) that needs to flow
         // out of water layer 2 to produce leaching of organics.
        // website:  http://nrel.colostate.edu/projects/century5/reference/html/Century/param-fixed.htm
-        public const double MineralLeachSlope = 0.4;                  // Century:  FLEACH(2)
-        public const double MineralLeachIntercept = 0.6;                  // Century:  FLEACH(1)
-       //public const double NfracLeachWater = 0.95;                      // Century:  FLEACH(3) Value used before ML made changes in SoilWater.cs 
-        public const double NfracLeachWater = 0.25;                      // Century:  FLEACH(3)
-        public const double NO3frac = 0.1;                      // Relative fraction of NO3 since NH4 isn't leached, based on Dighton at al 2004 in NJPB
+        
+        //public const double MineralLeachIntercept = 0.6;                  // Century:  FLEACH(1). 
+        //public const double NfracLeachWater = 0.95;                      // Century:  FLEACH(3) Value used before ML made changes in SoilWater.cs 
+        public const double MineralLeachSlope = 0.05;                  // Modified parameter so DIN leaching was the correct order of magnitude
+        public const double MineralLeachIntercept = 0.0;                  // Reduced intercept so no leaching now when percent sand = 0
+        //public const double NfracLeachWater = 0.25;                      // Reduced the fraction of NH4 leaching
+        public const double NO3frac = 0.15;                      // Ratio of export to available N based on HBEF N budget
                        
         // SPL:  Parameter for metabolic (vs. structural) split.
         public const double MetaStructSplitIntercept   = 0.85;         // Century:  SPL(1)
