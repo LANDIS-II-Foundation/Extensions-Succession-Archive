@@ -49,7 +49,7 @@ namespace Landis.Extension.Succession.Century
 
             // First call to the Calibrate Log:
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0}, {1}, {2}, {3}, {4}, {5:0.0}, {6:0.0}, ", PlugIn.ModelCore.CurrentTime, Century.Month + 1, ecoregion.Index, cohort.Species.Name, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);
+                Outputs.CalibrateLog.Write("{0},{1},{2},{3},{4},{5:0.0},{6:0.0},", PlugIn.ModelCore.CurrentTime, Century.Month + 1, ecoregion.Index, cohort.Species.Name, cohort.Age, cohort.WoodBiomass, cohort.LeafBiomass);
            
 
             double siteBiomass = Century.ComputeLivingBiomass(SiteVars.Cohorts[site]);
@@ -144,7 +144,7 @@ namespace Landis.Extension.Succession.Century
 
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
+                Outputs.CalibrateLog.WriteLine("{0:0.00},{1:0.00},{2:0.00},{3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
                 //Outputs.CalibrateLog.WriteLine("{0:0.00}, {1:0.00}, {2:0.00}", resorbedNused, mineralNused, totalNdemand);
             }
 
@@ -226,9 +226,9 @@ namespace Landis.Extension.Succession.Century
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
             {
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00}, {4:0.00}, ", limitLAI, limitH20, limitT, limitCapacity, limitN);
-                Outputs.CalibrateLog.Write("{0}, {1}, {2}, {3:0.0}, {4:0.0}, ", maxNPP, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", woodNPP, leafNPP);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},{2:0.00},{3:0.00},{4:0.00},", limitLAI, limitH20, limitT, limitCapacity, limitN);
+                Outputs.CalibrateLog.Write("{0},{1},{2},{3:0.0},{4:0.0},", maxNPP, maxBiomass, (int)siteBiomass, (cohort.WoodBiomass + cohort.LeafBiomass), SiteVars.SoilTemperature[site]);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},", woodNPP, leafNPP);
             }
                         
             return new double[2]{woodNPP, leafNPP};
@@ -275,7 +275,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", M_AGE_wood, M_AGE_leaf);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},", M_AGE_wood, M_AGE_leaf);
 
 
             return M_AGE;
@@ -321,7 +321,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", M_wood, M_leaf);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},", M_wood, M_leaf);
 
             SiteVars.WoodMortality[site] += (M_wood);
 
@@ -428,7 +428,7 @@ namespace Landis.Extension.Succession.Century
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
             {
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", NPPwood, NPPleaf);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},", NPPwood, NPPleaf);
 
             }
 
@@ -469,7 +469,7 @@ namespace Landis.Extension.Succession.Century
             
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, ", mineralNallocation, resorbedNallocation);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},", mineralNallocation, resorbedNallocation);
 
             return Math.Max(limitN, 0.0);
         }
@@ -575,7 +575,7 @@ namespace Landis.Extension.Succession.Century
             }
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, ", lai, tlai, rlai);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},{2:0.00},", lai, tlai, rlai);
 
 
             //PlugIn.ModelCore.UI.WriteLine("Yr={0},Mo={1}. Spp={2}, leafC={3:0.0}, woodC={4:0.00}.", PlugIn.ModelCore.CurrentTime, month + 1, species.Name, leafC, largeWoodC);
@@ -650,7 +650,7 @@ namespace Landis.Extension.Succession.Century
             //PlugIn.ModelCore.UI.WriteLine("Intercept={0}, Slope={1}, WaterLimit={2}.", intcpt, slope, WaterLimit);     
 
             if (PlugIn.ModelCore.CurrentTime > 0 && OtherData.CalibrateMode)
-                Outputs.CalibrateLog.Write("{0:0.00}, ", SiteVars.AvailableWater[site]);
+                Outputs.CalibrateLog.Write("{0:0.00},", SiteVars.AvailableWater[site]);
 
             return WaterLimit;
         }

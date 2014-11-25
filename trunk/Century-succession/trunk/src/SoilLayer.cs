@@ -126,7 +126,7 @@ namespace Landis.Extension.Succession.Century
 
                     double cLeached = 0.0;  // Carbon leached to a stream
                     
-                    if(SiteVars.WaterMovement[site] > 0.0)  //index of water movement that indicates saturation (amov)
+                    if(SiteVars.WaterMovement[site] > 0.0)  //Volume of water moving-ML.  Used to be an index of water movement that indicates saturation (amov)
                     {
                         //ML deleted the linten function which was poorly described in the Century manual.  
                         //double leachTextureEffect = OtherData.OMLeachIntercept + OtherData.OMLeachSlope * EcoregionData.PercentSand[ecoregion];
@@ -134,10 +134,11 @@ namespace Landis.Extension.Succession.Century
                         //cLeached = netCFlow * leachTextureEffect * linten;
 
                         double leachTextureEffect = OtherData.OMLeachIntercept + OtherData.OMLeachSlope * EcoregionData.PercentSand[ecoregion];
-                       cLeached = netCFlow * leachTextureEffect;
 
-                       //PlugIn.ModelCore.UI.WriteLine("DOC Leaching. leachTextureEffect={0:0.0}, netCFlow={1:0.0}, cLeached={2:0.00}, watermovement={2:0.00}", leachTextureEffect, netCFlow, cLeached, SiteVars.WaterMovement[site]);         
-                
+                        double indexWaterMovement = SiteVars.WaterMovement[site] / (EcoregionData.SoilDepth[ecoregion] * EcoregionData.FieldCapacity[ecoregion]);
+                                              
+                        cLeached = netCFlow * leachTextureEffect * indexWaterMovement;
+                                                                        
                         //Partition and schedule C flows 
                         SiteVars.SOM1soil[site].TransferCarbon(SiteVars.Stream[site], cLeached);
 

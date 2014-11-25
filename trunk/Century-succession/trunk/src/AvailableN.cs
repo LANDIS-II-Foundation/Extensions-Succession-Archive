@@ -329,7 +329,7 @@ namespace Landis.Extension.Succession.Century
             if (OtherData.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
                 //Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00}, {3:0.00},", deltaWood, deltaLeaf, totalMortality[0], totalMortality[1]);
-                Outputs.CalibrateLog.Write("{0:0.00}, {1:0.00}, {2:0.00},", resorbedNused, Nuptake, totalNdemand);
+                Outputs.CalibrateLog.Write("{0:0.00},{1:0.00},{2:0.00},", resorbedNused, Nuptake, totalNdemand);
             }
 
         }

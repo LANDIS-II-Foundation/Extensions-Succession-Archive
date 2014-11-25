@@ -401,9 +401,8 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.UI.WriteLine("amtNLeach={0:0.0}, textureEffect={1:0.0}, waterMove={2:0.0}, MineralN={3:0.00}", amtNLeached, textureEffect, waterMove, SiteVars.MineralN[site]);      
             }        
             
-
             double totalNleached = (baseFlow * amtNLeached) + (stormFlow * amtNLeached);
-            
+                        
             SiteVars.MineralN[site] -= totalNleached;
             //PlugIn.ModelCore.UI.WriteLine("AfterSoilWaterLeaching. totalNLeach={0:0.0}, MineralN={1:0.00}", totalNleached, SiteVars.MineralN[site]);         
 

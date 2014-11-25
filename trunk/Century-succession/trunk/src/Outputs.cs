@@ -100,7 +100,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgWoodMortality = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             double[] avgMineralN    = new double[PlugIn.ModelCore.Ecoregions.Count];
-            double[] avgGrossMin    = new double[PlugIn.ModelCore.Ecoregions.Count];
+            double[] avgGrossMin    = new double[PlugIn.ModelCore.Ecoregions.Count];            
             double[] avgTotalN      = new double[PlugIn.ModelCore.Ecoregions.Count];
             
             double[] avgCohortLeafC = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -147,6 +147,7 @@ namespace Landis.Extension.Succession.Century
             double[] avgSOM2NetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgSOM3NetMin = new double[PlugIn.ModelCore.Ecoregions.Count];
 
+            //double[] avgNDeposition = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgStreamC = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgStreamN = new double[PlugIn.ModelCore.Ecoregions.Count];
             double[] avgFireCEfflux = new double[PlugIn.ModelCore.Ecoregions.Count];
@@ -220,6 +221,7 @@ namespace Landis.Extension.Succession.Century
                 avgSOM2NetMin[ecoregion.Index] = 0.0;
                 avgSOM3NetMin[ecoregion.Index] = 0.0;
 
+                //avgNDeposition[ecoregion.Index] = 0.0;
                 avgStreamC[ecoregion.Index] = 0.0;
                 avgStreamN[ecoregion.Index] = 0.0;
                 avgFireCEfflux[ecoregion.Index] = 0.0;
@@ -294,8 +296,9 @@ namespace Landis.Extension.Succession.Century
                 avgSOM1surfNetMin[ecoregion.Index] += SiteVars.SOM1surface[site].NetMineralization; 
                 avgSOM1soilNetMin[ecoregion.Index] += SiteVars.SOM1soil[site].NetMineralization; 
                 avgSOM2NetMin[ecoregion.Index]     += SiteVars.SOM2[site].NetMineralization; 
-                avgSOM3NetMin[ecoregion.Index]     += SiteVars.SOM3[site].NetMineralization; 
-                
+                avgSOM3NetMin[ecoregion.Index]     += SiteVars.SOM3[site].NetMineralization;
+
+                //avgNDeposition[ecoregion.Index] = EcoregionData.AnnualNDeposition[ecoregion];
                 avgStreamC[ecoregion.Index] += SiteVars.Stream[site].Carbon;
                 avgStreamN[ecoregion.Index] += SiteVars.Stream[site].Nitrogen; //+ SiteVars.NLoss[site];
                 avgFireCEfflux[ecoregion.Index] += SiteVars.FireCEfflux[site];
@@ -343,7 +346,8 @@ namespace Landis.Extension.Succession.Century
                     //log.Write("{0:0.0}, {1:0.0}, {2:0.0}, ", 
                     pl.MineralN =    (avgMineralN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.TotalN =    (avgTotalN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
-                    pl.GrossMineralization = (avgGrossMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.GrossMineralization = (avgGrossMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.NitrogenDeposition = (avgGrossMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
                     //log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
                     pl.C_Leaf =    (avgCohortLeafC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
@@ -398,6 +402,7 @@ namespace Landis.Extension.Succession.Century
                    pl.SOM3NetMin = (avgSOM3NetMin[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
                     //log.Write("{0:0.0000}, {1:0.0000}, {2:0.000}, {3:0.0}, ",
+                   //pl.NitrogenDeposition = (EcoregionData.AnnualNDeposition[ecoregion] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                    pl.StreamC =     (avgStreamC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                    pl.StreamN = (avgStreamN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                    pl.FireCEfflux = (avgFireCEfflux[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);

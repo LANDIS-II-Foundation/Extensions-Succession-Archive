@@ -169,7 +169,10 @@ namespace Landis.Extension.Succession.Century
 
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "SOM3 Net Mineralization", Format = "0.0")]
         public double SOM3NetMin { get; set; }
-        
+
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Nitrogen Deposition", Format = "0.0")]
+        public double NitrogenDeposition { get; set; }
+
         //log.Write("StreamC, StreamN, FireCEfflux, FireNEfflux, ");
         [DataFieldAttribute(Unit = FieldUnits.g_C, Desc = "Stream C", Format = "0.0")]
         public double StreamC { get; set; }
@@ -193,7 +196,7 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Total Soil N", Format = "0.0")]
         public double TotalSoilN { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "N Volatalized", Format = "0.0")]
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "N Volatilized", Format = "0.0")]
         public double Nvol { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Frass C", Format = "0.0")]
