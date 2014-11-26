@@ -130,143 +130,142 @@ namespace Landis.Extension.Succession.Century
             if (PlugIn.ModelCore.CurrentTime > 0)
                     SiteVars.InitializeDisturbances();
 
-            //EcoregionData.SetAllEcoregions_FutureAnnualClimate(PlugIn.modelCore.CurrentTime); //TESTING
-
             // Update Pest only once.
             SpeciesData.EstablishProbability = Establishment.GenerateNewEstablishProbabilities(Timestep);
+            EcoregionData.AnnualNDeposition = new Ecoregions.AuxParm<double>(PlugIn.ModelCore.Ecoregions);
 
             base.RunReproductionFirst();
 
-                // Write monthly log file:
-                // Output must reflect the order of operation:
-                int[] months = new int[12] { 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5 };
+            // Write monthly log file:
+            // Output must reflect the order of operation:
+            int[] months = new int[12] { 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5 };
 
-                if (OtherData.CalibrateMode)
-                    months = new int[12] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+            if (OtherData.CalibrateMode)
+                months = new int[12] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
-                for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 12; i++)
+            {
+                int month = months[i];
+                Outputs.WriteMonthlyLogFile(month);
+            }
+            Outputs.WritePrimaryLogFile(PlugIn.ModelCore.CurrentTime);
+
+            if (SoilCarbonMapNames != null)// && (PlugIn.ModelCore.CurrentTime % SoilCarbonMapFrequency) == 0)
+            {
+                string path = MapNames.ReplaceTemplateVars(SoilCarbonMapNames, PlugIn.ModelCore.CurrentTime);
+                using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path, modelCore.Landscape.Dimensions))
                 {
-                    int month = months[i];
-                    Outputs.WriteMonthlyLogFile(month);
-                }
-                Outputs.WritePrimaryLogFile(PlugIn.ModelCore.CurrentTime);
-
-                if (SoilCarbonMapNames != null)// && (PlugIn.ModelCore.CurrentTime % SoilCarbonMapFrequency) == 0)
-                {
-                    string path = MapNames.ReplaceTemplateVars(SoilCarbonMapNames, PlugIn.ModelCore.CurrentTime);
-                    using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path, modelCore.Landscape.Dimensions))
+                    IntPixel pixel = outputRaster.BufferPixel;
+                    foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
-                        IntPixel pixel = outputRaster.BufferPixel;
-                        foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                        if (site.IsActive)
                         {
-                            if (site.IsActive)
-                            {
-                                pixel.MapCode.Value = (int)((SiteVars.SOM1surface[site].Carbon + SiteVars.SOM1soil[site].Carbon + SiteVars.SOM2[site].Carbon + SiteVars.SOM3[site].Carbon));
-                            }
-                            else
-                            {
-                                //  Inactive site
-                                pixel.MapCode.Value = 0;
-                            }
-                            outputRaster.WriteBufferPixel();
+                            pixel.MapCode.Value = (int)((SiteVars.SOM1surface[site].Carbon + SiteVars.SOM1soil[site].Carbon + SiteVars.SOM2[site].Carbon + SiteVars.SOM3[site].Carbon));
                         }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.MapCode.Value = 0;
+                        }
+                        outputRaster.WriteBufferPixel();
                     }
                 }
+            }
 
-
-                if (SoilNitrogenMapNames != null)// && (PlugIn.ModelCore.CurrentTime % SoilNitrogenMapFrequency) == 0)
+            if (SoilNitrogenMapNames != null)// && (PlugIn.ModelCore.CurrentTime % SoilNitrogenMapFrequency) == 0)
+            {
+                string path2 = MapNames.ReplaceTemplateVars(SoilNitrogenMapNames, PlugIn.ModelCore.CurrentTime);
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
                 {
-                    string path2 = MapNames.ReplaceTemplateVars(SoilNitrogenMapNames, PlugIn.ModelCore.CurrentTime);
-                    using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path2, modelCore.Landscape.Dimensions))
+                    ShortPixel pixel = outputRaster.BufferPixel;
+                    foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
-                        ShortPixel pixel = outputRaster.BufferPixel;
-                        foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                        if (site.IsActive)
                         {
-                            if (site.IsActive)
-                            {
-                                pixel.MapCode.Value = (short)(SiteVars.MineralN[site]);
-                            }
-                            else
-                            {
-                                //  Inactive site
-                                pixel.MapCode.Value = 0;
-                            }
-                            outputRaster.WriteBufferPixel();
+                            pixel.MapCode.Value = (short)(SiteVars.MineralN[site]);
                         }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.MapCode.Value = 0;
+                        }
+                        outputRaster.WriteBufferPixel();
                     }
                 }
+            }
 
-                if (ANPPMapNames != null)// && (PlugIn.ModelCore.CurrentTime % ANPPMapFrequency) == 0)
+            if (ANPPMapNames != null)// && (PlugIn.ModelCore.CurrentTime % ANPPMapFrequency) == 0)
+            {
+                string path3 = MapNames.ReplaceTemplateVars(ANPPMapNames, PlugIn.ModelCore.CurrentTime);
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path3, modelCore.Landscape.Dimensions))
                 {
-                    string path3 = MapNames.ReplaceTemplateVars(ANPPMapNames, PlugIn.ModelCore.CurrentTime);
-                    using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path3, modelCore.Landscape.Dimensions))
+                    ShortPixel pixel = outputRaster.BufferPixel;
+                    foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
-                        ShortPixel pixel = outputRaster.BufferPixel;
-                        foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                        if (site.IsActive)
                         {
-                            if (site.IsActive)
-                            {
-                                pixel.MapCode.Value = (short)SiteVars.AGNPPcarbon[site];
-                            }
-                            else
-                            {
-                                //  Inactive site
-                                pixel.MapCode.Value = 0;
-                            }
-                            outputRaster.WriteBufferPixel();
+                            pixel.MapCode.Value = (short)SiteVars.AGNPPcarbon[site];
                         }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.MapCode.Value = 0;
+                        }
+                        outputRaster.WriteBufferPixel();
                     }
                 }
-                if (ANEEMapNames != null)// && (PlugIn.ModelCore.CurrentTime % ANEEMapFrequency) == 0)
-                {
+            }
+            if (ANEEMapNames != null)// && (PlugIn.ModelCore.CurrentTime % ANEEMapFrequency) == 0)
+            {
 
-                    string path4 = MapNames.ReplaceTemplateVars(ANEEMapNames, PlugIn.ModelCore.CurrentTime);
-                    using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path4, modelCore.Landscape.Dimensions))
+                string path4 = MapNames.ReplaceTemplateVars(ANEEMapNames, PlugIn.ModelCore.CurrentTime);
+                using (IOutputRaster<ShortPixel> outputRaster = modelCore.CreateRaster<ShortPixel>(path4, modelCore.Landscape.Dimensions))
+                {
+                    ShortPixel pixel = outputRaster.BufferPixel;
+                    foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
-                        ShortPixel pixel = outputRaster.BufferPixel;
-                        foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                        if (site.IsActive)
                         {
-                            if (site.IsActive)
-                            {
-                                pixel.MapCode.Value = (short)(SiteVars.AnnualNEE[site] + 1000);
-                            }
-                            else
-                            {
-                                //  Inactive site
-                                pixel.MapCode.Value = 0;
-                            }
-                            outputRaster.WriteBufferPixel();
+                            pixel.MapCode.Value = (short)(SiteVars.AnnualNEE[site] + 1000);
                         }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.MapCode.Value = 0;
+                        }
+                        outputRaster.WriteBufferPixel();
                     }
                 }
-                if (TotalCMapNames != null)// && (PlugIn.ModelCore.CurrentTime % TotalCMapFrequency) == 0)
-                {
+            }
+            if (TotalCMapNames != null)// && (PlugIn.ModelCore.CurrentTime % TotalCMapFrequency) == 0)
+            {
 
-                    string path5 = MapNames.ReplaceTemplateVars(TotalCMapNames, PlugIn.ModelCore.CurrentTime);
-                    using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path5, modelCore.Landscape.Dimensions))
+                string path5 = MapNames.ReplaceTemplateVars(TotalCMapNames, PlugIn.ModelCore.CurrentTime);
+                using (IOutputRaster<IntPixel> outputRaster = modelCore.CreateRaster<IntPixel>(path5, modelCore.Landscape.Dimensions))
+                {
+                    IntPixel pixel = outputRaster.BufferPixel;
+                    foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
                     {
-                        IntPixel pixel = outputRaster.BufferPixel;
-                        foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                        if (site.IsActive)
                         {
-                            if (site.IsActive)
-                            {
-                                pixel.MapCode.Value = (int)(Outputs.GetOrganicCarbon(site) +
-                                    SiteVars.CohortLeafC[site] +
-                                    SiteVars.CohortFRootC[site] +
-                                    SiteVars.CohortWoodC[site] +
-                                    SiteVars.CohortCRootC[site] +
-                                    SiteVars.SurfaceDeadWood[site].Carbon +
-                                    SiteVars.SoilDeadWood[site].Carbon);
-                            }
-                            else
-                            {
-                                //  Inactive site
-                                pixel.MapCode.Value = 0;
-                            }
-                            outputRaster.WriteBufferPixel();
+                            pixel.MapCode.Value = (int)(Outputs.GetOrganicCarbon(site) +
+                                SiteVars.CohortLeafC[site] +
+                                SiteVars.CohortFRootC[site] +
+                                SiteVars.CohortWoodC[site] +
+                                SiteVars.CohortCRootC[site] +
+                                SiteVars.SurfaceDeadWood[site].Carbon +
+                                SiteVars.SoilDeadWood[site].Carbon);
                         }
+                        else
+                        {
+                            //  Inactive site
+                            pixel.MapCode.Value = 0;
+                        }
+                        outputRaster.WriteBufferPixel();
                     }
                 }
+            }
+
 
         }
 
