@@ -45,7 +45,7 @@ namespace Landis.Extension.Succession.Century
         public double AgeMortality { get; set; }
         
         //log.Write("MineralN, TotalN, GrossMineralization, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Mineral N", Format = "0.0")]
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Mineral N", Format = "0.00")]
         public double MineralN { get; set; }
         
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Total N", Format = "0.0")]
@@ -55,10 +55,10 @@ namespace Landis.Extension.Succession.Century
         public double GrossMineralization { get; set; }
 
         //log.Write("C:LeafFRoot, C:WoodCRoot, C:DeadWood, C:DeadCRoot, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Leaf C", Format = "0.00")]
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Leaf C", Format = "0.0")]
         public double C_Leaf { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Fine Root C", Format = "0.00")]
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Fine Root C", Format = "0.0")]
         public double C_FRoot { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Wood C", Format = "0.0")]
@@ -170,14 +170,14 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "SOM3 Net Mineralization", Format = "0.0")]
         public double SOM3NetMin { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Nitrogen Deposition", Format = "0.0")]
-        public double NitrogenDeposition { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Nitrogen Deposition", Format = "0.00")]
+        public double Ndep { get; set; }
 
         //log.Write("StreamC, StreamN, FireCEfflux, FireNEfflux, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_C, Desc = "Stream C", Format = "0.0")]
+        [DataFieldAttribute(Unit = FieldUnits.g_C, Desc = "Stream C", Format = "0.00")]
         public double StreamC { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N, Desc = "Stream N", Format = "0.0")]
+        [DataFieldAttribute(Unit = FieldUnits.g_N, Desc = "Stream N", Format = "0.00")]
         public double StreamN { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Fire C Efflux", Format = "0.0")]
@@ -196,7 +196,7 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Total Soil N", Format = "0.0")]
         public double TotalSoilN { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "N Volatilized", Format = "0.0")]
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "N Volatilized", Format = "0.00")]
         public double Nvol { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Frass C", Format = "0.0")]

@@ -347,7 +347,7 @@ namespace Landis.Extension.Succession.Century
                     pl.MineralN =    (avgMineralN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.TotalN =    (avgTotalN[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                     pl.GrossMineralization = (avgGrossMin[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
-                    pl.NitrogenDeposition = (EcoregionData.AnnualNDeposition[ecoregion] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
+                    pl.Ndep = (EcoregionData.AnnualNDeposition[ecoregion] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
                         //);
                     //log.Write("{0:0.0}, {1:0.0}, {2:0.0}, {3:0.0}, ", 
                     pl.C_Leaf =    (avgCohortLeafC[ecoregion.Index] / (double) EcoregionData.ActiveSiteCount[ecoregion]);
