@@ -170,8 +170,8 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "SOM3 Net Mineralization", Format = "0.0")]
         public double SOM3NetMin { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Nitrogen Deposition", Format = "0.00")]
-        public double Ndep { get; set; }
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Total Nitrogen Deposition per Timestep", Format = "0.00")]
+        public double TotalNdep { get; set; }
 
         //log.Write("StreamC, StreamN, FireCEfflux, FireNEfflux, ");
         [DataFieldAttribute(Unit = FieldUnits.g_C, Desc = "Stream C", Format = "0.00")]
