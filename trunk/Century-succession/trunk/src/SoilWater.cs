@@ -55,7 +55,9 @@ namespace Landis.Extension.Succession.Century
             double liquidSnowpack = SiteVars.LiquidSnowPack[site];
 
             H2Oinputs = EcoregionData.AnnualWeather[ecoregion].MonthlyPrecip[month]; //rain + irract in cm;
+            //PlugIn.ModelCore.UI.WriteLine("SoilWater. WaterInputs={0:0.00}, .", H2Oinputs);
             tave = EcoregionData.AnnualWeather[ecoregion].MonthlyTemp[month];
+            //PlugIn.ModelCore.UI.WriteLine("SoilWater. AvgTemp={0:0.00}, .", tave);
             tmax = EcoregionData.AnnualWeather[ecoregion].MonthlyMaxTemp[month];
             tmin = EcoregionData.AnnualWeather[ecoregion].MonthlyMinTemp[month];
             pet = EcoregionData.AnnualWeather[ecoregion].MonthlyPET[month];
@@ -89,7 +91,7 @@ namespace Landis.Extension.Succession.Century
             {
                 //...Calculate the amount of snow to melt:
                 
-                double snowMeltFraction = (tmax * 0.05) + 0.024;//This equation assumes a linear increase in the fraction of snow that melts as a function of air temp.  
+                double snowMeltFraction = Math.Min((tmax * 0.05) + 0.024, 0.0);//This equation assumes a linear increase in the fraction of snow that melts as a function of air temp.  
                 //This relationship ultimately derives from http://www.nps.gov/yose/planyourvisit/climate.htm which described the relationship between snow melting and air temp.
                 //Documentation for the regression equation is in spreadsheet called WaterCalcs_v2.xls by M. Lucash
 
@@ -111,7 +113,7 @@ namespace Landis.Extension.Succession.Century
             if (liquidSnowpack > 0.0)
             {
                 //...Calculate cm of snow that remaining pet energy can evaporate:
-                double evaporatedSnow = pet * 0.87;
+                double evaporatedSnow = Math.Min(pet * 0.87, soilWaterContent);
 
                 //...Don't evaporate more snow than actually exists:
                 if (evaporatedSnow > liquidSnowpack)
@@ -137,7 +139,7 @@ namespace Landis.Extension.Succession.Century
             if (soilWaterContent > waterFull)
             {
 
-                waterMovement = (soilWaterContent - waterFull); // How much water should move during a storm event, which is based on how much water the soil can hold.
+                waterMovement = Math.Min((soilWaterContent - waterFull), 0.0); // How much water should move during a storm event, which is based on how much water the soil can hold.
                 soilWaterContent = waterFull;
                 
                 //...Compute storm flow.
@@ -181,7 +183,7 @@ namespace Landis.Extension.Succession.Century
                 actualET = remainingPET;
             else
             {
-                actualET = remainingPET * ((soilWaterContent - waterEmpty) / (waterFull - waterEmpty));
+                actualET = Math.Min(remainingPET * ((soilWaterContent - waterEmpty) / (waterFull - waterEmpty)), 0.0);
             }
 
             if (actualET < 0.0)
@@ -209,6 +211,7 @@ namespace Landis.Extension.Succession.Century
             //if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet; //old ratio used in previous versions of LANDIS-Century
             if (pet > 0.0) ratioPrecipPET = H2Oinputs / pet;  //assumes that the ratio is the amount of incoming precip divided by PET.
 
+            //SiteVars.NumberDryDays[site] = numberDryDays; //Calculated above using method below.
             SiteVars.LiquidSnowPack[site] = liquidSnowpack;
             SiteVars.WaterMovement[site] = waterMovement;
             SiteVars.AvailableWater[site] = availableWater;  //available to plants for growth     
