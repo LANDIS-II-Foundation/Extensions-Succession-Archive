@@ -222,10 +222,10 @@ namespace Landis.Extension.Succession.Century
             changeSoilMoisture, //
             oldJulianDay,       //
             dryDayInterp;       //
-            //double fieldCapacity = EcoregionData.FieldCapacity[ecoregion] * (double) EcoregionData.SoilDepth[ecoregion];
-            //double wiltingPoint  = EcoregionData.WiltingPoint[ecoregion] * (double) EcoregionData.SoilDepth[ecoregion];
-            double fieldCapacity = EcoregionData.FieldCapacity[ecoregion] * 100.0;
-            double wiltingPoint  = EcoregionData.WiltingPoint[ecoregion] * 100.0;
+            double fieldCapacity = EcoregionData.FieldCapacity[ecoregion] * (double) EcoregionData.SoilDepth[ecoregion];
+            double wiltingPoint  = EcoregionData.WiltingPoint[ecoregion] * (double) EcoregionData.SoilDepth[ecoregion];
+            //double fieldCapacity = EcoregionData.FieldCapacity[ecoregion] * 100.0;
+            //double wiltingPoint  = EcoregionData.WiltingPoint[ecoregion] * 100.0;
             
             //Initialize water content of soil in January to Field_Cap (mm)
             xFieldCap = 10.0 * fieldCapacity;
