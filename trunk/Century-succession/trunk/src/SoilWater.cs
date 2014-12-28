@@ -86,12 +86,13 @@ namespace Landis.Extension.Succession.Century
                 //PlugIn.ModelCore.UI.WriteLine("Let it rain and add it to soil! rain={0}, soilWaterContent={1}.", H2Oinputs, soilWaterContent);
             }
 
+           
             //...Then melt snow if there is snow on the ground and air temperature (tmax) is above minimum.            
             if (liquidSnowpack > 0.0 && tmax > 0.0)
             {
                 //...Calculate the amount of snow to melt:
                 
-                double snowMeltFraction = Math.Min((tmax * 0.05) + 0.024, 0.0);//This equation assumes a linear increase in the fraction of snow that melts as a function of air temp.  
+                double snowMeltFraction = Math.Max((tmax * 0.05) + 0.024, 0.0);//This equation assumes a linear increase in the fraction of snow that melts as a function of air temp.  
                 //This relationship ultimately derives from http://www.nps.gov/yose/planyourvisit/climate.htm which described the relationship between snow melting and air temp.
                 //Documentation for the regression equation is in spreadsheet called WaterCalcs_v2.xls by M. Lucash
 
@@ -104,7 +105,7 @@ namespace Landis.Extension.Succession.Century
                liquidSnowpack = liquidSnowpack - addToSoil;  
                soilWaterContent += addToSoil;
             }
-
+            
             //Calculate the max amout of water available to trees, an over-estimate of the water available to trees.  It only reflects precip and melting of precip.
             availableWaterMax = soilWaterContent;
             
@@ -130,7 +131,7 @@ namespace Landis.Extension.Succession.Century
                 //Subtract evaporated snowfrom the soil water content
                 soilWaterContent -= evaporatedSnow;
             }
-            
+
             //Allow excess water to run off during storm events (stormflow)
             double waterFull = soilDepth * fieldCapacity;  //units of cm
             
@@ -139,7 +140,7 @@ namespace Landis.Extension.Succession.Century
             if (soilWaterContent > waterFull)
             {
 
-                waterMovement = Math.Min((soilWaterContent - waterFull), 0.0); // How much water should move during a storm event, which is based on how much water the soil can hold.
+                waterMovement = Math.Max((soilWaterContent - waterFull), 0.0); // How much water should move during a storm event, which is based on how much water the soil can hold.
                 soilWaterContent = waterFull;
                 
                 //...Compute storm flow.
@@ -148,7 +149,9 @@ namespace Landis.Extension.Succession.Century
                 //Subtract stormflow from soil water
                 soilWaterContent -= stormFlow;
                 //PlugIn.ModelCore.UI.WriteLine("Water Runs Off. stormflow={0}.", stormFlow);
-            }                                                 
+            }
+
+            
             
             //...Calculate bare soil water loss and interception  when air temperature is above freezing and no snow cover.
             //...Mofified 9/94 to allow interception when t < 0 but no snow cover, Pulliam
@@ -173,7 +176,7 @@ namespace Landis.Extension.Succession.Century
                 //Subtract soil evaporation from soil water content
                soilWaterContent -= soilEvaporation;
             }
-
+                     
             // Calculate actual evapotranspiration.  This equation is derived from the stand equation for calculating AET from PET
             //http://www.civil.utah.edu/~mizukami/coursework/cveen7920/ETMeasurement.pdf 
 
@@ -183,7 +186,7 @@ namespace Landis.Extension.Succession.Century
                 actualET = remainingPET;
             else
             {
-                actualET = Math.Min(remainingPET * ((soilWaterContent - waterEmpty) / (waterFull - waterEmpty)), 0.0);
+                actualET = Math.Max(remainingPET * ((soilWaterContent - waterEmpty) / (waterFull - waterEmpty)), 0.0);
             }
 
             if (actualET < 0.0)
@@ -191,21 +194,21 @@ namespace Landis.Extension.Succession.Century
 
             //Subtract transpiration from soil water content
             soilWaterContent -= actualET;
+            
 
             //Leaching occurs. Drain baseflow fraction from holding tank.
             baseFlow = soilWaterContent * baseFlowFraction;
             
             //Subtract baseflow from soil water
             soilWaterContent -= baseFlow;
-
-            //PlugIn.ModelCore.UI.WriteLine("Water Leaches. baseflow={0}.", baseFlow);
-            
+                                                         
             //Calculate the amount of available water after all the evapotranspiration and leaching has taken place (minimum available water)           
-            availableWaterMin = Math.Min(soilWaterContent - waterEmpty,0.0);
+            availableWaterMin = Math.Max(soilWaterContent - waterEmpty, 0.0);
+                         
 
             //Calculate the final amount of available water to the trees, which is the average of the max and min          
             availableWater = (availableWaterMax + availableWaterMin)/ 2.0;
-                        
+                       
             //// Compute the ratio of precipitation to PET
             double ratioPrecipPET = 0.0;
             //if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet; //old ratio used in previous versions of LANDIS-Century
