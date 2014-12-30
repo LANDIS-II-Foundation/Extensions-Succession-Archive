@@ -496,7 +496,7 @@ namespace Landis.Extension.Succession.Century
                     ml.avgResp = (avgResp[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.avgNEE = (avgNEE[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
                     ml.Ndep = Ndep[ecoregion.Index];
-                    ml.StreamN = StreamN[ecoregion.Index];
+                    ml.StreamN = (StreamN[ecoregion.Index] / (double)EcoregionData.ActiveSiteCount[ecoregion]);
 
                     monthlyLog.AddObject(ml);
                     monthlyLog.WriteToFile();
