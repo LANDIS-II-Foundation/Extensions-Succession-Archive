@@ -114,7 +114,7 @@ namespace Landis.Extension.Succession.Century
             if (liquidSnowpack > 0.0)
             {
                 //...Calculate cm of snow that remaining pet energy can evaporate:
-                double evaporatedSnow = Math.Min(pet * 0.87, soilWaterContent);
+                double evaporatedSnow = pet * 0.87;
 
                 //...Don't evaporate more snow than actually exists:
                 if (evaporatedSnow > liquidSnowpack)

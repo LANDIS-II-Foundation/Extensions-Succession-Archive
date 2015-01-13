@@ -174,10 +174,10 @@ namespace Landis.Extension.Succession.Century
         public double TotalNdep { get; set; }
 
         //log.Write("StreamC, StreamN, FireCEfflux, FireNEfflux, ");
-        [DataFieldAttribute(Unit = FieldUnits.g_C, Desc = "Stream C", Format = "0.00")]
+        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Stream C", Format = "0.00")]
         public double StreamC { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_N, Desc = "Stream N", Format = "0.00")]
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "Stream N", Format = "0.00")]
         public double StreamN { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Fire C Efflux", Format = "0.0")]

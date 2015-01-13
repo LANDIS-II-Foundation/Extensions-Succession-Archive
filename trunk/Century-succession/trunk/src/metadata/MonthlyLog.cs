@@ -38,7 +38,7 @@ namespace Landis.Extension.Succession.Century
         [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "Net Ecosystem Exchange", Format = "0.00")]
         public double avgNEE { get; set; }
 
-        [DataFieldAttribute(Unit = FieldUnits.g_C_m2, Desc = "N Deposition", Format = "0.00")]
+        [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "N Deposition", Format = "0.00")]
         public double Ndep { get; set; }
 
         [DataFieldAttribute(Unit = FieldUnits.g_N_m2, Desc = "N Leaching", Format = "0.00")]
