@@ -94,7 +94,7 @@ namespace Landis.Extension.Succession.Century
                 
                 double snowMeltFraction = Math.Max((tmax * 0.05) + 0.024, 0.0);//This equation assumes a linear increase in the fraction of snow that melts as a function of air temp.  
                 //This relationship ultimately derives from http://www.nps.gov/yose/planyourvisit/climate.htm which described the relationship between snow melting and air temp.
-                //Documentation for the regression equation is in spreadsheet called WaterCalcs_v2.xls by M. Lucash
+                //Documentation for the regression equation is in spreadsheet called WaterCalcs.xls by M. Lucash
 
                if (snowMeltFraction > 1.0)
                     snowMeltFraction = 1.0;
