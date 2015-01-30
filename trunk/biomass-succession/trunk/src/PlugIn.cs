@@ -7,13 +7,13 @@ using Landis.Library.Succession;
 using Landis.Library.InitialCommunities;
 using Landis.Library.BiomassCohorts;
 using System.Collections.Generic;
-using Edu.Wisc.Forest.Flel.Util;
 
 namespace Landis.Extension.Succession.Biomass
 {
     public class PlugIn
         : Landis.Library.Succession.ExtensionBase
     {
+        public static readonly string ExtensionName = "Biomass Succession";
         private static ICore modelCore;
         private IInputParameters parameters;
 
@@ -25,7 +25,7 @@ namespace Landis.Extension.Succession.Biomass
         //---------------------------------------------------------------------
 
         public PlugIn()
-            : base("Biomass Succession")
+            : base(ExtensionName)
         {
         }
 
@@ -37,7 +37,6 @@ namespace Landis.Extension.Succession.Biomass
             SiteVars.Initialize();
             InputParametersParser parser = new InputParametersParser();
             parameters = Landis.Data.Load<IInputParameters>(dataFile, parser);
-
         }
 
         //---------------------------------------------------------------------
@@ -131,12 +130,39 @@ namespace Landis.Extension.Succession.Biomass
                 {
                     if (!ecoregion.Active)
                             continue;
-                    SpeciesData.EstablishModifier[species][ecoregion] = 1.0;
+                    SpeciesData.EstablishModifier[species,ecoregion] = 1.0;
                 }
             }
         }
 
 
+        //---------------------------------------------------------------------
+        // Revised 10/5/09 - BRM
+
+        /*public override byte ComputeShade(ActiveSite site)
+        {
+            // Use correlation from Scheller and Mladenoff (Figure 4b)
+            // to assign a shade class depending on percent transmittance.
+
+
+            SiteVars.PercentShade[site] = 1.0 - SiteVars.LightTrans[site];
+
+            double percentSun = System.Math.Max(1.0 - SiteVars.PercentShade[site], 0.0);
+            percentSun = System.Math.Min(1.0, percentSun);
+
+            percentSun = percentSun * 100.0;
+
+            byte shadeClass = 0;
+
+            if (percentSun < pctSun1) shadeClass = 1;
+            if (percentSun < pctSun2) shadeClass = 2;
+            if (percentSun < pctSun3) shadeClass = 3;
+            if (percentSun < pctSun4) shadeClass = 4;
+            if (percentSun < pctSun5) shadeClass = 5;
+
+            return shadeClass;
+
+        }*/
         public override byte ComputeShade(ActiveSite site)
         {
             //return LivingBiomass.ComputeShade(site);
@@ -208,13 +234,12 @@ namespace Landis.Extension.Succession.Biomass
                                        int years,
                                        bool isSuccessionTimestep)
         {
-            //PlugIn.ModelCore.UI.WriteLine("years = {0}, successionTS = {1}.", years, successionTimestep.Value);
+            //PlugIn.ModelCore.Log.WriteLine("years = {0}, successionTS = {1}.", years, successionTimestep.Value);
 
             for (int y = 1; y <= years; ++y)
             {
 
-                if(PlugIn.ModelCore.CurrentTime > 0)
-                    SpeciesData.ChangeDynamicParameters(PlugIn.ModelCore.CurrentTime + y - 1);
+                SpeciesData.ChangeDynamicParameters(PlugIn.ModelCore.CurrentTime + y - 1);
 
                 SiteVars.ResetAnnualValues(site);
                 CohortBiomass.SubYear = y - 1;
@@ -243,7 +268,7 @@ namespace Landis.Extension.Succession.Biomass
             foreach (ISufficientLight lights in sufficientLight)
             {
 
-                //PlugIn.ModelCore.UI.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
+                //PlugIn.ModelCore.Log.WriteLine("Sufficient Light:  ShadeClass={0}, Prob0={1}.", lights.ShadeClass, lights.ProbabilityLight0);
                 if (lights.ShadeClass == species.ShadeTolerance)
                 {
                     if (siteShade == 0) lightProbability = lights.ProbabilityLight0;
@@ -279,8 +304,8 @@ namespace Landis.Extension.Succession.Biomass
         public bool Establish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
-            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
-            double modEstabProb = establishProbability * SpeciesData.EstablishModifier[species][ecoregion];
+            double establishProbability = SpeciesData.EstablishProbability[species,ecoregion];
+            double modEstabProb = establishProbability * SpeciesData.EstablishModifier[species,ecoregion];
 
             return modelCore.GenerateUniform() < modEstabProb;
         }
@@ -305,7 +330,7 @@ namespace Landis.Extension.Succession.Biomass
         public bool PlantingEstablish(ISpecies species, ActiveSite site)
         {
             IEcoregion ecoregion = modelCore.Ecoregion[site];
-            double establishProbability = SpeciesData.EstablishProbability[species][ecoregion];
+            double establishProbability = SpeciesData.EstablishProbability[species,ecoregion];
 
             return establishProbability > 0.0;
         }

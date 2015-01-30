@@ -4,7 +4,6 @@
 using Landis.SpatialModeling;
 using Landis.Core;
 using Landis.Library.BiomassCohorts;
-using System.Collections.Generic;
 using Edu.Wisc.Forest.Flel.Util;
 using System;
 
@@ -100,7 +99,8 @@ namespace Landis.Extension.Succession.Biomass
             // Defoliation is calculated by an external function, typically an extension
             // with a defoliation calculator.  The method CohortDefoliation.Compute is a delegate method
             // and lives within the defoliating extension.
-            defoliation = CohortDefoliation.Compute(cohort, site, siteBiomass);
+
+            defoliation = Landis.Library.Biomass.CohortDefoliation.Compute(site, cohort.Species, cohort.Biomass, siteBiomass);
             double defoliationLoss = 0.0;
             if (defoliation > 0)
             {
@@ -117,10 +117,10 @@ namespace Landis.Extension.Succession.Biomass
 
             if (PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}. Calculate Delta Biomass...", (PlugIn.ModelCore.CurrentTime+SubYear));
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    ANPPact={1:0.0}, Mtotal={2:0.0}, litter={3:0.00}.", (PlugIn.ModelCore.CurrentTime+SubYear), actualANPP, totalMortality, totalLitter);
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    DeltaB={1:0.0}, CohortB={2}, Bsite={3}", (PlugIn.ModelCore.CurrentTime+SubYear), deltaBiomass, cohort.Biomass, (int) siteBiomass);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}. Calculate Delta Biomass...", (PlugIn.ModelCore.CurrentTime + SubYear));
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime + SubYear), cohort.Species.Name, cohort.Age);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    ANPPact={1:0.0}, Mtotal={2:0.0}, litter={3:0.00}.", (PlugIn.ModelCore.CurrentTime + SubYear), actualANPP, totalMortality, totalLitter);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.    DeltaB={1:0.0}, CohortB={2}, Bsite={3}", (PlugIn.ModelCore.CurrentTime + SubYear), deltaBiomass, cohort.Biomass, (int)siteBiomass);
             }
 
             return deltaBiomass;
@@ -145,7 +145,7 @@ namespace Landis.Extension.Succession.Biomass
             {
                 M_AGE += cohort.Biomass * SpinupMortalityFraction;
                 if(PlugIn.CalibrateMode)
-                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. SpinupMortalityFraction={1:0.0000}, AdditionalMortality={2:0.0}, Spp={3}, Age={4}.", (PlugIn.ModelCore.CurrentTime+SubYear), SpinupMortalityFraction, (cohort.Biomass * SpinupMortalityFraction), cohort.Species.Name, cohort.Age);
+                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. SpinupMortalityFraction={1:0.0000}, AdditionalMortality={2:0.0}, Spp={3}, Age={4}.", (PlugIn.ModelCore.CurrentTime + SubYear), SpinupMortalityFraction, (cohort.Biomass * SpinupMortalityFraction), cohort.Species.Name, cohort.Age);
             }
 
 
@@ -163,6 +163,7 @@ namespace Landis.Extension.Succession.Biomass
             // Growth reduction is calculated by an disturbance function, typically an extension
             // with a dedicated calculator.  The method CohortGrowthReduction.Compute is a delegate method
             // and lives within the disturbance extension.
+           
             growthReduction = CohortGrowthReduction.Compute(cohort, site);
             
             double growthShape = SpeciesData.GrowthCurveShapeParm[cohort.Species];
@@ -173,11 +174,11 @@ namespace Landis.Extension.Succession.Biomass
             {
                 capacityReduction = 1.0 - SiteVars.CapacityReduction[site];
                 if(PlugIn.CalibrateMode)
-                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.", (PlugIn.ModelCore.CurrentTime+SubYear), capacityReduction, cohort.Species.Name, cohort.Age, cohort.Biomass);
+                    PlugIn.ModelCore.UI.WriteLine("Yr={0}. Capacity Remaining={1:0.00}, Spp={2}, Age={3} B={4}.", (PlugIn.ModelCore.CurrentTime + SubYear), capacityReduction, cohort.Species.Name, cohort.Age, cohort.Biomass);
             }
 
-            double maxBiomass  = SpeciesData.B_MAX_Spp[cohort.Species][ecoregion] * capacityReduction;
-            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
+            double maxBiomass  = SpeciesData.B_MAX_Spp[cohort.Species,ecoregion] * capacityReduction;
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species,ecoregion];
 
             //  Potential biomass, equation 3 in Scheller and Mladenoff, 2004
             double potentialBiomass = Math.Max(1.0, maxBiomass - siteBiomass + cohortBiomass);
@@ -201,7 +202,7 @@ namespace Landis.Extension.Succession.Biomass
             }
 
             B_PM = indexC; 
-            // PlugIn.ModelCore.UI.WriteLine("indexC={0:0.00}, lightIndexC={1:0.00}, OldSchool={2:0.00}.", indexC, indexLightC, indexOldSchool);
+            // PlugIn.ModelCore.Log.WriteLine("indexC={0:0.00}, lightIndexC={1:0.00}, OldSchool={2:0.00}.", indexC, indexLightC, indexOldSchool);
 
             //  Actual ANPP: equation (4) from Scheller & Mladenoff, 2004.
             double actualANPP = maxANPP * Math.E * Math.Pow(B_AP, growthShape) * Math.Exp(-1 * Math.Pow(B_AP, growthShape)) * B_PM;
@@ -217,10 +218,10 @@ namespace Landis.Extension.Succession.Biomass
 
             if(PlugIn.CalibrateMode && PlugIn.ModelCore.CurrentTime > 0)
             {
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}. Calculate ANPPactual...", (PlugIn.ModelCore.CurrentTime+SubYear));
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime+SubYear), cohort.Species.Name, cohort.Age);
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     MaxANPP={1}, MaxB={2:0}, Bsite={3}, Bcohort={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), maxANPP, maxBiomass, (int) siteBiomass, cohort.Biomass);
-                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     B_PM={1:0.0}, B_AP={2:0.0}, actualANPP={3:0.0}, capacityReduction={4:0.0}.", (PlugIn.ModelCore.CurrentTime+SubYear), B_PM, B_AP, actualANPP, capacityReduction);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}. Calculate ANPPactual...", (PlugIn.ModelCore.CurrentTime + SubYear));
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     Spp={1}, Age={2}.", (PlugIn.ModelCore.CurrentTime + SubYear), cohort.Species.Name, cohort.Age);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     MaxANPP={1}, MaxB={2:0}, Bsite={3}, Bcohort={4:0.0}.", (PlugIn.ModelCore.CurrentTime + SubYear), maxANPP, maxBiomass, (int)siteBiomass, cohort.Biomass);
+                PlugIn.ModelCore.UI.WriteLine("Yr={0}.     B_PM={1:0.0}, B_AP={2:0.0}, actualANPP={3:0.0}, capacityReduction={4:0.0}.", (PlugIn.ModelCore.CurrentTime + SubYear), B_PM, B_AP, actualANPP, capacityReduction);
             }
 
             return actualANPP;
@@ -235,7 +236,7 @@ namespace Landis.Extension.Succession.Biomass
         /// </summary>
         private double ComputeGrowthMortality(ICohort cohort, ActiveSite site)
         {
-            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species][ecoregion];
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[cohort.Species,ecoregion];
             double M_BIO = 0.0;
 
             //Michaelis-Menton function:
@@ -372,8 +373,6 @@ namespace Landis.Extension.Succession.Biomass
                                                     ActiveSite site)
         {
 
-            ISiteCohorts ISiteCohorts = SiteVars.Cohorts[site];
-
             double mortalityAge = ComputeAgeMortality(cohort);
             double actualANPP = ComputeActualANPP(cohort, site); 
 
@@ -389,21 +388,19 @@ namespace Landis.Extension.Succession.Biomass
         /// Computes the initial biomass for a cohort at a site.
         /// </summary>
         public static int InitialBiomass(ISpecies species,
-                                         ISiteCohorts cohorts,
+                                         SiteCohorts cohorts,
                                          ActiveSite site)
         {
             IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-            //double B_ACT = ActualSiteBiomass(ISiteCohorts, site, out ecoregion);
 
             double B_ACT = (double) Cohorts.ComputeNonYoungBiomass(cohorts);
 
-            double maxBiomass = SpeciesData.B_MAX_Spp[species][ecoregion];
+            double maxBiomass = SpeciesData.B_MAX_Spp[species,ecoregion];
 
-            double maxANPP = SpeciesData.ANPP_MAX_Spp[species][ecoregion];
+            double maxANPP = SpeciesData.ANPP_MAX_Spp[species,ecoregion];
 
             //  Initial biomass exponentially declines in response to
             //  competition.
-            //double initialBiomass = 0.025 * maxBiomass * Math.Exp(-1.6 * B_ACT / EcoregionData.B_MAX[ecoregion]);
             double initialBiomass = maxANPP * Math.Exp(-1.6 * B_ACT / EcoregionData.B_MAX[ecoregion]);
 
 
@@ -425,23 +422,11 @@ namespace Landis.Extension.Succession.Biomass
             double competitionPower = 0.95;
             double CMultiplier = Math.Max(Math.Pow(cohort.Biomass, competitionPower), 1.0);
             double CMultTotal = CMultiplier;
-            // PlugIn.ModelCore.UI.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal);
+            // PlugIn.ModelCore.Log.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal);
 
             foreach (ISpeciesCohorts speciesCohorts in SiteVars.Cohorts[site])
             {
-                //write.speciesCohorts.Name;
-                // PlugIn.ModelCore.UI.WriteLine("Name={0}, Cnt={1}", speciesCohorts.Species.Name, speciesCohorts.Count);
-                /*foreach (ICohort ycohort in speciesCohorts)
-                {
-                    ICohort xcohort = (Landis.Library.BiomassCohorts.ICohort)ycohort;
-                    if (xcohort.Age+1 != cohort.Age || xcohort.Species.Index != cohort.Species.Index)
-                    {
-                        double tempMultiplier = Math.Max(Math.Pow(xcohort.Biomass, competitionPower), 1.0);
-                        CMultTotal += tempMultiplier;
-                        //PlugIn.ModelCore.UI.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}.", xcohort.Species.Name, xcohort.Age, tempMultiplier, CMultTotal);
-                    }
-                }*/
-
+               
                 foreach (ICohort xcohort in speciesCohorts)
                 {
                     if (xcohort.Age + 1 != cohort.Age || xcohort.Species.Index != cohort.Species.Index)
@@ -454,45 +439,13 @@ namespace Landis.Extension.Succession.Biomass
 
 
             double Cfraction = CMultiplier / CMultTotal;
-            //PlugIn.ModelCore.UI.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}, CI={4:0.00}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal, Cfraction);
+            //PlugIn.ModelCore.Log.WriteLine("Competition:  spp={0}, age={1}, CMultiplier={2:0}, CMultTotal={3:0}, CI={4:0.00}.", cohort.Species.Name, cohort.Age, CMultiplier, CMultTotal, Cfraction);
 
             return Cfraction;
 
 
         }
-        //---------------------------------------------------------------------
-        // Added 10/5/09 - BRM
-        // Replaces CalculateCohortLAI
-        /*
-        private static void CalculateCohortLight(ICohort cohort, double actualANPP, double newBiomass, ActiveSite site)
-        {
-            ISpecies species = cohort.Species;
-            double pctBioMaxLAI = SpeciesData.PctBioMaxLAI[species];
-            double cohortBiomass = newBiomass;
-
-            IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
-
-            //double maxBiomass = SpeciesData.B_MAX_Spp[species][ecoregion];
-            double maxBiomass = EcoregionData.B_MAX[ecoregion];
-            double maxlai = SpeciesData.MAXLAI[species];
-            double LAIactual = 0;
-            double pctBiomass = (cohortBiomass / maxBiomass) * 100;
-            if (pctBiomass >= pctBioMaxLAI)
-            {
-                LAIactual = maxlai;
-            }
-            else
-            {
-                double slope = 100.0 / pctBioMaxLAI;
-                double pctLAI = pctBiomass * slope;
-                LAIactual = (pctLAI * maxlai) / 100;
-            }
-            double cohortLightExt = SpeciesData.LightExtinctionCoeff[species] * LAIactual;
-            double cohortLightTrans = Math.Exp(-1.0 * cohortLightExt);
-
-            SiteVars.LightTrans[site] *= cohortLightTrans; //Combine cohortLightTrans for all cohorts on the site
-
-        }*/
+  
 
     }
 }
