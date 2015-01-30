@@ -11,12 +11,12 @@ LicenseFile={#LandisSDK}\licenses\LANDIS-II_Binary_license.rtf
 
 [Files]
 Source: {#LandisExtDir}\{#ExtensionAssembly}.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion
-Source: {#LandisExtDir}\Landis.Library.Biomass.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
-Source: {#LandisExtDir}\Landis.Library.Succession.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
-Source: {#LandisExtDir}\Landis.Library.BiomassCohorts.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
-Source: {#LandisExtDir}\Landis.Library.AgeOnlyCohorts.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.Biomass-v1.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.Succession-v4.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.BiomassCohorts-v1.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.AgeOnlyCohorts-v2.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
 Source: {#LandisExtDir}\Landis.Library.Cohorts.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
- Source: {#LandisExtDir}\Landis.Library.Parameters-v1.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
+Source: {#LandisExtDir}\Landis.Library.Parameters-v1.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
 
 
 #define UserGuideSrc "LANDIS-II " + ExtensionName + " vX.Y User Guide.pdf"
