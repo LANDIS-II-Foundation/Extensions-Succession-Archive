@@ -23,17 +23,17 @@ namespace Landis.Extension.Succession.Biomass
         bool CalibrateMode { get; set; }
         double SpinupMortalityFraction {get; set;}
         List<ISufficientLight> LightClassProbabilities {get; set;}
-        Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass{get;}
-        Species.AuxParm<double> LeafLongevity {get; }
-        Species.AuxParm<double> WoodyDecayRate {get; }
-        Species.AuxParm<double> MortCurveShapeParm {get; }
-        Species.AuxParm<double> GrowthCurveShapeParm { get; }
-        Species.AuxParm<double> LeafLignin { get; }
+        Landis.Library.Parameters.Ecoregions.AuxParm<Percentage>[] MinRelativeBiomass { get; }
+        Landis.Library.Parameters.Species.AuxParm<double> LeafLongevity { get; }
+        Landis.Library.Parameters.Species.AuxParm<double> WoodyDecayRate { get; }
+        Landis.Library.Parameters.Species.AuxParm<double> MortCurveShapeParm { get; }
+        Landis.Library.Parameters.Species.AuxParm<double> GrowthCurveShapeParm { get; }
+        Landis.Library.Parameters.Species.AuxParm<double> LeafLignin { get; }
         //Species.AuxParm<double> MAXLAI {get;}
         //Species.AuxParm<double> LightExtinctionCoeff {get;}
         //Species.AuxParm<double> PctBioMaxLAI { get;}
 
-        Ecoregions.AuxParm<int> AET {get;}
+        Landis.Library.Parameters.Ecoregions.AuxParm<int> AET { get; }
 
         //double PctSun1 { get; set;}
         //double PctSun2 { get; set;}

@@ -1,14 +1,11 @@
 //  Copyright 2005-2010 Portland State University, University of Wisconsin
 //  Authors:  Robert M. Scheller
 
-using Landis.SpatialModeling;
-using Landis.Library.BiomassCohorts;
-using Landis.Core;
-using System.Collections.Generic;
-using System.IO;
 using System;
-
-
+using System.IO;
+using Landis.Core;
+using Landis.Library.BiomassCohorts;
+using Landis.SpatialModeling;
 namespace Landis.Extension.Succession.Biomass
 {
     public class Outputs
@@ -73,7 +70,7 @@ namespace Landis.Extension.Succession.Biomass
 
             foreach (IEcoregion ecoregion in PlugIn.ModelCore.Ecoregions)
             {
-                if(ecoregion.Active)
+                if(EcoregionData.ActiveSiteCount[ecoregion] > 0)
                 {
                     log.Write("{0}, {1}, {2}, ",
                         CurrentTime,
@@ -89,27 +86,6 @@ namespace Landis.Extension.Succession.Biomass
                     log.WriteLine("");
                 }
             }
-
-            string path = MapNames.ReplaceTemplateVars("biomass-anpp-{timestep}.img", PlugIn.ModelCore.CurrentTime);
-            using (IOutputRaster<IntPixel> outputRaster = PlugIn.ModelCore.CreateRaster<IntPixel>(path, PlugIn.ModelCore.Landscape.Dimensions))
-            {
-                IntPixel pixel = outputRaster.BufferPixel;
-                foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
-                {
-                    if (site.IsActive)
-                    {
-                        pixel.MapCode.Value = (int) SiteVars.AGNPP[site];
-                    }
-                    else
-                    {
-                        //  Inactive site
-                        pixel.MapCode.Value = 0;
-                    }
-                    outputRaster.WriteBufferPixel();
-                }
-            }
-
-
         }
 
     }
