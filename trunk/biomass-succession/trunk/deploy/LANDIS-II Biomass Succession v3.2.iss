@@ -16,7 +16,7 @@ Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.Succession-v4.dll
 Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.BiomassCohorts-v1.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
 Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.AgeOnlyCohorts-v2.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
 Source: {#LandisExtDir}\Landis.Library.Cohorts.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
-Source: {#LandisExtDir}\Landis.Library.Parameters-v1.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
+Source: C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.Parameters-v1.dll; DestDir: {app}\bin\extensions; Flags: replacesameversion uninsneveruninstall
 
 
 #define UserGuideSrc "LANDIS-II " + ExtensionName + " vX.Y User Guide.pdf"
