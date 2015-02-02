@@ -26,6 +26,7 @@ namespace Landis.Extension.Succession.Biomass
 
         private static ISiteVar<double> ag_npp;
         public static ISiteVar<double> Defoliation;
+        public static ISiteVar<int> ecoMaxBiomass;
 
 
         //---------------------------------------------------------------------
@@ -47,6 +48,7 @@ namespace Landis.Extension.Succession.Biomass
             previousYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             currentYearMortality = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
             totalBiomass = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
+            ecoMaxBiomass = PlugIn.ModelCore.Landscape.NewSiteVar<int>();
 
             foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
             {
@@ -64,6 +66,7 @@ namespace Landis.Extension.Succession.Biomass
 
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.WoodyDebris, "Succession.WoodyDebris");
             PlugIn.ModelCore.RegisterSiteVar(SiteVars.Litter, "Succession.Litter");
+            PlugIn.ModelCore.RegisterSiteVar(SiteVars.EcoMaxBiomass, "Succession.EcoregionMaxBiomass");
 
         }
 
@@ -185,6 +188,21 @@ namespace Landis.Extension.Succession.Biomass
             }
             set {
                 ag_npp = value;
+            }
+        }
+        //---------------------------------------------------------------------
+
+        /// <summary>
+        /// </summary>
+        public static ISiteVar<int> EcoMaxBiomass
+        {
+            get
+            {
+                return ecoMaxBiomass;
+            }
+            set
+            {
+                ecoMaxBiomass = value;
             }
         }
     }

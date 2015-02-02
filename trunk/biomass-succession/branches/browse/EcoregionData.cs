@@ -36,6 +36,7 @@ namespace Landis.Extension.Succession.Biomass
                 ActiveSiteCount[ecoregion]++;
             }
         }
+        //---------------------------------------------------------------------
         public static void UpdateB_MAX()
         {
             //AET = parameters.AET;
@@ -53,6 +54,11 @@ namespace Landis.Extension.Succession.Biomass
                     largest_B_MAX_Spp = System.Math.Max(largest_B_MAX_Spp, SpeciesData.B_MAX_Spp[species, ecoregion]);
                 }
                 B_MAX[ecoregion] = largest_B_MAX_Spp;
+            }
+            foreach (ActiveSite site in PlugIn.ModelCore.Landscape)
+            {
+                IEcoregion ecoregion = PlugIn.ModelCore.Ecoregion[site];
+                SiteVars.EcoMaxBiomass[site] = B_MAX[ecoregion];
             }
 
 
