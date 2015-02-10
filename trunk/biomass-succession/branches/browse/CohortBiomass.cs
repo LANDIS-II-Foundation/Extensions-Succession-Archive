@@ -60,6 +60,12 @@ namespace Landis.Extension.Succession.Biomass
         public int ComputeChange(ICohort cohort,
                                  ActiveSite site)
         {
+            if (cohort.Data.LastBrowseProp > 0)
+            {
+                int t = 0;
+                t += 1;
+            }
+
             int siteBiomass = SiteVars.TotalBiomass[site]; 
             ecoregion = PlugIn.ModelCore.Ecoregion[site];
 
@@ -68,6 +74,7 @@ namespace Landis.Extension.Succession.Biomass
             double mortalityAge = ComputeAgeMortality(cohort);
 
             double actualANPP = ComputeActualANPP(cohort, site);
+            cohort.ChangeANPP((int)actualANPP);
 
             //  Age mortality is discounted from ANPP to prevent the over-
             //  estimation of mortality.  ANPP cannot be negative.
