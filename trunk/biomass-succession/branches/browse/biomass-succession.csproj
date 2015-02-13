@@ -46,8 +46,9 @@
     <Reference Include="Landis.Library.Biomass-v1">
       <HintPath>..\..\..\deer-browse\trunk\src\packages\Landis.Library.Biomass.1.0.0-rc1\lib\net35\Landis.Library.Biomass-v1.dll</HintPath>
     </Reference>
-    <Reference Include="Landis.Library.BiomassCohorts-vBrowse">
-      <HintPath>C:\Program Files\LANDIS-II\v6\bin\build\Landis.Library.BiomassCohorts-vBrowse.dll</HintPath>
+    <Reference Include="Landis.Library.BiomassCohorts-vBrowse, Version=1.5.5519.25991, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\LANDIS-II\v6\bin\extensions\Landis.Library.BiomassCohorts-vBrowse.dll</HintPath>
     </Reference>
     <Reference Include="Landis.Library.Cohorts, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -111,7 +112,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\build\"</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetName).* "C:\Program Files\LANDIS-II\v6\bin\extensions\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

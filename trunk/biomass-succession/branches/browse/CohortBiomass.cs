@@ -74,11 +74,12 @@ namespace Landis.Extension.Succession.Biomass
             double mortalityAge = ComputeAgeMortality(cohort);
 
             double actualANPP = ComputeActualANPP(cohort, site);
-            cohort.ChangeANPP((int)actualANPP);
+           
 
             //  Age mortality is discounted from ANPP to prevent the over-
             //  estimation of mortality.  ANPP cannot be negative.
             actualANPP = Math.Max(1, actualANPP - mortalityAge);
+            cohort.ChangeANPP((int)actualANPP);
 
             SiteVars.AGNPP[site] += actualANPP;
 
