@@ -58,7 +58,8 @@ namespace Landis.Extension.Succession.Century
                 int[] months = new int[12]{6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5};
 
                 if(OtherData.CalibrateMode)
-                    months = new int[12]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+                    //months = new int[12]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}; This output will not match normal mode due to differences in initialization
+                    months = new int[12] { 6, 7, 8, 9, 10, 11, 0, 1, 2, 3, 4, 5 };
 
                 for (MonthCnt = 0; MonthCnt < 12; MonthCnt++)
                 {
