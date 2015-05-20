@@ -73,7 +73,9 @@ namespace Landis.Extension.Succession.Biomass
              SiteCohorts clone = new SiteCohorts();
              foreach (ISpeciesCohorts speciesCohorts in site_cohorts)
                  foreach (ICohort cohort in speciesCohorts)
-                     clone.AddNewCohort(cohort.Species, cohort.Age, cohort.Biomass);  //species.cohorts.Add(speciesCohorts.Clone());
+                     //clone.AddNewCohort(cohort.Species, cohort.Age, cohort.Biomass);
+                     clone.AddNewCohort(cohort.Species, cohort.Age, cohort.Biomass, cohort.ANPP);
+                //species.cohorts.Add(speciesCohorts.Clone());
              return clone;
          }
         //---------------------------------------------------------------------
