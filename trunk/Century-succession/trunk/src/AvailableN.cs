@@ -133,7 +133,16 @@ namespace Landis.Extension.Succession.Century
 
                     if (CohortMineralNfraction.ContainsKey(cohort.Species.Index))
                     {
-                        CohortMineralNfraction[cohort.Species.Index].Add(cohortAddYear, Nallocation);
+                        // option 1: regardless of whether cohortAddYear already exists, create (or replace) the new value
+                        CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = Nallocation;
+                        // end of option 1
+
+                        // option 2: if the cohortAddYear already exists, add the new value to the existing one
+                       // double currentNallocation;
+                        //CohortMineralNfraction[cohort.Species.Index].TryGetValue(cohortAddYear, out currentNallocation);        // currentNallocation will be set to 0.0 if the cohortAddYear key does not exist
+
+                        //CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = currentNallocation + Nallocation;
+                        // end of option 2
                     }
                     else
                     {
@@ -202,7 +211,15 @@ namespace Landis.Extension.Succession.Century
 
                     if (CohortMineralNallocation.ContainsKey(cohort.Species.Index))
                     {
-                        CohortMineralNallocation[cohort.Species.Index].Add(cohortAddYear, Nallocation);
+                        //CohortMineralNallocation[cohort.Species.Index].Add(cohortAddYear, Nallocation);
+                        CohortMineralNfraction[cohort.Species.Index][cohortAddYear] = Nallocation;
+
+                        //double currentNgets;
+                        //CohortMineralNallocation[cohort.Species.Index].TryGetValue(cohortAddYear, out currentNgets);        // currentNallocation will be set to 0.0 if the cohortAddYear key does not exist
+
+                        //CohortMineralNallocation[cohort.Species.Index][cohortAddYear] = currentNgets + Nallocation;
+
+
                     }
                     else
                     {
