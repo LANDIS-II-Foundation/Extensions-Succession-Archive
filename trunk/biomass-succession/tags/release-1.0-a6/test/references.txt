@@ -1,6 +1,0 @@
-Edu.Wisc.Forest.Flel.Util.dll
-Landis.Biomass.Dead.dll
-Landis.Biomass.Succession.dll
-Landis.Core.dll
-Landis.Succession.dll
-nunit.framework.dll
