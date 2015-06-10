@@ -86,6 +86,25 @@ namespace Landis.Extension.Succession.Biomass
                     log.WriteLine("");
                 }
             }
+
+            string path = MapNames.ReplaceTemplateVars("biomass-anpp-{timestep}.img", PlugIn.ModelCore.CurrentTime);
+            using (IOutputRaster<IntPixel> outputRaster = PlugIn.ModelCore.CreateRaster<IntPixel>(path, PlugIn.ModelCore.Landscape.Dimensions))
+            {
+                IntPixel pixel = outputRaster.BufferPixel;
+                foreach (Site site in PlugIn.ModelCore.Landscape.AllSites)
+                {
+                    if (site.IsActive)
+                    {
+                        pixel.MapCode.Value = (int)SiteVars.AGNPP[site];
+                    }
+                    else
+                    {
+                        //  Inactive site
+                        pixel.MapCode.Value = 0;
+                    }
+                    outputRaster.WriteBufferPixel();
+                }
+            }
         }
 
     }

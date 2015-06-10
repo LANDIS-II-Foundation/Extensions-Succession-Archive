@@ -238,8 +238,8 @@ namespace Landis.Extension.Succession.Biomass
 
             for (int y = 1; y <= years; ++y)
             {
-
-                SpeciesData.ChangeDynamicParameters(PlugIn.ModelCore.CurrentTime + y - 1);
+                if (PlugIn.ModelCore.CurrentTime > 0)
+                    SpeciesData.ChangeDynamicParameters(PlugIn.ModelCore.CurrentTime + y - 1);
 
                 SiteVars.ResetAnnualValues(site);
                 CohortBiomass.SubYear = y - 1;
