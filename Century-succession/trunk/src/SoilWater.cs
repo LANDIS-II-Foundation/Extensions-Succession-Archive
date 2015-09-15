@@ -212,7 +212,8 @@ namespace Landis.Extension.Succession.Century
             //// Compute the ratio of precipitation to PET
             double ratioPrecipPET = 0.0;
             //if (pet > 0.0) ratioPrecipPET = (availableWater + H2Oinputs) / pet; //old ratio used in previous versions of LANDIS-Century
-            if (pet > 0.0) ratioPrecipPET = H2Oinputs / pet;  //assumes that the ratio is the amount of incoming precip divided by PET.
+            //if (pet > 0.0) ratioPrecipPET = H2Oinputs / pet;  //assumes that the ratio is the amount of incoming precip divided by PET.
+            if (pet > 0.0) ratioPrecipPET = availableWater / pet;  //assumes that the ratio is the amount of incoming precip divided by PET.
 
             //SiteVars.NumberDryDays[site] = numberDryDays; //Calculated above using method below.
             SiteVars.LiquidSnowPack[site] = liquidSnowpack;

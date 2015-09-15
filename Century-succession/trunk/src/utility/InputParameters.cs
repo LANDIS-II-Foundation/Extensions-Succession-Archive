@@ -716,14 +716,16 @@ namespace Landis.Extension.Succession.Century
         public void SetFieldCapacity(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            fieldCapacity[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
+            //fieldCapacity[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
+            fieldCapacity[ecoregion] = CheckBiomassParm(newValue, 0.0, 0.5);
         }
         //---------------------------------------------------------------------
 
         public void SetWiltingPoint(IEcoregion ecoregion, InputValue<double> newValue)
         {
             Debug.Assert(ecoregion != null);
-            wiltingPoint[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
+            //wiltingPoint[ecoregion] = CheckBiomassParm(newValue, 0.0, 1.0);
+            wiltingPoint[ecoregion] = CheckBiomassParm(newValue, 0.0, 0.5);
         }
         //---------------------------------------------------------------------
 
