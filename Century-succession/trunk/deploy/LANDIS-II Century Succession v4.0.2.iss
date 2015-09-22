@@ -52,7 +52,7 @@ Filename: {#PlugInAdminTool}; Parameters: "add ""{#CenturySucc}"" "; WorkingDir:
 [UninstallRun]
 
 [Code]
-#include "C:\Users\lucash\Documents\LANDIS_Code\Century_Code\trunk\deploy\package (Code section) v3.iss"
+#include "C:\Users\lucash\Documents\LANDIS_Code\Succession_Code\Extensions-Succession\Century-succession\trunk\deploy\package (Code section) v3.iss"
 
 //-----------------------------------------------------------------------------
 
