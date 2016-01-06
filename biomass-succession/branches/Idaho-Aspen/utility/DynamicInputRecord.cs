@@ -14,6 +14,7 @@ namespace Landis.Extension.Succession.Biomass
         double ProbEst{get;set;}
         int ANPP_MAX_Spp {get;set;}
         int B_MAX_Spp {get;set;}
+        double ProbMortality { get; set; }
     }
 
     public class DynamicInputRecord
@@ -21,6 +22,7 @@ namespace Landis.Extension.Succession.Biomass
     {
 
         private double probEst;
+        private double probMortality;
         private int anpp_max_spp;
         private int b_max_spp;
 
@@ -53,6 +55,19 @@ namespace Landis.Extension.Succession.Biomass
                 b_max_spp = value;
             }
         }
+
+        public double ProbMortality
+        {
+            get
+            {
+                return probMortality;
+            }
+            set
+            {
+                probMortality = value;
+            }
+        }
+
 
 
 

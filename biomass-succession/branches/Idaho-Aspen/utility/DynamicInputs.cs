@@ -43,10 +43,11 @@ namespace Landis.Extension.Succession.Biomass
                     if (!ecoregion.Active)
                         continue;
 
-                    PlugIn.ModelCore.UI.WriteLine("Spp={0}, Eco={1}, Pest={2:0.0}, maxANPP={3}, maxB={4}.", species.Name, ecoregion.Name,
+                    PlugIn.ModelCore.UI.WriteLine("Spp={0}, Eco={1}, Pest={2:0.0}, maxANPP={3}, maxB={4}, Pmortality={5}.", species.Name, ecoregion.Name,
                         timestepData[species.Index, ecoregion.Index].ProbEst,
                         timestepData[species.Index, ecoregion.Index].ANPP_MAX_Spp,
-                        timestepData[species.Index, ecoregion.Index].B_MAX_Spp);
+                        timestepData[species.Index, ecoregion.Index].B_MAX_Spp,
+                        timestepData[species.Index, ecoregion.Index].ProbMortality);
 
                 }
             }

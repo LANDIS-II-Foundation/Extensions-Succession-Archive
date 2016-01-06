@@ -111,6 +111,21 @@ namespace Landis.Extension.Succession.Biomass
             // ---------------------------------------------------------
 
             int deltaBiomass = (int)(actualANPP - totalMortality - defoliationLoss);
+
+            // ******************************************
+            // RMS:  Adding extra mortality for aspen
+            // ******************************************
+            bool mortalityDrought = false;
+            if (PlugIn.ModelCore.GenerateUniform() < SpeciesData.MortalityProbability[cohort.Species, ecoregion])
+                mortalityDrought = true;
+
+            if (mortalityDrought)
+            {
+                totalMortality = cohort.Biomass;
+                actualANPP = 0.0;
+                deltaBiomass = cohort.Biomass;
+            }
+            // ******************************************
             double newBiomass = cohort.Biomass + (double)deltaBiomass;
 
             double totalLitter = UpdateDeadBiomass(cohort, actualANPP, totalMortality, site, newBiomass);

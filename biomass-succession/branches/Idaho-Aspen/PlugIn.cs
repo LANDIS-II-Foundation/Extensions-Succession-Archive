@@ -247,6 +247,7 @@ namespace Landis.Extension.Succession.Biomass
                 SiteVars.Cohorts[site].Grow(site, (y == years && isSuccessionTimestep));
                 SiteVars.WoodyDebris[site].Decompose();
                 SiteVars.Litter[site].Decompose();
+
             }
 
         }
