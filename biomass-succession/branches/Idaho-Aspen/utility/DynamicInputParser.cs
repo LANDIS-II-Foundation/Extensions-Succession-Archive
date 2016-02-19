@@ -53,6 +53,7 @@ namespace Landis.Extension.Succession.Biomass
             InputVar<double> pest = new InputVar<double>("Probability of Establishment");
             InputVar<int> anpp = new InputVar<int>("ANPP");
             InputVar<int> bmax = new InputVar<int>("Maximum Biomass");
+            InputVar<double> pmort = new InputVar<double>("Probability of Mortality");
 
             while (! AtEndOfInput)
             {
@@ -87,9 +88,12 @@ namespace Landis.Extension.Succession.Biomass
                 ReadValue(bmax, currentLine);
                 dynamicInputRecord.B_MAX_Spp = bmax.Value;
 
+                ReadValue(pmort, currentLine);
+                dynamicInputRecord.ProbMortality = pmort.Value;
+
                 allData[yr][species.Index, ecoregion.Index] = dynamicInputRecord;
 
-                CheckNoDataAfter("the " + bmax.Name + " column",
+                CheckNoDataAfter("the " + pmort.Name + " column",
                                  currentLine);
 
                 GetNextLine();
