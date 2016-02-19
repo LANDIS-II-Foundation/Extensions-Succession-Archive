@@ -1,4 +1,0 @@
-*.cs
-age-only-disturbances/*.cs
-dynamic-change/*.cs
-utility/*.cs
