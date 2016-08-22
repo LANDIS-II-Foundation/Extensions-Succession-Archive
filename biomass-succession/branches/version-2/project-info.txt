@@ -1,7 +1,0 @@
-#  project information
-
-project-name	Landis.Extension.Succession.Biomass_v2
-project-type	library
-version		2.0
-patch-level     1
-release         official

@@ -1,3 +1,0 @@
-*.cs
-age-only-disturbances/*.cs
-climate-change/*.cs

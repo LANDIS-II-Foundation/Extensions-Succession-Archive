@@ -1,0 +1,7 @@
+#  project information
+
+project-name	Landis.Biomass.Succession
+project-type	library
+version		1.0
+patch-level     1
+release         candidate 1
