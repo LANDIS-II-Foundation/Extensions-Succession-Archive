@@ -1,9 +1,0 @@
-LandisData   Extension
-
-Name         "Nutrient Cycling Succession"
-Version      1.0
-Type         succession
-Assembly     Landis.Extension.Succession.NuCycling
-Class        Landis.Biomass.NuCycling.Succession.PlugIn
-Description  "Nutrient cycling succession extension."
-CoreVersion  5.1

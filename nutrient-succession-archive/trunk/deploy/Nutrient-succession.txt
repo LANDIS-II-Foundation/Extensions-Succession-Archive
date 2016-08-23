@@ -1,0 +1,121 @@
+LandisData  "Nutrient Cycling Succession"
+
+Timestep  10
+
+SeedingAlgorithm  WardSeedDispersal
+
+MinRelativeBiomass
+
+>> Shade	Percent Max Biomass
+>> Class	by Ecoregions
+>> ----------	--------------------	
+	        eco1   eco2  
+
+	1	30%	30%
+	2	35%	35%
+	3	55%	55%
+	4	80%	80%
+	5	100%	100%
+
+BiomassParameters
+
+>> Species   Leaf	Woody	Mort	Leaf	N-Tol-	Leaf	Leaf	Leaf	Litter	Litter	Litter	Wood	Wood	Wood	Fine	Fine	Fine
+>>	     Longevity	Decay	Shape	Lignin%	erance	C	N	P	C	N	P	C	N	P	RootC	RootN	RootP
+>> --------  ---------	------	-----	-----	-----	-----	-----	-----	-----	-----	-----	-----	-----	-----	-----	-----	-----
+   abiebals   3.0	0.1	10	0.1	2	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   acerrubr   1.0	0.1	10	0.1	1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   acersacc   1.0	0.1	10	0.1	1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   betualle   1.0	0.1	10	0.1	1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   betupapy   1.0	0.1	10	0.1	2	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   fraxamer   1.0	0.1	10	0.1	1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   piceglau   3.0	0.1	10	0.1	2	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   pinubank   3.0	0.1	10	0.1	3	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   pinuresi   3.0	0.1	10	0.1	3	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   pinustro   3.0	0.1	10	0.1	3	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   poputrem   1.0	0.1	10	0.1	3	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   querelli   1.0	0.1	10	0.1	3	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   querrubr   1.0	0.1	10	0.1	2	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   thujocci   4.0	0.1	10	0.1	2	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   tiliamer   1.0	0.1	10	0.1	1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+   tsugcana   3.0	0.1	10	0.1	2	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1	0.8	0.1	0.1
+
+EcoregionParameters
+>>	DepoN	DepoP	SOM	initial	Weather	initial	initial	AET
+>>			decay	SOM	PRate	MinerlN	MinerlP	mm
+eco1	5000	2000	0.2	3000	0.20	55	100	600
+eco2	5000	2000	0.2	3000	0.20	55	100	600
+
+EstablishProbabilities
+
+>> Species        Ecoregions
+>> --------       ------------------
+                  eco1    eco2
+
+   abiebals       0.9     0.05
+   acerrubr       1.0     0.6
+   acersacc       0.82    0.3
+   betualle       0.64    0.24
+   betupapy       1.0     0.75
+   fraxamer       0.18    0.1
+   piceglau       0.58    0.5
+   pinubank       1.0     0.8
+   pinuresi       0.56    0.78
+   pinustro       0.72    0.70
+   poputrem       1.0     0.8
+   querelli       0.96    0.71
+   querrubr       0.66    0.43
+   thujocci       0.76    0.002
+   tiliamer       0.54    0.06
+   tsugcana       0.22    0.01
+   
+MaxANPP
+
+>> Species      Ecoregions
+>> --------     ------------------
+           	eco1	eco2	
+
+abiebals   	886	801	
+acerrubr   	1175	1058	
+acersacc   	1106	1003	
+betualle   	1202	1052	
+betupapy   	1202	1052	
+fraxamer   	1202	1052	
+piceglau   	969	875	
+pinubank   	1130	1015	
+pinuresi   	1017	916	
+pinustro   	1090	980	
+poputrem   	1078	968	
+querelli   	1096	984	
+querrubr	1017	916	 
+thujocci   	1090	980	
+tiliamer   	1078	968	
+tsugcana   	1096	984	
+
+MaxBiomass
+
+>> Species      Ecoregions
+>> --------     ------------------
+           	eco1	eco2	
+
+abiebals   	26580	24030
+acerrubr   	35250	31740
+acersacc   	33180	30090
+betualle   	36060	31560
+betupapy   	36060	31560
+fraxamer   	36060	31560
+piceglau   	29070	26250
+pinubank   	33900	30450
+pinuresi   	30510	27480
+pinustro   	32700	29400
+poputrem   	32340	29040
+querelli   	32880	29520
+querrubr	30510	27480
+thujocci   	32700	29400
+tiliamer   	32340	29040
+tsugcana   	32880	29520
+		 	   
+ 	 
+ 	 
+		 	 
+		 	 
+			
