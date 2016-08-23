@@ -1,6 +1,0 @@
-#  project information
-
-project-name	Landis.Extension.Succession.AgeOnly
-project-type	library
-version		1.3
-release		official
